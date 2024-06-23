@@ -79,16 +79,14 @@
       enable = true;
     };
   };
-  xdg.configFile."gtk-2.0/gtkrc" = ./.gtkrc-2.0;
-  xdg.configFile."zsh/.zshrc" = ./.zshrc;
-  xdg.dataFile."zsh/.zshenv" = ./.zshenv;
-  xdg.dataFile."zsh/history" = ./.zsh_history; 
-  xdg.dataFile."pki" = ./.pki;
+#  xdg.configFile."gtk-2.0/gtkrc" = ./.gtkrc-2.0;
+#  xdg.dataFile."zsh/history" = ./.zsh_history; 
+#  xdg.dataFile."pki" = ./.pki;
   programs.kitty = {
     enable = true;
     settings = {
       # Font
-      font_family = "MesloLGL";
+      font_family = "MesloLGM Nerd Font";
       
       # Cursor
       cursor_shape = "beam";
