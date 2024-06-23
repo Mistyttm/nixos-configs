@@ -1,0 +1,1 @@
+/nix/store/368i9dsdr0sfv7a1bf18gk3s413lszcd-home-manager-files/.zshrc
