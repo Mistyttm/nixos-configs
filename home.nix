@@ -18,7 +18,8 @@
     zoom-us
     slack
     libsecret
-    vencord
+    thunderbird
+    nodejs_18
   ];
 
   programs.git = {
