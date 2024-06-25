@@ -13,6 +13,7 @@
     libreoffice
     xdg-utils
     pass
+    tree
   ];
   programs.java.enable = true;
   fonts.fontconfig.enable = true;
