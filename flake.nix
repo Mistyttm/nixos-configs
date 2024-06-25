@@ -31,7 +31,7 @@
             home-manager.backupFileExtension = "backup";
 
             # TODO replace ryan with your own username
-            home-manager.users.misty = import ./global-configs/home.nix;
+            home-manager.users.misty = import ./hosts/mistylappytappy/home.nix;
 
             # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
           }

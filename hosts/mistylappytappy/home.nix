@@ -5,8 +5,8 @@
   home.homeDirectory = "/home/misty";
 
   imports = [
-    ./shell/default.nix
-    ./programs/default.nix
+    ../../global-configs/shell/default.nix
+    ../../global-configs/programs/default.nix
   ];
 
   # Packages that should be installed to the user profile.
