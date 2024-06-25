@@ -4,6 +4,10 @@
   home.username = "misty";
   home.homeDirectory = "/home/misty";
 
+#  imports = [
+#
+#  ];
+
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
     discord
@@ -166,6 +170,9 @@
     enable = true;
     enableZshIntegration = true;
     useTheme = "M365Princess";
+  };
+  programs.fastfetch = {
+    enable = true;
   };
   programs.java.enable = true;
   fonts.fontconfig.enable = true;
