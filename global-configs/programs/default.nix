@@ -1,7 +1,6 @@
 { config, pkgs, ... }: {
   imports = [
     ./browsers.nix
-    ./chat.nix
     ./common.nix
     ./fastfetch.nix
     ./games/default.nix
