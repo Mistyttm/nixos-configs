@@ -9,9 +9,9 @@
     };
     remotePlay.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
-    extraCompatPackages = [
-      proton-ge-bin
-    ];
+#     extraCompatPackages = with pkgs; [
+#       proton-ge-bin
+#     ];
   };
 }
 
