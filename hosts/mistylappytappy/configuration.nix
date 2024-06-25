@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ../../global-configs/fonts/fonts.nix
     ];
 
   # Bootloader.
@@ -100,22 +101,6 @@
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
-  ];
-
-  fonts.packages = with pkgs; [
-    noto-fonts
-    noto-fonts-cjk
-    noto-fonts-emoji
-    liberation_ttf
-    fira-code
-    fira-code-symbols
-    mplus-outline-fonts.githubRelease
-    dina-font
-    proggyfonts
-    corefonts
-    vistafonts
-    (nerdfonts.override { fonts = [ "Meslo" ]; })
-  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
