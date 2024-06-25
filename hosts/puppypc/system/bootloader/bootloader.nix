@@ -7,7 +7,7 @@
     grub = {
       enable = true;
       efiSupport = true;
-      device = "/dev/nvme1n1p1";
+      device = "nodev";
     };
   };
 }

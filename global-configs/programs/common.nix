@@ -11,6 +11,8 @@
     vlc
     thunderbird
     libreoffice
+    xdg-utils
+    pass
   ];
   programs.java.enable = true;
   fonts.fontconfig.enable = true;
