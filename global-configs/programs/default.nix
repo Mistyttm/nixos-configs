@@ -7,7 +7,6 @@
     ./git.nix
     ./media.nix
     ./productivity.nix
-    ./spotify.nix
     ./vscode.nix
     ./xdg.nix
   ];
