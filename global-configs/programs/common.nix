@@ -2,7 +2,7 @@
   home.packages = with pkgs; [
     libsecret
     nodejs_18
-    discord
+#     discord
     slack
     zoom-us
     obsidian
