@@ -7,7 +7,6 @@
     ./DE/default.nix
     ./hardware/amd.nix
     ./hardware/nvidia.nix
-    ./networking/networkmanager.nix
-    ./networking/ssh.nix
+    ./networking/default.nix
   ];
 }
