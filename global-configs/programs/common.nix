@@ -4,6 +4,8 @@
     nodejs_18
     discord
     slack
+    zoom-us
+    obsidian
   ];
   programs.java.enable = true;
   fonts.fontconfig.enable = true;
