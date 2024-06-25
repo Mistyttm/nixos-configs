@@ -1,5 +1,7 @@
 { config, pkgs, ... }: {
-  imports = [
-    ./prismlauncher.nix
+#  imports = [
+#  ];
+  home.packages = with pkgs; [
+    prismlauncher
   ];
 }
