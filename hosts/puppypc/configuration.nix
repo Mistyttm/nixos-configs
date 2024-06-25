@@ -8,12 +8,9 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./graphics/nvidia.nix
+      ./system/hardware/default.nix
+      ./system/bootloader/bootloader.nix
     ];
-
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "puppypc"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -115,6 +112,8 @@
 
   programs.zsh.enable = true;
   users.users.misty.shell = pkgs.zsh;
+
+
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
