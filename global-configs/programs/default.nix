@@ -6,7 +6,7 @@
     ./games/default.nix
     ./git.nix
     #./media.nix
-    ./productivity.nix
+    #./productivity.nix
     ./vscode.nix
     ./xdg.nix
   ];
