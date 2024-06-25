@@ -8,6 +8,7 @@
     obsidian
     spotify
     spicetify-cli
+    vlc
   ];
   programs.java.enable = true;
   fonts.fontconfig.enable = true;

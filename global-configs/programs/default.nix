@@ -5,7 +5,7 @@
     ./fastfetch.nix
     ./games/default.nix
     ./git.nix
-    ./media.nix
+    #./media.nix
     ./productivity.nix
     ./vscode.nix
     ./xdg.nix
