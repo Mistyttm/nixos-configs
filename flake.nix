@@ -12,14 +12,14 @@
       # to avoid problems caused by different versions of nixpkgs.
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    sddm-sugar-candy-nix = {
-      url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
-      # Optional, by default this flake follows nixpkgs-unstable.
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # sddm-sugar-candy-nix = {
+    #   url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
+    #   # Optional, by default this flake follows nixpkgs-unstable.
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, sddm-sugar-candy-nix, ... }: {
+  outputs = inputs@{ nixpkgs, home-manager, ... }: {
     nixosConfigurations = {
       # TODO please change the hostname to your own
       mistylappytappy = nixpkgs.lib.nixosSystem {
@@ -50,6 +50,7 @@
           # make home-manager as a module of nixos
           # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
           home-manager.nixosModules.home-manager
+          # sddm-sugar-candy-nix.nixosModules.default
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
@@ -59,14 +60,11 @@
             home-manager.users.misty = import ./hosts/puppypc/home.nix;
 
             # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
-          }
-          sddm-sugar-candy-nix.nixosModules.default
-          {
-            nixpkgs = {
-              overlays = [
-                sddm-sugar-candy-nix.overlays.default
-              ];
-            };
+            # nixpkgs = {
+            #   overlays = [
+            #     sddm-sugar-candy-nix.overlays.default
+            #   ];
+            # };
           }
         ];
       };
