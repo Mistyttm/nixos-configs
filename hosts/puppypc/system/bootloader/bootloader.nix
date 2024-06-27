@@ -7,7 +7,8 @@
     grub = {
       enable = true;
       efiSupport = true;
-      device = "nodev";
+      devices = [ "nodev" ];
+      useOSProber = true;
     };
   };
 }

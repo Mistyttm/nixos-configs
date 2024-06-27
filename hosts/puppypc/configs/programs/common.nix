@@ -9,8 +9,6 @@
       withOpenASAR = true;
       withVencord = true;
     })
+    protontricks
   ];
-  programs.chromium = {
-    enable = true;
-  };
 }

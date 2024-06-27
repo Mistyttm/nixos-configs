@@ -14,6 +14,8 @@
     xdg-utils
     pass
     tree
+    p7zip
+    gnome.zenity
   ];
   programs.java.enable = true;
   fonts.fontconfig.enable = true;

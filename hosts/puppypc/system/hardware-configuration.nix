@@ -18,21 +18,15 @@
       fsType = "ext4";
     };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/CC50-B2DB";
-      fsType = "vfat";
-      options = [ "fmask=0022" "dmask=0022" ];
-    };
-
   fileSystems."/mnt/misty/games" =
     { device = "/dev/disk/by-uuid/4c9aae3a-3bc8-4ce4-a52b-de77e9fbd43c";
       fsType = "ext4";
     };
 
-  fileSystems."/mnt/misty/hdd" =
-    { device = "/dev/disk/by-uuid/CA34AB1D34AB0B8F";
-      fsType = "ntfs3";
-      options = [ "rw" "uid=theUidOfYourUser"];
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/CC50-B2DB";
+      fsType = "vfat";
+      options = [ "fmask=0022" "dmask=0022" ];
     };
 
   swapDevices = [ ];
