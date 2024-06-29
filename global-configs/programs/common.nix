@@ -16,7 +16,12 @@
     tree
     p7zip
     gnome.zenity
+    kdeconnect
   ];
   programs.java.enable = true;
   fonts.fontconfig.enable = true;
+  services.kdeconnect = {
+    enable = true;
+    indicator = true;
+  };
 }
