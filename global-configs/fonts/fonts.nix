@@ -13,4 +13,9 @@
     vistafonts
     (nerdfonts.override { fonts = [ "Meslo" ]; })
   ];
+  fonts.fontconfig = {
+    defaultFonts = {
+      emoji = [ "Noto Color Emoji" ];
+    };
+  };
 }

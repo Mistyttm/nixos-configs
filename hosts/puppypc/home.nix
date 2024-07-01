@@ -28,4 +28,8 @@
   # Let home Manager install and manage itself.
   programs.home-manager.enable = true;
 
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+  };
+
 }

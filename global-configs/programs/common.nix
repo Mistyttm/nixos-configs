@@ -1,7 +1,7 @@
 { config, pkgs, ... }: {
   home.packages = with pkgs; [
     libsecret
-    nodejs_18
+    nodejs
 #     discord
     slack
     zoom-us
@@ -10,6 +10,7 @@
     spicetify-cli
     vlc
     thunderbird
+#     betterbird
     libreoffice
     xdg-utils
     pass
@@ -17,6 +18,8 @@
     p7zip
     gnome.zenity
     kdeconnect
+    zip
+    kup
   ];
   programs.java.enable = true;
   fonts.fontconfig.enable = true;
