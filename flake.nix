@@ -17,9 +17,10 @@
       # Optional, by default this flake follows nixpkgs-unstable.
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix.url = "github:Mic92/sops-nix";
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, sddm-sugar-candy-nix, ... }: {
+  outputs = inputs@{ nixpkgs, home-manager, sddm-sugar-candy-nix, sops-nix, ... }: {
     nixosConfigurations = {
       # TODO please change the hostname to your own
       mistylappytappy = nixpkgs.lib.nixosSystem {
@@ -51,6 +52,7 @@
           # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
           home-manager.nixosModules.home-manager
           sddm-sugar-candy-nix.nixosModules.default
+          sops-nix.nixosModules.sops
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
