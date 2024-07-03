@@ -5,12 +5,6 @@
     userName = "Mistyttm";
     userEmail = "contact@mistyttm.dev";
     extraConfig = { credential.helper = "libsecret"; };
-    signing = {
-       key = null;
-# 
-# set this to true to require you to sign your commits by default with e.g. gpg
-#      signByDefault = true;
-    };
     ignores = [ "*~" "*#" ];
     lfs.enable = true;
     extraConfig = {
@@ -26,15 +20,15 @@
         followtags = true;
       };
       merge = { conflictstyle = "zdiff3"; };
-      diff = { 
-        algorithm = "histogram"; 
+      diff = {
+        algorithm = "histogram";
         context = 10;
       };
     };
     difftastic = {
         enable = true;
         background = "dark";
-        
+
     };
     delta = {
     #  enable = true;

@@ -5,6 +5,7 @@
     ./media.nix
     ./development.nix
     ./games.nix
+    ./git.nix
   ];
 }
 
