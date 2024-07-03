@@ -8,6 +8,7 @@
     ../../global-configs/shell/default.nix
     ../../global-configs/programs/default.nix
     ./configs/programs/default.nix
+    ./configs/gnupg/gnupg.nix
   ];
 
   # Packages that should be installed to the user profile.

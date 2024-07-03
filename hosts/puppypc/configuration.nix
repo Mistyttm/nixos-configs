@@ -9,7 +9,6 @@
     [ # Include the results of the hardware scan.
       ./system/default.nix
       ./users/misty.nix
-      ./configs/gnupg/gnupg.nix
       ../../global-configs/fonts/fonts.nix
     ];
 
@@ -21,6 +20,16 @@
   services.gnome.gnome-keyring.enable = true;
 
   boot.supportedFilesystems = [ "ntfs" ];
+
+  services.pcscd.enable = true;
+
+  programs.gnupg = {
+    agent = {
+      enable = true;
+      enableSSHSupport = true;
+      pinentryPackage = pkgs.pinentry-gnome3;
+    };
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
