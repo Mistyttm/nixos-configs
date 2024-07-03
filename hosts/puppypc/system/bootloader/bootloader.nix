@@ -1,6 +1,13 @@
 { config, lib, pkgs, ... }: {
+
   # Bootloader.
   boot = {
+    initrd = {
+      systemd = {
+        enable = true;
+      };
+    };
+
     plymouth = {
       enable = true;
       theme = "cuts";
@@ -38,7 +45,9 @@
         efiSupport = true;
         devices = [ "nodev" ];
         useOSProber = true;
+#         theme = "${pkgs.sleek-grub-theme}/grub/themes/sleek/orange";
       };
+      timeout = 5;
     };
   };
 }
