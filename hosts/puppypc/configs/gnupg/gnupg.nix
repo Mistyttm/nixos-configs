@@ -13,5 +13,6 @@
         trust = "ultimate";
       }
     ];
+    homedir = "${config.xdg.dataHome}/gnupg";
   };
 }
