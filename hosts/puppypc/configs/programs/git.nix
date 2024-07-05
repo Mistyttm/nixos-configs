@@ -1,13 +1,8 @@
 { config, pkgs, ... }: {
   programs.git = {
     signing = {
-      key = "A1B4238FBD53F150";
+      key = "5D6050A7E4497C4A";
       signByDefault = true;
     };
-#     includes.*.contents = {
-#       commit = {
-#         gpgSign = true;
-#       };
-#     };
   };
 }

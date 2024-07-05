@@ -2,13 +2,13 @@
   home.packages = with pkgs; [
     mullvad-vpn
     qbittorrent
-    discord
+#     discord
     vencord
-#     (pkgs.discord.override {
+    (pkgs.discord.override {
       # remove any overrides that you don't want
-#       withOpenASAR = true;
-#       withVencord = true;
-#     })
+      withOpenASAR = true;
+      withVencord = true;
+    })
     protontricks
     ffmpeg
   ];
