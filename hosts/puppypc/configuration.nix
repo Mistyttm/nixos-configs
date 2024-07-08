@@ -17,11 +17,11 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  services.gnome.gnome-keyring.enable = true;
+#   services.
 
   boot.supportedFilesystems = [ "ntfs" ];
 
-  services.pcscd.enable = true;
+#   services.
 
   programs.gnupg = {
     agent = {

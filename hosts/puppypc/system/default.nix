@@ -8,5 +8,6 @@
     ./hardware/amd.nix
     ./hardware/nvidia.nix
     ./networking/default.nix
+    ./services.nix
   ];
 }

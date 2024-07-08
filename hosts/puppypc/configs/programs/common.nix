@@ -11,5 +11,6 @@
     })
     protontricks
     ffmpeg
+    piper
   ];
 }
