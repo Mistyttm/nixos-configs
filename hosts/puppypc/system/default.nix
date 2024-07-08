@@ -9,5 +9,6 @@
     ./hardware/nvidia.nix
     ./networking/default.nix
     ./services.nix
+    ./virtualisation.nix
   ];
 }
