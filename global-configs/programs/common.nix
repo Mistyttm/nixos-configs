@@ -1,7 +1,6 @@
 { config, pkgs, ... }: {
   home.packages = with pkgs; [
     libsecret
-    nodejs
 #     discord
     slack
     zoom-us

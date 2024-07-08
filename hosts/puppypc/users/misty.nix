@@ -3,7 +3,7 @@
   users.users.misty = {
     isNormalUser = true;
     description = "Emmey Leo";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     packages = with pkgs; [
       kdePackages.kate
     #  thunderbird

@@ -3,7 +3,6 @@
     zed-editor
     pkg-config
     openssl
-    nodePackages.pnpm
   ];
 }
 
