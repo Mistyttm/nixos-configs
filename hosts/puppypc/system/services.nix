@@ -13,5 +13,13 @@
     pcscd = {
       enable = true;
     };
+
+    resolved = {
+      enable = true;
+    };
+
+    mullvad-vpn = {
+      enable = true;
+    };
   };
 }

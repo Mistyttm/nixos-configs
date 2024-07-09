@@ -26,7 +26,6 @@
       # TODO please change the hostname to your own
       mistylappytappy = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        extraSpecialArgs = {inherit spicetify-nix;};
         modules = [
           ./hosts/mistylappytappy/configuration.nix
 
@@ -47,7 +46,6 @@
       };
       puppypc = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        extraSpecialArgs = {inherit spicetify-nix;};
         modules = [
           ./hosts/puppypc/configuration.nix
 

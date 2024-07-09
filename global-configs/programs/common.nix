@@ -19,6 +19,7 @@
     kdeconnect
     zip
     kup
+    kdePackages.kalk
   ];
   programs.java.enable = true;
   fonts.fontconfig.enable = true;

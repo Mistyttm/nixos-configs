@@ -4,7 +4,12 @@
     package = pkgs.gitAndTools.gitFull;
     userName = "Mistyttm";
     userEmail = "contact@mistyttm.dev";
-    extraConfig = { credential.helper = "libsecret"; };
+    extraConfig = {
+      credential.helper = "libsecret";
+      pull = {
+        rebase = true;
+      };
+    };
     ignores = [ "*~" "*#" ];
     lfs.enable = true;
     extraConfig = {
