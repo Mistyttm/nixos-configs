@@ -12,11 +12,6 @@
       ../../global-configs/users/default.nix
       ../../global-configs/fonts/fonts.nix
     ];
-
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
   networking.hostName = "mistylappytappy"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
