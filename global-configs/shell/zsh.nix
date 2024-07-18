@@ -2,7 +2,6 @@
   programs.zsh = {
     enable = true;
     autocd = true;
-    #promptInit = "eval '$(oh-my-posh init zsh --config https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/M365Princess.omp.json)'";
     oh-my-zsh = {
       enable = true;
       plugins = [
@@ -29,6 +28,9 @@
         "vscode"
         "zsh-interactive-cd"
       ];
+    };
+    shellAliases = {
+      rebuild = "sudo nixos-rebuild switch --flake .#puppypc";
     };
   };
 }

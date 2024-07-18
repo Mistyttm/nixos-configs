@@ -9,7 +9,7 @@
     spicetify-cli
     vlc
     thunderbird
-#     betterbird
+    betterbird
     libreoffice
     xdg-utils
     pass
@@ -20,6 +20,9 @@
     zip
     kup
     kdePackages.kalk
+    wget
+    libnotify
+    teams-for-linux
   ];
   programs.java.enable = true;
   fonts.fontconfig.enable = true;

@@ -10,6 +10,7 @@
       ./system/default.nix
       ./users/misty.nix
       ../../global-configs/fonts/fonts.nix
+#       ../../global-configs/shell/environment.nix
     ];
 
   networking.hostName = "puppypc"; # Define your hostname.
@@ -28,6 +29,12 @@
       enable = true;
       enableSSHSupport = true;
       pinentryPackage = pkgs.pinentry-gnome3;
+    };
+  };
+
+  environment = {
+    shellAliases = {
+      rebuild = "sudo nixos-rebuild switch --flake .#puppypc";
     };
   };
 

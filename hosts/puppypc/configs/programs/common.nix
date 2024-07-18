@@ -12,5 +12,12 @@
     protontricks
     ffmpeg
     piper
+    gimp
+    wine
+#     wineWowPackages.fonts
+#     wineWowPackages.waylandFull
+#     wineWowPackages.staging
+    winetricks
+    blockbench
   ];
 }

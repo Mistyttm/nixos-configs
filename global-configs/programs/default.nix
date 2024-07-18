@@ -7,6 +7,7 @@
     ./git.nix
     #./media.nix
     #./productivity.nix
+    ./tex.nix
     ./vscode.nix
     ./xdg.nix
   ];
