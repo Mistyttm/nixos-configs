@@ -8,7 +8,8 @@
   imports =
     [ # Include the results of the hardware scan.
       ./system/default.nix
-      ./users/misty.nix
+      ../../global-configs/system/default.nix
+      ../../global-configs/users/default.nix
       ../../global-configs/fonts/fonts.nix
 #       ../../global-configs/shell/environment.nix
     ];
