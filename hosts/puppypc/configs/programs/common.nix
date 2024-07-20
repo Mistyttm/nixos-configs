@@ -3,7 +3,7 @@
     mullvad-vpn
     qbittorrent
 #     discord
-    vencord
+#     vencord
     (pkgs.discord.override {
       # remove any overrides that you don't want
       withOpenASAR = true;
@@ -19,5 +19,8 @@
 #     wineWowPackages.staging
     winetricks
     blockbench
+    file
+    p7zip
+    okteta
   ];
 }

@@ -10,5 +10,6 @@
     ./tex.nix
     ./vscode.nix
     ./xdg.nix
+    ./spotify.nix
   ];
 }

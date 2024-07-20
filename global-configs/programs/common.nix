@@ -5,7 +5,7 @@
     slack
     zoom-us
     obsidian
-    spotify
+#     spotify
     spicetify-cli
     vlc
     thunderbird
@@ -23,6 +23,7 @@
     wget
     libnotify
     teams-for-linux
+    cabextract
   ];
   programs.java.enable = true;
   fonts.fontconfig.enable = true;

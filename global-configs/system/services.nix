@@ -10,6 +10,10 @@
       };
     };
 
+    earlyoom = {
+      enable = true;
+    };
+
     pcscd = {
       enable = true;
     };
