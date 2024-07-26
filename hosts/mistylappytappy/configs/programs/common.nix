@@ -7,5 +7,6 @@
 #       withVencord = true;
 #     })
     protontricks
+    lightly-qt
   ];
 }

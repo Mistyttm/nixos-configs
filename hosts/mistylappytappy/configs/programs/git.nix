@@ -1,7 +1,7 @@
 { config, pkgs, ... }: {
   programs.git = {
     signing = {
-      key = "DAB0FD379EA2C9AF";
+      key = "988AF1173CC1BC3F";
       signByDefault = true;
     };
   };
