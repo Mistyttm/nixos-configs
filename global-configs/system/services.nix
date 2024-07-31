@@ -25,5 +25,9 @@
     mullvad-vpn = {
       enable = true;
     };
+
+    touchegg = {
+      enable = true;
+    };
   };
 }

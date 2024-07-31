@@ -8,5 +8,6 @@
 #     })
     protontricks
     lightly-qt
+    touchegg
   ];
 }
