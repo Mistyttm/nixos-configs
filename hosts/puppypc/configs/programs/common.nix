@@ -13,7 +13,5 @@
     winetricks
     blockbench
     file
-    p7zip
-    okteta
   ];
 }
