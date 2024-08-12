@@ -1,15 +1,17 @@
 { config, pkgs, ... }: {
   home.packages = with pkgs; [
     libsecret
-#     discord
+    (unstable.pkgs.discord.override {
+      # remove any overrides that you don't want
+      withOpenASAR = true;
+      withVencord = true;
+    })
     slack
     zoom-us
     obsidian
-#     spotify
     spicetify-cli
     vlc
     thunderbird
-    betterbird
     libreoffice
     xdg-utils
     pass
@@ -18,12 +20,12 @@
     gnome.zenity
     kdeconnect
     zip
-    kup
     kdePackages.kalk
     wget
     libnotify
     teams-for-linux
     cabextract
+    rpi-imager
   ];
   programs.java.enable = true;
   fonts.fontconfig.enable = true;

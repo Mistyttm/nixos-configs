@@ -1,6 +1,6 @@
 { pkgs, lib, spicetify-nix, ... }:
 let
-  spicePkgs = spicetify-nix.packages.${pkgs.system}.default;
+  spicePkgs = spicetify-nix.legacyPackages.${pkgs.system};
 in
 {
 
@@ -8,20 +8,21 @@ in
     "spotify"
   ];
 
-  imports = [ spicetify-nix.homeManagerModule ];
+  imports = [ spicetify-nix.homeManagerModules.default ];
 
   programs.spicetify =
     {
       enable = true;
-      theme = spicePkgs.themes.Dribbblish;
+      theme = spicePkgs.themes.dribbblish;
       colorScheme = "purple";
 
       enabledExtensions = with spicePkgs.extensions; [
-        fullAppDisplay
+        fullAppDisplayMod
         seekSong
         fullAlbumDate
         adblock
         volumePercentage
+        beautifulLyrics
       ];
 
       enabledCustomApps = with spicePkgs.apps; [

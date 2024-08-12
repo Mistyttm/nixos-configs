@@ -3,6 +3,7 @@
     ./locale.nix
     ./programs.nix
     ./bootloader.nix
+    ./nix.nix
     ./DE/default.nix
     ./networking/default.nix
     ./services.nix

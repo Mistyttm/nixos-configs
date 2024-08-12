@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     # home-manager, used for managing user configuration
     home-manager = {
       url = "github:nix-community/home-manager/release-24.05";
@@ -18,14 +19,26 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix.url = "github:Mic92/sops-nix";
-    spicetify-nix.url = "github:the-argus/spicetify-nix";
+    spicetify-nix = {
+      url = "github:Gerg-L/spicetify-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, ... }: {
+  outputs = inputs@{ nixpkgs, nixpkgs-unstable, home-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, ... }: let
+      system = "x86_64-linux";
+      overlay-unstable = final: prev: {
+        unstable = import nixpkgs-unstable {
+          inherit system;
+          config.allowUnfree = true;
+        };
+
+      };
+    in {
     nixosConfigurations = {
       # TODO please change the hostname to your own
       mistylappytappy = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
+        inherit system;
         modules = [
           ./hosts/mistylappytappy/configuration.nix
 
@@ -47,7 +60,7 @@
         ];
       };
       puppypc = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
+        inherit system;
         modules = [
           ./hosts/puppypc/configuration.nix
 
@@ -69,6 +82,8 @@
             nixpkgs = {
               overlays = [
                 sddm-sugar-candy-nix.overlays.default
+                overlay-unstable
+#                 spicetify-nix.homeManagerModules.default
               ];
             };
           }
