@@ -27,7 +27,6 @@ in
 
       enabledCustomApps = with spicePkgs.apps; [
         marketplace
-        lyrics-plus
       ];
     };
 }
