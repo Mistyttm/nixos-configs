@@ -26,7 +26,7 @@
     teams-for-linux
     cabextract
     rpi-imager
-    dunst
+    quickemu
   ];
   programs.java.enable = true;
   fonts.fontconfig.enable = true;
