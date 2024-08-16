@@ -6,7 +6,7 @@
     ./nix.nix
     ./DE/default.nix
     ./networking/default.nix
-    ./services.nix
+    # ./services.nix
     ./virtualisation.nix
   ];
 }
