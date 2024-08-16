@@ -9,12 +9,4 @@
     #  thunderbird
     ];
   };
-
-#   accounts.email.accounts = {
-#     misty = {
-#       address = "emmey.leo@gmail.com";
-#       flavor = "gmail.com";
-#       realName = "Emmey Leo";
-#     };
-#   };
 }

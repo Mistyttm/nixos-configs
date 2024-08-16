@@ -7,6 +7,7 @@
   imports = [
     ../../global-configs/shell/default.nix
     ../../global-configs/programs/default.nix
+    ../../global-configs/users/emailAccounts.nix
     ./configs/programs/default.nix
     ./configs/gnupg/gnupg.nix
   ];
