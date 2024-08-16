@@ -11,6 +11,7 @@
       ../../global-configs/system/default.nix
       ../../global-configs/users/default.nix
       ../../global-configs/fonts/fonts.nix
+      ../../modules/services.nix
 #       ../../global-configs/shell/environment.nix
     ];
 
@@ -53,6 +54,18 @@
   nixpkgs.config.permittedInsecurePackages = [
                 "freeimage-unstable-2021-11-01"
               ];
+  
+  services.serviceModules = {
+    enable = true;
+    packages = [
+      "gnome.gnome-keyring"
+      "earlyoom"
+      "pcscd"
+      "ratbagd"
+      "resolved"
+      "mullvad-vpn"
+    ];
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
