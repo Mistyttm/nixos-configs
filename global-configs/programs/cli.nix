@@ -8,5 +8,6 @@
     p7zip
     zip
     tmux
+    unzip
   ];
 }
