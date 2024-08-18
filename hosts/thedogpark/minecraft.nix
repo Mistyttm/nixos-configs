@@ -1,4 +1,4 @@
-{ config, pkgs, nix-minecraft, fetchurl, ... }: {
+{ config, pkgs, nix-minecraft, stdenv, fetchurl, ... }: {
 
     services.minecraft-servers = {
       enable = true;
