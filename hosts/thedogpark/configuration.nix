@@ -9,10 +9,11 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ../../global-configs/users/default.nix
-      ../../global-configs/system/local.nix
+      ../../global-configs/system/locale.nix
       ../../global-configs/system/networking/ssh.nix
       ../../global-configs/system/nix.nix
       ./services.nix
+      ./minecraft.nix
     ];
 
   # Use the systemd-boot EFI boot loader.

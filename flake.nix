@@ -23,9 +23,10 @@
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
   };
 
-  outputs = inputs@{ nixpkgs, nixpkgs-unstable, home-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, ... }: let
+  outputs = inputs@{ nixpkgs, nixpkgs-unstable, home-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, nix-minecraft, ... }: let
       system = "x86_64-linux";
       overlay-unstable = final: prev: {
         unstable = import nixpkgs-unstable {
@@ -117,6 +118,7 @@
             nixpkgs = {
               overlays = [
                 overlay-unstable
+                nix-minecraft.overlay
               ];
             };
           }
