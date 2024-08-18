@@ -51,9 +51,7 @@
 
   # List services that you want to enable:
 
-  nixpkgs.config.permittedInsecurePackages = [
-                "freeimage-unstable-2021-11-01"
-              ];
+  nixpkgs.config.allowUnfree = true;
 
 
   # Open ports in the firewall.
