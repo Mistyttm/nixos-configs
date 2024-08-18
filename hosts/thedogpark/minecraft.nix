@@ -1,5 +1,4 @@
-{ config, pkgs, nix-minecraft, stdenv, fetchurl, ... }: {
-
+{ config, pkgs, nix-minecraft, lib, fetchurl, ... }: {
     services.minecraft-servers = {
       enable = true;
       eula = true;
