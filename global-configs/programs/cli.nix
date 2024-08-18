@@ -7,5 +7,6 @@
     wget
     p7zip
     zip
+    tmux
   ];
 }
