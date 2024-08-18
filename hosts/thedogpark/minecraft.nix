@@ -1,7 +1,4 @@
 { config, pkgs, nix-minecraft, inputs, ... }: {
-    imports = [
-        inputs.nix-minecraft.nixosModules.minecraft-servers
-    ];
 
     services.minecraft-servers = {
       enable = true;

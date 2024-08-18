@@ -107,6 +107,7 @@
           home-manager.nixosModules.home-manager
           sops-nix.nixosModules.sops
           {
+            imports = [nix-minecraft.nixosModules.minecraft-servers];
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
