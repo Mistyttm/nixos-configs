@@ -13,7 +13,7 @@ in {
         enableReload = true;
         whitelist = {
             Misty_TTM = "e914b64b-5b4c-4ca0-a655-2b7dd28d2ebb";
-            Ommey = "0843c8a8-8532-44e2-96a4-5ceccbf97c2";
+#             Ommey = "0843c8a8-8532-44e2-96a4-5ceccbf97c2";
             DizzyinaTizzy = "f5b5008c-f44d-44cd-8fcb-492895ae7ce9";
             Vanity_Dolls = "9ce829ce-a7c8-4cd8-ac28-73ee6739d784";
             The_Menagerie = "e0da066f-e6e3-46a8-9a16-f9a8161c7e15";
