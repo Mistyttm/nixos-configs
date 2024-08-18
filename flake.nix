@@ -104,13 +104,11 @@
           # make home-manager as a module of nixos
           # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
           home-manager.nixosModules.home-manager
-          sddm-sugar-candy-nix.nixosModules.default
           sops-nix.nixosModules.sops
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
-            home-manager.extraSpecialArgs = {inherit spicetify-nix;};
 
             # TODO replace ryan with your own username
             home-manager.users.misty = import ./hosts/thedogpark/home.nix;
@@ -118,9 +116,7 @@
             # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
             nixpkgs = {
               overlays = [
-                sddm-sugar-candy-nix.overlays.default
                 overlay-unstable
-#                 spicetify-nix.homeManagerModules.default
               ];
             };
           }
