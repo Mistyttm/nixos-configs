@@ -11,5 +11,6 @@
     ./vscode.nix
     ./xdg.nix
     ./spotify.nix
+    ./cli.nix
   ];
 }

@@ -4,8 +4,12 @@
   home.username = "misty";
   home.homeDirectory = "/home/misty";
 
-#   imports = [
-#   ];
+  imports = [
+  ../../global-configs/programs/git.nix
+  ../../global-configs/programs/xdg.nix
+  ../../global-configs/programs/cli.nix
+  ../../global-configs/programs/fastfetch.nix
+  ];
 
   # Packages that should be installed to the user profile.
 #  home.packages = with pkgs; [
@@ -24,6 +28,8 @@
 
   # Let home Manager install and manage itself.
   programs.home-manager.enable = true;
+
+  programs.java.enable = true;
 
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];

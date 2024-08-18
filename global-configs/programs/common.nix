@@ -13,15 +13,9 @@
     vlc
     thunderbird
     libreoffice
-    xdg-utils
-    pass
-    tree
-    p7zip
     gnome.zenity
     kdeconnect
-    zip
     kdePackages.kalk
-    wget
     libnotify
     teams-for-linux
     cabextract
