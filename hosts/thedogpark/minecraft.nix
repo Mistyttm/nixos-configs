@@ -1,6 +1,6 @@
-{ config, pkgs, nix-minecraft, ... }: {
+{ config, pkgs, nix-minecraft, inputs, ... }: {
     imports = [
-        nix-minecraft.nixosModules.minecraft-servers
+        inputs.nix-minecraft.nixosModules.minecraft-servers
     ];
 
     services.minecraft-servers = {
