@@ -35,7 +35,6 @@ in {
             online-mode = true;
             pause-when-empty-seconds = 120;
             pvp = true;
-            query.port = 25565;
             simulation-distance = 10;
             spawn-animals=true;
             spawn-monsters = true;
