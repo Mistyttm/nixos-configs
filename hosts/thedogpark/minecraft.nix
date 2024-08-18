@@ -9,7 +9,6 @@ in {
       servers.skyship = {
         enable = true;
         autoStart = true;
-        restart = "always";
         enableReload = true;
         whitelist = {
             Misty_TTM = "e914b64b-5b4c-4ca0-a655-2b7dd28d2ebb";
