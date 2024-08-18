@@ -1,6 +1,6 @@
 { config, pkgs, nix-minecraft, lib, fetchurl, ... }:
 let
-    fetchurl = pkgs.fetchurl
+    fetchurl = pkgs.fetchurl;
 in {
     services.minecraft-servers = {
       enable = true;
