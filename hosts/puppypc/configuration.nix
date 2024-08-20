@@ -33,6 +33,17 @@
     };
   };
 
+  programs.alvr = {
+    enable = true;
+    package = pkgs.unstable.alvr;
+    openFirewall = true;
+  };
+
+  xdg.portal = {
+    enable = true;
+    xdgOpenUsePortal = true;
+  };
+
   environment = {
     shellAliases = {
       rebuild = "sudo nixos-rebuild switch --flake .#puppypc";
