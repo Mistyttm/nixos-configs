@@ -42,6 +42,7 @@
     zip
     unzip
     nano
+    tmux
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -62,8 +63,8 @@
 
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [ 5173 ];
+  networking.firewall.allowedUDPPorts = [ 5273 ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
