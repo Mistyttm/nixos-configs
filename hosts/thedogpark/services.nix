@@ -17,5 +17,9 @@
     resolved = {
       enable = true;
     };
+
+    nginx = {
+      enable = true;
+    };
   };
 }
