@@ -1,6 +1,4 @@
 { config, lib, pkgs, ... }: {
-  imports = [ <sops-nix/modules/sops> ];
-
   networking.firewall.allowedTCPPorts = [
     80
     443
