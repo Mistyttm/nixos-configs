@@ -1,1 +1,9 @@
- 
+keys:
+  - &admin_misty age1ztwty6h4qefyzdqkqy6sre4lqan3zxa8mk90dzrc8lkm8f5439ts3dksmq
+  - &server_mistyttmdev age1r7q95w76nzrx6huxr700frtr3nkwm9vdm8ytrx5pm47qedsm3ytsfxp3ja
+creation_rules:
+  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+    - age:
+      - *admin_misty
+      - *server_mistyttmdev

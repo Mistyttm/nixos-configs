@@ -9,5 +9,6 @@
     zip
     tmux
     unzip
+    age
   ];
 }
