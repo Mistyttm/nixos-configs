@@ -12,9 +12,9 @@
   ];
 
   # Packages that should be installed to the user profile.
-#  home.packages = with pkgs; [
-#
-#  ];
+  home.packages = with pkgs; [
+    nodejs
+  ];
   
   # This value determines the home Manager release that your
   # configuration is compatible with. This helps avoid breakage

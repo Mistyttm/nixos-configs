@@ -4,11 +4,18 @@
     443
   ];
 
-  sops.secrets.porkbun = {
-    sopsFile = ./secrets/porkbun.yaml;
+
+  sops.secrets."porkbun-api-key" = {
+    sopsFile = ../../secrets/porkbun.yaml;
     owner = config.users.users.nginx.name;
     group = config.users.users.nginx.group;
   };
+
+  sops.secrets."porkbun-secret-api-key" = {
+    sopsFile = ../../secrets/porkbun.yaml;
+    owner = config.users.users.nginx.name;
+    group = config.users.users.nginx.group;
+  };  
 
   security.acme = {
     acceptTerms = true;
@@ -17,8 +24,8 @@
         group = "nginx";
         dnsProvider = "porkbun";
         credentialFiles = {
-          PORKBUN_API_KEY_FILE = config.sops.secrets."porkbun/porkbun-api-key".path;
-          PORKBUN_SECRET_API_KEY_FILE = config.sops.secrets."porkbun/porkbun-secret-api-key".path;
+          PORKBUN_API_KEY_FILE = config.sops.secrets."porkbun-api-key".path;
+          PORKBUN_SECRET_API_KEY_FILE = config.sops.secrets."porkbun-secret-api-key".path;
         };
     };
   };
@@ -30,6 +37,11 @@
     }; in {
       "minecraft.mistyttm.dev" = (SSL // {
         locations."/".proxyPass = "http://127.0.0.1:25565/";
-    });
-  };
+      });
+      "mistyttm.dev" = {
+        forceSSL = true;
+        useACMEHost = "mistyttm.dev";
+        locations."/".proxyPass = "http://localhost:8080/";
+      }; 
+    };
 }

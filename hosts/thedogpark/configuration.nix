@@ -14,7 +14,7 @@
       ../../global-configs/system/nix.nix
       ./services.nix
       ./minecraft.nix
-    #  ./nginx.nix
+      ./nginx.nix
     ];
 
   # Use the GRUB 2 boot loader.
