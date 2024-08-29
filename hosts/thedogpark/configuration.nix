@@ -14,7 +14,7 @@
       ../../global-configs/system/nix.nix
       ./services.nix
       ./minecraft.nix
-      # ./nginx.nix
+    #  ./nginx.nix
     ];
 
   # Use the GRUB 2 boot loader.
@@ -31,7 +31,7 @@
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
   sops.defaultSopsFile = ./secrets/porkbun.yaml;
-  sops.age.keyFile = "/var/lib/sops-nix//key.txt";
+  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
 
 
   # Configure network proxy if necessary
