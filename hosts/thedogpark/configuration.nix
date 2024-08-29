@@ -31,7 +31,7 @@
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
   sops.defaultSopsFile = ./secrets/porkbun.yaml;
-  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+  sops.age.keyFile = "/var/lib/sops-nix//key.txt";
 
 
   # Configure network proxy if necessary

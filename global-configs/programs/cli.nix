@@ -10,5 +10,6 @@
     tmux
     unzip
     age
+    sops
   ];
 }
