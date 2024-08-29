@@ -15,7 +15,6 @@
       ./services.nix
       ./minecraft.nix
       # ./nginx.nix
-      <sops-nix/modules/sops>
     ];
 
   # Use the GRUB 2 boot loader.
