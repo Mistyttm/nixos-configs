@@ -7,7 +7,7 @@
       withVencord = true;
     })
     slack
-    zoom-us
+    unstable.zoom-us
     obsidian
     spicetify-cli
     vlc
@@ -28,4 +28,10 @@
     enable = true;
     indicator = true;
   };
+
+  programs.direnv = {
+      enable = true;
+      enableZshIntegration = true; # see note on other shells below
+      nix-direnv.enable = true;
+    };
 }
