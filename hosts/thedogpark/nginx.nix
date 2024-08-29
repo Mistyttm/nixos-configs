@@ -5,7 +5,7 @@
   ];
 
   sops.secrets.porkbun = {
-    sopsFile = ../../secrets/porkbun.yaml;
+    sopsFile = ./secrets/porkbun.yaml;
     owner = config.users.users.nginx.name;
     group = config.users.users.nginx.group;
   };
