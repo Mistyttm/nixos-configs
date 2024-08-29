@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }: {
+{ config, ... }: {
   networking.firewall.allowedTCPPorts = [
     80
     443
@@ -17,15 +17,15 @@
         group = "nginx";
         dnsProvider = "porkbun";
         credentialFiles = {
-          PORKBUN_SECRET_API_KEY_FILE = config.sops.secrets."porkbun/porkbun-secret-api-key".path;
           PORKBUN_API_KEY_FILE = config.sops.secrets."porkbun/porkbun-api-key".path;
+          PORKBUN_SECRET_API_KEY_FILE = config.sops.secrets."porkbun/porkbun-secret-api-key".path;
         };
     };
   };
 
   services.nginx.virtualHosts = let
     SSL = {
-      enableAcme = true;
+      enableACME = true;
       forceSSL = true;
     }; in {
       "minecraft.mistyttm.dev" = (SSL // {

@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ pkgs, ... }: {
   home.packages = with pkgs; [
     mullvad-vpn
     qbittorrent
@@ -8,5 +8,7 @@
     gimp
     blockbench
     file
+    nil
+    nixfmt-rfc-style
   ];
 }
