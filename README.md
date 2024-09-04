@@ -14,14 +14,15 @@ This repository contains the configuration files for my NixOS systems. The confi
 
 ## Hosts
 
- - `puppypc` - Main Desktop
- - `mistylappytappy` - Laptop
- - `thedogpark` - Server
+- `puppypc` - Main Desktop
+- `mistylappytappy` - Laptop
+- `thedogpark` - Server
 
 ## To-Do
 
- - [ ] Modularise configuration files
- - [ ] Add configuration for raspberry pi 4
-   - [ ] Convert raspberrypi 4 to nixos
- - [ ] Clean up configuration files
- - [ ] Properly implement secrets management (currently only working in a single file on `thedogpark`)
+- [ ] Modularise configuration files
+- [ ] Add configuration for raspberry pi 4
+  - [ ] Convert raspberrypi 4 to nixos
+- [ ] Clean up configuration files
+- [ ] Properly implement secrets management (currently only working in a single file on `thedogpark`)
+- [ ] Look at conveting systems to `btrfs`
