@@ -10,5 +10,8 @@
     file
     nil
     nixfmt-rfc-style
+    wine-wayland
+    winetricks
+    protontricks
   ];
 }
