@@ -1,6 +1,7 @@
 { config, pkgs, nix-minecraft, lib, fetchurl, ... }:
 let
     fetchurl = pkgs.fetchurl;
+    # vaultHunters = ""
 in {
     services.minecraft-servers = {
       enable = true;

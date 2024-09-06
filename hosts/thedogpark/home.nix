@@ -14,6 +14,9 @@
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
     nodejs
+    direnv
+    nil
+    packwiz
   ];
   
   # This value determines the home Manager release that your
