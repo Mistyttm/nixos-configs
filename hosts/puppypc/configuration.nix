@@ -54,18 +54,8 @@
   nixpkgs.config.permittedInsecurePackages = [
                 "freeimage-unstable-2021-11-01"
               ];
-  
-  services.serviceModules = {
-    enable = true;
-    packages = [
-      "gnome.gnome-keyring"
-      "earlyoom"
-      "pcscd"
-      "ratbagd"
-      "resolved"
-      "mullvad-vpn"
-    ];
-  };
+
+  custom.services.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
