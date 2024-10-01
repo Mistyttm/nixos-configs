@@ -44,6 +44,11 @@
     xdgOpenUsePortal = true;
   };
 
+  programs.virt-manager = {
+    enable = true;
+    package = pkgs.virt-manager;
+  };
+
   environment = {
     shellAliases = {
       rebuild = "sudo nixos-rebuild switch --flake .#puppypc";

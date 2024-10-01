@@ -13,5 +13,6 @@
     wine-wayland
     winetricks
     protontricks
+    fritzing
   ];
 }

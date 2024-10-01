@@ -6,5 +6,8 @@
       logDriver = "journald";
       liveRestore = true;
     };
+    libvirtd = {
+      enable = true;
+    };
   };
 }
