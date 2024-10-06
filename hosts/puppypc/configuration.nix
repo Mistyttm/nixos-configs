@@ -11,7 +11,6 @@
       ../../global-configs/system/default.nix
       ../../global-configs/users/default.nix
       ../../global-configs/fonts/fonts.nix
-#       ../../global-configs/shell/environment.nix
     ];
 
   networking.hostName = "puppypc"; # Define your hostname.
