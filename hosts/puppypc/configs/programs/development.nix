@@ -3,6 +3,7 @@
     unstable.zed-editor
     pkg-config
     openssl
+    godot_4
   ];
 
   programs.emacs = {
