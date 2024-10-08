@@ -74,6 +74,9 @@
   #   enableSSHSupport = true;
   # };
 
+  programs.sway.enable = true;
+  programs.sway.package = null;
+
   services.xserver.enable = true;
   services.displayManager = {
     sddm = {
