@@ -1,20 +1,20 @@
 { config, pkgs, ... }: {
   home.packages = with pkgs; [
     libsecret
-    (unstable.pkgs.discord.override {
+    (pkgs.discord.override {
       # remove any overrides that you don't want
       withOpenASAR = true;
       withVencord = true;
     })
     slack
-    unstable.zoom-us
+    zoom-us
     obsidian
     spicetify-cli
     vlc
-    unstable.betterbird-unwrapped
+    betterbird-unwrapped
 #     thunderbird
     libreoffice
-    gnome.zenity
+    zenity
     kdeconnect
     kdePackages.kalk
     libnotify

@@ -1,6 +1,6 @@
 { config, pkgs, ... }: {
   programs.thunderbird = {
     enable = true;
-    package = pkgs.unstable.betterbird-unwrapped;
+    package = pkgs.betterbird-unwrapped;
   };
 }

@@ -1,6 +1,6 @@
 { config, pkgs, ... }: {
   home.packages = with pkgs; [
-    unstable.zed-editor
+    zed-editor
     pkg-config
     openssl
     godot_4

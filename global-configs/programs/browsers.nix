@@ -1,6 +1,6 @@
 { config, pkgs, ... }: {
   programs.firefox = {
     enable = true;
-    package = pkgs.unstable.firefox;
+    package = pkgs.firefox;
   };
 }
