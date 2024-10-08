@@ -1,8 +1,6 @@
 { config, pkgs, lib, ... }: {
     home.shellAliases = {
         # NixOS Aliases
-        rebuild = "sudo nixos-rebuild switch --flake .#puppypc";
-        upgrade = "/home/misty/Documents/nixos-configs-main && nix flake upgrade && sudo nixos-rebuild switch --flake .#puppypc";
         dev = "nix develop";
 
         # Git Aliases

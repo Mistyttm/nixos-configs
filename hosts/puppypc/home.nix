@@ -26,6 +26,11 @@
   # changes in each release.
   home.stateVersion = "24.05";
 
+  home.shellAliases = {
+    rebuild = "sudo nixos-rebuild switch --flake .#puppypc";
+    upgrade = "/home/misty/Documents/nixos-configs-main && nix flake upgrade && sudo nixos-rebuild switch --flake .#puppypc";
+  };
+
   # Let home Manager install and manage itself.
   programs.home-manager.enable = true;
 
