@@ -29,11 +29,12 @@
 
   outputs = inputs@{ nixpkgs, home-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, nix-minecraft, nix-vscode-extensions, ... }: let
       system = "x86_64-linux";
+      vsc-extensions = nix-vscode-extensions.extensions.${system};
     in {
     nixosConfigurations = {
       # TODO please change the hostname to your own
       mistylappytappy = nixpkgs.lib.nixosSystem {
-        inherit system;
+        inherit system vsc-extensions;
         modules = [
           ./hosts/mistylappytappy/configuration.nix
 
@@ -61,7 +62,7 @@
         ];
       };
       puppypc = nixpkgs.lib.nixosSystem {
-        inherit system;
+        inherit system vsc-extensions;
         modules = [
           ./hosts/puppypc/configuration.nix
 
