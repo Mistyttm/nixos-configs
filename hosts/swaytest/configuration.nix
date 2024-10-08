@@ -82,7 +82,7 @@
     displayManager = {
       gdm = {
         enable = true;
-        wayland.enable = true;
+        wayland = true;
       };
     };
   };
