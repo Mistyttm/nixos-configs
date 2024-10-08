@@ -74,13 +74,14 @@
   #   enableSSHSupport = true;
   # };
 
+  programs.sway.enable = true;
+
   services.xserver.enable = true;
   services.displayManager = {
     sddm = {
       enable = true;
-      wayland.enable = true;
+      wayland.enable = true;  
     };
-    sessionPackages = ["sway"];
   };
   security.polkit.enable = true;
 
