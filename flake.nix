@@ -2,11 +2,11 @@
   description = "NixOS configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    # nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     # home-manager, used for managing user configuration
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.05";
+      url = "github:nix-community/home-manager";
       # The `follows` keyword in inputs is used for inheritance.
       # Here, `inputs.nixpkgs` of home-manager is kept consistent with
       # the `inputs.nixpkgs` of the current flake,
@@ -27,15 +27,8 @@
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
-  outputs = inputs@{ nixpkgs, nixpkgs-unstable, home-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, nix-minecraft, nix-vscode-extensions, ... }: let
+  outputs = inputs@{ nixpkgs, home-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, nix-minecraft, nix-vscode-extensions, ... }: let
       system = "x86_64-linux";
-      overlay-unstable = final: prev: {
-        unstable = import nixpkgs-unstable {
-          inherit system;
-          config.allowUnfree = true;
-        };
-
-      };
     in {
     nixosConfigurations = {
       # TODO please change the hostname to your own
@@ -61,7 +54,6 @@
             nixpkgs = {
               overlays = [
                 sddm-sugar-candy-nix.overlays.default
-                overlay-unstable
 #                 spicetify-nix.homeManagerModules.default
               ];
             };
@@ -91,7 +83,6 @@
             nixpkgs = {
               overlays = [
                 sddm-sugar-candy-nix.overlays.default
-                overlay-unstable
 #                 spicetify-nix.homeManagerModules.default
               ];
             };
@@ -119,7 +110,6 @@
             # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
             nixpkgs = {
               overlays = [
-                overlay-unstable
                 nix-minecraft.overlay
               ];
             };
