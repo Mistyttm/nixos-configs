@@ -74,7 +74,7 @@
   #   enableSSHSupport = true;
   # };
 
-  services.xserver.displayManager.sddm.enable = true;
+  services.displayManager.sddm.wayland.enable = true;
   security.polkit.enable = true;
 
   # List services that you want to enable:
