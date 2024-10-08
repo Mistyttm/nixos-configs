@@ -80,7 +80,7 @@
       enable = true;
       wayland.enable = true;
     };
-    defaultSession = "sway";
+    sessionPackages = ["sway"];
   };
   security.polkit.enable = true;
 
