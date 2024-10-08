@@ -79,11 +79,10 @@
 
   services.xserver.enable = true;
   services.displayManager = {
-    sddm = {
+    gdm = {
       enable = true;
       wayland.enable = true;
     };
-    defaultSession = "";
   };
   security.polkit.enable = true;
 
