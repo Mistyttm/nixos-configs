@@ -75,7 +75,13 @@
   # };
 
   services.xserver.enable = true;
-  services.displayManager.sddm.enable = true;
+  services.displayManager = {
+    sddm = {
+      enable = true;
+      wayland = true;
+    };
+    defaultSession = "sway";
+  };
   security.polkit.enable = true;
 
   # List services that you want to enable:
