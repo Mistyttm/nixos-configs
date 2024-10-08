@@ -116,6 +116,31 @@
           }
         ];
       };
+      swaytest = nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+          ./hosts/swaytest/configuration.nix
+
+          # make home-manager as a module of nixos
+          # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
+          home-manager.nixosModules.home-manager
+          sops-nix.nixosModules.sops
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "backup";
+
+            # TODO replace ryan with your own username
+            home-manager.users.misty = import ./hosts/swaytest/home.nix;
+
+            # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
+            nixpkgs = {
+              overlays = [
+              ];
+            };
+          }
+        ];
+      };
     };
   };
 }
