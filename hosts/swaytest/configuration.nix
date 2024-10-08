@@ -43,10 +43,6 @@
   };
 
   # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "au";
-    variant = "";
-  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.misty = {
@@ -77,11 +73,17 @@
   programs.sway.enable = true;
   programs.sway.package = null;
 
-  services.xserver.enable = true;
-  services.displayManager = {
-    gdm = {
-      enable = true;
-      wayland.enable = true;
+  services.xserver = {
+    enable = true;
+    xkb = {
+      layout = "au";
+      variant = "";
+    };
+    displayManager = {
+      gdm = {
+        enable = true;
+        wayland.enable = true;
+      };
     };
   };
   security.polkit.enable = true;
