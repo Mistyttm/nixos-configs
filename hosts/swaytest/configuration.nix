@@ -74,6 +74,9 @@
   #   enableSSHSupport = true;
   # };
 
+  services.xserver.displayManager.sddm.enable = true;
+  security.polkit.enable = true;
+
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
