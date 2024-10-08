@@ -24,9 +24,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
-  outputs = inputs@{ nixpkgs, nixpkgs-unstable, home-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, nix-minecraft, ... }: let
+  outputs = inputs@{ nixpkgs, nixpkgs-unstable, home-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, nix-minecraft, nix-vscode-extensions, ... }: let
       system = "x86_64-linux";
       overlay-unstable = final: prev: {
         unstable = import nixpkgs-unstable {

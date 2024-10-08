@@ -11,7 +11,8 @@
     obsidian
     spicetify-cli
     vlc
-    thunderbird
+    unstable.betterbird-unwrapped
+#     thunderbird
     libreoffice
     gnome.zenity
     kdeconnect

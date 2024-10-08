@@ -13,6 +13,14 @@
   # Open ports in the firewall.
   networking.firewall = {
     enable = true;
+    allowedTCPPorts = [
+      57621
+      5173
+    ];
+    allowedUDPPorts = [
+      5353
+      5173
+    ] ;
     allowedTCPPortRanges = [
       { from = 1714; to = 1764; } # KDE Connect
     ];

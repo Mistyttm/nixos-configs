@@ -13,8 +13,8 @@ in
   programs.spicetify =
     {
       enable = true;
-      theme = spicePkgs.themes.dribbblish;
-      colorScheme = "purple";
+      theme = spicePkgs.themes.nightlight;
+#       colorScheme = "purple";
 
       enabledExtensions = with spicePkgs.extensions; [
         fullAppDisplayMod
