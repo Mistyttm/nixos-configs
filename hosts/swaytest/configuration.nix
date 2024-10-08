@@ -81,8 +81,9 @@
   services.displayManager = {
     sddm = {
       enable = true;
-      wayland.enable = true;  
+      wayland.enable = true;
     };
+    sessionPackages = [ pkgs.sway ];
   };
   security.polkit.enable = true;
 
