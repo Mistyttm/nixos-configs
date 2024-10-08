@@ -5,11 +5,7 @@
   home.homeDirectory = "/home/misty";
 
   imports = [
-    ../../global-configs/shell/default.nix
-    ../../global-configs/programs/default.nix
-    ../../global-configs/users/emailAccounts.nix
-    ./configs/programs/default.nix
-    ./configs/gnupg/gnupg.nix
+    ./sway.nix
   ];
 
   # Packages that should be installed to the user profile.
