@@ -1,7 +1,7 @@
 { pkgs, ... }: {
   programs.waybar = {
     enable = true;
-    packagee = pkgs.waybar;
+    package = pkgs.waybar;
     systemd = {
       enable = true;
     };
