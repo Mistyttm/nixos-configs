@@ -11,11 +11,11 @@
       startup = [
         {command = "firefox";}
       ];
-      bars = {
-        globalMenu = {
+      bars = [{
+        waybar = {
           command = "\${pkgs.waybar}/bin/waybar";
         };
-      };
+      }];
     };
   };
 }
