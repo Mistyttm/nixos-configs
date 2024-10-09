@@ -14,6 +14,11 @@
       bars = [{
         command = "\${pkgs.waybar}/bin/waybar";
         position = "top";
+      }
+      {
+        command = "\${pkgs.waybar}/bin/waybar";
+        position = "bottom";
+        mode = "dock";
       }];
     };
   };
