@@ -9,14 +9,12 @@
       modifier = "Mod4";
       terminal = "kitty";
       startup = [
-        {command = "firefox";}
+        {command = "kitty fastfetch";}
+        {command = "nwg-dock";}
       ];
       bars = [{
         command = "\${pkgs.waybar}/bin/waybar";
         position = "top";
-      }
-      {
-        command = "nwg-dock";
       }];
     };
   };
