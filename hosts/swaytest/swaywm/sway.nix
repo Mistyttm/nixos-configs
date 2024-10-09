@@ -16,7 +16,7 @@
         position = "top";
       }
       {
-        command = "\${pkgs.wofi}/bin/wofi";
+        command = "\${pkgs.nwg-dock}/bin/nwg-dock";
         position = "bottom";
       }];
     };

@@ -11,6 +11,7 @@
   home.packages = with pkgs; [
     fastfetch
     git
+    nwg-dock
   ];
 
   home.stateVersion = "24.11";
