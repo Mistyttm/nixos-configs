@@ -12,9 +12,8 @@
         {command = "firefox";}
       ];
       bars = [{
-        waybar = {
-          command = "\${pkgs.waybar}/bin/waybar";
-        };
+        command = "\${pkgs.waybar}/bin/waybar";
+        position = "top";
       }];
     };
   };
