@@ -11,6 +11,13 @@
       startup = [
         {command = "firefox";}
       ];
+      config = {
+        bars = {
+          waybar = {
+            command = "\${pkgs.waybar}/bin/waybar";
+          };
+        };
+      };
     };
   };
 }
