@@ -9,6 +9,7 @@
 
   home.packages = with pkgs; [
     fastfetch
+    git
   ];
 
   home.stateVersion = "24.11";
