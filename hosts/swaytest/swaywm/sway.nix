@@ -13,7 +13,7 @@
       ];
       config = {
         bars = {
-          waybar = {
+          * = {
             command = "\${pkgs.waybar}/bin/waybar";
           };
         };
