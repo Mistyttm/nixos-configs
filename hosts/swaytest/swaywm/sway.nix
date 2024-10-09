@@ -12,7 +12,9 @@
         {command = "firefox";}
       ];
       bars = {
-        command = "\${pkgs.waybar}/bin/waybar";
+        globalMenu = {
+          command = "\${pkgs.waybar}/bin/waybar";
+        };
       };
     };
   };
