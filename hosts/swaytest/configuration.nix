@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ../../global-configs/fonts/fonts.nix
     ];
 
   # Bootloader.
@@ -83,7 +84,7 @@
   programs.sway.enable = true;
 
   programs.firefox.enable = true;
-  
+
   programs.zsh.enable = true;
   users.users.misty.shell = pkgs.zsh;
 
