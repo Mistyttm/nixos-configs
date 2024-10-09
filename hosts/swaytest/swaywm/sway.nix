@@ -16,9 +16,8 @@
         position = "top";
       }
       {
-        command = "\${pkgs.waybar}/bin/waybar";
+        command = "\${pkgs.wofi}/bin/wofi";
         position = "bottom";
-        mode = "dock";
       }];
     };
   };
