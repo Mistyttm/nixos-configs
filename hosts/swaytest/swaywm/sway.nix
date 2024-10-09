@@ -16,9 +16,8 @@
         position = "top";
       }
       {
-        command = "\${pkgs.nwg-dock}/bin/nwg-dock";
-        position = "bottom";
+        command = "nwg-dock";
       }];
     };
   };
-}
+} 

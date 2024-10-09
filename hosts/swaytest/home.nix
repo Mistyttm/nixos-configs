@@ -12,6 +12,8 @@
     fastfetch
     git
     nwg-dock
+    nwg-menu
+    nwg-drawer
   ];
 
   home.stateVersion = "24.11";
