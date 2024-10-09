@@ -4,7 +4,7 @@
   home.homeDirectory = "/home/misty";
 
   imports = [
-    ./sway/default.nix
+    ./swaywm/default.nix
     ../../global-configs/shell/default.nix
   ];
 
