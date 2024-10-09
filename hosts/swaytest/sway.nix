@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ pkgs, ... }: {
   wayland.windowManager.sway = {
     enable = true;
     systemd = {
@@ -9,7 +9,7 @@
       modifier = "Mod4";
       terminal = "kitty";
       startup = [
-        {command = "fastfetch";}
+        {command = "firefox";}
       ];
     };
   };
