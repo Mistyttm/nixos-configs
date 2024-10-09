@@ -86,9 +86,9 @@
 
   services.displayManager = {
     enable = true;
-    SDDM = {
+    sddm = {
       enable = true;
-      wayland = true;
+      wayland.enable = true;
     };
   };
   security.polkit.enable = true;
