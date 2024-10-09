@@ -83,6 +83,9 @@
   programs.sway.enable = true;
 
   programs.firefox.enable = true;
+  
+  programs.zsh.enable = true;
+  users.users.misty.shell = pkgs.zsh;
 
   services.displayManager = {
     enable = true;

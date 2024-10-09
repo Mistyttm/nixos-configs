@@ -5,6 +5,7 @@
 
   imports = [
     ./sway.nix
+    ../../global-configs/shell/default.nix
   ];
 
   home.packages = with pkgs; [
@@ -15,9 +16,13 @@
   home.stateVersion = "24.11";
 
   home.shellAliases = {
-    rebuild = "sudo nixos-rebuild switch --flake .#mistylappytappy";
-    upgrade = "/home/misty/Documents/nixos-configs && nix flake upgrade && sudo nixos-rebuild switch --flake .#mistylappytappy";
+    rebuild = "sudo nixos-rebuild switch --flake .#swaytest";
+    upgrade = "/home/misty/nixos-configs-main && nix flake upgrade && sudo nixos-rebuild switch --flake .#swaytest";
   };
 
   programs.home-manager.enable = true;
+
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+  };
 }
