@@ -70,8 +70,7 @@
   #   enableSSHSupport = true;
   # };
 
-  programs.sway.enable = true;
-  programs.sway.package = null;
+  
 
   services.xserver = {
     enable = true;
@@ -79,11 +78,17 @@
       layout = "au";
       variant = "";
     };
-    displayManager = {
-      gdm = {
-        enable = true;
-        wayland = true;
-      };
+  };
+
+  programs.sway.enable = true;
+
+  programs.firefox.enable = true;
+
+  services.displayManager = {
+    enable = true;
+    SDDM = {
+      enable = true;
+      wayland = true;
     };
   };
   security.polkit.enable = true;
