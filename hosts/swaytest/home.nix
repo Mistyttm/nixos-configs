@@ -20,7 +20,7 @@
 
   home.shellAliases = {
     rebuild = "sudo nixos-rebuild switch --flake .#swaytest";
-    upgrade = "/home/misty/nixos-configs-main && nix flake upgrade && sudo nixos-rebuild switch --flake .#swaytest";
+    upgrade = "/home/misty/nixos-configs && nix flake upgrade && sudo nixos-rebuild switch --flake .#sw   aytest";
   };
 
   programs.home-manager.enable = true;
