@@ -29,6 +29,7 @@
 
   outputs = inputs@{ nixpkgs, home-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, nix-minecraft, nix-vscode-extensions, ... }: let
       system = "x86_64-linux";
+      vsc-extensions = nix-vscode-extensions.extensions.${system};
     in {
     nixosConfigurations = {
       # TODO please change the hostname to your own
@@ -45,7 +46,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
-            home-manager.extraSpecialArgs = {inherit spicetify-nix;};
+            home-manager.extraSpecialArgs = {inherit spicetify-nix vsc-extensions;};
 
             # TODO replace ryan with your own username
             home-manager.users.misty = import ./hosts/mistylappytappy/home.nix;
@@ -74,7 +75,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
-            home-manager.extraSpecialArgs = {inherit spicetify-nix;};
+            home-manager.extraSpecialArgs = {inherit spicetify-nix vsc-extensions;};
 
             # TODO replace ryan with your own username
             home-manager.users.misty = import ./hosts/puppypc/home.nix;
