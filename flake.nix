@@ -34,7 +34,7 @@
     nixosConfigurations = {
       # TODO please change the hostname to your own
       mistylappytappy = nixpkgs.lib.nixosSystem {
-        inherit system vsc-extensions;
+        inherit system;
         modules = [
           ./hosts/mistylappytappy/configuration.nix
 
@@ -62,7 +62,7 @@
         ];
       };
       puppypc = nixpkgs.lib.nixosSystem {
-        inherit system vsc-extensions;
+        inherit system;
         modules = [
           ./hosts/puppypc/configuration.nix
 
@@ -75,7 +75,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
-            home-manager.extraSpecialArgs = {inherit spicetify-nix;};
+            home-manager.extraSpecialArgs = {inherit spicetify-nix vsc-extensions;};
 
             # TODO replace ryan with your own username
             home-manager.users.misty = import ./hosts/puppypc/home.nix;
