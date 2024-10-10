@@ -151,6 +151,31 @@ programs.vscode = {
             "githubPullRequests.pullBranch" = "never";
             "direnv.restart.automatic" = true;
     };
+    keybindings = [
+        {
+        key = "ctrl+alt+f";
+        command = "prettier.forceFormatDocument";
+    }
+    {
+        key = "ctrl+shift+down";
+        command = "editor.action.copyLinesDownAction";
+        when = "editorTextFocus && !editorReadonly";
+    }
+    {
+        key = "ctrl+shift+alt+down";
+        command = "-editor.action.copyLinesDownAction";
+        when = "editorTextFocus && !editorReadonly";
+    }
+    {
+        key = "ctrl+shift+alt+down";
+        command = "editor.action.insertCursorBelow";
+        when = "editorTextFocus";
+    }
+    {
+        key = "ctrl+shift+down";
+        command = "-editor.action.insertCursorBelow";
+        when = "editorTextFocus";
+    }
     ];
   };
 }
