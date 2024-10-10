@@ -1,10 +1,12 @@
-<img 
-    style="display: block; 
-           margin-left: auto;
-           margin-right: auto;"
-    src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fnixos.wiki%2Fimages%2Fthumb%2F2%2F20%2FHome-nixos-logo.png%2F207px-Home-nixos-logo.png&f=1&nofb=1&ipt=57218c10fd20f2193a3385efb04888fed0e0215a6818bd268720e4f3860dfffe&ipo=images" 
-    alt="Our logo">
-</img>
+<p align="center">
+  <picture>
+    <source srcset="https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/logo/nix-snowflake-rainbow.svg">
+    <img
+      src="https://raw.githubusercontent.com/NixOS/nixos-artwork/refs/heads/master/logo/nix-snowflake-rainbow.svg"
+      alt="Our logo" width="200px">
+    </img>
+  </picture>
+</p>
 
 # NixOS Configs | Misty
 
@@ -15,7 +17,7 @@ This repository contains the configuration files for my NixOS systems. The confi
 ## Hosts
 
 - `puppypc` - Main Desktop
-- `mistylappytappy` - Laptop
+- `puppylaptop` - Laptop
 - `thedogpark` - Server
 
 ## To-Do
