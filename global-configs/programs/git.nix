@@ -1,4 +1,8 @@
-{ config, pkgs, ... }: {
+{ pkgs, ... }: {
+  home.packages = with pkgs; [
+    stgit
+  ];
+
   programs.git = {
     enable = true;
     package = pkgs.gitAndTools.gitFull;
