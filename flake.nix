@@ -1,29 +1,28 @@
 {
-  description = "NixOS configuration";
+  description = "NixOS configuration for Misty Rose's pack";
 
   inputs = {
+    # unstable
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    # nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    # home-manager, used for managing user configuration
     home-manager = {
       url = "github:nix-community/home-manager";
-      # The `follows` keyword in inputs is used for inheritance.
-      # Here, `inputs.nixpkgs` of home-manager is kept consistent with
-      # the `inputs.nixpkgs` of the current flake,
-      # to avoid problems caused by different versions of nixpkgs.
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # SDDM theme (DOESNT WORK)
     sddm-sugar-candy-nix = {
       url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
-      # Optional, by default this flake follows nixpkgs-unstable.
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Secrets management
     sops-nix.url = "github:Mic92/sops-nix";
+    # Spotify
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Minecraft server management
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
+    # VSCode extensions
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
@@ -38,8 +37,6 @@
         modules = [
           ./hosts/mistylappytappy/configuration.nix
 
-          # make home-manager as a module of nixos
-          # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
           home-manager.nixosModules.home-manager
           sops-nix.nixosModules.sops
           {
@@ -51,11 +48,9 @@
             # TODO replace ryan with your own username
             home-manager.users.misty = import ./hosts/mistylappytappy/home.nix;
 
-            # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
             nixpkgs = {
               overlays = [
                 sddm-sugar-candy-nix.overlays.default
-#                 spicetify-nix.homeManagerModules.default
               ];
             };
           }
@@ -66,8 +61,6 @@
         modules = [
           ./hosts/puppypc/configuration.nix
 
-          # make home-manager as a module of nixos
-          # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
           home-manager.nixosModules.home-manager
           sddm-sugar-candy-nix.nixosModules.default
           sops-nix.nixosModules.sops
@@ -75,16 +68,15 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
+            # inheriting vsc-extensions here for use in home-manager
             home-manager.extraSpecialArgs = {inherit spicetify-nix vsc-extensions;};
 
             # TODO replace ryan with your own username
             home-manager.users.misty = import ./hosts/puppypc/home.nix;
 
-            # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
             nixpkgs = {
               overlays = [
                 sddm-sugar-candy-nix.overlays.default
-#                 spicetify-nix.homeManagerModules.default
               ];
             };
           }
