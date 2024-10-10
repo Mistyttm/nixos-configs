@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, ... }:
 
 {
     # Some programs need SUID wrappers, can be configured further or are
@@ -9,7 +9,7 @@
     enable = true;
     publicKeys = [
       {
-        source = ./me/mistylappytappy.asc;
+        source = ./me/puppylaptop.asc;
         trust = "ultimate";
       }
     ];

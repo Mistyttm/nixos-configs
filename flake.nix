@@ -32,10 +32,10 @@
     in {
     nixosConfigurations = {
       # TODO please change the hostname to your own
-      mistylappytappy = nixpkgs.lib.nixosSystem {
+      puppylaptop = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
-          ./hosts/mistylappytappy/configuration.nix
+          ./hosts/puppylaptop/configuration.nix
 
           home-manager.nixosModules.home-manager
           sops-nix.nixosModules.sops
@@ -46,7 +46,7 @@
             home-manager.extraSpecialArgs = {inherit spicetify-nix vsc-extensions;};
 
             # TODO replace ryan with your own username
-            home-manager.users.misty = import ./hosts/mistylappytappy/home.nix;
+            home-manager.users.misty = import ./hosts/puppylaptop/home.nix;
 
             nixpkgs = {
               overlays = [

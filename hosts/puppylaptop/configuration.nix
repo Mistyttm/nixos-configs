@@ -8,7 +8,7 @@
       ../../global-configs/users/default.nix
       ../../global-configs/fonts/fonts.nix
     ];
-  networking.hostName = "mistylappytappy";
+  networking.hostName = "puppylaptop";
 
   boot.supportedFilesystems = [ "ntfs" ];
 
