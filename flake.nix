@@ -46,7 +46,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
-            home-manager.extraSpecialArgs = {inherit spicetify-nix;};
+            home-manager.extraSpecialArgs = {inherit spicetify-nix vsc-extensions;};
 
             # TODO replace ryan with your own username
             home-manager.users.misty = import ./hosts/mistylappytappy/home.nix;
