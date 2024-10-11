@@ -99,6 +99,14 @@
 
   services.desktopManager.plasma6.enable = true;
 
+  environment.plasma6.excludePackages = with pkgs.kdePackages; [
+  plasma-browser-integration
+  konsole
+  oxygen
+  okular
+];
+
+
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
