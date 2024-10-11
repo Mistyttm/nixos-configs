@@ -81,7 +81,7 @@
     };
   };
 
-  programs.sway.enable = true;
+  # programs.sway.enable = true;
 
   programs.firefox.enable = true;
 
@@ -96,6 +96,8 @@
     };
   };
   security.polkit.enable = true;
+
+  services.desktopManager.plasma6.enable = true;
 
   # List services that you want to enable:
 

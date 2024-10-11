@@ -6,6 +6,7 @@
   imports = [
     ./swaywm/default.nix
     ../../global-configs/shell/default.nix
+    ./plasma-manager.nix
   ];
 
   home.packages = with pkgs; [
