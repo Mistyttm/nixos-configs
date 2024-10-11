@@ -8,6 +8,11 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
     # SDDM theme (DOESNT WORK)
     sddm-sugar-candy-nix = {
       url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
@@ -26,7 +31,7 @@
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, nix-minecraft, nix-vscode-extensions, ... }: let
+  outputs = inputs@{ nixpkgs, home-manager, plasma-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, nix-minecraft, nix-vscode-extensions, ... }: let
       system = "x86_64-linux";
       vsc-extensions = nix-vscode-extensions.extensions.${system};
     in {
@@ -64,6 +69,7 @@
           home-manager.nixosModules.home-manager
           sddm-sugar-candy-nix.nixosModules.default
           sops-nix.nixosModules.sops
+          plasma-manager.homeManagerModules.plasma-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
