@@ -42,9 +42,9 @@
       effects = {
         # blur = true;
         desktopSwitching.animation = "slide";
-        minimization = {
-          animation = "sqaush";
-        };
+        # minimization = {
+        #   animation = "sqaush";
+        # };
         shakeCursor.enable = true;
         windowOpenClose.animation = "scale";
         wobblyWindows.enable = true;
