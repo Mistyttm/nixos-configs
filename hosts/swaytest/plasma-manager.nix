@@ -351,7 +351,7 @@
       clickItemTo = "select";
       colorScheme = "Amethyst";
       cursor = {
-        size = "24";
+        size = 24;
         theme= "Dracula-cursors";
       };
       iconTheme = "Tela Circle Dark";
