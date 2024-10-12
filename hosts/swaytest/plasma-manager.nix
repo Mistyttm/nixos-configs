@@ -40,7 +40,7 @@
       cornerBarrier = true;
       edgeBarrier = 10;
       effects = {
-        blur = true;
+        # blur = true;
         desktopSwitching.animation = "slide";
         minimization = {
           animation = "sqaush";
