@@ -8,6 +8,7 @@
     ../../global-configs/programs/default.nix
     ./configs/programs/default.nix
     ./configs/gnupg/gnupg.nix
+    ./system/DE/default.nix
   ];
 
   home.stateVersion = "24.11";

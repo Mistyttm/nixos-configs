@@ -69,13 +69,13 @@
           home-manager.nixosModules.home-manager
           sddm-sugar-candy-nix.nixosModules.default
           sops-nix.nixosModules.sops
-          plasma-manager.homeManagerModules.plasma-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
             # inheriting vsc-extensions here for use in home-manager
             home-manager.extraSpecialArgs = {inherit spicetify-nix vsc-extensions;};
+            home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
 
             # TODO replace ryan with your own username
             home-manager.users.misty = import ./hosts/puppypc/home.nix;
@@ -112,7 +112,7 @@
                 nix-minecraft.overlay
               ];
             };
-          }
+            }
         ];
       };
     };
