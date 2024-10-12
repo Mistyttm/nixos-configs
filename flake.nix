@@ -123,11 +123,11 @@
           # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
           home-manager.nixosModules.home-manager
           sops-nix.nixosModules.sops
-          plasma-manager.homeManagerModules.plasma-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
+            home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
 
             # TODO replace ryan with your own username
             home-manager.users.misty = import ./hosts/swaytest/home.nix;
