@@ -94,11 +94,11 @@
           "org.kde.plasma.kicker"
           "org.kde.windowtitle"
           "org.kde.plasma.appmenu"
-          "org.kde.plasma.marginsseparator"
+          "org.kde.plasma.panelspacer"
           "org.kde.plasma.digitalclock"
-          "org.kde.plasma.marginsseparator"
-          "org.kde.plasma.digitalclock"
+          "org.kde.plasma.panelspacer"
           "org.kde.plasma.showdesktop"
+          "org.kde.plasma.systemtray"
         ];
       }
     ];
