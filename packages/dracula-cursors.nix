@@ -10,7 +10,7 @@
     };
 
     installPhase = ''
-      mkdir -p $out/share/icons/Dracula-cursors
+      mkdir -p $out/share/icons/Dracula-cursors/cursors
       cd kde/cursors && ls
       cp -r kde/cursors/build/x2/* $out/share/icons/Dracula-cursors/cursors
       touch $out/share/icons/Dracula-cursors/index.theme
