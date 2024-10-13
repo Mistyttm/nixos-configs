@@ -11,7 +11,6 @@
     installPhase = ''
       mkdir -p $out/share/plasma/look-and-feel
       mkdir -p $out/share/plasma/desktoptheme
-      cp -aR plasma/look-and-feel/ $out/share/plasma/look-and-feel
-      cp -aR plasma/desktoptheme/ $out/share/plasma/desktoptheme
+      cp -aR plasma/* $out/share/plasma
     '';
   }
