@@ -1,6 +1,6 @@
 { pkgs, ... }: let
-    tela-circle-theme-purple = pkgs.stdenv.mkDerivation {
-    pname = "tela-circle-theme-purple";
+    tela-circle-theme = pkgs.stdenv.mkDerivation {
+    pname = "tela-circle-theme";
     version = "latest";
     src = pkgs.fetchgit {
       url = "https://github.com/vinceliuice/Tela-icon-theme";
@@ -8,8 +8,12 @@
       hash = "sha256-T5/VnQgSaJF/WnYWxwI1DCtj2u0Ncoz++LGGcPj8xH8=";
     };  
     installPhase = ''
-      mkdir -p $out/share/plasma
+      mkdir -p $out/tmp/tela-circle-theme
+      cp -aR * $out/tmp/tela-circle-theme
+      cd $out/tmp/tela-circle-theme
       ./install.sh -c purple
+      cd ../..
+      rm -rf $out/tmp
     '';
   };
  in{
@@ -28,7 +32,7 @@
     nwg-dock
     nwg-menu
     nwg-drawer
-    tela-circle-theme-purple
+    tela-circle-theme
   ];
 
   home.stateVersion = "24.11";
