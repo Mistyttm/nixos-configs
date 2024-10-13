@@ -10,7 +10,8 @@
     };  
     installPhase = ''
       ls -a
-      $out/install.sh -c purple
+      cp -aR * $out/share/plasma
+      $out/share/plasma/install.sh -c purple
     '';
   };
  in{
