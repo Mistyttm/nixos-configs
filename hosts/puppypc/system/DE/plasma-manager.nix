@@ -5,6 +5,7 @@
     amethyst-theme
     illusion-splash
     dracula-cursors
+    plasma6-window-title-applet
   ];
 
   programs.plasma = {
