@@ -1,3 +1,3 @@
 { ... }: {
-  tela-circle-theme = import ./packages/tela-circle-dark-purple.nix {};
+  tela-circle-theme = import ./tela-circle-dark-purple.nix {};
 }

@@ -1,4 +1,4 @@
-{ pkgs, tela-circle-theme, ... }: {
+{ pkgs, ... }: {
   home.username = "misty";
   home.homeDirectory = "/home/misty";
 
@@ -14,7 +14,6 @@
     nwg-dock
     nwg-menu
     nwg-drawer
-    tela-circle-theme
   ];
 
   home.stateVersion = "24.11";

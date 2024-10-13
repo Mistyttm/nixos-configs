@@ -1,4 +1,8 @@
-{ pkgs, ... }: {
+{ pkgs, customPkgs, ... }: {
+
+  home.packages = with customPkgs; [
+    tela-circle-theme
+  ];
 
   programs.plasma = {
     enable = true;
