@@ -14,7 +14,6 @@
     nwg-dock
     nwg-menu
     nwg-drawer
-    tela-circle-theme
   ] ++ [
     tela-circle-theme
   ];
