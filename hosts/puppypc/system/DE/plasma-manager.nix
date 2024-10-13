@@ -109,6 +109,27 @@
         ];
       }
     ];
+    workspace = {
+      clickItemTo = "select";
+      colorScheme = "Amethyst";
+      cursor = {
+        size = 24;
+        theme= "Dracula-cursors";
+      };
+      iconTheme = "Tela-circle-purple";
+      soundTheme = "ocean";
+      splashScreen = {
+        theme = "Illusion";
+      };
+      theme = "Amethyst";
+      wallpaperSlideShow = {
+        path = "../../wallpaper";
+        interval = "900"; # 15 minutes in seconds
+      };
+      windowDecorations = {
+        
+      };
+    };
     shortcuts = {
       "KDE Keyboard Layout Switcher"."Switch to Last-Used Keyboard Layout" = "Meta+Alt+L";
       "KDE Keyboard Layout Switcher"."Switch to Next Keyboard Layout" = "Meta+Alt+K";
