@@ -33,10 +33,12 @@
 
   outputs = inputs@{ nixpkgs, home-manager, plasma-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, nix-minecraft, nix-vscode-extensions, ... }: let
       system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
       vsc-extensions = nix-vscode-extensions.extensions.${system};
+      tela-circle-theme = import ./packages/tela-circle-dark-purple.nix { inherit pkgs; };
     in {
     packages.${system} = {
-      tela-circle-theme = import ./packages/tela-circle-dark-purple.nix { inherit nixpkgs; };      
+      inherit tela-circle-theme;
     };
     nixosConfigurations = {
       # TODO please change the hostname to your own
@@ -131,6 +133,7 @@
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
             home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
+            ome-manager.extraSpecialArgs = {inherit tela-circle-theme;};
 
             # TODO replace ryan with your own username
             home-manager.users.misty = import ./hosts/swaytest/home.nix;
