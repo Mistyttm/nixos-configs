@@ -1,6 +1,6 @@
 { pkgs }: 
   pkgs.stdenv.mkDerivation {
-    pname = "amethyst-theme";
+    pname = "illusion-splash-screen";
     version = "latest";
     src = pkgs.fetchFromGitHub {
       repo = "themes";
@@ -9,6 +9,7 @@
       hash = "sha256-B//TSYf9WUgfo6N6CJe6ffCNNBLrzeY/RaPZbUsIS+8=";
     };  
     installPhase = ''
+      ls
       mkdir -p $out/share/plasma/look-and-feel
       cp -aR KDE-loginscreens/Illusion/* $out/share/plasma/look-and-feel/Illusion  
     '';
