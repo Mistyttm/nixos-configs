@@ -133,7 +133,7 @@
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
             home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
-            home-manager.extraSpecialArgs = {inherit customPkgs;};
+            home-manager.extraSpecialArgs = {inherit (customPkgs) tela-circle-theme;};
 
             # TODO replace ryan with your own username
             home-manager.users.misty = import ./hosts/swaytest/home.nix;
