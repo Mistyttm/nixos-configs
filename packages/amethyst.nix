@@ -11,7 +11,7 @@
     installPhase = ''
       mkdir -p $out/share/plasma/look-and-feel
       mkdir -p $out/share/plasma/desktoptheme
-      cp -aR plasma/look-and-feel/Amethyst/* $out/share/plasma/look-and-feel
-      cp -aR plasma/desktoptheme/Amethyst/* $out/share/plasma/desktoptheme
+      cp -aR plasma/look-and-feel/Amethyst/* ~/.local/share/plasma/look-and-feel    
+      cp -aR plasma/desktoptheme/Amethyst/* ~/.local/share/plasma/desktoptheme
     '';
   }
