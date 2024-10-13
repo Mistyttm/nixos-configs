@@ -35,6 +35,9 @@
       system = "x86_64-linux";
       vsc-extensions = nix-vscode-extensions.extensions.${system};
     in {
+    packages.${system} = {
+      tela-circle-theme = import ./packages/tela-circle-dark-purple.nix { inherit nixpkgs; };      
+    };
     nixosConfigurations = {
       # TODO please change the hostname to your own
       mistylappytappy = nixpkgs.lib.nixosSystem {
