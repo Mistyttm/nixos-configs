@@ -33,8 +33,13 @@
 
   outputs = inputs@{ nixpkgs, home-manager, plasma-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, nix-minecraft, nix-vscode-extensions, ... }: let
       system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
       vsc-extensions = nix-vscode-extensions.extensions.${system};
+      customPkgs = import ./packages/default.nix { inherit pkgs; };
     in {
+    packages.${system} = {
+      inherit customPkgs;
+    };
     nixosConfigurations = {
       # TODO please change the hostname to your own
       mistylappytappy = nixpkgs.lib.nixosSystem {
@@ -74,7 +79,7 @@
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
             # inheriting vsc-extensions here for use in home-manager
-            home-manager.extraSpecialArgs = {inherit spicetify-nix vsc-extensions;};
+            home-manager.extraSpecialArgs = {inherit spicetify-nix vsc-extensions customPkgs;};
             home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
 
             # TODO replace ryan with your own username
