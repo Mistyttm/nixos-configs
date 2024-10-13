@@ -1,4 +1,11 @@
-{ pkgs, ... }: {
+{ pkgs, customPkgs, ... }: {
+
+  home.packages = with customPkgs; [
+    tela-circle-icons
+    amethyst-theme
+    illusion-splash
+    dracula-cursors
+  ];
 
   programs.plasma = {
     enable = true;
