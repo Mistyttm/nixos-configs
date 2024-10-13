@@ -354,7 +354,7 @@
         size = 24;
         theme= "Dracula-cursors";
       };
-      iconTheme = "Tela Circle Dark";
+      iconTheme = "Tela-circle-purple";
       soundTheme = "ocean";
       splashScreen = {
         theme = "Illusion";
