@@ -11,8 +11,7 @@
     buildInputs = [ pkgs.inkscape pkgs.xorg.xcursorgen ];
     buildPhase = ''
       chmod +x kde/cursors/build.sh
-      ./kde/cursors/build.sh
-      ls
+      exec kde/cursors/build.sh
     '';
     installPhase = ''
       mkdir -p $out/share/icons/Dracula-cursors
