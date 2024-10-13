@@ -10,6 +10,6 @@
     };  
     installPhase = ''
       mkdir -p $out/share/plasma
-      cp -aR * $out/share/plasma
+      cp -aR plasma/* $out/share/plasma
     '';
   }
