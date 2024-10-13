@@ -1,9 +1,9 @@
 { pkgs, ... }: let
-    moe-theme = pkgs.stdenv.mkDerivation {
-    pname = "moe-theme";
+    tela-circle-theme = pkgs.stdenv.mkDerivation {
+    pname = "tela-circle-theme";
     version = "latest";
     src = pkgs.fetchFromGitHub {
-      url = "https://github.com/vinceliuice/Tela-icon-theme";
+      repo = "https://github.com/vinceliuice/Tela-icon-theme";
       owner = "vinceliuice";
       rev = "80b86a4a57ab243ec16c5c27b920f3544706955d";
       hash = "";
@@ -29,7 +29,7 @@
     nwg-dock
     nwg-menu
     nwg-drawer
-    moe-theme
+    tela-circle-theme
   ];
 
   home.stateVersion = "24.11";
