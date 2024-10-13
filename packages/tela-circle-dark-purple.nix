@@ -1,6 +1,6 @@
 { pkgs }: 
   pkgs.stdenv.mkDerivation {
-    pname = "tela-circle-theme";
+    pname = "tela-circle-icons";
     version = "latest";
     src = pkgs.fetchFromGitHub {
       repo = "Tela-icon-theme";

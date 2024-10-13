@@ -1,7 +1,8 @@
 { pkgs, customPkgs, ... }: {
 
   home.packages = with customPkgs; [
-    tela-circle-theme
+    tela-circle-icons
+    amethyst-theme
   ];
 
   programs.plasma = {
