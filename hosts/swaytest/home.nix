@@ -2,12 +2,11 @@
     tela-circle-theme = pkgs.stdenv.mkDerivation {
     pname = "tela-circle-theme";
     version = "latest";
-    src = pkgs.fetchFromGitHub {
-      repo = "https://github.com/vinceliuice/Tela-icon-theme";
-      owner = "vinceliuice";
+    src = pkgs.fetchgit {
+      url = "https://github.com/vinceliuice/Tela-icon-theme";
       rev = "80b86a4a57ab243ec16c5c27b920f3544706955d";
       hash = "";
-    };
+    };  
     installPhase = ''
       mkdir -p $out/share/plasma
       cp -aR * $out/share/plasma    
