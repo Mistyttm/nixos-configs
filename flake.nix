@@ -35,7 +35,7 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
       vsc-extensions = nix-vscode-extensions.extensions.${system};
-      customPkgs = import ./packages { inherit pkgs; };
+      customPkgs = import ./packages/default.nix { inherit pkgs; };
     in {
     packages.${system} = {
       inherit customPkgs;
