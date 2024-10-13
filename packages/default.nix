@@ -1,3 +1,3 @@
 { pkgs }: {
-  tela-circle-theme = import ./tela-circle-dark-purple.nix {};
+  tela-circle-theme = import ./tela-circle-dark-purple.nix {inherit pkgs;};
 }
