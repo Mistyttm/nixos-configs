@@ -10,10 +10,12 @@
     };
     buildInputs = [ pkgs.inkscape pkgs.xorg.xcursorgen ];
     buildPhase = ''
-      build.sh
+      kde/cursors/build.sh
+      ls
     '';
     installPhase = ''
       mkdir -p $out/share/icons/Dracula-cursors
-      cp -r Dracula-cursors/* $out/share/icons/Dracula-cursors
+      cd kde/cursors && ls
+      cp -r kde/cursors/Dracula-sdfsdfdf/* $out/share/icons/Dracula-cursors
     '';
   }
