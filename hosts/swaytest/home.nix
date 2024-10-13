@@ -8,10 +8,7 @@
       hash = "sha256-T5/VnQgSaJF/WnYWxwI1DCtj2u0Ncoz++LGGcPj8xH8=";
     };  
     installPhase = ''
-      mkdir -p $out/tmp/tela-circle-theme
-      cp -aR * $out/tmp/tela-circle-theme
-      $out/tmp/tela-circle-theme/install.sh -c purple
-      rm -rf $out/tmp
+      $out/install.sh -c purple
     '';
   };
  in{
