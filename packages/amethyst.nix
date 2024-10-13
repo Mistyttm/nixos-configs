@@ -11,6 +11,8 @@
     installPhase = ''
       mkdir -p $out/share/plasma/look-and-feel/Amethyst
       mkdir -p $out/share/plasma/desktoptheme/Amethyst
+      mkdir -p $out/share/color-schemes
+      cp -aR color-schemes/* $out/share/color-schemes
       cp -aR plasma/look-and-feel/Amethyst/* $out/share/plasma/look-and-feel/Amethyst
       cp -aR plasma/desktoptheme/Amethyst/* $out/share/plasma/desktoptheme/Amethyst
     '';
