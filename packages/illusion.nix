@@ -11,6 +11,6 @@
     installPhase = ''
       ls
       mkdir -p $out/share/plasma/look-and-feel
-      cp -aR ./KDE-loginscreens/Illusion/* $out/share/plasma/look-and-feel/Illusion  
+      cp -aR ./KDE-loginscreens/Illusion $out/share/plasma/look-and-feel
     '';
   }
