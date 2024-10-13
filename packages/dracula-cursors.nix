@@ -11,6 +11,7 @@
     buildInputs = [ pkgs.inkscape pkgs.xorg.xcursorgen ];
     buildPhase = ''
       chmod +x kde/cursors/build.sh
+      ls -l kde/cursors
       exec kde/cursors/build.sh
     '';
     installPhase = ''
