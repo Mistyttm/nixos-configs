@@ -3,6 +3,7 @@
   home.packages = with customPkgs; [
     tela-circle-icons
     amethyst-theme
+    illusion-splash
   ];
 
   programs.plasma = {
