@@ -9,6 +9,7 @@
       hash = "sha256-T5/VnQgSaJF/WnYWxwI1DCtj2u0Ncoz++LGGcPj8xH8=";
     };  
     installPhase = ''
+      ls -a
       ./install.sh -c purple
     '';
   };
