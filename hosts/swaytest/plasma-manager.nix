@@ -345,7 +345,7 @@
       "plasmashell"."toggle do not disturb" = "none,,Toggle do not disturb";
       "services/com.obsproject.Studio.desktop"."_launch" = "Meta+O";
       "services/kitty.desktop"."_launch" = "Meta+Alt+T";
-      "services/obs-cmd-2.desktop"."_launch" = "F9";./illusion.nix 
+      "services/obs-cmd-2.desktop"."_launch" = "F9";
       };
       theme = "Amethyst";
       # wallpaperSlideShow = {
