@@ -9,8 +9,9 @@
       hash = "sha256-8F5CF+yzViyDUJuKDdbAP1KCgZx7HOqtJGWbxztBokk=";
     };  
     installPhase = ''
-      mkdir -p $out/share/plasma
-      mkdir -p $out/share/plasma
-      cp -aR plasma/* $out/share/plasma
+      mkdir -p $out/share/plasma/look-and-feel/Amethyst
+      mkdir -p $out/share/plasma/desktoptheme/Amethyst
+      cp -aR plasma/look-and-feel/Amethyst/* $out/share/plasma/look-and-feel/Amethyst
+      cp -aR plasma/desktoptheme/Amethyst/* $out/share/plasma/desktoptheme/Amethyst
     '';
   }
