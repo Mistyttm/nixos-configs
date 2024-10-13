@@ -2,12 +2,13 @@
     tela-circle-theme = pkgs.stdenv.mkDerivation {
     pname = "tela-circle-theme";
     version = "latest";
-    src = pkgs.fetchgit {
-      url = "https://github.com/vinceliuice/Tela-icon-theme";
+    src = pkgs.fetchFromGitHub {
+      repo = "https://github.com/vinceliuice/Tela-icon-theme";
+      owner = "vinceliuice";
       rev = "80b86a4a57ab243ec16c5c27b920f3544706955d";
       hash = "sha256-T5/VnQgSaJF/WnYWxwI1DCtj2u0Ncoz++LGGcPj8xH8=";
     };  
-    configurePhase = ''
+    installPhase = ''
       ./install.sh -c purple
     '';
   };
