@@ -1,4 +1,4 @@
-{ pkgs, tela-circle-theme, ... }: {
+{ pkgs, customPkgs, ... }: {
   home.username = "misty";
   home.homeDirectory = "/home/misty";
 
@@ -8,7 +8,7 @@
     ./plasma-manager.nix
   ];
 
-  home.packages = with pkgs; [
+  home.packages = with pkgs; with customPkgs; [
     fastfetch
     git
     nwg-dock

@@ -35,10 +35,10 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
       vsc-extensions = nix-vscode-extensions.extensions.${system};
-      tela-circle-theme = import ./packages/tela-circle-dark-purple.nix { inherit pkgs; };
+      customPkgs = import ./packages { inherit pkgs; };
     in {
     packages.${system} = {
-      inherit tela-circle-theme;
+      inherit customPkgs;
     };
     nixosConfigurations = {
       # TODO please change the hostname to your own
@@ -133,7 +133,7 @@
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
             home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
-            home-manager.extraSpecialArgs = {inherit tela-circle-theme;};
+            home-manager.extraSpecialArgs = {inherit customPkgs;};
 
             # TODO replace ryan with your own username
             home-manager.users.misty = import ./hosts/swaytest/home.nix;
