@@ -11,7 +11,6 @@
 
     installPhase = ''
       mkdir -p $out/share/icons/Dracula-cursors/cursors
-      cd kde/cursors && ls
       cp -aR kde/cursors/build/x2/* $out/share/icons/Dracula-cursors/cursors
       touch $out/share/icons/Dracula-cursors/index.theme
       echo "[Icon Theme]" >> $out/share/icons/Dracula-cursors/index.theme
