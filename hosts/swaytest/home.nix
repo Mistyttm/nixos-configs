@@ -10,8 +10,9 @@
     };  
     installPhase = ''
       ls -a
-      cp -aR * $out/share/plasma
-      $out/share/plasma/install.sh -c purple
+      mkdir -p $out/share/icons
+      cp -aR * $out/share/icons
+      $out/share/icons/install.sh -c purple
     '';
   };
  in{
