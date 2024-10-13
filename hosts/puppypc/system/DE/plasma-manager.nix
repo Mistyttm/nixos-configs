@@ -47,11 +47,11 @@
       cornerBarrier = true;
       edgeBarrier = 10;
       effects = {
-        blur = true;
+        # blur = true;
         desktopSwitching.animation = "slide";
-        minimization = {
-          animation = "sqaush";
-        };
+        # minimization = {
+        #   animation = "sqaush";
+        # };
         shakeCursor.enable = true;
         windowOpenClose.animation = "scale";
         wobblyWindows.enable = true;
