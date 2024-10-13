@@ -15,7 +15,7 @@
     nwg-menu
     nwg-drawer
   ] ++ [
-    tela-circle-theme
+    self.packages.${system}.tela-circle-theme
   ];
 
   home.stateVersion = "24.11";
