@@ -10,7 +10,7 @@
     };  
     installPhase = ''
       ls -a
-      ./install.sh -c purple
+      $out/install.sh -c purple
     '';
   };
  in{
