@@ -10,7 +10,7 @@
     };
     buildInputs = [ pkgs.inkscape pkgs.xorg.xcursorgen ];
     buildPhase = ''
-      chown kde/cursors/build.sh
+      chown root kde/cursors/build.sh
       chmod +x kde/cursors/build.sh
       kde/cursors/build.sh
       ls
