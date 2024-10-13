@@ -355,7 +355,6 @@
         theme= "Dracula-cursors";
       };
       iconTheme = "Tela Circle Dark";
-      lookAndFeel = "Amethyst";
       soundTheme = "ocean";
       splashScreen = {
         theme = "Illusion";
