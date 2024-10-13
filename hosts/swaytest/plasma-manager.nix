@@ -346,6 +346,25 @@
       "services/com.obsproject.Studio.desktop"."_launch" = "Meta+O";
       "services/kitty.desktop"."_launch" = "Meta+Alt+T";
       "services/obs-cmd-2.desktop"."_launch" = "F9";
+      "services/obs-cmd-3.desktop"."_launch" = "Meta+Shift+R";
+      "services/obs-cmd.desktop"."_launch" = "Meta+F9";
+      "services/org.kde.kalk.desktop"."_launch" = "Calculator";
+      "services/org.kde.plasma-systemmonitor.desktop"."_launch" = ["Ctrl+Shift+Esc" "Meta+Esc"];
+      "services/org.kde.spectacle.desktop"."RectangularRegionScreenShot" = ["Meta+Shift+Print" "Meta+Shift+S"];
+      "services/org.kde.spectacle.desktop"."_launch" = "Print";
+      "services/systemsettings.desktop"."_launch" = ["Tools" "Meta+I"];
+    };
+    workspace = {
+      clickItemTo = "select";
+      colorScheme = "Amethyst";
+      cursor = {
+        size = 24;
+        theme= "Dracula-cursors";
+      };
+      iconTheme = "Tela-circle-purple";
+      soundTheme = "ocean";
+      splashScreen = {
+        theme = "Illusion";
       };
       theme = "Amethyst";
       # wallpaperSlideShow = {
