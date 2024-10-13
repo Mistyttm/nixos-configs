@@ -28,7 +28,8 @@
     nwg-dock
     nwg-menu
     nwg-drawer
-  ] + [moe-theme];
+    moe-theme
+  ];
 
   home.stateVersion = "24.11";
 
