@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, tela-circle-theme, ... }: {
   home.username = "misty";
   home.homeDirectory = "/home/misty";
 
