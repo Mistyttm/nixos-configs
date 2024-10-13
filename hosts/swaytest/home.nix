@@ -10,9 +10,7 @@
     installPhase = ''
       mkdir -p $out/tmp/tela-circle-theme
       cp -aR * $out/tmp/tela-circle-theme
-      cd $out/tmp/tela-circle-theme
-      ./install.sh -c purple
-      cd ../..
+      $out/tmp/tela-circle-theme/install.sh -c purple
       rm -rf $out/tmp
     '';
   };
