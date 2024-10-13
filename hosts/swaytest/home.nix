@@ -2,14 +2,15 @@
     moe-theme = pkgs.stdenv.mkDerivation {
     pname = "moe-theme";
     version = "latest";
-    src = pkgs.fetchgit {
-      url = "https://gitlab.com/jomada/moe-theme";
-      rev = "39215b6305af3ecec67d8c6dd2c2721f60c23594";
-      hash = "sha256-a6L8xSzW8yMXTfcZF08Gv3b0Q/Leb+/D3ln/ISHmLbk=";
+    src = pkgs.fetchFromGitHub {
+      url = "https://github.com/vinceliuice/Tela-icon-theme";
+      owner = "vinceliuice";
+      rev = "80b86a4a57ab243ec16c5c27b920f3544706955d";
+      hash = "";
     };
     installPhase = ''
       mkdir -p $out/share/plasma
-      cp -aR * $out/share/plasma
+      cp -aR * $out/share/plasma    
     '';
   };
  in{
