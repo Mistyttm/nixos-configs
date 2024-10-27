@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ pkgs, ... }: {
   home.packages = with pkgs; [
     libsecret
     (pkgs.discord.override {
@@ -15,13 +15,14 @@
 #     thunderbird
     libreoffice
     zenity
-    kdeconnect
+    plasma5Packages.kdeconnect-kde
     kdePackages.kalk
     libnotify
     teams-for-linux
     cabextract
     rpi-imager
     quickemu
+    python3
   ];
   programs.java.enable = true;
   fonts.fontconfig.enable = true;
