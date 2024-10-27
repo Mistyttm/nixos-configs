@@ -30,6 +30,7 @@
       system = "x86_64-linux";
       vsc-extensions = nix-vscode-extensions.extensions.${system};
     in {
+    nixpkgs.config.cudaSupprt = true;
     nixosConfigurations = {
       # TODO please change the hostname to your own
       puppylaptop = nixpkgs.lib.nixosSystem {
