@@ -3,7 +3,7 @@ programs.vscode = {
     enable = true;
     package = pkgs.vscode;
     enableUpdateCheck = false;
-    enableExtensionUpdateCheck = false;
+    enableExtensionUpdateCheck = true;
     extensions = with vsc-extensions.vscode-marketplace; [
         formulahendry.auto-rename-tag
         aaron-bond.better-comments
