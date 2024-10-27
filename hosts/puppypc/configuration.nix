@@ -21,12 +21,6 @@
     };
   };
 
-  programs.alvr = {
-    enable = true;
-    package = pkgs.alvr;
-    openFirewall = true;
-  };
-
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = true;
