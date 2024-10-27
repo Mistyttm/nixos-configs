@@ -7,6 +7,7 @@
       ../../global-configs/system/default.nix
       ../../global-configs/users/default.nix
       ../../global-configs/fonts/fonts.nix
+      ./configs/programs/VR/default.nix
     ];
 
   networking.hostName = "puppypc";
@@ -32,6 +33,9 @@
   };
 
   environment = {
+    systemPackages = with pkgs; [
+
+    ];
     shellAliases = {
       rebuild = "sudo nixos-rebuild switch --flake .#puppypc";
     };
