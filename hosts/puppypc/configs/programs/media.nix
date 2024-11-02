@@ -7,9 +7,10 @@
   ];
   programs.obs-studio = {
     enable = true;
-    plugins = [
-      pkgs.obs-studio-plugins.obs-pipewire-audio-capture
-      pkgs.obs-studio-plugins.obs-websocket
+    plugins = with pkgs.obs-studio-plugins; [
+      obs-pipewire-audio-capture
+      obs-websocket
+      obs-vkcapture
     ];
   };
 }
