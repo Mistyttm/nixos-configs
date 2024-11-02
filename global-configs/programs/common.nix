@@ -11,8 +11,8 @@
     obsidian
     spicetify-cli
     vlc
-    betterbird-unwrapped
-#     thunderbird
+    thunderbird
+    birdtray
     libreoffice
     zenity
     plasma5Packages.kdeconnect-kde
