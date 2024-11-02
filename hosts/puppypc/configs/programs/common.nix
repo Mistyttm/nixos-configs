@@ -14,5 +14,6 @@
     winetricks
     protontricks
     fritzing
+    scrcpy
   ];
 }
