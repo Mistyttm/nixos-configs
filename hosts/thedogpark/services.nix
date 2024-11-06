@@ -1,5 +1,5 @@
 { pkgs, ... }: let
-  valheimServiceScript = pkgs.writeScriptBin "valheimserver" ''
+  valheimServiceScript = pkgs.writeShellScriptBin "valheimserver" ''
     #!/bin/sh
     # Start or attach to a tmux session for the Valheim server
     tmux new-session -d -s valheimserver "/srv/valheim/docker_start_server.sh /srv/valheim/start_server.sh"
