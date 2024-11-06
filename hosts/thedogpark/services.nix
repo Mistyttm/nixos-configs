@@ -53,6 +53,7 @@
 
       User = "misty";
       Group = "docker";
+      Environment = "PATH=${pkgs.docker}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin";
     };
   };
 
