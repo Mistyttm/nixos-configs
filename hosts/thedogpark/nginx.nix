@@ -42,6 +42,9 @@
         forceSSL = true;
         useACMEHost = "mistyttm.dev";
         locations."/".proxyPass = "http://localhost:8080/";
-      }; 
+      };
+      "valheim.mistyttm.dev" = (SSL // {
+        locations."/".proxyPass = "http://127.0.0.1:2456/";
+      });
     };
 }
