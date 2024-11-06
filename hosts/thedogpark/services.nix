@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }: {
+{ pkgs, ... }: {
   services = {
     gnome = {
       gnome-keyring = {
@@ -37,6 +37,22 @@
       User = "misty";
       Group = "users";
       Environment = "PATH=${pkgs.nodejs}/bin:${pkgs.nodejs}/lib/node_modules/.bin:${pkgs.bash}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin";
+    };
+  };
+
+  systemd.services.valheimserver = {
+    description = "Run the Valheim server";
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+
+    serviceConfig = {
+      type = "simple";
+      ExecStart = "./docker_start_server.sh ./start_server.sh";
+      WorkingDirectory = "/srv/valheim";
+      Restart = "on-failure";
+
+      User = "root";
+      Group = "root";
     };
   };
 
