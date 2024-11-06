@@ -46,6 +46,7 @@
     nano
     tmux
     sops
+    jdk22
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
