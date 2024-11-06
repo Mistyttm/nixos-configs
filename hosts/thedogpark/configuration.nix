@@ -70,7 +70,13 @@
 
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [ 5173 ];
-  networking.firewall.allowedUDPPorts = [ 5273 ];
+  networking.firewall.allowedUDPPorts = [ 5173 ];
+  networking.firewall.allowedTCPPortRanges = [
+    { from = 2456; to = 2458; }
+  ];
+  networking.firewall.allowedUDPPortRanges = [
+    { from = 2456; to = 2458 }
+  ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
