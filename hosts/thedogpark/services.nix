@@ -50,6 +50,8 @@ in{
     after = [ "docker.service" ];
     requires = [ "docker.service" ];
 
+    path = with pkgs; [ docker ];
+
     # Set the command to run using ExecStart
     serviceConfig = {
       ExecStart = "${valheimService}";
