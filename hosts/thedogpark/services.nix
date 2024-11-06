@@ -1,4 +1,9 @@
-{ pkgs, ... }: {
+{ pkgs, ... }: let
+  valheimService = pkgs.writeScriptBin "valheimserver" ''
+    #!/bin/sh
+    /srv/valheim/docker_start_server.sh /srv/valheim/start_server.sh
+  '';
+in{
   services = {
     gnome = {
       gnome-keyring = {
@@ -41,20 +46,20 @@
   };
 
   systemd.services.valheimserver = {
-    description = "Run the Valheim server";
-    after = [ "network.target" ];
-    wantedBy = [ "multi-user.target" ];
+    description = "Valheim Server";
+    after = [ "docker.service" ];
+    requires = [ "docker.service" ];
 
+    # Set the command to run using ExecStart
     serviceConfig = {
-      type = "simple";
-      ExecStart = "/srv/valheim/docker_start_server.sh /srv/valheim/start_server.sh";
+      ExecStart = "${valheimService}";
+      Restart = "always";
+      RestartSec = "5s";
       WorkingDirectory = "/srv/valheim";
-      Restart = "on-failure";
-
-      User = "misty";
-      Group = "docker";
-      Environment = "PATH=${pkgs.docker}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin";
     };
+
+    # Specify user and group if needed (default to root)
+    wantedBy = [ "multi-user.target" ];
   };
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
