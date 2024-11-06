@@ -15,6 +15,7 @@
       ./services.nix
       ./minecraft.nix
       ./nginx.nix
+      ../../global-configs/system/virtualisation.nix
     ];
 
   # Use the GRUB 2 boot loader.
