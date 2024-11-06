@@ -51,8 +51,13 @@
     serviceConfig = {
       User = "root";
       Group = "root";
+      ExecStartPre = ''
+        # Check if tmux session exists, create it if necessary
+        ${pkgs.tmux}/bin/tmux has-session -t valheimserver 2>/dev/null || \
+        ${pkgs.tmux}/bin/tmux new-session -d -s valheimserver
+      '';
       ExecStart = ''
-        ${pkgs.tmux}/bin/tmux new-session -d -s valheimserver 'cd /srv/valheim && ./docker_start_server.sh start_server.sh'
+        ${pkgs.tmux}/bin/tmux send-keys -t valheimserver 'cd /srv/valheim && sudo ./docker_start_server.sh start_server.sh' C-m
       '';
       ExecStop = "${pkgs.tmux}/bin/tmux kill-session -t valheimserver";
       Restart = "on-failure";
