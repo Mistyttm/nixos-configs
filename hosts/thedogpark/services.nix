@@ -50,11 +50,11 @@
     # Set the command to run using ExecStart
     serviceConfig = {
       ExecStart = ''
-        ${pkgs.tmux}/bin/tmux new-session -d -s valheimserver "/srv/valheim/docker_start_server.sh /srv/valheim/start_server.sh"
+        cd /srv/valheim/ && ${pkgs.tmux}/bin/tmux new-session -d -s valheimserver "./docker_start_server.sh start_server.sh"
       '';
       ExecStop = "${pkgs.tmux}/bin/tmux kill-session -t valheimserver";
-      Restart = "always";
-      RestartSec = "5s";
+      Restart = "on-failure";
+      RestartSec = "15s";
       WorkingDirectory = "/srv/valheim";
     };
 
