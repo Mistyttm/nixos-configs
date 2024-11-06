@@ -51,13 +51,13 @@
     serviceConfig = {
       User = "root";
       Group = "root";
+      WorkingDirectory = "/srv/valheim";
       ExecStart = ''
-        ${pkgs.tmux}/bin/tmux new-session -d -s valheimserver 'cd /srv/valheim && ./docker_start_server.sh start_server.sh; sleep 10'
+        sudo ${pkgs.tmux}/bin/tmux new-session -d -s valheimserver 'cd /srv/valheim && ./docker_start_server.sh start_server.sh; sleep 10'
       '';
       ExecStop = "${pkgs.tmux}/bin/tmux kill-session -t valheimserver";
       Restart = "on-failure";
       RestartSec = "15s";
-      WorkingDirectory = "/srv/valheim";
     };
 
     # Specify user and group if needed (default to root)
