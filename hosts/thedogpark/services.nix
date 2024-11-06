@@ -52,7 +52,6 @@
       User = "root";
       Group = "root";
       ExecStartPre = ''
-        ${pkgs.tmux}/bin/tmux has-session -t valheimserver 2>/dev/null || \
         ${pkgs.tmux}/bin/tmux new-session -d -s valheimserver
       '';
       ExecStart = ''
