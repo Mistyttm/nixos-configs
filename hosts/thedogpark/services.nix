@@ -1,9 +1,4 @@
-{ pkgs, ... }: let
-  valheimService = pkgs.writeScriptBin "valheimserver" ''
-    #!/bin/sh
-    /srv/valheim/docker_start_server.sh /srv/valheim/start_server.sh
-  '';
-in{
+{ pkgs, ... }: {
   services = {
     gnome = {
       gnome-keyring = {
@@ -54,7 +49,7 @@ in{
 
     # Set the command to run using ExecStart
     serviceConfig = {
-      ExecStart = "${valheimService}";
+      ExecStart = "/srv/valheim/docker_start_server.sh /srv/valheim/start_server.sh";
       Restart = "always";
       RestartSec = "5s";
       WorkingDirectory = "/srv/valheim";
