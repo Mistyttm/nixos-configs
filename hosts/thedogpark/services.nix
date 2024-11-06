@@ -52,7 +52,7 @@
       User = "root";
       Group = "root";
       ExecStart = ''
-        ${pkgs.tmux}/bin/tmux -S /tmp/tmux-valheim-server new-session -d -s valheimserver 'cd /srv/valheim && ./docker_start_server.sh start_server.sh'
+        ${pkgs.tmux}/bin/tmux new-session -d -s valheimserver 'cd /srv/valheim && ./docker_start_server.sh start_server.sh; sleep 10'
       '';
       ExecStop = "${pkgs.tmux}/bin/tmux kill-session -t valheimserver";
       Restart = "on-failure";
