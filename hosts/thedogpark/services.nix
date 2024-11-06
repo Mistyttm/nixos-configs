@@ -49,6 +49,8 @@
 
     # Set the command to run using ExecStart
     serviceConfig = {
+      User = "root";
+      Group = "root";
       ExecStart = ''
         ${pkgs.tmux}/bin/tmux new-session -d -s valheimserver 'cd /srv/valheim && ./docker_start_server.sh start_server.sh'
       '';
