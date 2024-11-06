@@ -51,7 +51,7 @@
       WorkingDirectory = "/srv/valheim";
       Restart = "on-failure";
 
-      User = "root";
+      User = "misty";
       Group = "docker";
     };
   };
