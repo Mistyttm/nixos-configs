@@ -47,7 +47,7 @@
 
     serviceConfig = {
       type = "simple";
-      ExecStart = "./docker_start_server.sh ./start_server.sh";
+      ExecStart = "/srv/valheim/docker_start_server.sh /srv/valheim/start_server.sh";
       WorkingDirectory = "/srv/valheim";
       Restart = "on-failure";
 
