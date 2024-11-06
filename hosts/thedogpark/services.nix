@@ -1,10 +1,4 @@
-{ pkgs, ... }: let
-  valheimServiceScript = pkgs.writeShellScriptBin "valheimserver" ''
-    #!/bin/sh
-    # Start or attach to a tmux session for the Valheim server
-    tmux new-session -d -s valheimserver "/srv/valheim/docker_start_server.sh /srv/valheim/start_server.sh"
-  '';
-in{
+{ pkgs, ... }: {
   services = {
     gnome = {
       gnome-keyring = {
@@ -55,7 +49,9 @@ in{
 
     # Set the command to run using ExecStart
     serviceConfig = {
-      ExecStart = "${valheimServiceScript}";
+      ExecStart = ''
+        tmux new-session -d -s valheimserver "/srv/valheim/docker_start_server.sh /srv/valheim/start_server.sh"
+      '';
       ExecStop = "tmux kill-session -t valheimserver";
       Restart = "always";
       RestartSec = "5s";
