@@ -50,7 +50,7 @@
     # Set the command to run using ExecStart
     serviceConfig = {
       ExecStart = ''
-        ${pkgs.bash}/bin/bash -c "cd /srv/valheim && ${pkgs.tmux}/bin/tmux new-session -d -s valheimserver './docker_start_server.sh start_server.sh'"
+        ${pkgs.tmux}/bin/tmux new-session -d -s valheimserver './docker_start_server.sh start_server.sh'
       '';
       ExecStop = "${pkgs.tmux}/bin/tmux kill-session -t valheimserver";
       Restart = "on-failure";
