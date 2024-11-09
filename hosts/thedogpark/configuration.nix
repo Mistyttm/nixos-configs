@@ -47,6 +47,7 @@
     tmux
     sops
     jdk22
+    cron
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
