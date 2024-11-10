@@ -17,6 +17,11 @@
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
+    extraPackages = with pkgs; [
+      mono
+      mono4
+      mono5
+    ];
 #     gameScopeSession = {
 #       enable = true;
 #     };

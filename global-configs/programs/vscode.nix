@@ -119,6 +119,7 @@ programs.vscode = {
             "editor.cursorSmoothCaretAnimation" = "on";
             "editor.formatOnSave" = true;
             "editor.formatOnSaveMode" = "modificationsIfAvailable";
+            "editor.linkedEditing" = true;
             "[css]" = {
                     "editor.defaultFormatter" = "esbenp.prettier-vscode";
             };
