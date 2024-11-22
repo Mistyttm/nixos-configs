@@ -36,7 +36,7 @@
 
   environment = {
     systemPackages = with pkgs; [
-
+      opencomposite
     ];
     shellAliases = {
       rebuild = "sudo nixos-rebuild switch --flake .#puppypc";
