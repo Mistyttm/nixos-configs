@@ -1,6 +1,6 @@
 { pkgs, ... }: {
     imports = [
-        ./alvr.nix
+#         ./alvr.nix
         ./wivrn.nix
         ./monado.nix
     ];
