@@ -10,8 +10,9 @@
     file
     nil
     nixfmt-rfc-style
-    wine-wayland
+    wineWowPackages.waylandFull
     winetricks
+    bottles
     protontricks
     fritzing
     scrcpy
