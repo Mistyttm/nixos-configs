@@ -3,7 +3,9 @@
 
   inputs = {
     # unstable
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    old-alvr.url = "github:nixos/nixpkgs/aebe249544837ce42588aa4b2e7972222ba12e8f";
+    wivrnupdate-nixpkgs.url = "github:PassiveLemon/nixpkgs/wivrn-update";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -26,9 +28,21 @@
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, nix-minecraft, nix-vscode-extensions, ... }: let
+  outputs = inputs@{ nixpkgs, old-alvr, wivrnupdate-nixpkgs, home-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, nix-minecraft, nix-vscode-extensions, ... }: let
       system = "x86_64-linux";
       vsc-extensions = nix-vscode-extensions.extensions.${system};
+      overlay-alvr = final: prev: {
+        old-alvr = import old-alvr {
+          inherit system;
+          config.allowUnfree = true;
+        };
+      };
+      overlay-wivrn = final: prev: {
+        wivrnupdate-nixpkgs = import wivrnupdate-nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+        };
+      };
     in {
     nixpkgs.config.cudaSupprt = true;
     nixosConfigurations = {
@@ -78,6 +92,8 @@
             nixpkgs = {
               overlays = [
                 sddm-sugar-candy-nix.overlays.default
+                overlay-alvr
+                overlay-wivrn
               ];
             };
           }
