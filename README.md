@@ -14,9 +14,19 @@ This repository contains the configuration files for my NixOS systems. The confi
 
 ## Hosts
 
-- `puppypc` - Main Desktop
-- `mistylappytappy` - Laptop
-- `thedogpark` - Server
+### `puppypc` - Main Desktop
+
+- Hardware:
+  - AMD Ryzen 7 7800X3D
+  - 32GB DDR5 RAM
+  - RTX 3090
+  - B650 Gaming Plus wifi Mobo
+- Headset:
+  - Meta Quest 2
+
+### `mistylappytappy` - Laptop
+
+### `thedogpark` - Server
 
 ## To-Do
 
