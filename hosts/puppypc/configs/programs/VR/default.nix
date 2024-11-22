@@ -9,4 +9,9 @@
         sidequest
         wlx-overlay-s
     ];
+
+    programs.envision = {
+        enable = true;
+        openFirewall = true; # This is set true by default
+    };
 }
