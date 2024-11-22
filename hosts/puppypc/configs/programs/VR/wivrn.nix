@@ -1,6 +1,7 @@
 { pkgs, ... }: {
     services.wivrn = {
         enable = true;
+        package = pkgs.wivrnupdate-nixpkgs.wivrn;
         openFirewall = true;
         defaultRuntime = true;
         autoStart = true;
