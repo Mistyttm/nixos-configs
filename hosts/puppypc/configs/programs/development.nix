@@ -1,6 +1,6 @@
 { pkgs, ... }: {
   home.packages = with pkgs; [
-    zed-editor
+#     zed-editor
     pkg-config
     openssl
     godot_4
