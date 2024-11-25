@@ -46,7 +46,7 @@
       "valheim.mistyttm.dev" = (SSL // {
         locations."/".proxyPass = "http://127.0.0.1:2456/";
       });
-      "magical-create.mistyttm.dev" = (SSL // {
+      "magicalcreate.mistyttm.dev" = (SSL // {
         locations."/".proxyPass = "http://127.0.0.1:24464/";
       });
     };
