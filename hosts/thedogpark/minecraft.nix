@@ -12,7 +12,7 @@ in {
         enableReload = true;
         whitelist = {
             Misty_TTM = "e914b64b-5b4c-4ca0-a655-2b7dd28d2ebb";
-#            Ommey = "0843c8a8-8532-44e2-96a4-5ceccbf97c2";
+            #Ommey = "0843c8a8-8532-44e2-96a4-5ceccbf97c2";
             DizzyinaTizzy = "f5b5008c-f44d-44cd-8fcb-492895ae7ce9";
             Vanity_Dolls = "9ce829ce-a7c8-4cd8-ac28-73ee6739d784";
             The_Menagerie = "e0da066f-e6e3-46a8-9a16-f9a8161c7e15";
@@ -41,7 +41,7 @@ in {
             view-distance=16;
             white-list = true;
         };
-        package = pkgs.fabricServers.fabric-1_21_1      ;
+        package = pkgs.fabricServers.fabric-1_21_1;
         jvmOpts = "-Xmx6144M -Xms6144M -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ParallelRefProcEnabled -XX:+PerfDisableSharedMem -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1HeapRegionSize=8M -XX:G1HeapWastePercent=5 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCCountTarget=4 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1NewSizePercent=30 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:G1ReservePercent=20 -XX:InitiatingHeapOccupancyPercent=15 -XX:MaxGCPauseMillis=200 -XX:MaxTenuringThreshold=1 -XX:SurvivorRatio=32 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true";
         symlinks = {
             mods = pkgs.linkFarmFromDrvs "mods" (builtins.attrValues {
@@ -69,5 +69,44 @@ in {
             });
         };
       };
+    #   servers.magicalCreate = {
+    #     enable = true;
+    #     autoStart = true;
+    #     enableReload = true;
+    #     whitelist = {
+    #         Misty_TTM = "e914b64b-5b4c-4ca0-a655-2b7dd28d2ebb";
+    #     };
+    #     serverProperties = {
+    #         allow-flight = false;
+    #         allow-nether = true;
+    #         broadcast-console-to-ops = true;
+    #         difficulty = 3;
+    #         enable-command-block = true;
+    #         enable-status = true;
+    #         enforce-secure-profile = false;
+    #         enforce-whitelist = true;
+    #         gamemode = 0;
+    #         generate-structures = true;
+    #         level-name = "magicalCreate";
+    #         max-players = 5;
+    #         motd = "Magical Create for Nox and Misty";
+    #         online-mode = true;
+    #         pause-when-empty-seconds = 120;
+    #         pvp = true;
+    #         simulation-distance = 10;
+    #         spawn-animals=true;
+    #         spawn-monsters = true;
+    #         spawn-npcs = true;
+    #         view-distance=16;
+    #         white-list = true;
+    #     };
+    #     package = pkgs.fabricServers.fabric-1_20_1;
+    #     jvmOpts = "-Xmx4096M -Xms4096M -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ParallelRefProcEnabled -XX:+PerfDisableSharedMem -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1HeapRegionSize=8M -XX:G1HeapWastePercent=5 -XX:G1MaxNewSizePercent=40 -XX:G1MixedGCCountTarget=4 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1NewSizePercent=30 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:G1ReservePercent=20 -XX:InitiatingHeapOccupancyPercent=15 -XX:MaxGCPauseMillis=200 -XX:MaxTenuringThreshold=1 -XX:SurvivorRatio=32 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true";
+    #     symlinks = {
+    #         mods = pkgs.linkFarmFromDrvs "mods" (builtins.attrValues {
+                
+    #         });
+    #     };
+    #   };
     };
 }
