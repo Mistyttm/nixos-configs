@@ -7,7 +7,7 @@
       ../../global-configs/users/default.nix
       ../../global-configs/system/locale.nix
       ../../global-configs/system/networking/ssh.nix
-      ../../global-configs/system/nix.nix
+      ../../global-configs/system/nixoptions.nix
       ./services.nix
       ./minecraft.nix
       ./nginx.nix
@@ -46,7 +46,7 @@
     nano
     tmux
     sops
-    jdk22
+    jdk21
     cron
   ];
 
