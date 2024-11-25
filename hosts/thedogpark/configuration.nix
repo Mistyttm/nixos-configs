@@ -68,8 +68,8 @@
 
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 5173 ];
-  networking.firewall.allowedUDPPorts = [ 5173 ];
+  networking.firewall.allowedTCPPorts = [ 5173 24464 ];
+  networking.firewall.allowedUDPPorts = [ 5173 24464 ];
   networking.firewall.allowedTCPPortRanges = [
     { from = 2456; to = 2458; }
   ];
