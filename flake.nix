@@ -41,10 +41,11 @@
         wivrnupdate-nixpkgs = import wivrnupdate-nixpkgs {
           inherit system;
           config.allowUnfree = true;
+          config.cudaSupport = true;
         };
       };
     in {
-    nixpkgs.config.cudaSupprt = true;
+#     nixpkgs.config.cudaSupport = true;
     nixosConfigurations = {
       # TODO please change the hostname to your own
       mistylappytappy = nixpkgs.lib.nixosSystem {
