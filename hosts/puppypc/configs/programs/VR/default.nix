@@ -2,7 +2,7 @@
     imports = [
 #         ./alvr.nix
         ./wivrn.nix
-        ./monado.nix
+#         ./monado.nix
     ];
 
     environment.systemPackages = with pkgs; [
@@ -11,7 +11,7 @@
     ];
 
     programs.envision = {
-        enable = true;
+        enable = false;
         openFirewall = true; # This is set true by default
     };
 }
