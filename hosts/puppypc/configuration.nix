@@ -53,9 +53,14 @@
     };
   };
 
-  nixpkgs.config.permittedInsecurePackages = [
+  nixpkgs = {
+    config = {
+      permittedInsecurePackages = [
                 "freeimage-unstable-2021-11-01"
-              ];
+      ];
+      cudaSupport = true;
+    };
+  };
 
   system.stateVersion = "unstable";
 
