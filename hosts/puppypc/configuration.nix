@@ -8,6 +8,7 @@
       ../../global-configs/users/default.nix
       ../../global-configs/fonts/fonts.nix
       ./configs/programs/VR/default.nix
+      ../../global-configs/system/nixoptions.nix
     ];
 
   networking.hostName = "puppypc";
