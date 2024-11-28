@@ -3,7 +3,9 @@
 
   inputs = {
     # unstable
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs = {
+      url = "github:nixos/nixpkgs/nixos-unstable";
+    };
     old-alvr.url = "github:nixos/nixpkgs/aebe249544837ce42588aa4b2e7972222ba12e8f";
     wivrnupdate-nixpkgs.url = "github:PassiveLemon/nixpkgs/wivrn-update";
     home-manager = {
@@ -28,6 +30,15 @@
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
+  nixConfig = {
+    extra-substituters = [
+      "https://nix-community.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+  };
+
   outputs = inputs@{ nixpkgs, old-alvr, wivrnupdate-nixpkgs, home-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, nix-minecraft, nix-vscode-extensions, ... }: let
       system = "x86_64-linux";
       vsc-extensions = nix-vscode-extensions.extensions.${system};
@@ -45,7 +56,7 @@
         };
       };
     in {
-#     nixpkgs.config.cudaSupport = true;
+    nixpkgs.config.cudaSupport = true;
     nixosConfigurations = {
       # TODO please change the hostname to your own
       mistylappytappy = nixpkgs.lib.nixosSystem {
