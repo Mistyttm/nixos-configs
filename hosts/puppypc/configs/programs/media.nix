@@ -1,5 +1,5 @@
  
-{ config, pkgs, ... }: {
+{ pkgs, ... }: {
   home.packages = with pkgs; [
     davinci-resolve
     tenacity
@@ -10,6 +10,7 @@
     plugins = with pkgs.obs-studio-plugins; [
       obs-pipewire-audio-capture
       obs-websocket
+      obs-vkcapture
     ];
   };
 }
