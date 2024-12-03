@@ -12,7 +12,7 @@
       proggyfonts
       corefonts
       vistafonts
-      (nerdfonts.override { fonts = [ "Meslo" ]; })
+      nerd-fonts.meslo-lg
     ];
 
     fontconfig = {
