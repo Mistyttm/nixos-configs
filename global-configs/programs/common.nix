@@ -15,7 +15,7 @@
     birdtray
     libreoffice
     zenity
-    plasma5Packages.kdeconnect-kde
+#     plasma5Packages.kdeconnect-kde
     kdePackages.kalk
     libnotify
     teams-for-linux
