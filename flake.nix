@@ -49,11 +49,23 @@
         };
       };
       overlay-wivrn = final: prev: {
-        wivrnupdate-nixpkgs = import wivrnupdate-nixpkgs {
+        # Import wivrnupdate-nixpkgs and override the wivrn package
+        wivrn = (import wivrnupdate-nixpkgs {
           inherit system;
           config.allowUnfree = true;
           config.cudaSupport = true;
-        };
+        }).wivrn.overrideAttrs (old: {
+          nativeBuildInputs = (old.nativeBuildInputs or []) ++ [
+            final.cmake
+            final.autoAddDriverRunpath
+          ];
+          buildInputs = (old.buildInputs or []) ++ [ prev.cudaPackages.cudatoolkit ];
+
+          # Ensure the CUDA toolkit root directory is set correctly
+          cmakeFlags = (old.cmakeFlags or []) ++ [
+            "-DCUDA_TOOLKIT_ROOT_DIR=${prev.cudaPackages.cudatoolkit}"
+          ];
+        });
       };
     in {
     nixpkgs.config.cudaSupport = true;
