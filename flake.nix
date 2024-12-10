@@ -7,10 +7,15 @@
       url = "github:nixos/nixpkgs/nixos-unstable";
     };
     old-alvr.url = "github:nixos/nixpkgs/aebe249544837ce42588aa4b2e7972222ba12e8f";
-    wivrnupdate-nixpkgs.url = "github:PassiveLemon/nixpkgs/wivrn-update";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    personal-nixpkgs = {
+      url = "github:Mistyttm/nixpkgs/add-bs-manager";
+    };
+    wivrn-nixpkgs = {
+      url = "github:PassiveLemon/nixpkgs/wivrn-update";
     };
     # SDDM theme (DOESNT WORK)
     sddm-sugar-candy-nix = {
@@ -28,6 +33,10 @@
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
     # VSCode extensions
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+    auto-cpufreq = {
+      url = "github:AdnanHodzic/auto-cpufreq";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   nixConfig = {
@@ -39,7 +48,7 @@
     ];
   };
 
-  outputs = inputs@{ nixpkgs, old-alvr, wivrnupdate-nixpkgs, home-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, nix-minecraft, nix-vscode-extensions, ... }: let
+  outputs = inputs@{ nixpkgs, old-alvr, wivrn-nixpkgs, personal-nixpkgs, home-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, nix-minecraft, nix-vscode-extensions, auto-cpufreq, ... }: let
       system = "x86_64-linux";
       vsc-extensions = nix-vscode-extensions.extensions.${system};
       overlay-alvr = final: prev: {
@@ -49,23 +58,17 @@
         };
       };
       overlay-wivrn = final: prev: {
-        # Import wivrnupdate-nixpkgs and override the wivrn package
-        wivrn = (import wivrnupdate-nixpkgs {
+        wivrn-nixpkgs = import wivrn-nixpkgs {
           inherit system;
           config.allowUnfree = true;
           config.cudaSupport = true;
-        }).wivrn.overrideAttrs (old: {
-          nativeBuildInputs = (old.nativeBuildInputs or []) ++ [
-            final.cmake
-            final.autoAddDriverRunpath
-          ];
-          buildInputs = (old.buildInputs or []) ++ [ prev.cudaPackages.cudatoolkit ];
-
-          # Ensure the CUDA toolkit root directory is set correctly
-          cmakeFlags = (old.cmakeFlags or []) ++ [
-            "-DCUDA_TOOLKIT_ROOT_DIR=${prev.cudaPackages.cudatoolkit}"
-          ];
-        });
+        };
+      };
+      overlay-personal = final: prev: {
+        personal = import personal-nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+        };
       };
     in {
     nixpkgs.config.cudaSupport = true;
@@ -90,6 +93,7 @@
             nixpkgs = {
               overlays = [
                 sddm-sugar-candy-nix.overlays.default
+                auto-cpufreq.nixosModules.default
               ];
             };
           }
@@ -117,6 +121,7 @@
               overlays = [
                 sddm-sugar-candy-nix.overlays.default
                 overlay-alvr
+                overlay-personal
                 overlay-wivrn
               ];
             };
