@@ -23,6 +23,8 @@
     };
   };
 
+  services.flatpak.enable = true;
+
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = true;
@@ -47,6 +49,7 @@
   environment = {
     systemPackages = with pkgs; [
       opencomposite
+      monado-vulkan-layers
     ];
     shellAliases = {
       rebuild = "sudo nixos-rebuild switch --flake .#puppypc";
