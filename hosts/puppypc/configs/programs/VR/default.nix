@@ -8,6 +8,7 @@
     environment.systemPackages = with pkgs; [
         sidequest
         wlx-overlay-s
+        personal.bs-manager
     ];
 
     programs.envision = {
