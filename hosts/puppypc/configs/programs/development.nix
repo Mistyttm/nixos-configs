@@ -4,6 +4,7 @@
     pkg-config
     openssl
     godot_4
+    python3
   ];
 
   programs.emacs = {
