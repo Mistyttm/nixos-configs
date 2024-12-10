@@ -80,6 +80,7 @@
           ./hosts/mistylappytappy/configuration.nix
 
           home-manager.nixosModules.home-manager
+          auto-cpufreq.nixosModules.default
           sops-nix.nixosModules.sops
           {
             home-manager.useGlobalPkgs = true;
@@ -93,7 +94,6 @@
             nixpkgs = {
               overlays = [
                 sddm-sugar-candy-nix.overlays.default
-                auto-cpufreq.nixosModules.default
               ];
             };
           }
