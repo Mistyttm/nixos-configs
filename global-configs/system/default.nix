@@ -8,6 +8,7 @@
     ./networking/default.nix
     ./services.nix
     ./virtualisation.nix
+    ./nixoptions.nix
   ];
 }
 
