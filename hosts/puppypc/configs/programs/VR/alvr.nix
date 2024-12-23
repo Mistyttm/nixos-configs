@@ -1,7 +1,7 @@
 { pkgs, ... }: {
     programs.alvr = {
     enable = true;
-    package = pkgs.old-alvr.alvr;
+    package = pkgs.alvr;
     openFirewall = true;
   };
 }
