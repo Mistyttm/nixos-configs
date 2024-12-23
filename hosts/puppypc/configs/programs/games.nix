@@ -2,7 +2,7 @@
   home.packages = with pkgs; [
     dolphin-emu-beta
     lutris
-#     beatsabermodmanager
+    personal.bs-manager
   ];
 }
 

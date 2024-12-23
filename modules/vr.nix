@@ -1,5 +1,5 @@
-{ config, lib, pkgs, ...}: let cfg = config.vr; in {
-  options.vr = {
+{ config, lib, pkgs, ...}: let cfg = config.gaming.vr; in {
+  options.gaming.vr = {
     enable = lib.mkEnableOption "Enable VR for this system";
     wivrn = {
       enable = lib.mkEnableOption "Enable wivrn";
@@ -56,6 +56,9 @@
         };
       };
     };
-    environment.systemPackages = cfg.wivrn.overlay;
+    environment.systemPackages = cfg.wivrn.overlay ++ [
+      pkgs.opencomposite
+      pkgs.monado-vulkan-layers
+    ];
   };
 }

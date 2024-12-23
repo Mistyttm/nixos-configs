@@ -1,5 +1,5 @@
 { ... }: {
   imports = [
-    ./vr.nix
+    ./gaming.nix
   ];
 }
