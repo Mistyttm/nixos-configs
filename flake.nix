@@ -62,6 +62,7 @@
       puppypc = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
+          ./modules/default.nix
           ./hosts/puppypc/configuration.nix
 
           home-manager.nixosModules.home-manager
