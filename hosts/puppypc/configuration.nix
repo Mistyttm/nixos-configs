@@ -7,7 +7,6 @@
       ../../global-configs/system/default.nix
       ../../global-configs/users/default.nix
       ../../global-configs/fonts/fonts.nix
-      ./configs/programs/VR/default.nix
       ../../global-configs/system/nixoptions.nix
     ];
 
@@ -24,6 +23,30 @@
   };
 
   services.flatpak.enable = true;
+
+  gaming = {
+    enable = true;
+    user = "misty";
+    vr = {
+      enable = true;
+      wivrn = {
+        enable = true;
+        package = pkgs.wivrn;
+        encoder = "nvenc";
+        overlay = [ pkgs.wlx-overlay-s ];
+      };
+    };
+    steam = {
+      enable = true;
+    };
+    minecraft = {
+      enable = true;
+      jdkOverrides = with pkgs; [ jdk8 jdk17 jdk21 ];
+    };
+    dolphin = true;
+    lutris = true;
+    gamemode = true;
+  };
 
   xdg.portal = {
     enable = true;
@@ -50,7 +73,6 @@
     systemPackages = with pkgs; [
       opencomposite
       monado-vulkan-layers
-      ghostty.packages.x86_64-linux.default
     ];
     shellAliases = {
       rebuild = "sudo nixos-rebuild switch --flake .#puppypc";
