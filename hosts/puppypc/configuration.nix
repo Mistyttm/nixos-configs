@@ -50,6 +50,7 @@
     systemPackages = with pkgs; [
       opencomposite
       monado-vulkan-layers
+      ghostty.packages.x86_64-linux.default
     ];
     shellAliases = {
       rebuild = "sudo nixos-rebuild switch --flake .#puppypc";
