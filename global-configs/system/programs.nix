@@ -12,28 +12,6 @@
     sddm-sugar-dark
   ];
 
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-    localNetworkGameTransfers.openFirewall = true;
-    extraPackages = with pkgs; [
-      mono
-      mono4
-      mono5
-    ];
-    gamescopeSession = {
-      enable = true;
-    };
-#     extraCompatPackages = with pkgs; [
-#       proton-ge-bin
-#     ];
-  };
-
-  programs.gamemode = {
-    enable = true;
-  };
-
   programs.zsh.enable = true;
   users.users.misty.shell = pkgs.zsh;
 }
