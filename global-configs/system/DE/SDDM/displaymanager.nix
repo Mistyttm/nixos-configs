@@ -6,7 +6,16 @@
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm = {
     enable = true;
-    # theme = "${pkgs.sddm-sugar-dark}/share/sddm/themes/sugar-dark";
+    extraPackages = with pkgs; [
+      sddm-kcm
+    ];
+    settings = {
+      AutoLogin = {
+        Session = "plasma.desktop";
+        User = "misty";
+      };
+    };
+    autoNumlock = true;
   };
 }
 
