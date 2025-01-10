@@ -5,7 +5,7 @@
     protontricks
     ffmpeg
     piper
-    gimp
+#     gimp
     blockbench
     file
     nil
