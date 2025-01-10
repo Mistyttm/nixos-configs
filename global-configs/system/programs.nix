@@ -8,8 +8,9 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    qemu
+#     qemu
     sddm-sugar-dark
+    plasma-browser-integration
   ];
 
   programs.zsh.enable = true;

@@ -21,7 +21,7 @@
     teams-for-linux
     cabextract
     rpi-imager
-    quickemu
+#     quickemu
     python3
   ];
   programs.java.enable = true;
