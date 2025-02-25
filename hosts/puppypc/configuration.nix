@@ -22,7 +22,7 @@
     };
   };
 
-  services.flatpak.enable = true;
+  services.flatpak.enable = false;
 
   gaming = {
     enable = true;
