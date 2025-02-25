@@ -16,5 +16,6 @@
     protontricks
     fritzing
     scrcpy
+    personal.bs-manager
   ];
 }
