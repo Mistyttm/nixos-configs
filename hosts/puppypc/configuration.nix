@@ -73,6 +73,8 @@
     systemPackages = with pkgs; [
       opencomposite
       monado-vulkan-layers
+
+      kdotool
     ];
     shellAliases = {
       rebuild = "sudo nixos-rebuild switch --flake .#puppypc";
