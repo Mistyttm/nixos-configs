@@ -42,6 +42,8 @@
     dolphin = mkEnableOption "Enable Dolphin Emulator";
     lutris = mkEnableOption "Enable Lutris";
     gamemode = mkEnableOption "Enable GameMode";
+    cloneHero = mkEnableOption "Enable Clone Hero";
+    YARG = mkEnableOption "Enable YARG";
   };
   config = mkIf cfg.enable {
     # NixOS options
@@ -59,11 +61,11 @@
         } else {
           OBS_VKCAPTURE = true;
         };
-        extraLibraries = p: with p; [
-          mono
-          mono4
-          mono5
-        ];
+#         extraLibraries = p: with p; [
+#           mono
+#           mono4
+#           mono5
+#         ];
       };
     };
 
@@ -80,6 +82,8 @@
         (mkIf cfg.steam.enable pkgs.protonup-qt)
         (mkIf cfg.dolphin pkgs.dolphin-emu-beta)
         (mkIf cfg.lutris pkgs.lutris)
+        (mkIf cfg.cloneHero pkgs.clonehero)
+        (mkIf cfg.YARG pkgs.yarg)
       ];
     };
   };

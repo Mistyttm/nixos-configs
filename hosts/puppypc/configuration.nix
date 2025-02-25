@@ -46,6 +46,8 @@
     dolphin = true;
     lutris = true;
     gamemode = true;
+    cloneHero = true;
+    YARG = true;
   };
 
   xdg.portal = {
