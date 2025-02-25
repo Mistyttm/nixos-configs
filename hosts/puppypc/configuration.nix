@@ -33,7 +33,7 @@
         enable = true;
         package = pkgs.wivrn;
         encoder = "nvenc";
-#         overlay = [ pkgs.wlx-overlay-s ];
+        overlay = [ pkgs.wlx-overlay-s ];
       };
     };
     steam = {
