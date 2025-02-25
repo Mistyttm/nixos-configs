@@ -25,10 +25,6 @@
     mullvad-vpn = {
       enable = true;
     };
-
-    touchegg = {
-      enable = true;
-    };
   };
 
   programs.noisetorch.enable = true;
