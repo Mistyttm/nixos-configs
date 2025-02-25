@@ -23,6 +23,7 @@
     rpi-imager
 #     quickemu
     python3
+    nil
   ];
   programs.java.enable = true;
   fonts.fontconfig.enable = true;
