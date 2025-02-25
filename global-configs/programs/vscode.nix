@@ -46,6 +46,7 @@ programs.vscode = {
         bradlc.vscode-tailwindcss
         vitest.explorer
         redhat.vscode-yaml
+        nhedger.git-reminder
     ];
     userSettings = {
             "editor.suggestSelection" = "first";
