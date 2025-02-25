@@ -1,6 +1,6 @@
 { ... }: {
     programs.auto-cpufreq = {
-        enable = true;
+        enable = false;
         settings = {
             charger = {
                 governor = "performance";
