@@ -102,6 +102,7 @@
       mistylappytappy = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
+          ./modules/default.nix
           ./hosts/mistylappytappy/configuration.nix
 
           home-manager.nixosModules.home-manager

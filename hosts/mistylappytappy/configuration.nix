@@ -26,6 +26,7 @@
     vr.enable = false;
     steam = {
       enable = true;
+      portable = true;
     };
     minecraft = {
       enable = true;
