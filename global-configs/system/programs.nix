@@ -10,7 +10,7 @@
   environment.systemPackages = with pkgs; [
 #     qemu
     sddm-sugar-dark
-    plasma-browser-integration
+    kdePackages.plasma-browser-integration
   ];
 
   programs.zsh.enable = true;

@@ -10,12 +10,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    personal-nixpkgs = {
-      url = "github:Mistyttm/nixpkgs/add-bs-manager";
-    };
-    wivrn-update = {
-      url = "github:PassiveLemon/nixpkgs/wivrn232";
-    };
+    nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
     # SDDM theme (DOESNT WORK)
     sddm-sugar-candy-nix = {
       url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
@@ -47,22 +42,9 @@
     ];
   };
 
-  outputs = inputs@{ nixpkgs, personal-nixpkgs, home-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, nix-minecraft, nix-vscode-extensions, auto-cpufreq, wivrn-update, ... }: let
+  outputs = inputs@{ nixpkgs, nixpkgs-xr, home-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, nix-minecraft, nix-vscode-extensions, auto-cpufreq, ... }: let
       system = "x86_64-linux";
       vsc-extensions = nix-vscode-extensions.extensions.${system};
-      overlay-personal = final: prev: {
-        personal = import personal-nixpkgs {
-          inherit system;
-          config.allowUnfree = true;
-        };
-      };
-      overlay-wivrn = final: prev: {
-        update = import wivrn-update {
-          inherit system;
-          config.allowUnfree = true;
-          config.cudaSupport = true;
-        };
-      };
     in {
     nixpkgs.config.cudaSupport = true;
     nixosConfigurations = {
@@ -75,6 +57,7 @@
           home-manager.nixosModules.home-manager
           sddm-sugar-candy-nix.nixosModules.default
           sops-nix.nixosModules.sops
+#           nixpkgs-xr.nixosModules.nixpkgs-xr
           {
             home-manager = {
               useGlobalPkgs = true;
@@ -92,8 +75,6 @@
             nixpkgs = {
               overlays = [
                 sddm-sugar-candy-nix.overlays.default
-                overlay-personal
-                overlay-wivrn
               ];
             };
           }

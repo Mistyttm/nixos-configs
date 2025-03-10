@@ -14,6 +14,7 @@
 
   boot.supportedFilesystems = [ "ntfs" ];
 
+
   programs.gnupg = {
     agent = {
       enable = true;

@@ -85,6 +85,10 @@
         (mkIf cfg.cloneHero pkgs.clonehero)
         (mkIf cfg.YARG pkgs.yarg)
       ];
+
+      programs.mangohud = {
+        enable = cfg.gamemode;
+      };
     };
   };
 }

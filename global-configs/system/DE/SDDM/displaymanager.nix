@@ -7,7 +7,7 @@
   services.displayManager.sddm = {
     enable = true;
     extraPackages = with pkgs; [
-      sddm-kcm
+      kdePackages.sddm-kcm
     ];
     settings = {
       AutoLogin = {
