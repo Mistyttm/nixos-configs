@@ -24,6 +24,8 @@
 #     quickemu
     python3
     nil
+    kdePackages.skanpage
+    kdePackages.kio
   ];
   programs.java.enable = true;
   fonts.fontconfig.enable = true;
