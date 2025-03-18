@@ -1,5 +1,6 @@
 { ... }: {
   imports = [
-    ./gaming.nix
+    ./nixos/default.nix
+#     ./home-manager/default.nix
   ];
 }
