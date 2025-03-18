@@ -36,7 +36,7 @@
       enable = cfg.wivrn.enable;
       package = (cfg.wivrn.package.overrideAttrs (old:  {
         cmakeFlags = old.cmakeFlags ++ [
-          (lib.cmakefeature "OPENCOMPOSITE_SEARCH_PATH" "${pkgs.opencomposite}/lib/opencomposite")
+          (lib.cmakeFeature "OPENCOMPOSITE_SEARCH_PATH" "${pkgs.opencomposite}/lib/opencomposite")
         ];
       }));
       openFirewall = true;
