@@ -5,7 +5,7 @@
     [
       ./system/default.nix
       ../../global-configs/system/default.nix
-      ../../global-configs/users/default.nix
+      ../../global-configs/users/misty.nix
       ../../global-configs/fonts/fonts.nix
       ../../global-configs/system/nixoptions.nix
     ];

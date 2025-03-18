@@ -5,7 +5,8 @@
     [
       ./system/default.nix
       ../../global-configs/system/default.nix
-      ../../global-configs/users/default.nix
+      ../../global-configs/users/misty.nix
+      ../../global-configs/users/wagtailpsychology.nix
       ../../global-configs/fonts/fonts.nix
     ];
   networking.hostName = "mistylappytappy";
