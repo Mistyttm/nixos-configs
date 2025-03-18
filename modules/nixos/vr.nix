@@ -34,7 +34,11 @@
   config = lib.mkIf cfg.enable {
     services.wivrn = {
       enable = cfg.wivrn.enable;
-      package = cfg.wivrn.package;
+      package = (cfg.wivrn.package.overrideAttrs (old:  {
+        cmakeFlags = old.cmakeFlags ++ [
+          (lib.cmakefeature "OPENCOMPOSITE_SEARCH_PATH" "${pkgs.opencomposite}/lib/opencomposite")
+        ];
+      }));
       openFirewall = true;
       defaultRuntime = true;
       autoStart = true;
