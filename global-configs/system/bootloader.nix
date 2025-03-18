@@ -1,27 +1,28 @@
-{ config, lib, pkgs, ... }: {
+{ pkgs, ... }: {
 
   # Bootloader.
   boot = {
+    kernelPackages = pkgs.linuxPackages_zen;
     initrd = {
       systemd = {
         enable = true;
       };
     };
 
-#     plymouth = {
-#       enable = true;
-#       theme = "cuts";
-#       themePackages = with pkgs; [
-#         # By default we would install all themes
-#         (adi1090x-plymouth-themes.override {
-#           selected_themes = [ "cuts" ];
-#         })
-#       ];
-#       logo = pkgs.fetchurl {
-#         url = "https://nixos.org/logo/nixos-hires.png";
-#         sha256 = "1ivzgd7iz0i06y36p8m5w48fd8pjqwxhdaavc0pxs7w1g7mcy5si";
-#       };
-#     };
+    plymouth = {
+      enable = true;
+      theme = "cuts";
+      themePackages = with pkgs; [
+        # By default we would install all themes
+        (adi1090x-plymouth-themes.override {
+          selected_themes = [ "cuts" ];
+        })
+      ];
+      logo = pkgs.fetchurl {
+        url = "https://nixos.org/logo/nixos-hires.png";
+        sha256 = "1ivzgd7iz0i06y36p8m5w48fd8pjqwxhdaavc0pxs7w1g7mcy5si";
+      };
+    };
 
     # Enable "Silent Boot"
     consoleLogLevel = 0;
