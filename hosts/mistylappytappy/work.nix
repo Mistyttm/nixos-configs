@@ -5,7 +5,11 @@
 
   imports = [
     ../../global-configs/shell/default.nix
-    ../../global-configs/programs/default.nix
+    ../../global-configs/programs/browsers.nix
+    ../../global-configs/programs/cli.nix
+    ../../global-configs/programs/spotify.nix
+    ../../global-configs/programs/thunderbird.nix
+    ../../global-configs/programs/xdg.nix
     ./configs/programs/default.nix
     ./configs/gnupg/gnupg.nix
   ];
