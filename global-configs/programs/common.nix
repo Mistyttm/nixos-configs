@@ -15,8 +15,6 @@
     birdtray
     libreoffice
     zenity
-#     plasma5Packages.kdeconnect-kde
-    kdePackages.kalk
     libnotify
     teams-for-linux
     cabextract
@@ -24,7 +22,6 @@
 #     quickemu
     python3
     nil
-    kdePackages.skanpage
   ];
   programs.java.enable = true;
   fonts.fontconfig.enable = true;

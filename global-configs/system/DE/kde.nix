@@ -21,6 +21,8 @@
     signond
     accounts-qt
     signon-kwallet-extension
+    kalk
+    skanpages
   ];
 
   # Configure keymap in X11
