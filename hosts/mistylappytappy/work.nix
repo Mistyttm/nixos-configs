@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   home.username = "wagtailpsychology";
   home.homeDirectory = "/home/wagtailpsychology";
@@ -8,11 +8,25 @@
     ../../global-configs/programs/browsers.nix
     ../../global-configs/programs/cli.nix
     ../../global-configs/programs/spotify.nix
-    ../../global-configs/programs/thunderbird.nix
     ../../global-configs/programs/xdg.nix
-    ./configs/programs/default.nix
+    ./configs/programs/browsers.nix
+    ./configs/programs/git.nix
     ./configs/gnupg/gnupg.nix
   ];
+
+  home.packages = with pkgs; [
+    libsecret
+    thunderbird
+    libreoffice
+    nil
+  ];
+
+  fonts.fontconfig.enable = true;
+
+  services.kdeconnect = {
+    enable = true;
+    indicator = true;
+  };
 
   home.stateVersion = "24.11";
 
