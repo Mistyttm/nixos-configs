@@ -10,6 +10,19 @@
     konsole
   ];
 
+  environment.systemPackages = with pkgs.kdePackages; [
+    plasma-browser-integration
+    kio
+    kio-fuse
+    kio-extras
+    kio-gdrive
+    kaccounts-integration
+    kaccounts-providers
+    signond
+    accounts-qt
+    signon-kwallet-extension
+  ];
+
   # Configure keymap in X11
   services.xserver = {
     xkb = {
