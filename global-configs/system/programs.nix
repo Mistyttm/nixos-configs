@@ -11,6 +11,16 @@
 #     qemu
     sddm-sugar-dark
     kdePackages.plasma-browser-integration
+    kdePackages.kio
+    kdePackages.kio-fuse
+    kdePackages.kio-extras
+    kdePackages.kio-gdrive
+    kdePackages.kaccounts-integration
+    kdePackages.kaccounts-providers
+    kdePackages.signond
+    kdePackages.accounts-qt
+    kdePackages.signon-kwallet-extension
+    libaccounts-glib
   ];
 
   programs.zsh.enable = true;
