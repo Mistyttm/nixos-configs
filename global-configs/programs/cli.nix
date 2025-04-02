@@ -12,5 +12,6 @@
     age
     sops
     ookla-speedtest
+    rar
   ];
 }
