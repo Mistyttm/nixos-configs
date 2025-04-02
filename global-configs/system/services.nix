@@ -27,6 +27,7 @@
 
     earlyoom = {
       enable = true;
+      enableNotifications = true;
     };
 
     pcscd = {
