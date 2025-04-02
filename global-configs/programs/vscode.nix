@@ -153,6 +153,7 @@ programs.vscode = {
                 "typescript.updateImportsOnFileMove.enabled" = "always";
                 "githubPullRequests.pullBranch" = "never";
                 "direnv.restart.automatic" = true;
+                "latex-workshop.formatting.latex" = "latexindent";
         };
         keybindings = [
                 {
