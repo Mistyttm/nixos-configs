@@ -76,7 +76,7 @@
     systemPackages = with pkgs; [
       opencomposite
       monado-vulkan-layers
-
+      texliveFull
       kdotool
     ];
     shellAliases = {
