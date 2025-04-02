@@ -11,6 +11,7 @@
 #     qemu
     sddm-sugar-dark
     libaccounts-glib
+    nil
   ];
 
   programs.zsh.enable = true;
