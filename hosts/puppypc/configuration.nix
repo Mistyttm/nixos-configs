@@ -63,14 +63,14 @@
 
   virtualisation.waydroid.enable = true;
 
-  virtualisation.virtualbox = {
-    host.enable = true;
-    guest ={
-      enable = true;
-      clipboard = true;
-      dragAndDrop = true;
-    };
-  };
+#   virtualisation.virtualbox = {
+#     host.enable = true;
+#     guest ={
+#       enable = true;
+#       clipboard = true;
+#       dragAndDrop = true;
+#     };
+#   };
 
   environment = {
     systemPackages = with pkgs; [
