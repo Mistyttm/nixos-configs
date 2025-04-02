@@ -19,7 +19,7 @@
     teams-for-linux
     cabextract
     rpi-imager
-#     quickemu
+    quickemu
     python3
     nil
   ];
