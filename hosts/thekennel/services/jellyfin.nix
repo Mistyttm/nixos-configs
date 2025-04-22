@@ -20,6 +20,6 @@
   fileSystems."/mnt/media" = {
     device = "//192.168.0.170/Public/Media";
     fsType = "cifs";
-    options = [ "username=eddie" "passwordfile=${config.sops.secrets."samba-key".path}" "x-systemd.automount" "noauto" ];
+    options = [ "passwordfile=${config.sops.secrets."samba-key".path}" "x-systemd.automount" "noauto" ];
   };
 }
