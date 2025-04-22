@@ -27,7 +27,7 @@
     fsType = "cifs";
     options = [
       "username=${builtins.readFile config.sops.secrets."nas-username".path}"
-      "passwordfile=${builtins.readFile config.sops.secrets."nas-password".path}" 
+      "password=${builtins.readFile config.sops.secrets."nas-password".path}" 
       "uid=1000"
       "gid=100" 
       "iocharset=utf8"
