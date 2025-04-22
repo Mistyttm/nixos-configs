@@ -48,7 +48,7 @@
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
-    pinetryPackage = pkgs.pinetry-gnome3;
+    pinentryPackage = pkgs.pinentry-gnome3;
   };
 
   system.stateVersion = "25.05";
