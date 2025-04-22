@@ -2,13 +2,25 @@
 {
   sops.secrets."nas-username" = {
     sopsFile = ../../secrets/samba.yaml;
-    owner = config.users.users.jellyfin.name;
-    group = config.users.users.jellyfin.group;
+    owner = "root";
   };
   sops.secrets."nas-password" = {
     sopsFile = ../../secrets/samba.yaml;
-    owner = config.users.users.jellyfin.name;
-    group = config.users.users.jellyfin.group;
+    owner = "root";
+  };
+
+  # Systemd service to generate /run/media-credentials at runtime
+  systemd.services."generate-media-creds" = {
+    wantedBy = [ "local-fs.target" ];
+    before = [ "mnt-media.mount" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = pkgs.writeShellScript "gen-creds" ''
+        install -m 600 -o root -g root /dev/null /run/media-credentials
+        echo "username=$(cat ${config.sops.secrets."nas-username".path})" > /run/media-credentials
+        echo "password=$(cat ${config.sops.secrets."nas-password".path})" >> /run/media-credentials
+      '';
+    };
   };
 
   services.jellyfin = {
@@ -26,8 +38,7 @@
     device = "//192.168.0.170/Public/Media";
     fsType = "cifs";
     options = [
-      "username=${builtins.readFile config.sops.secrets."nas-username".path}"
-      "password=${builtins.readFile config.sops.secrets."nas-password".path}" 
+      "credentials=/run/media-credentials" 
       "uid=1000"
       "gid=100" 
       "iocharset=utf8"
