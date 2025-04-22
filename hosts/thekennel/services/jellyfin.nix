@@ -1,6 +1,11 @@
 { pkgs, config, ... }: 
 {
-  sops.secrets."samba-key" = {
+  sops.secrets."nas-username" = {
+    sopsFile = ../../secrets/samba.yaml;
+    owner = config.users.users.jellyfin.name;
+    group = config.users.users.jellyfin.group;
+  };
+  sops.secrets."nas-password" = {
     sopsFile = ../../secrets/samba.yaml;
     owner = config.users.users.jellyfin.name;
     group = config.users.users.jellyfin.group;
@@ -20,6 +25,13 @@
   fileSystems."/mnt/media" = {
     device = "//192.168.0.170/Public/Media";
     fsType = "cifs";
-    options = [ "passwordfile=${config.sops.secrets."samba-key".path}" "x-systemd.automount" "noauto" ];
+    options = [
+      "username=${builtins.readFile config.sops.secrets."nas-username".path}"
+      "passwordfile=${builtins.readFile config.sops.secrets."nas-password".path}" 
+      "uid=1000"
+      "gid=100" 
+      "iocharset=utf8"
+      "vers=3.0"
+    ];
   };
 }
