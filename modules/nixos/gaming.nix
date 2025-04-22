@@ -52,6 +52,10 @@
       remotePlay.openFirewall = true;
       dedicatedServer.openFirewall = true;
       localNetworkGameTransfers.openFirewall = true;
+      extraPackages = with pkgs; [
+          gamescope
+          mangohud
+      ];
       package = pkgs.steam.override {
         extraEnv = if cfg.steam.portable then {
           __NV_PRIME_RENDER_OFFLOAD = 1;

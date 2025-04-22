@@ -63,7 +63,7 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               backupFileExtension = "backup";
-              extraSpecialArgs = { inherit spicetify-nix vsc-extensions; };
+              extraSpecialArgs = { inherit spicetify-nix; };
               users = {
                 misty = import ./hosts/puppypc/home.nix;
               };
@@ -75,6 +75,7 @@
             nixpkgs = {
               overlays = [
                 sddm-sugar-candy-nix.overlays.default
+                nix-vscode-extensions.overlays.default
               ];
             };
           }
@@ -94,7 +95,7 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               backupFileExtension = "backup";
-              extraSpecialArgs = { inherit spicetify-nix vsc-extensions; };
+              extraSpecialArgs = { inherit spicetify-nix; };
               users = {
                 misty = import ./hosts/mistylappytappy/home.nix;
                 wagtailpsychology = import ./hosts/mistylappytappy/work.nix;
@@ -106,6 +107,7 @@
             nixpkgs = {
               overlays = [
                 sddm-sugar-candy-nix.overlays.default
+                nix-vscode-extensions.overlays.default
               ];
             };
           }

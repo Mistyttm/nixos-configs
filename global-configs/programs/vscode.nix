@@ -1,11 +1,11 @@
-{ pkgs, vsc-extensions, ... }: {
+{ pkgs, ... }: {
 programs.vscode = {
     enable = true;
     package = pkgs.vscode;
     profiles.default = {
         enableUpdateCheck = false;
         enableExtensionUpdateCheck = true;
-        extensions = with vsc-extensions.vscode-marketplace; [
+        extensions = with pkgs.vscode-marketplace; [
                 formulahendry.auto-rename-tag
                 aaron-bond.better-comments
                 matthiasschedel.bibtex-manager
@@ -19,8 +19,8 @@ programs.vscode = {
                 waderyan.gitblame
                 donjayamanne.githistory
                 github.vscode-github-actions
-#                 github.copilot
-#                 github.copilot-chat
+                github.copilot
+                github.copilot-chat
                 github.vscode-pull-request-github
                 george-alisson.html-preview-vscode
                 ecmel.vscode-html-css
@@ -38,16 +38,20 @@ programs.vscode = {
                 christian-kohler.path-intellisense
                 esbenp.prettier-vscode
                 yoavbls.pretty-ts-errors
-#                 ms-python.vscode-pylance
-#                 ms-python.python
-#                 ms-python.debugpy
-#                 ms-vscode-remote.remote-ssh
-#                 ms-vscode-remote.remote-ssh-edit
-#                 ms-vscode.remote-explorer
+                ms-python.vscode-pylance
+                ms-python.python
+                ms-python.debugpy
+                ms-vscode-remote.remote-ssh
+                ms-vscode-remote.remote-ssh-edit
+                ms-vscode.remote-explorer
                 bradlc.vscode-tailwindcss
                 vitest.explorer
                 redhat.vscode-yaml
                 nhedger.git-reminder
+                ritwickdey.liveserver
+                kreativ-software.csharpextensions
+#                 ms-dotnettools.csdevkit
+                ms-dotnettools.csharp
         ];
         userSettings = {
                 "editor.suggestSelection" = "first";
@@ -68,8 +72,29 @@ programs.vscode = {
                 "workbench.iconTheme" = "material-icon-theme";
                 "explorer.confirmDragAndDrop" = false;
                 "cSpell.userWords" = ["dotenv" "Emmey" "pjson"];
+                 "[css]" = {
+                        "editor.defaultFormatter" = "esbenp.prettier-vscode";
+                };
+                "[javascript]" = {
+                        "editor.defaultFormatter" = "esbenp.prettier-vscode";
+                };
                 "[json]" = {
                         "editor.defaultFormatter" = "esbenp.prettier-vscode";
+                };
+                "[markdown]" = {
+                        "editor.defaultFormatter" = "yzhang.markdown-all-in-one";
+                };
+                "[python]" = {
+                        "editor.formatOnType" = true;
+                };
+                "[typescript]" = {
+                        "editor.defaultFormatter" = "esbenp.prettier-vscode";
+                };
+                "[typescriptreact]" = {
+                        "editor.defaultFormatter" = "esbenp.prettier-vscode";
+                };
+                "[html]" = {
+                "editor.defaultFormatter" = "esbenp.prettier-vscode";
                 };
                 "workbench.editorAssociations" = {
                         "*.jpg" = "luna.editor";
@@ -97,16 +122,7 @@ programs.vscode = {
                         "javascript" = false;
                 };
                 "files.eol" = "\n";
-                "[python]" = {
-                        "editor.formatOnType" = true;
-                };
-                "[markdown]" = {
-                        "editor.defaultFormatter" = "yzhang.markdown-all-in-one";
-                };
                 "git.openRepositoryInParentFolders" = "never";
-                "[javascript]" = {
-                        "editor.defaultFormatter" = "esbenp.prettier-vscode";
-                };
                 "prettier.bracketSameLine" = true;
                 "prettier.tabWidth" = 4;
                 "sonarlint.rules" = {
@@ -122,9 +138,6 @@ programs.vscode = {
                 "editor.formatOnSave" = true;
                 "editor.formatOnSaveMode" = "modificationsIfAvailable";
                 "editor.linkedEditing" = true;
-                "[css]" = {
-                        "editor.defaultFormatter" = "esbenp.prettier-vscode";
-                };
                 "terminal.integrated.fontFamily" = "MesloLGM Nerd Font mono";
                 "workbench.editor.empty.hint" = "hidden";
                 "workbench.colorTheme" = "Dracula Theme";
@@ -132,13 +145,7 @@ programs.vscode = {
                 "javascript.inlayHints.functionLikeReturnTypes.enabled" = true;
                 "javascript.inlayHints.parameterNames.enabled" = "all";
                 "workbench.sideBar.location" = "right";
-                "[typescriptreact]" = {
-                        "editor.defaultFormatter" = "esbenp.prettier-vscode";
-                };
                 "javascript.updateImportsOnFileMove.enabled" = "always";
-                "[typescript]" = {
-                        "editor.defaultFormatter" = "esbenp.prettier-vscode";
-                };
                 "nix.enableLanguageServer" = true;
                 "nix.formatterPath" = "nixfmt";
                 "nix.serverSettings" = {
@@ -154,6 +161,7 @@ programs.vscode = {
                 "githubPullRequests.pullBranch" = "never";
                 "direnv.restart.automatic" = true;
                 "latex-workshop.formatting.latex" = "latexindent";
+                "liveServer.settings.donotVerifyTags" = true;
         };
         keybindings = [
                 {

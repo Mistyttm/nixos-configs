@@ -5,7 +5,7 @@
     protontricks
     ffmpeg
     piper
-#     gimp
+    gimp
     blockbench
     file
     nil
@@ -14,7 +14,6 @@
     winetricks
     bottles
     protontricks
-    fritzing
     scrcpy
     bs-manager
   ];

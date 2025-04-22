@@ -3,7 +3,7 @@
 #     zed-editor
     pkg-config
     openssl
-    godot_4
+#     godot_4
     python3
   ];
 

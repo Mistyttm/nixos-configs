@@ -78,6 +78,7 @@
       monado-vulkan-layers
       texliveFull
       kdotool
+      unityhub
     ];
     shellAliases = {
       rebuild = "sudo nixos-rebuild switch --flake .#puppypc";
