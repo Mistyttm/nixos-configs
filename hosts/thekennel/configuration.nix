@@ -33,6 +33,7 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.cudaSupport = true;
 
   programs.nix-ld.enable = true;
 
