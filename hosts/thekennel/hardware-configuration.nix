@@ -26,7 +26,7 @@
   
   fileSystems."/mnt/media" = 
     {
-      device = "//192.168.0.163/Public/Media";
+      device = "//192.168.0.170/Public/Media";
       fsType = "cifs";
       options = [
         "username=jellyfin"
