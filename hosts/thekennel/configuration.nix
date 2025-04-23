@@ -9,8 +9,9 @@
       ../../global-configs/system/networking/ssh.nix
       ../../global-configs/system/nixoptions.nix
       ../../global-configs/system/virtualisation.nix
-      ../thekennel/services/jellyfin.nix
-      ../thekennel/system/nvidia.nix
+      ./services/jellyfin.nix
+      ./system/nvidia.nix
+      ./services/arr/default.nix
     ];
 
   # Bootloader.
