@@ -24,7 +24,7 @@
     # Experimental and only works on modern Nvidia GPUs (Turing or newer).
     powerManagement.finegrained = false;
 
-    open = true;
+    open = false;
 
     prime = {
         intelBusId = "PCI:0:2:0";
@@ -37,6 +37,6 @@
 
     nvidiaSettings = true;
 
-    package = config.boot.kernelPackages.nvidiaPackages.latest;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 }

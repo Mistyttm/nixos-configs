@@ -1,11 +1,10 @@
 { pkgs, ... }: {
   services.radarr = {
     enable = true;
-    package = pkgs.sonarr;
+    package = pkgs.radarr;
     openFirewall = true;
-    user = "sonarr";
-    group = "sonarr";
-    dataDir = "/var/lib/sonarr";
-    configDir = "/var/lib/sonarr/config";
+    user = "radarr";
+    group = "radarr";
+    dataDir = "/var/lib/radarr";
   };
 }
