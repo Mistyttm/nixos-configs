@@ -23,6 +23,20 @@
       fsType = "vfat";
       options = [ "fmask=0077" "dmask=0077" ];
     };
+  
+  fileSystems."/mnt/media" = 
+    {
+      device = "//192.168.0.163/Public/Media";
+      fsType = "cifs";
+      options = [
+        "username=jellyfin"
+        "password=jellyfin1!"
+        "x-systemd.automount"
+        "noauto"
+        "nofail"
+        "users"
+      ];
+    };
 
   swapDevices = [ ];
 
