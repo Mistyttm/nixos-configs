@@ -56,6 +56,11 @@
     pinentryPackage = pkgs.pinentry-gnome3;
   };
 
+  services.logind = {
+    lidSwitch = "ignore";
+    lidSwitchExternalPower = "ignore";
+  };
+
   system.stateVersion = "25.05";
 
 }
