@@ -16,7 +16,7 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.supportedFilesystems = [ "cifs" ];
+  # boot.supportedFilesystems = [ "cifs" ];
 
   networking.hostName = "thekennel"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -25,7 +25,7 @@
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+  # sops.age.keyFile = "/var/lib/sops-nix/key.txt";
 
   # Enable networking
   networking.networkmanager.enable = true;
