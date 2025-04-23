@@ -1,11 +1,11 @@
 { pkgs, config, ... }: 
 {
   sops.secrets."nas-username" = {
-    sopsFile = ../../secrets/samba.yaml;
+    sopsFile = ../../secrets/smb-creds.yaml;
     owner = "root";
   };
   sops.secrets."nas-password" = {
-    sopsFile = ../../secrets/samba.yaml;
+    sopsFile = ../../secrets/smb-creds.yaml;
     owner = "root";
   };
 
