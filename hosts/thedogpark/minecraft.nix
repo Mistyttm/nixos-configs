@@ -7,7 +7,7 @@ in {
       eula = true;
       openFirewall = true;
       servers.skyship = {
-        enable = true;
+        enable = false;
         autoStart = true;
         enableReload = true;
         whitelist = {
