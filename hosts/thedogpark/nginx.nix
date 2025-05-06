@@ -78,6 +78,14 @@ in{
             proxy_http_version 1.1;
           '';
         };
+
+        locations."/.well-known/matrix/client" = {
+          extraConfig = ''
+            return 200 '{"m.homeserver": {"base_url": "https://mistyttm.dev"}}';
+            default_type application/json;
+            add_header Access-Control-Allow-Origin *;
+          '';
+        };
       };
     };
 }
