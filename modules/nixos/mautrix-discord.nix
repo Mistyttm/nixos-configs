@@ -26,7 +26,7 @@ in {
 					appservice = {
 						hostname = "0.0.0.0";
 						port = 29334;
-						address = "http://localhost:${toString port}"
+						address = "http://localhost:${toString port}";
 
 						database = {
 							type = "postgres";
