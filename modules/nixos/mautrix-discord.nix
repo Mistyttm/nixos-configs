@@ -82,7 +82,7 @@ in {
 						prefix_webhook_messages = false;
 						enable_webhook_avatars = true;
 						use_discord_cdn_upload = true;
-						cache_media = unencrypted;
+						cache_media = "unencrypted";
 						direct_media = {
 							enabled = false;
 							server_name = "discord-media.example.com";
