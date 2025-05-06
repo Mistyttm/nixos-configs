@@ -97,13 +97,6 @@ in {
 								fps = 25;
 							};
 						};
-						double_puppet_server_map = {
-							"example.com" = "https://example.com";
-						};
-						double_puppet_allow_discovery = false;
-						login_shared_secret_map = {
-							"example.com" = "foobar";
-						};
 						command_prefix = "'!discord'";
 						management_room_text = {
 							welcome =  "Hello, I'm a Discord bridge bot.";
@@ -272,25 +265,33 @@ in {
 			serviceConfig = {
         			User = "mautrix-discord";
         			Group = "mautrix-discord";
-        			Type = "simple";
-        			Restart = "always";
+        			Type = "exec";
+        			Restart = "on-failure";
+				RestartSec = 30;
+				WorkingDirectory = pkgs.mautrix-discord; # necessary for the database migration scripts to be found
+        			ExecStart = ''
+        			  ${pkgs.mautrix-discord}/bin/mautrix-discord \
+        			    --config='${settingsFile}'
+        			'';				
 
         			ProtectSystem = "strict";
         			ProtectHome = true;
         			ProtectKernelTunables = true;
         			ProtectKernelModules = true;
         			ProtectControlGroups = true;
-
+				PrivateDevices = true;
         			PrivateTmp = true;
-        			WorkingDirectory = pkgs.mautrix-discord; # necessary for the database migration scripts to be found
-        			StateDirectory = baseNameOf dataDir;
-        			UMask = "0027";
-        			EnvironmentFile = cfg.environmentFile;
+				RestrictSUIDSGID = true;
+				RestrictRealtime = true;
+				LockPersonality = true;
+				ProtectKernelLogs = true;
+				ProtectHostname = true;
+				PrivateUsers = true;
+				ProtectClock = true;
 
-        			ExecStart = ''
-        			  ${pkgs.mautrix-discord}/bin/mautrix-discord \
-        			    --config='${settingsFile}'
-        			'';
+				SystemCallArchitectures = "native";
+				SystemCallErrorNumber = "EPERM";
+				SystemCallFilter = "@system-service";
 			};
 		};
 	};
