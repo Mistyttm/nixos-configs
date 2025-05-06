@@ -12,7 +12,7 @@
       ./minecraft.nix
       ./nginx.nix
       ./mailserver.nix
-      # ./matrix-synapse.nix
+      ./matrix-synapse.nix
       ../../global-configs/system/virtualisation.nix
     ];
 

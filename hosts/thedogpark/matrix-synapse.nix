@@ -24,13 +24,13 @@ in {
     settings = {
       server_name = "mistyttm.dev";
       public_baseurl = "https://mistyttm.dev";
-      email = {
-        smtp_host = "smtp.yourprovider.com";
-        smtp_port = 587;
-        smtp_user = "noreply@mistyttm.dev";
-        notif_from = "Misty TTM Matrix <noreply@mistyttm.dev>";
-        require_transport_security = true;
-      };
+      # email = {
+      #   smtp_host = "mail.mistyttm.dev";
+      #   smtp_port = 587;
+      #   smtp_user = "noreply@mistyttm.dev";
+      #   notif_from = "Misty TTM Matrix <noreply@mistyttm.dev>";
+      #   require_transport_security = true;
+      # };
     };
   };
 
