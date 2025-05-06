@@ -1,15 +1,15 @@
 { config, ... } :{
   sops.secrets."mail-server-password-hash" = {
     sopsFile = ../../secrets/mail.yaml;
-    owner = config.users.users.vmail.name;
-    group = config.users.users.vmail.group;
+    owner = "virtualMail";
+    group = "virtualMail";
   };
 
   mailserver = {
     enable = true;
-    fqdn = "mail.mmistyttmm.dev";
+    fqdn = "mail.mistyttm.dev";
     domains = [ "mistyttm.dev" ];
-
+    # vmailGroupName = "vmail";
     loginAccounts = {
       "noreply@mistyttm.dev" = {
         hashedPasswordFile = config.sops.secrets."mail-server-password-hash".path;
