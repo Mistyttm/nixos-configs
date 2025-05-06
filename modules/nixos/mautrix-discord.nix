@@ -156,8 +156,8 @@ in {
 						};
 						permissions = {
 							"*" = "relay";
-							"example.com" = "user";
-							"@admin:example.com": "admin";
+						#	"example.com" = "user";
+						#	"@admin:example.com": "admin";
 						};
 					};
 				};
