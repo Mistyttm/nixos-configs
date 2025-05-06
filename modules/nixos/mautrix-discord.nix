@@ -215,4 +215,86 @@ in {
       			};
 		};
 	};
+	config = lib.mkIf cfg.enable {
+		users.user.mautrix-discord = {
+			isSystemUser = true;
+			group = "mautrix-discord";
+			home = dataDir;
+			description = "Mautrix-Discord bridge user";
+		};
+		
+		users.groups.mautrix-discord = { };
+		
+		services.matrix-synapse = lib.mkIf cfg.registerToSynapse {
+			settings.app_service_config_files = [registrationFile];
+		};
+		systemd.services.matrix-synapse = lib.mkIf cfg.registerToSynapse {
+			serviceConfig.SupplementaryGroups = [ "mautrix-discord" ];
+		};
+
+		systemd.services.mautrix-discord = {
+			descripion = "Mautrix-Discord, a Matrix-Discord puppeting/relaybot bridge";
+
+			wantedBy = [ "multi-user.target" ];
+			wants = [ "network-online.target" ] ++ cfg.serviceDependencies;
+			after = [ "network-online.target" ] ++ cfg.serviceDependencies;
+			path = [
+				pkgs.lottieconverter
+				pkgs.ffmpeg-headless
+			];
+			
+			environment.HOME = dataDir;
+
+			preStart = 
+			''
+				# generate the appservice's registration file if absent
+          			if [ ! -f '${registrationFile}' ]; then
+            				${pkgs.mautrix-discord}/bin/mautrix-discord \
+              					--generate-registration \
+              					--config='${settingsFile}' \
+              					--registration='${registrationFile}'
+          			fi
+
+				old_umask=$(umask)
+          			umask 0177
+          			# 1. Overwrite registration tokens in config
+          			#    is set, set it as the login shared secret value for the configured
+          			#    homeserver domain.
+          			${pkgs.yq}/bin/yq -s '.[0].appservice.as_token = .[1].as_token
+          			  | .[0].appservice.hs_token = .[1].hs_token
+          			  | .[0]' \
+          			  '${settingsFile}' '${registrationFile}' > '${settingsFile}.tmp'
+          			mv '${settingsFile}.tmp' '${settingsFile}'
+	
+          			umask $old_umask
+			'';
+
+			serviceConfig = {
+        			User = "mautrix-discord";
+        			Group = "mautrix-discord";
+        			Type = "simple";
+        			Restart = "always";
+
+        			ProtectSystem = "strict";
+        			ProtectHome = true;
+        			ProtectKernelTunables = true;
+        			ProtectKernelModules = true;
+        			ProtectControlGroups = true;
+
+        			PrivateTmp = true;
+        			WorkingDirectory = pkgs.mautrix-discord; # necessary for the database migration scripts to be found
+        			StateDirectory = baseNameOf dataDir;
+        			UMask = "0027";
+        			EnvironmentFile = cfg.environmentFile;
+
+        			ExecStart = ''
+        			  ${pkgs.mautrix-discord}/bin/mautrix-discord \
+        			    --config='${settingsFile}'
+        			'';
+			};
+		};
+	};
+	meta.maintainers = with lib.maintainers; [
+		mistyttm
+	];
 }
