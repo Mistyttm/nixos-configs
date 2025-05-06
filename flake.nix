@@ -31,6 +31,7 @@
       url = "github:AdnanHodzic/auto-cpufreq";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    inputs.simple-nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-20.09";
   };
 
   nixConfig = {
@@ -42,7 +43,7 @@
     ];
   };
 
-  outputs = inputs@{ nixpkgs, nixpkgs-xr, home-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, nix-minecraft, nix-vscode-extensions, auto-cpufreq, ... }: let
+  outputs = inputs@{ nixpkgs, nixpkgs-xr, home-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, nix-minecraft, nix-vscode-extensions, auto-cpufreq, simple-nixos-mailserver, ... }: let
       system = "x86_64-linux";
       vsc-extensions = nix-vscode-extensions.extensions.${system};
     in {
@@ -118,8 +119,8 @@
         modules = [
           ./hosts/thedogpark/configuration.nix
 
-          # make home-manager as a module of nixos
-          # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
+          simple-nixos-mailserver.nixosModule
+
           home-manager.nixosModules.home-manager
           sops-nix.nixosModules.sops
           {

@@ -11,7 +11,8 @@
       ./services.nix
       ./minecraft.nix
       ./nginx.nix
-      ./matrix-synapse.nix
+      ./mailserver.nix
+      # ./matrix-synapse.nix
       ../../global-configs/system/virtualisation.nix
     ];
 
