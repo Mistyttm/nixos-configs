@@ -104,7 +104,7 @@ in {
 							welcome_unconnected = "Use `help` for help or `login` to log in.";
 							additional_help = "";
 						};
-						backfill {
+						backfill = {
 							forward_limits = {
 								initial = {
 									dm = 0;
@@ -144,7 +144,7 @@ in {
 							};
 							rotation = {
 								enable_custom = false;
-								milliseconds: 604800000;
+								milliseconds = 604800000;
 								messages = 100;
 								disable_device_change_key_rotation = false;
 							};
