@@ -117,6 +117,7 @@
       thedogpark = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
+          ./modules/default.nix
           ./hosts/thedogpark/configuration.nix
 
           simple-nixos-mailserver.nixosModule

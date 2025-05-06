@@ -4,6 +4,7 @@
   cfg = config.services.mautrix-discord;
   settingsFormat = pkgs.formats.json { };
   settingsFile = "${dataDir}/config.json";
+  port = 29334;
 in {
   options = {
     services.mautrix-discord = {
@@ -24,7 +25,7 @@ in {
 
           appservice = {
             hostname = "0.0.0.0";
-            port = 29334;
+            port = port;
             address = "http://localhost:${toString port}";
 
             database = {
@@ -208,7 +209,7 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
-    users.user.mautrix-discord = {
+    users.users.mautrix-discord = {
       isSystemUser = true;
       group = "mautrix-discord";
       home = dataDir;
@@ -225,7 +226,7 @@ in {
     };
 
     systemd.services.mautrix-discord = {
-      descripion = "Mautrix-Discord, a Matrix-Discord puppeting/relaybot bridge";
+      description = "Mautrix-Discord, a Matrix-Discord puppeting/relaybot bridge";
 
       wantedBy = [ "multi-user.target" ];
       wants = [ "network-online.target" ] ++ cfg.serviceDependencies;

@@ -1,13 +1,7 @@
 { pkgs, lib, config, ... }: let 
   maybeListener = lib.lists.findFirst (l: l.tls == false) null config.services.matrix-synapse.settings.listeners;
-    synapsePort = if maybeListener == null then 8008 else maybeListener.port;
+  synapsePort = if maybeListener == null then 8008 else maybeListener.port;
 in {
-  sops.secrets."postgresql_discord_password" = {
-        sopsFile = ../../secrets/discordpostgresql.yaml;
-        owner = config.users.users.mautrix-discord.name;
-        group = config.users.users.mautrix-discord.group;
-    };
-
   services.matrix-synapse = {
     enable =true;
     extras = [
@@ -21,6 +15,7 @@ in {
       "url-preview"  # Support for oEmbed URL previews
       "user-search"  # Support internationalized domain names in user-search
     ];
+    enableRegistrationScript = true;
     settings = {
       server_name = "mistyttm.dev";
       public_baseurl = "https://mistyttm.dev";
@@ -34,23 +29,25 @@ in {
     };
   };
 
-  users.user.synapse = {
+  users.users.synapse = {
       isSystemUser = true;
       group = "synapse";
       # home = dataDir;
       description = "Synapse user";
   };
 
+  users.groups.synapse = { };
+
   services.mautrix-discord = {
     enable = true;
     settings = {
       homeserver = {
-        address = "http://localhost:${synapsePort}";
+        address = "http://localhost:${toString synapsePort}";
         domain = "mistyttm.dev";
       };
       appservice = {
         database = {
-          uri = "postgres://mautrix:${config.sops.secrets.postgresql_discord_password.contents}@localhost/mautrix-discord?sslmode=disable";
+          uri = "postgres:///mautrix-discord?host=/run/postgresql&sslmode=disable";
         };
       };
       bridge = {
@@ -70,7 +67,7 @@ in {
     ensureUsers = [
       {
         name = "mautrix-discord";
-        ensurePermissions."DATABASE \"mautrix-discord\"" = "ALL PRIVILEGES";
+        ensureDBOwnership = true;
       }
     ];
   };

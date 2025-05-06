@@ -65,9 +65,12 @@
   };
 
 
-  # List services that you want to enable:
-
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    permittedInsecurePackages = [
+      "olm-3.2.16"
+    ];
+    allowUnfree = true;
+  };
 
 
   # Open ports in the firewall.
