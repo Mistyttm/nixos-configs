@@ -79,6 +79,7 @@
       texliveFull
       kdotool
       unityhub
+      openmw
     ];
     shellAliases = {
       rebuild = "sudo nixos-rebuild switch --flake .#puppypc";
