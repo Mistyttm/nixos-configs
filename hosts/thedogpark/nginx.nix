@@ -2,6 +2,7 @@
   networking.firewall.allowedTCPPorts = [
     80
     443
+    8448
   ];
 
 
@@ -41,13 +42,26 @@
       "mistyttm.dev" = {
         forceSSL = true;
         useACMEHost = "mistyttm.dev";
+
+        listen = [
+          { addr = "0.0.0.0"; port = 443; ssl = true; }
+          { addr = "[::]"; port = 443; ssl = true; }
+          { addr = "0.0.0.0"; pot = 8448; ssl = true; }
+          { addr = "[::]"; port = 8448; ssl = true; }
+        ];
+
         locations."/".proxyPass = "http://localhost:8080/";
+
+        locations."~ ^(/_matrix|_synapse/client)" = {
+          proxyPass = "http://localhost:8008";
+          extraConfig = ''
+            proxy_set_header X-Forwarded-For $remote_addr;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header Host $host:$server_port;
+            client_max_body_size 50M;
+            proxy_http_version 1.1;
+          '';
+        };
       };
-      "valheim.mistyttm.dev" = (SSL // {
-        locations."/".proxyPass = "http://127.0.0.1:2456/";
-      });
-      "magicalcreate.mistyttm.dev" = (SSL // {
-        locations."/".proxyPass = "http://127.0.0.1:24464/";
-      });
     };
 }
