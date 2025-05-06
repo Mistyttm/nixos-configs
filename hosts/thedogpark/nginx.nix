@@ -1,4 +1,6 @@
-{ config, ... }: {
+{ config, ... }: let 
+  discordBridgePort = toString config.services.mautrix-discord.settings.appservice.port;
+in{
   networking.firewall.allowedTCPPorts = [
     80
     443
@@ -39,6 +41,20 @@
       "minecraft.mistyttm.dev" = (SSL // {
         locations."/".proxyPass = "http://127.0.0.1:25565/";
       });
+      "discord-media.mistyttm.dev" = {
+        useACMEHost = "mistyttm.dev";
+        forceSSL = true;
+
+        locations."/" = {
+          proxyPass = "http://localhost:${discordBridgePort}";
+          extraConfig = ''
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+          '';
+        };
+      };
       "mistyttm.dev" = {
         forceSSL = true;
         useACMEHost = "mistyttm.dev";
