@@ -49,6 +49,7 @@
     sops
     jdk21
     cron
+    nix-ld
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
