@@ -31,28 +31,30 @@ in {
       "url-preview"  # Support for oEmbed URL previews
       "user-search"  # Support internationalized domain names in user-search
     ];
-    enableRegistrationScript = true;
+    # extraConfigFiles = [
+    #   config.sops.secrets."registration_shared_secret".path
+    # ];
+    # enableRegistrationScript = true;
     settings = {
       server_name = "mistyttm.dev";
       public_baseurl = "https://mistyttm.dev";
-      # email = {
-      #   smtp_host = "mail.mistyttm.dev";
-      #   smtp_port = 587;
-      #   smtp_user = "noreply@mistyttm.dev";
-      #   notif_from = "Misty TTM Matrix <noreply@mistyttm.dev>";
-      #   require_transport_security = true;
-      # };
+      email = {
+        smtp_host = "mail.mistyttm.dev";
+        smtp_port = 587;
+        smtp_user = "noreply@mistyttm.dev";
+        notif_from = "Misty TTM Matrix <noreply@mistyttm.dev>";
+        require_transport_security = true;
+      };
+      registration_shared_secret_path = config.sops.secrets."registration_shared_secret".path;
+      turn_uris = [ "turns:mistyttm.dev?transport=udp" "turns:mistyttm.dev?transport=tcp" ];
+      turn_shared_secret_path = config.sops.secrets."turn_shared_secret".path;
+      turn_user_lifetime = 86400000;
+      turn_allow_guests = true;
+
+      url_preview_enabled = true;
+      max_spider_size = 10485760;
     };
   };
-
-  users.users.synapse = {
-      isSystemUser = true;
-      group = "synapse";
-      # home = dataDir;
-      description = "Synapse user";
-  };
-
-  users.groups.synapse = { };
 
   services.mautrix-discord = {
     enable = true;
