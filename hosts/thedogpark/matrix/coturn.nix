@@ -1,10 +1,10 @@
-{ config }: {
+{ config, ... }: {
   sops.secrets."turn_secret" = {
     sopsFile = ../../../secrets/coturn.yaml;
     owner = "turnserver";
     group = "turnserver";
   };
-  
+
   services.coturn = {
     enable = true;
     use-auth-secret = true;

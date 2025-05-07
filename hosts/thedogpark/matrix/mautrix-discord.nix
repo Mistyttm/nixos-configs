@@ -1,4 +1,4 @@
-{ config, lib }: let
+{ config, lib, ... }: let
   maybeListener = lib.lists.findFirst (l: l.tls == false) null config.services.matrix-synapse.settings.listeners;
   synapsePort = if maybeListener == null then 8008 else maybeListener.port;
 in {
