@@ -74,13 +74,14 @@
 
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 5173 24464 ];
-  networking.firewall.allowedUDPPorts = [ 5173 24464 ];
+  networking.firewall.allowedTCPPorts = [ 5173 24464 8448 443 3478 5349 ];
+  networking.firewall.allowedUDPPorts = [ 5173 24464 3478 5349 ];
   networking.firewall.allowedTCPPortRanges = [
     { from = 2456; to = 2458; }
   ];
   networking.firewall.allowedUDPPortRanges = [
     { from = 2456; to = 2458; }
+    { from = 49152; to = 65535; }
   ];
   
 
