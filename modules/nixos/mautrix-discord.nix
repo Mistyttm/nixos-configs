@@ -1,5 +1,5 @@
 { lib, config, pkgs, ... }: let
-  dataDir = "/etc/mautrix-discord";
+  dataDir = "/var/lib/mautrix-discord";
   registrationFile = "${dataDir}/discord-registration.yaml";
   cfg = config.services.mautrix-discord;
   settingsFormat = pkgs.formats.json { };
