@@ -57,7 +57,7 @@ in {
   };
 
   services.mautrix-discord = {
-    enable = true;
+    enable = false;
     settings = {
       homeserver = {
         address = "http://localhost:${toString synapsePort}";
