@@ -262,8 +262,8 @@ in {
             --registration='${registrationFile}'
         fi
 
-        old_umask=$(umask)
-        umask 0177
+        chmod 640 ${registrationFile}
+        
         # 1. Overwrite registration tokens in config
         #    is set, set it as the login shared secret value for the configured
         #    homeserver domain.
