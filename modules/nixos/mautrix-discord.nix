@@ -256,7 +256,7 @@ in {
         cp '${settingsFileUnformatted}' '${settingsFile}'
         # generate the appservice's registration file if absent
         if [ ! -f '${registrationFile}' ]; then
-          ${pkgs.mautrix-discord}/bin/mautrix-discord \
+          ${lib.getExe pkgs.mautrix-discord} \
             --generate-registration \
             --config='${settingsFile}' \
             --registration='${registrationFile}'
