@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }: let 
+{ lib, config, ... }: let 
   maybeListener = lib.lists.findFirst (l: l.tls == false) null config.services.matrix-synapse.settings.listeners;
   synapsePort = if maybeListener == null then 8008 else maybeListener.port;
 in {
@@ -31,10 +31,6 @@ in {
       "url-preview"  # Support for oEmbed URL previews
       "user-search"  # Support internationalized domain names in user-search
     ];
-    # extraConfigFiles = [
-    #   config.sops.secrets."registration_shared_secret".path
-    # ];
-    # enableRegistrationScript = true;
     settings = {
       server_name = "mistyttm.dev";
       public_baseurl = "https://mistyttm.dev";
@@ -57,7 +53,7 @@ in {
   };
 
   services.mautrix-discord = {
-    enable = false;
+    enable = true;
     settings = {
       homeserver = {
         address = "http://localhost:${toString synapsePort}";
