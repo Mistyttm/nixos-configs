@@ -2,6 +2,22 @@
   maybeListener = lib.lists.findFirst (l: l.tls == false) null config.services.matrix-synapse.settings.listeners;
   synapsePort = if maybeListener == null then 8008 else maybeListener.port;
 in {
+  sops.secrets."registration_shared_secret" = {
+    sopsFile = ../../secrets/synapse.yaml;
+    owner = "matrix-synapse";
+    group = "matrix-synapse";
+  };
+  sops.secrets."turn_shared_secret" = {
+    sopsFile = ../../secrets/synapse.yaml;
+    owner = "matrix-synapse";
+    group = "matrix-synapse";
+  };
+  sops.secrets."turn_secret" = {
+    sopsFile = ../../secrets/coturn.yaml;
+    owner = "turnserver";
+    group = "turnserver";
+  };
+
   services.matrix-synapse = {
     enable =true;
     extras = [
