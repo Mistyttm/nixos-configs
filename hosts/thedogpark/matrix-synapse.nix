@@ -114,10 +114,14 @@ in {
 
   services.postgresql = {
     enable = true;
-    ensureDatabases = [ "mautrix-discord" ];
+    ensureDatabases = [ "mautrix-discord" "matrix-synapse" ];
     ensureUsers = [
       {
         name = "mautrix-discord";
+        ensureDBOwnership = true;
+      }
+      {
+        name = "matrix-synapse";
         ensureDBOwnership = true;
       }
     ];
