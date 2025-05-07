@@ -1,9 +1,10 @@
 { lib, config, pkgs, ... }: let
-  dataDir = "/var/lib/mautrix-discord";
+  dataDir = "/etc/mautrix-discord";
   registrationFile = "${dataDir}/discord-registration.yaml";
   cfg = config.services.mautrix-discord;
   settingsFormat = pkgs.formats.json { };
   settingsFile = "${dataDir}/config.json";
+  settingsFileUnformatted = settingsFormat.generate "${dataDir}/config.yaml" cfg.settings;
   port = 29334;
 in {
   options = {
@@ -48,9 +49,6 @@ in {
             ephemeral_events = true;
 
             async_transactions = false;
-
-            as_token = "This value is generated when generating the registration";
-            hs_token = "This value is generated when generating the registration";
           };
 
           bridge = {
@@ -219,11 +217,14 @@ in {
     users.groups.mautrix-discord = { };
     
     services.matrix-synapse = lib.mkIf cfg.registerToSynapse {
-      settings.app_service_config_files = [registrationFile];
+      settings.app_service_config_files = [ registrationFile ];
     };
     systemd.services.matrix-synapse = lib.mkIf cfg.registerToSynapse {
       serviceConfig.SupplementaryGroups = [ "mautrix-discord" ];
     };
+    systemd.tmpfiles.rules = [
+      "d ${dataDir} 640 mautrix-discord mautrix-discord -"
+    ];
 
     systemd.services.mautrix-discord = {
       description = "Mautrix-Discord, a Matrix-Discord puppeting/relaybot bridge";
@@ -240,6 +241,8 @@ in {
 
       preStart = 
       ''
+        mkdir -p '${dataDir}'
+        cp '${settingsFileUnformatted}' '${settingsFile}'
         # generate the appservice's registration file if absent
         if [ ! -f '${registrationFile}' ]; then
           ${pkgs.mautrix-discord}/bin/mautrix-discord \
@@ -268,7 +271,7 @@ in {
         Type = "exec";
         Restart = "on-failure";
         RestartSec = 30;
-        WorkingDirectory = pkgs.mautrix-discord; # necessary for the database migration scripts to be found
+        WorkingDirectory = dataDir;
         ExecStart = ''
           ${pkgs.mautrix-discord}/bin/mautrix-discord \
             --config='${settingsFile}'
@@ -292,6 +295,7 @@ in {
         SystemCallArchitectures = "native";
         SystemCallErrorNumber = "EPERM";
         SystemCallFilter = "@system-service";
+        ReadWritePaths = [ dataDir ];
       };
     };
   };
