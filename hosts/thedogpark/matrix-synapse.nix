@@ -42,13 +42,62 @@ in {
         require_transport_security = true;
       };
       registration_shared_secret_path = config.sops.secrets."registration_shared_secret".path;
+
+      # TURN Server
       turn_uris = [ "turns:mistyttm.dev?transport=udp" "turns:mistyttm.dev?transport=tcp" ];
       turn_shared_secret_path = config.sops.secrets."turn_shared_secret".path;
       turn_user_lifetime = 86400000;
       turn_allow_guests = true;
 
+      # URL Previews
       url_preview_enabled = true;
       max_spider_size = 10485760;
+
+      # Rate Limiting
+      rc_message = {
+        per_second = 100;
+        burst_count = 200;
+      };
+      rc_registration = {
+        per_second = 10;
+        burst_count = 20;
+      };
+      rc_registration_token_validity = {
+        per_second = 10;
+        burst_count = 20;
+      };
+      rc_joins = {
+        local = {
+          per_second = 10;
+          burst_count = 20;
+        };
+        remote = {
+          per_second = 10;
+          burst_count = 20;
+        };
+      };
+      rc_joins_per_room = {
+        per_second = 10;
+        burst_count = 20;
+      };
+      rc_invites = {
+        per_room = {
+          per_second = 10;
+          burst_count = 20;
+        };
+        per_user = {
+          per_second = 10;
+          burst_count = 20;
+        };
+        per_issuer = {
+          per_second = 10;
+          burst_count = 20;
+        };
+        rc_third_party_invite = {
+          per_second = 10;
+          burst_count = 20;
+        };
+      };
     };
   };
 
