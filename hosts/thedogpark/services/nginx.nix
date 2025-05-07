@@ -9,13 +9,13 @@ in{
 
 
   sops.secrets."porkbun-api-key" = {
-    sopsFile = ../../secrets/porkbun.yaml;
+    sopsFile = ../../../secrets/porkbun.yaml;
     owner = config.users.users.nginx.name;
     group = config.users.users.nginx.group;
   };
 
   sops.secrets."porkbun-secret-api-key" = {
-    sopsFile = ../../secrets/porkbun.yaml;
+    sopsFile = ../../../secrets/porkbun.yaml;
     owner = config.users.users.nginx.name;
     group = config.users.users.nginx.group;
   };  
