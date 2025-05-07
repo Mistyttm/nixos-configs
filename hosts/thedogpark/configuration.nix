@@ -8,11 +8,8 @@
       ../../global-configs/system/locale.nix
       ../../global-configs/system/networking/ssh.nix
       ../../global-configs/system/nixoptions.nix
-      ./services.nix
-      ./minecraft.nix
-      ./nginx.nix
-      ./mailserver.nix
-      ./matrix-synapse.nix
+      ./services/default.nix
+      ./matrix/default.nix
       ../../global-configs/system/virtualisation.nix
     ];
 
