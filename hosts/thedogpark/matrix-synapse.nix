@@ -12,6 +12,11 @@ in {
     owner = "matrix-synapse";
     group = "matrix-synapse";
   };
+  sops.secrets."smtp_pass" = {
+    sopsFile = ../../secrets/synapse.yaml;
+    owner = "matrix-synapse";
+    group = "matrix-synapse";
+  };
   sops.secrets."turn_secret" = {
     sopsFile = ../../secrets/coturn.yaml;
     owner = "turnserver";
@@ -31,6 +36,9 @@ in {
       "url-preview"  # Support for oEmbed URL previews
       "user-search"  # Support internationalized domain names in user-search
     ];
+    extraConfigFiles = [
+      config.sops.secrets."smtp_pass".path
+    ];
     settings = {
       server_name = "mistyttm.dev";
       public_baseurl = "https://mistyttm.dev";
@@ -39,7 +47,24 @@ in {
         smtp_port = 587;
         smtp_user = "noreply@mistyttm.dev";
         notif_from = "Misty TTM Matrix <noreply@mistyttm.dev>";
+        app_name = "my_branded_matrix_server";
+        enable_notifs = true;
+        notif_for_new_users = false;
         require_transport_security = true;
+        invite_client_location = "https://app.element.io";
+        validation_token_lifetime = "15m";
+        subjects = {
+          message_from_person_in_room = "[%(app)s] You have a message on %(app)s from %(person)s in the %(room)s room...";
+          message_from_person = "[%(app)s] You have a message on %(app)s from %(person)s...";
+          messages_from_person = "[%(app)s] You have messages on %(app)s from %(person)s...";
+          messages_in_room = "[%(app)s] You have messages on %(app)s in the %(room)s room...";
+          messages_in_room_and_others = "[%(app)s] You have messages on %(app)s in the %(room)s room and others...";
+          messages_from_person_and_others = "[%(app)s] You have messages on %(app)s from %(person)s and others...";
+          invite_from_person_to_room = "[%(app)s] %(person)s has invited you to join the %(room)s room on %(app)s...";
+          invite_from_person = "[%(app)s] %(person)s has invited you to chat on %(app)s...";
+          password_reset = "[%(server_name)s] Password reset";
+          email_validation = "[%(server_name)s] Validate your email";
+        };
       };
       registration_shared_secret_path = config.sops.secrets."registration_shared_secret".path;
 
@@ -97,6 +122,16 @@ in {
           per_second = 10;
           burst_count = 20;
         };
+
+        # Presence Tracking
+        presence = {
+          enabled = true;
+          incluide_offline_users_on_sync = true;
+        };
+
+        # Avatar MIME type
+        allowed_avatar_mimetypes = ["image/png" "image/jpeg" "image/gif"];
+        max_avatar_size = "10M";
       };
     };
   };
