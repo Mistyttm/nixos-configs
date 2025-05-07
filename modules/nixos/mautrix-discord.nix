@@ -204,6 +204,16 @@ in {
             `services.matrix-synapse.settings.app_service_config_files`.
         '';
       };
+
+      dataDir = lib.mkOption {
+        type = lib.types.path;
+        default = dataDir;
+        defaultText = lib.literalExpression "${dataDir}";
+        description = ''
+          Directory to store the bridge's configuration and database files.
+          This directory will be created if it does not exist.
+        '';
+      };
     };
   };
   config = lib.mkIf cfg.enable {
@@ -223,7 +233,7 @@ in {
       serviceConfig.SupplementaryGroups = [ "mautrix-discord" ];
     };
     systemd.tmpfiles.rules = [
-      "d ${dataDir} 640 mautrix-discord mautrix-discord -"
+      "d ${cfg.dataDir} 770 mautrix-discord mautrix-discord -"
     ];
 
     systemd.services.mautrix-discord = {
@@ -237,11 +247,12 @@ in {
         pkgs.ffmpeg-headless
       ];
       
-      environment.HOME = dataDir;
+      environment.HOME = cfg.dataDir;
 
       preStart = 
       ''
-        mkdir -p '${dataDir}'
+        mkdir -p '${cfg.dataDir}'
+        umask 0177
         cp '${settingsFileUnformatted}' '${settingsFile}'
         # generate the appservice's registration file if absent
         if [ ! -f '${registrationFile}' ]; then
@@ -271,7 +282,7 @@ in {
         Type = "exec";
         Restart = "on-failure";
         RestartSec = 30;
-        WorkingDirectory = dataDir;
+        WorkingDirectory = cfg.dataDir;
         ExecStart = ''
           ${pkgs.mautrix-discord}/bin/mautrix-discord \
             --config='${settingsFile}'
@@ -295,7 +306,7 @@ in {
         SystemCallArchitectures = "native";
         SystemCallErrorNumber = "EPERM";
         SystemCallFilter = "@system-service";
-        ReadWritePaths = [ dataDir ];
+        ReadWritePaths = [ cfg.dataDir ];
       };
     };
   };
