@@ -35,6 +35,10 @@
         package = pkgs.wivrn;
         encoder = "nvenc";
         overlay = [ pkgs.wlx-overlay-s ];
+        opencomposite = {
+          override = true;
+          package = pkgs.xrizer;
+        };
       };
     };
     steam = {

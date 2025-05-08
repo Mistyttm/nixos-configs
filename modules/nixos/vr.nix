@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ...}: let 
+{ config, lib, pkgs, ...}: let
   cfg = config.gaming.vr;
   mkIfElse = p: yes: no: lib.mkMerge [
     (lib.mkIf p yes)
@@ -28,20 +28,13 @@ in {
       overlay = lib.mkOption {
         type = lib.types.listOf lib.types.package;
         default = [];
-        example = lib.literalEpression "[ pkgs.wlx-overlay-s ]";
+        example = lib.literalExpression "[ pkgs.wlx-overlay-s ]";
         description = ''
           List of overlays to add to the system for wivrn
         '';
       };
       opencomposite = {
-        override = lib.mkOption {
-          type = lib.mkEnableOption "Enable OpenComposite";
-          default = false;
-          example = true;
-          description = ''
-            Override OpenComposite for wivrn
-          '';
-        };
+        override = lib.mkEnableOption "Enable OpenComposite Override";
         package = lib.mkOption {
           type = pkgs.lib.types.package;
           default = pkgs.opencomposite;
@@ -59,7 +52,7 @@ in {
     services.wivrn = {
       enable = cfg.wivrn.enable;
       package = mkIfElse cfg.wivrn.opencomposite.override
-        (cfg.wivrn.package.override { opencomposite = cfg.wivrn.opencomposite.package; })
+        ((cfg.wivrn.package).override { opencomposite = cfg.wivrn.opencomposite.package; })
         cfg.wivrn.package;
       openFirewall = true;
       defaultRuntime = true;
