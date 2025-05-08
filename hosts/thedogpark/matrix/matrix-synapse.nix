@@ -2,7 +2,7 @@
   imports = [
     ./coturn.nix
     ./mautrix-discord.nix
-    ./mjolnir.nix
+    # ./mjolnir.nix
   ];
 
   sops.secrets."registration_shared_secret" = {
