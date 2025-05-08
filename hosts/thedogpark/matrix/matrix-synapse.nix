@@ -74,7 +74,7 @@
 
       # URL Previews
       url_preview_enabled = true;
-      max_spider_size = 10485760;
+      max_spider_size = "20M";
 
       # Rate Limiting
       rc_message = {
