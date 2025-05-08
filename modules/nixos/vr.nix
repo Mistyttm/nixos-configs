@@ -45,6 +45,25 @@ in {
         };
       };
     };
+    slimevr = {
+      enable = lib.mkEnableOption "Enable SlimeVR";
+      package = lib.mkOption {
+        type = pkgs.lib.types.package;
+        default = pkgs.slimevr;
+        example = pkgs.slimevr;
+        description = ''
+          The package to use for SlimeVR
+        '';
+      };
+      serverPackage = lib.mkOption {
+        type = pkgs.lib.types.package;
+        default = pkgs.slimevr-server;
+        example = pkgs.slimevr-server;
+        description = ''
+          The package to use for SlimeVR server
+        '';
+      };
+    };
     # enableSidequest = lib.mkEnableOption "Enable Sidequest";
   };
 
@@ -78,6 +97,6 @@ in {
     environment.systemPackages = cfg.wivrn.overlay ++ [
       pkgs.opencomposite
       pkgs.monado-vulkan-layers
-    ] ++ lib.optional cfg.wivrn.opencomposite.override cfg.wivrn.opencomposite.package;
+    ] ++ lib.optional cfg.wivrn.opencomposite.override cfg.wivrn.opencomposite.package ++ lib.optional cfg.slimevr.enable cfg.slimevr.package ++ lib.optional cfg.slimevr.enable cfg.slimevr.serverPackage;
   };
 }
