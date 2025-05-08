@@ -4,6 +4,54 @@
     (lib.mkIf p yes)
     (lib.mkIf (!p) no)
   ];
+
+  base = cfg.wivrn.package;
+  openCompositeOverride = base.override {
+    opencomposite = cfg.wivrn.opencomposite.package;
+  };
+  forSlimeVR = base.overrideAttrs (old: rec {
+    version = cfg.slimevr.commitHash;
+    src = pkgs.fetchFromGitHub {
+      owner = "notpeelz";
+      repo = "WiVRn";
+      rev = version;
+      hash = cfg.slimevr.wivrnSlimeHash;
+    };
+    monado = old.monado.overrideAttrs (older: rec {
+      src = pkgs.fetchFromGitLab {
+        domain = "gitlab.freedesktop.org";
+        owner = "monado";
+        repo = "monado";
+        rev = cfg.slimevr.monado.rev;
+        hash = cfg.slimevr.monado.hash;
+      };
+    });
+    cmakeFlags = old.cmakeFlags ++ [
+      (lib.cmakeBool "WIVRN_FEATURE_SOLARXR" true)
+    ];
+  });
+  withOpenCompositeAndSlimeVR = openCompositeOverride.overrideAttrs (old: rec {
+    version = cfg.slimevr.commitHash;
+    src = pkgs.fetchFromGitHub {
+      owner = "notpeelz";
+      repo = "WiVRn";
+      rev = version;
+      hash = cfg.slimevr.wivrnSlimeHash;
+    };
+    monado = old.monado.overrideAttrs (older: rec {
+      src = pkgs.fetchFromGitLab {
+        domain = "gitlab.freedesktop.org";
+        owner = "monado";
+        repo = "monado";
+        rev = cfg.slimevr.monado.rev;
+        hash = cfg.slimevr.monado.hash;
+      };
+    });
+    cmakeFlags = old.cmakeFlags ++ [
+      (lib.cmakeBool "WIVRN_FEATURE_SOLARXR" true)
+    ];
+  });
+
 in {
   options.gaming.vr = {
     enable = lib.mkEnableOption "Enable VR for this system";
@@ -63,6 +111,40 @@ in {
           The package to use for SlimeVR server
         '';
       };
+      commitHash = lib.mkOption {
+        type = lib.types.str;
+        default = "9ae42c99949d07d47b7026ff607ec161f1124958";
+        example = "9ae42c99949d07d47b7026ff607ec161f1124958";
+        description = ''
+          The commit hash to use for WiVRn + SlimeVR
+        '';
+      };
+      wivrnSlimeHash = lib.mkOption {
+        type = lib.types.str;
+        default = "sha256-suOEuWXoNfCCvQjXdf0hOxAVF6DrBcSYQgDxNKfK18A=";
+        example = "sha256-suOEuWXoNfCCvQjXdf0hOxAVF6DrBcSYQgDxNKfK18A=";
+        description = ''
+          Hash for the package
+        '';
+      };
+      monado = {
+        rev = lib.mkOption {
+          type = lib.types.str;
+          default = "c80de9e7cacf2bf9579f8ae8c621d8bf16e85d6c";
+          example = "c80de9e7cacf2bf9579f8ae8c621d8bf16e85d6c";
+          description = ''
+            The commit hash to use for monado
+          '';
+        };
+        hash = lib.mkOption {
+          type = lib.types.str;
+          default = "sha256-ciH26Hyr8FumB2rQB5sFcXqtcQ1R84XOlphkkLBjzvA=";
+          example = "sha256-ciH26Hyr8FumB2rQB5sFcXqtcQ1R84XOlphkkLBjzvA=";
+          description = ''
+            The hash to use for monado
+          '';
+        };
+      };
     };
     # enableSidequest = lib.mkEnableOption "Enable Sidequest";
   };
@@ -70,9 +152,13 @@ in {
   config = lib.mkIf cfg.enable {
     services.wivrn = {
       enable = cfg.wivrn.enable;
-      package = mkIfElse cfg.wivrn.opencomposite.override
-        ((cfg.wivrn.package).override { opencomposite = cfg.wivrn.opencomposite.package; })
-        cfg.wivrn.package;
+      package = mkIfElse (cfg.wivrn.opencomposite.override && cfg.slimevr.enable)
+        withOpenCompositeAndSlimeVR
+        (mkIfElse cfg.wivrn.opencomposite.override
+          openCompositeOverride
+          (mkIfElse cfg.slimevr.enable
+            forSlimeVR
+            base));
       openFirewall = true;
       defaultRuntime = true;
       autoStart = true;
