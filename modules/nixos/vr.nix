@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ...}: let cfg = config.gaming.vr; in {
+{ config, lib, pkgs, ...}: let 
+  cfg = config.gaming.vr;
+  mkIfElse = p: yes: no: lib.mkMerge [
+    (lib.mkIf p yes)
+    (lib.mkIf (!p) no)
+  ];
+in {
   options.gaming.vr = {
     enable = lib.mkEnableOption "Enable VR for this system";
     wivrn = {
@@ -27,6 +33,24 @@
           List of overlays to add to the system for wivrn
         '';
       };
+      opencomposite = {
+        override = lib.mkOption {
+          type = lib.mkEnableOption "Enable OpenComposite";
+          default = false;
+          example = true;
+          description = ''
+            Override OpenComposite for wivrn
+          '';
+        };
+        package = lib.mkOption {
+          type = pkgs.lib.types.package;
+          default = pkgs.opencomposite;
+          example = pkgs.opencomposite;
+          description = ''
+            The package to use for OpenComposite
+          '';
+        };
+      };
     };
     # enableSidequest = lib.mkEnableOption "Enable Sidequest";
   };
@@ -34,11 +58,9 @@
   config = lib.mkIf cfg.enable {
     services.wivrn = {
       enable = cfg.wivrn.enable;
-      package = (cfg.wivrn.package.overrideAttrs (old:  {
-        cmakeFlags = old.cmakeFlags ++ [
-          (lib.cmakeFeature "OPENCOMPOSITE_SEARCH_PATH" "${pkgs.opencomposite}/lib/opencomposite")
-        ];
-      }));
+      package = mkIfElse cfg.wivrn.opencomposite.override
+        (cfg.wivrn.package.override { opencomposite = cfg.wivrn.opencomposite.package; })
+        cfg.wivrn.package;
       openFirewall = true;
       defaultRuntime = true;
       autoStart = true;
@@ -63,6 +85,6 @@
     environment.systemPackages = cfg.wivrn.overlay ++ [
       pkgs.opencomposite
       pkgs.monado-vulkan-layers
-    ];
+    ] ++ lib.optional cfg.wivrn.opencomposite.override cfg.wivrn.opencomposite.package;
   };
 }
