@@ -1,7 +1,7 @@
 { config, pkgs, ... }: {
   home.packages = with pkgs; [
     vesktop
-    element-desktop
+    cinny-desktop
 #     ungoogled-chromium
   ];
 }
