@@ -150,6 +150,11 @@ programs.vscode = {
                 "nix.formatterPath" = "nixfmt";
                 "nix.serverSettings" = {
                         "autofetch" = true;
+                        "nil" = {
+                          "formatting" = {
+                            "command" = "nixfmt";
+                          };
+                        };
                 };
                 "javascript.inlayHints.parameterTypes.enabled" = true;
                 "javascript.inlayHints.propertyDeclarationTypes.enabled" = true;
