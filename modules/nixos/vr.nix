@@ -1,9 +1,17 @@
-{ config, lib, pkgs, ...}: let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
   cfg = config.gaming.vr;
-  mkIfElse = p: yes: no: lib.mkMerge [
-    (lib.mkIf p yes)
-    (lib.mkIf (!p) no)
-  ];
+  mkIfElse =
+    p: yes: no:
+    lib.mkMerge [
+      (lib.mkIf p yes)
+      (lib.mkIf (!p) no)
+    ];
 
   base = cfg.wivrn.package;
   openCompositeOverride = base.override {
@@ -52,7 +60,8 @@
     ];
   });
 
-in {
+in
+{
   options.gaming.vr = {
     enable = lib.mkEnableOption "Enable VR for this system";
     wivrn = {
@@ -75,7 +84,7 @@ in {
       };
       overlay = lib.mkOption {
         type = lib.types.listOf lib.types.package;
-        default = [];
+        default = [ ];
         example = lib.literalExpression "[ pkgs.wlx-overlay-s ]";
         description = ''
           List of overlays to add to the system for wivrn
@@ -152,13 +161,13 @@ in {
   config = lib.mkIf cfg.enable {
     services.wivrn = {
       enable = cfg.wivrn.enable;
-      package = mkIfElse (cfg.wivrn.opencomposite.override && cfg.slimevr.enable)
-        withOpenCompositeAndSlimeVR
-        (mkIfElse cfg.wivrn.opencomposite.override
-          openCompositeOverride
-          (mkIfElse cfg.slimevr.enable
-            forSlimeVR
-            base));
+      package =
+        mkIfElse (cfg.wivrn.opencomposite.override && cfg.slimevr.enable) withOpenCompositeAndSlimeVR
+          (
+            mkIfElse cfg.wivrn.opencomposite.override openCompositeOverride (
+              mkIfElse cfg.slimevr.enable forSlimeVR base
+            )
+          );
       openFirewall = true;
       defaultRuntime = true;
       autoStart = true;
@@ -180,15 +189,23 @@ in {
         };
       };
     };
-    environment.systemPackages = cfg.wivrn.overlay ++ [
-      pkgs.opencomposite
-      pkgs.monado-vulkan-layers
-      pkgs.wayvr-dashboard
-    ] ++ lib.optional cfg.wivrn.opencomposite.override cfg.wivrn.opencomposite.package ++ lib.optional cfg.slimevr.enable cfg.slimevr.package ++ lib.optional cfg.slimevr.enable cfg.slimevr.serverPackage;
+    environment.systemPackages =
+      cfg.wivrn.overlay
+      ++ [
+        pkgs.opencomposite
+        pkgs.monado-vulkan-layers
+        pkgs.wayvr-dashboard
+      ]
+      ++ lib.optional cfg.wivrn.opencomposite.override cfg.wivrn.opencomposite.package
+      ++ lib.optional cfg.slimevr.enable cfg.slimevr.package
+      ++ lib.optional cfg.slimevr.enable cfg.slimevr.serverPackage;
 
     networking.firewall = lib.mkIf cfg.slimevr.enable {
       allowedTCPPorts = [ 21110 ];
-      allowedUDPPorts = [ 35903 6969 ];
+      allowedUDPPorts = [
+        35903
+        6969
+      ];
     };
   };
 }

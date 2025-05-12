@@ -1,4 +1,5 @@
-{ config, ... } :{
+{ config, ... }:
+{
   sops.secrets."mail-server-password-hash" = {
     sopsFile = ../../../secrets/mail.yaml;
     owner = "virtualMail";

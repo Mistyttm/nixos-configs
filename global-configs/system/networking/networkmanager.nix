@@ -1,7 +1,7 @@
 { ... }:
 
 {
-    # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -20,12 +20,18 @@
     allowedUDPPorts = [
       5353
       5173
-    ] ;
+    ];
     allowedTCPPortRanges = [
-      { from = 1714; to = 1764; } # KDE Connect
+      {
+        from = 1714;
+        to = 1764;
+      } # KDE Connect
     ];
     allowedUDPPortRanges = [
-      { from = 1714; to = 1764; } # KDE Connect
+      {
+        from = 1714;
+        to = 1764;
+      } # KDE Connect
     ];
   };
 

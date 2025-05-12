@@ -1,4 +1,5 @@
-{ config, pkgs, ... }: {
+{ ... }:
+{
   xdg = {
     enable = true;
     userDirs = {
@@ -10,7 +11,7 @@
       enable = true;
     };
   };
-#  xdg.configFile."gtk-2.0/gtkrc" = ./.gtkrc-2.0;
-#  xdg.dataFile."zsh/history" = ./.zsh_history; 
-#  xdg.dataFile."pki" = ./.pki;
+  #  xdg.configFile."gtk-2.0/gtkrc" = ./.gtkrc-2.0;
+  #  xdg.dataFile."zsh/history" = ./.zsh_history;
+  #  xdg.dataFile."pki" = ./.pki;
 }

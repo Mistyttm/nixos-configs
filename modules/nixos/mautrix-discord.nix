@@ -1,4 +1,10 @@
-{ lib, config, pkgs, ... }: let
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+let
   dataDir = "/var/lib/mautrix-discord";
   registrationFile = "${dataDir}/discord-registration.yaml";
   cfg = config.services.mautrix-discord;
@@ -6,7 +12,8 @@
   settingsFile = "${dataDir}/config.json";
   settingsFileUnformatted = settingsFormat.generate "${dataDir}/config.yaml" cfg.settings;
   port = 29334;
-in {
+in
+{
   options = {
     services.mautrix-discord = {
       enable = lib.mkEnableOption "Mautrix-Discord, a Matrix-Discord puppeting/relay-bot bridge";
@@ -32,7 +39,7 @@ in {
             database = {
               type = "postgres";
               uri = "postgres://user:password@host/database?sslmode=disable";
-              max_open_conns =  20;
+              max_open_conns = 20;
               max_idle_conns = 2;
               max_conn_idle_time = null;
               max_conn_lifetime = null;
@@ -97,7 +104,7 @@ in {
             };
             command_prefix = "'!discord'";
             management_room_text = {
-              welcome =  "Hello, I'm a Discord bridge bot.";
+              welcome = "Hello, I'm a Discord bridge bot.";
               welcome_connected = "Use `help` for help.";
               welcome_unconnected = "Use `help` for help or `login` to log in.";
               additional_help = "";
@@ -154,12 +161,12 @@ in {
             };
             permissions = {
               "*" = "relay";
-            #	"example.com" = "user";
-            #	"@admin:example.com": "admin";
+              #	"example.com" = "user";
+              #	"@admin:example.com": "admin";
             };
           };
         };
-         example = lib.literalExpression ''
+        example = lib.literalExpression ''
           {
             homeserver = {
               address = "http://localhost:8008";
@@ -183,25 +190,25 @@ in {
           [example-config.yaml](https://github.com/mautrix/discord/blob/main/example-config.yaml).
         '';
       };
-      
+
       serviceDependencies = lib.mkOption {
         type = with lib.types; listOf str;
         default = lib.optional config.services.matrix-synapse.enable config.services.matrix-synapse.serviceUnit;
         defaultText = lib.literalExpression ''
-            lib.optional config.services.matrix-synapse.enable config.services.matrix-synapse.serviceUnit
+          lib.optional config.services.matrix-synapse.enable config.services.matrix-synapse.serviceUnit
         '';
         description = ''
-            List of Systemd services to require and wait for when starting the application service.
+          List of Systemd services to require and wait for when starting the application service.
         '';
       };
 
       registerToSynapse = lib.mkOption {
         type = lib.types.bool;
-          default = config.services.matrix-synapse.enable;
-          defaultText = lib.literalExpression "config.services.matrix-synapse.enable";
-          description = ''
-            Whether to add the bridge's app service registration file to
-            `services.matrix-synapse.settings.app_service_config_files`.
+        default = config.services.matrix-synapse.enable;
+        defaultText = lib.literalExpression "config.services.matrix-synapse.enable";
+        description = ''
+          Whether to add the bridge's app service registration file to
+          `services.matrix-synapse.settings.app_service_config_files`.
         '';
       };
 
@@ -223,9 +230,9 @@ in {
       home = dataDir;
       description = "Mautrix-Discord bridge user";
     };
-    
+
     users.groups.mautrix-discord = { };
-    
+
     services.matrix-synapse = lib.mkIf cfg.registerToSynapse {
       settings.app_service_config_files = [ registrationFile ];
     };
@@ -246,11 +253,10 @@ in {
         pkgs.lottieconverter
         pkgs.ffmpeg-headless
       ];
-      
+
       environment.HOME = cfg.dataDir;
 
-      preStart = 
-      ''
+      preStart = ''
         mkdir -p '${cfg.dataDir}'
         umask 0177
         cp '${settingsFileUnformatted}' '${settingsFile}'
@@ -263,7 +269,7 @@ in {
         fi
 
         chmod 640 ${registrationFile}
-        
+
         # 1. Overwrite registration tokens in config
         #    is set, set it as the login shared secret value for the configured
         #    homeserver domain.
@@ -286,7 +292,7 @@ in {
         ExecStart = ''
           ${pkgs.mautrix-discord}/bin/mautrix-discord \
             --config='${settingsFile}'
-        '';				
+        '';
 
         ProtectSystem = "strict";
         ProtectHome = true;

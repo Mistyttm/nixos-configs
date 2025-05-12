@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   services.radarr = {
     enable = true;
     package = pkgs.radarr;

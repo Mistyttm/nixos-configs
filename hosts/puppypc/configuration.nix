@@ -1,4 +1,5 @@
-{ pkgs, ... }: let
+{ pkgs, ... }:
+let
   slimevrCustom = pkgs.slimevr.overrideAttrs (oldAttrs: {
     postFixup = ''
       ${oldAttrs.postFixup or ""}
@@ -8,20 +9,19 @@
         --set WEBKIT_DISABLE_COMPOSITING_MODE 1
     '';
   });
-in {
-  imports =
-    [
-      ./system/default.nix
-      ../../global-configs/system/default.nix
-      ../../global-configs/users/misty.nix
-      ../../global-configs/fonts/fonts.nix
-      ../../global-configs/system/nixoptions.nix
-    ];
+in
+{
+  imports = [
+    ./system/default.nix
+    ../../global-configs/system/default.nix
+    ../../global-configs/users/misty.nix
+    ../../global-configs/fonts/fonts.nix
+    ../../global-configs/system/nixoptions.nix
+  ];
 
   networking.hostName = "puppypc";
 
   boot.supportedFilesystems = [ "ntfs" ];
-
 
   programs.gnupg = {
     agent = {
@@ -63,7 +63,11 @@ in {
     };
     minecraft = {
       enable = true;
-      jdkOverrides = with pkgs; [ jdk8 jdk17 jdk21 ];
+      jdkOverrides = with pkgs; [
+        jdk8
+        jdk17
+        jdk21
+      ];
     };
     dolphin = true;
     lutris = true;
@@ -89,14 +93,14 @@ in {
 
   virtualisation.waydroid.enable = true;
 
-#   virtualisation.virtualbox = {
-#     host.enable = true;
-#     guest ={
-#       enable = true;
-#       clipboard = true;
-#       dragAndDrop = true;
-#     };
-#   };
+  #   virtualisation.virtualbox = {
+  #     host.enable = true;
+  #     guest ={
+  #       enable = true;
+  #       clipboard = true;
+  #       dragAndDrop = true;
+  #     };
+  #   };
 
   environment = {
     systemPackages = with pkgs; [

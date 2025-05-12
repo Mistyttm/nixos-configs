@@ -1,7 +1,11 @@
-{ config, lib, ... }: let
-  maybeListener = lib.lists.findFirst (l: l.tls == false) null config.services.matrix-synapse.settings.listeners;
+{ config, lib, ... }:
+let
+  maybeListener = lib.lists.findFirst (
+    l: l.tls == false
+  ) null config.services.matrix-synapse.settings.listeners;
   synapsePort = if maybeListener == null then 8008 else maybeListener.port;
-in {
+in
+{
   services.mautrix-discord = {
     enable = true;
     settings = {

@@ -1,4 +1,5 @@
-{ config, ... }: {
+{ config, ... }:
+{
   sops.secrets."mjolnir_access_token" = {
     sopsFile = ../../../secrets/synapse.yaml;
     owner = "matrix-synapse";

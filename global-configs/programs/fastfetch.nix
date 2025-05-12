@@ -1,4 +1,5 @@
-{ ... }: {
+{ ... }:
+{
   programs.fastfetch = {
     enable = true;
     settings = {
@@ -131,15 +132,15 @@
           key = "{#separator}│  {#keys} Date & Time";
         }
         {
-            type = "localip";
-            showIpv6 = false;
-            showMac = false;
-            showSpeed = true;
-            showMtu = false;
-            showLoop = false;
-            showFlags = false;
-            showAllIps = false;
-            key = "{#separator}│  {#keys}󰩠 Local IP";
+          type = "localip";
+          showIpv6 = false;
+          showMac = false;
+          showSpeed = true;
+          showMtu = false;
+          showLoop = false;
+          showFlags = false;
+          showAllIps = false;
+          key = "{#separator}│  {#keys}󰩠 Local IP";
         }
         {
           type = "custom";

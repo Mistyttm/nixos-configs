@@ -1,4 +1,5 @@
-{ config, ... }: {
+{ config, ... }:
+{
   imports = [
     ./coturn.nix
     ./mautrix-discord.nix
@@ -22,17 +23,17 @@
   };
 
   services.matrix-synapse = {
-    enable =true;
+    enable = true;
     extras = [
       "cache-memory" # Provide statistics about caching memory consumption
-      "jwt"          # JSON Web Token authentication
-      "oidc"         # OpenID Connect authentication
-      "postgres"     # PostgreSQL database backend
-      "saml2"        # SAML2 authentication
-      "sentry"       # Error tracking and performance metrics
-      "systemd"      # Provide the JournalHandler used in the default log_config
-      "url-preview"  # Support for oEmbed URL previews
-      "user-search"  # Support internationalized domain names in user-search
+      "jwt" # JSON Web Token authentication
+      "oidc" # OpenID Connect authentication
+      "postgres" # PostgreSQL database backend
+      "saml2" # SAML2 authentication
+      "sentry" # Error tracking and performance metrics
+      "systemd" # Provide the JournalHandler used in the default log_config
+      "url-preview" # Support for oEmbed URL previews
+      "user-search" # Support internationalized domain names in user-search
     ];
     extraConfigFiles = [
       config.sops.secrets."smtp_pass".path
@@ -67,7 +68,10 @@
       registration_shared_secret_path = config.sops.secrets."registration_shared_secret".path;
 
       # TURN Server
-      turn_uris = [ "turns:mistyttm.dev?transport=udp" "turns:mistyttm.dev?transport=tcp" ];
+      turn_uris = [
+        "turns:mistyttm.dev?transport=udp"
+        "turns:mistyttm.dev?transport=tcp"
+      ];
       turn_shared_secret_path = config.sops.secrets."turn_shared_secret".path;
       turn_user_lifetime = 86400000;
       turn_allow_guests = true;
@@ -128,7 +132,11 @@
         };
 
         # Avatar MIME type
-        allowed_avatar_mimetypes = ["image/png" "image/jpeg" "image/gif"];
+        allowed_avatar_mimetypes = [
+          "image/png"
+          "image/jpeg"
+          "image/gif"
+        ];
         max_avatar_size = "10M";
       };
     };
@@ -136,7 +144,10 @@
 
   services.postgresql = {
     enable = true;
-    ensureDatabases = [ "mautrix-discord" "matrix-synapse" ];
+    ensureDatabases = [
+      "mautrix-discord"
+      "matrix-synapse"
+    ];
     ensureUsers = [
       {
         name = "mautrix-discord";

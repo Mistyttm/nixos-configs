@@ -1,18 +1,18 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ../../global-configs/users/misty.nix
-      ../../global-configs/system/locale.nix
-      ../../global-configs/system/networking/ssh.nix
-      ../../global-configs/system/nixoptions.nix
-      ../../global-configs/system/virtualisation.nix
-      ./services/jellyfin.nix
-      ./system/nvidia.nix
-      ./services/arr/default.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ../../global-configs/users/misty.nix
+    ../../global-configs/system/locale.nix
+    ../../global-configs/system/networking/ssh.nix
+    ../../global-configs/system/nixoptions.nix
+    ../../global-configs/system/virtualisation.nix
+    ./services/jellyfin.nix
+    ./system/nvidia.nix
+    ./services/arr/default.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -40,8 +40,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    #  wget
     zip
     unzip
     nano

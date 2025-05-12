@@ -1,4 +1,15 @@
-{ lib, options, config, pkgs, ... }: with lib; let cfg = config.gaming; in {
+{
+  lib,
+  options,
+  config,
+  pkgs,
+  ...
+}:
+with lib;
+let
+  cfg = config.gaming;
+in
+{
   imports = [
     ./vr.nix # Import the VR module
   ];
@@ -31,8 +42,12 @@
       enable = mkEnableOption "Enable Minecraft via PrismLauncher";
       jdkOverrides = mkOption {
         type = pkgs.lib.types.listOf pkgs.lib.types.package;
-        default = [];
-        example = [ pkgs.jdk8 pkgs.jdk17 pkgs.jdk21 ];
+        default = [ ];
+        example = [
+          pkgs.jdk8
+          pkgs.jdk17
+          pkgs.jdk21
+        ];
         description = ''
           List of JDKs to use for PrismLauncher
         '';
@@ -53,23 +68,27 @@
       dedicatedServer.openFirewall = true;
       localNetworkGameTransfers.openFirewall = true;
       extraPackages = with pkgs; [
-          gamescope
-          mangohud
+        gamescope
+        mangohud
       ];
       package = pkgs.steam.override {
-        extraEnv = if cfg.steam.portable then {
-          __NV_PRIME_RENDER_OFFLOAD = 1;
-          __NV_PRIME_RENDER_OFFLOAD_PROVIDER = "NVIDIA-G0";
-          __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-          __VK_LAYER_NV_optimus = "NVIDIA_only";
-        } else {
-          OBS_VKCAPTURE = true;
-        };
-#         extraLibraries = p: with p; [
-#           mono
-#           mono4
-#           mono5
-#         ];
+        extraEnv =
+          if cfg.steam.portable then
+            {
+              __NV_PRIME_RENDER_OFFLOAD = 1;
+              __NV_PRIME_RENDER_OFFLOAD_PROVIDER = "NVIDIA-G0";
+              __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+              __VK_LAYER_NV_optimus = "NVIDIA_only";
+            }
+          else
+            {
+              OBS_VKCAPTURE = true;
+            };
+        #         extraLibraries = p: with p; [
+        #           mono
+        #           mono4
+        #           mono5
+        #         ];
       };
     };
 
@@ -80,9 +99,11 @@
     # Home Manager options
     home-manager.users.${cfg.user} = {
       home.packages = with pkgs; [
-        (mkIf cfg.minecraft.enable (prismlauncher.override {
-          jdks = cfg.minecraft.jdkOverrides;
-        }))
+        (mkIf cfg.minecraft.enable (
+          prismlauncher.override {
+            jdks = cfg.minecraft.jdkOverrides;
+          }
+        ))
         (mkIf cfg.steam.enable pkgs.protonup-qt)
         (mkIf cfg.dolphin pkgs.dolphin-emu-beta)
         (mkIf cfg.lutris pkgs.lutris)

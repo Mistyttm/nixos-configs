@@ -1,12 +1,13 @@
-{ config, ... }: let 
+{ config, ... }:
+let
   discordBridgePort = toString config.services.mautrix-discord.settings.appservice.port;
-in{
+in
+{
   networking.firewall.allowedTCPPorts = [
     80
     443
     8448
   ];
-
 
   sops.secrets."porkbun-api-key" = {
     sopsFile = ../../../secrets/porkbun.yaml;
@@ -18,29 +19,35 @@ in{
     sopsFile = ../../../secrets/porkbun.yaml;
     owner = config.users.users.nginx.name;
     group = config.users.users.nginx.group;
-  };  
+  };
 
   security.acme = {
     acceptTerms = true;
     defaults.email = "contact@mistyttm.dev";
     certs."mistyttm.dev" = {
-        group = "nginx";
-        dnsProvider = "porkbun";
-        credentialFiles = {
-          PORKBUN_API_KEY_FILE = config.sops.secrets."porkbun-api-key".path;
-          PORKBUN_SECRET_API_KEY_FILE = config.sops.secrets."porkbun-secret-api-key".path;
-        };
+      group = "nginx";
+      dnsProvider = "porkbun";
+      credentialFiles = {
+        PORKBUN_API_KEY_FILE = config.sops.secrets."porkbun-api-key".path;
+        PORKBUN_SECRET_API_KEY_FILE = config.sops.secrets."porkbun-secret-api-key".path;
+      };
     };
   };
 
-  services.nginx.virtualHosts = let
-    SSL = {
-      enableACME = true;
-      forceSSL = true;
-    }; in {
-      "minecraft.mistyttm.dev" = (SSL // {
-        locations."/".proxyPass = "http://127.0.0.1:25565/";
-      });
+  services.nginx.virtualHosts =
+    let
+      SSL = {
+        enableACME = true;
+        forceSSL = true;
+      };
+    in
+    {
+      "minecraft.mistyttm.dev" = (
+        SSL
+        // {
+          locations."/".proxyPass = "http://127.0.0.1:25565/";
+        }
+      );
       "discord-media.mistyttm.dev" = {
         useACMEHost = "mistyttm.dev";
         forceSSL = true;
@@ -60,10 +67,26 @@ in{
         useACMEHost = "mistyttm.dev";
 
         listen = [
-          { addr = "0.0.0.0"; port = 443; ssl = true; }
-          { addr = "[::]"; port = 443; ssl = true; }
-          { addr = "0.0.0.0"; port = 8448; ssl = true; }
-          { addr = "[::]"; port = 8448; ssl = true; }
+          {
+            addr = "0.0.0.0";
+            port = 443;
+            ssl = true;
+          }
+          {
+            addr = "[::]";
+            port = 443;
+            ssl = true;
+          }
+          {
+            addr = "0.0.0.0";
+            port = 8448;
+            ssl = true;
+          }
+          {
+            addr = "[::]";
+            port = 8448;
+            ssl = true;
+          }
         ];
 
         locations."/".proxyPass = "http://localhost:8080/";

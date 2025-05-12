@@ -44,7 +44,22 @@
     ];
   };
 
-  outputs = inputs@{ nixpkgs, nixpkgs-xr, home-manager, bs-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, nix-minecraft, nix-vscode-extensions, auto-cpufreq, simple-nixos-mailserver, ... }: let
+  outputs =
+    inputs@{
+      nixpkgs,
+      nixpkgs-xr,
+      home-manager,
+      bs-manager,
+      sddm-sugar-candy-nix,
+      sops-nix,
+      spicetify-nix,
+      nix-minecraft,
+      nix-vscode-extensions,
+      auto-cpufreq,
+      simple-nixos-mailserver,
+      ...
+    }:
+    let
       system = "x86_64-linux";
       overlay-bs-manager = final: prev: {
         personal = import bs-manager {
@@ -52,127 +67,128 @@
           config.allowUnfree = true;
         };
       };
-    in {
-    nixpkgs.config.cudaSupport = true;
-    nixosConfigurations = {
-      puppypc = nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = [
-          ./modules/default.nix
-          ./hosts/puppypc/configuration.nix
+    in
+    {
+      nixpkgs.config.cudaSupport = true;
+      nixosConfigurations = {
+        puppypc = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            ./modules/default.nix
+            ./hosts/puppypc/configuration.nix
 
-          home-manager.nixosModules.home-manager
-          sddm-sugar-candy-nix.nixosModules.default
-          sops-nix.nixosModules.sops
-          nixpkgs-xr.nixosModules.nixpkgs-xr
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              backupFileExtension = "backup";
-              extraSpecialArgs = { inherit spicetify-nix; };
-              users = {
-                misty = import ./hosts/puppypc/home.nix;
+            home-manager.nixosModules.home-manager
+            sddm-sugar-candy-nix.nixosModules.default
+            sops-nix.nixosModules.sops
+            nixpkgs-xr.nixosModules.nixpkgs-xr
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                backupFileExtension = "backup";
+                extraSpecialArgs = { inherit spicetify-nix; };
+                users = {
+                  misty = import ./hosts/puppypc/home.nix;
+                };
+                sharedModules = [
+                  inputs.sops-nix.homeManagerModules.sops
+                ];
               };
-              sharedModules = [
-                inputs.sops-nix.homeManagerModules.sops
-              ];
-            };
 
-            nixpkgs = {
-              overlays = [
-                sddm-sugar-candy-nix.overlays.default
-                nix-vscode-extensions.overlays.default
-                overlay-bs-manager
-              ];
-            };
-          }
-        ];
-      };
-      mistylappytappy = nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = [
-          ./modules/default.nix
-          ./hosts/mistylappytappy/configuration.nix
-
-          home-manager.nixosModules.home-manager
-          auto-cpufreq.nixosModules.default
-          sops-nix.nixosModules.sops
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              backupFileExtension = "backup";
-              extraSpecialArgs = { inherit spicetify-nix; };
-              users = {
-                misty = import ./hosts/mistylappytappy/home.nix;
-                wagtailpsychology = import ./hosts/mistylappytappy/work.nix;
+              nixpkgs = {
+                overlays = [
+                  sddm-sugar-candy-nix.overlays.default
+                  nix-vscode-extensions.overlays.default
+                  overlay-bs-manager
+                ];
               };
-              sharedModules = [
-                inputs.sops-nix.homeManagerModules.sops
-              ];
-            };
-            nixpkgs = {
-              overlays = [
-                sddm-sugar-candy-nix.overlays.default
-                nix-vscode-extensions.overlays.default
-              ];
-            };
-          }
-        ];
-      };
-      thedogpark = nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = [
-          ./modules/default.nix
-          ./hosts/thedogpark/configuration.nix
+            }
+          ];
+        };
+        mistylappytappy = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            ./modules/default.nix
+            ./hosts/mistylappytappy/configuration.nix
 
-          simple-nixos-mailserver.nixosModule
+            home-manager.nixosModules.home-manager
+            auto-cpufreq.nixosModules.default
+            sops-nix.nixosModules.sops
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                backupFileExtension = "backup";
+                extraSpecialArgs = { inherit spicetify-nix; };
+                users = {
+                  misty = import ./hosts/mistylappytappy/home.nix;
+                  wagtailpsychology = import ./hosts/mistylappytappy/work.nix;
+                };
+                sharedModules = [
+                  inputs.sops-nix.homeManagerModules.sops
+                ];
+              };
+              nixpkgs = {
+                overlays = [
+                  sddm-sugar-candy-nix.overlays.default
+                  nix-vscode-extensions.overlays.default
+                ];
+              };
+            }
+          ];
+        };
+        thedogpark = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            ./modules/default.nix
+            ./hosts/thedogpark/configuration.nix
 
-          home-manager.nixosModules.home-manager
-          sops-nix.nixosModules.sops
-          {
-            imports = [nix-minecraft.nixosModules.minecraft-servers];
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "backup";
+            simple-nixos-mailserver.nixosModule
 
-            # TODO replace ryan with your own username
-            home-manager.users.misty = import ./hosts/thedogpark/home.nix;
+            home-manager.nixosModules.home-manager
+            sops-nix.nixosModules.sops
+            {
+              imports = [ nix-minecraft.nixosModules.minecraft-servers ];
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.backupFileExtension = "backup";
 
-            # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
-            nixpkgs = {
-              overlays = [
-                nix-minecraft.overlay
-              ];
-            };
-          }
-        ];
-      };
-      thekennel = nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = [
-          ./hosts/thekennel/configuration.nix
+              # TODO replace ryan with your own username
+              home-manager.users.misty = import ./hosts/thedogpark/home.nix;
 
-          # make home-manager as a module of nixos
-          # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
-          home-manager.nixosModules.home-manager
-          sops-nix.nixosModules.sops
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "backup";
+              # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
+              nixpkgs = {
+                overlays = [
+                  nix-minecraft.overlay
+                ];
+              };
+            }
+          ];
+        };
+        thekennel = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            ./hosts/thekennel/configuration.nix
 
-            home-manager.users.misty = import ./hosts/thekennel/home.nix;
+            # make home-manager as a module of nixos
+            # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
+            home-manager.nixosModules.home-manager
+            sops-nix.nixosModules.sops
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.backupFileExtension = "backup";
 
-            # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
-            nixpkgs = {
-              overlays = [
-              ];
-            };
-          }
-        ];
+              home-manager.users.misty = import ./hosts/thekennel/home.nix;
+
+              # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
+              nixpkgs = {
+                overlays = [
+                ];
+              };
+            }
+          ];
+        };
       };
     };
-  };
 }

@@ -1,17 +1,18 @@
-{ config, pkgs, ... }: {
+{ ... }:
+{
   programs.kitty = {
     enable = true;
     settings = {
       # Font
       font_family = "MesloLGM Nerd Font";
-      
+
       # Cursor
       cursor_shape = "beam";
       cursor = "#f8f8f0";
-      
+
       # Mouse
       mouse_hide_wait = 3;
-      
+
       # Bell
       enable_audio_bell = true;
       bell_on_tab = "🔔 ";

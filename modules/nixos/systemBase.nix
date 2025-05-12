@@ -1,4 +1,15 @@
-{ lib, options, config, pkgs, ... }: with lib; let cfg = config.system; in{
+{
+  lib,
+  options,
+  config,
+  pkgs,
+  ...
+}:
+with lib;
+let
+  cfg = config.system;
+in
+{
   options.system = {
     bootloader = mkEnableOption "Enable the GRUB 2 boot loader";
     locale = mkEnableOption "Enable locale settings";
@@ -11,8 +22,15 @@
     basePackages = mkEnableOption "Enable base packages including Steam and Firefox";
     services = mkOption {
       type = types.listOf types.str;
-      default = [];
-      example = [ "gnome" "earlyoom" "pcscd" "resolved" "mullvad-vpn" "touchegg" ];
+      default = [ ];
+      example = [
+        "gnome"
+        "earlyoom"
+        "pcscd"
+        "resolved"
+        "mullvad-vpn"
+        "touchegg"
+      ];
       description = ''
         List of services to enable
       '';
@@ -26,7 +44,7 @@
   };
 
   config = {
-    boot = mkIf cfg.bootloader{
+    boot = mkIf cfg.bootloader {
       initrd = {
         systemd = {
           enable = true;
@@ -74,6 +92,6 @@
         timeout = 5;
       };
     };
-    
+
   };
 }

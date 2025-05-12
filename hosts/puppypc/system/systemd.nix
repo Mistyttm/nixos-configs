@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   systemd.user.services = {
     noisetorch = {
       description = "Noisetorch Noise Cancelling";

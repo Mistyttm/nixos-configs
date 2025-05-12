@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
 
   # Bootloader.
   boot = {
@@ -46,7 +47,7 @@
         efiSupport = true;
         devices = [ "nodev" ];
         useOSProber = true;
-#         theme = "${pkgs.sleek-grub-theme}/grub/themes/sleek/orange";
+        #         theme = "${pkgs.sleek-grub-theme}/grub/themes/sleek/orange";
       };
       timeout = 5;
     };

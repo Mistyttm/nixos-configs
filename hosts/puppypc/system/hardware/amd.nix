@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   powerManagement = {
     enable = true;
     cpuFreqGovernor = "schedutil";

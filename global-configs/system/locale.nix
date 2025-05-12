@@ -1,7 +1,12 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
-      # Set your time zone.
+  # Set your time zone.
   time.timeZone = "Australia/Brisbane";
 
   # Select internationalisation properties.

@@ -5,10 +5,10 @@
   home.homeDirectory = "/home/misty";
 
   imports = [
-  ../../global-configs/programs/git.nix
-  ../../global-configs/programs/xdg.nix
-  ../../global-configs/programs/cli.nix
-  ../../global-configs/programs/fastfetch.nix
+    ../../global-configs/programs/git.nix
+    ../../global-configs/programs/xdg.nix
+    ../../global-configs/programs/cli.nix
+    ../../global-configs/programs/fastfetch.nix
   ];
 
   # Packages that should be installed to the user profile.
@@ -16,7 +16,7 @@
     direnv
     nil
   ];
-  
+
   # This value determines the home Manager release that your
   # configuration is compatible with. This helps avoid breakage
   # when a new home Manager release introduces backwards
@@ -33,7 +33,10 @@
   programs.java.enable = true;
 
   nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
   };
 
 }

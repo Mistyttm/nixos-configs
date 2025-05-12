@@ -1,18 +1,19 @@
-{ pkgs, ... }: {
-#   imports = [
-#     pkgs.nixosModules.saneExtraBackends.brscan4
-#     ./hardware-configuration.nix
-#   ];
+{ pkgs, ... }:
+{
+  #   imports = [
+  #     pkgs.nixosModules.saneExtraBackends.brscan4
+  #     ./hardware-configuration.nix
+  #   ];
   hardware.sane = {
     enable = true;
     extraBackends = [ pkgs.sane-airscan ];
     disabledDefaultBackends = [ "escl" ];
-#     brscan4 = {
-#         enable = true;
-#         netDevices = {
-#           home = { model = "MFC-L28800W"; ip = "192.168.20.4"; };
-#         };
-#       };
+    #     brscan4 = {
+    #         enable = true;
+    #         netDevices = {
+    #           home = { model = "MFC-L28800W"; ip = "192.168.20.4"; };
+    #         };
+    #       };
   };
   services = {
     ratbagd = {
@@ -44,7 +45,11 @@
 
     printing = {
       enable = true;
-      drivers = [ pkgs.brlaser pkgs.brgenml1lpr pkgs.brgenml1cupswrapper ];
+      drivers = [
+        pkgs.brlaser
+        pkgs.brgenml1lpr
+        pkgs.brgenml1cupswrapper
+      ];
     };
     avahi = {
       enable = true;

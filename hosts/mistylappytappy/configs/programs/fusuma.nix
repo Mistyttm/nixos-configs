@@ -1,7 +1,12 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   services.fusuma = {
     enable = false;
-    extraPackages = with pkgs; [ xdotool coreutils xorg.xprop ];
+    extraPackages = with pkgs; [
+      xdotool
+      coreutils
+      xorg.xprop
+    ];
     settings = {
       swipe = {
         "4" = {
@@ -38,11 +43,11 @@
           right = {
             workspace = "prev"; # Switch to previous workspace
             keypress = {
-              LEFTSHIFT = { 
+              LEFTSHIFT = {
                 window = "prev"; # Move window to previous workspace
               };
               LEFTMETA = {
-                command = "xdotool key --clearmodifiers super+ctrl+Right";  # Move window to right side
+                command = "xdotool key --clearmodifiers super+ctrl+Right"; # Move window to right side
               };
             };
           };
@@ -57,7 +62,7 @@
             };
           };
           down = {
-            command = "xdotool key Control_L+F12"; #minimise all windows
+            command = "xdotool key Control_L+F12"; # minimise all windows
             keypress = {
               LEFTMETA = {
                 window = "close"; # Close window
@@ -86,13 +91,14 @@
       };
       plugin = {
         inputs = {
-          libinput_command_input = { # options for lib/plugin/inputs/libinput_command_input
+          libinput_command_input = {
+            # options for lib/plugin/inputs/libinput_command_input
             enable-tap = true; # click to tap
             enable-dwt = true; # disable tap while typing
             show-keycodes = true; # https://github.com/iberianpig/fusuma-plugin-keypress#add-show-keycode-option
           };
         };
-      };  
+      };
     };
   };
 }

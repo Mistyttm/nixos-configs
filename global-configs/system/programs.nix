@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   # Install firefox.
   programs.firefox.enable = true;
 
@@ -8,7 +14,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-#     qemu
+    #     qemu
     sddm-sugar-dark
     libaccounts-glib
     nil

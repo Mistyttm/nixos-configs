@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   home.packages = with pkgs; [
     stgit
   ];
@@ -14,7 +15,10 @@
         rebase = true;
       };
     };
-    ignores = [ "*~" "*#" ];
+    ignores = [
+      "*~"
+      "*#"
+    ];
     lfs.enable = true;
     extraConfig = {
       core = {
@@ -22,25 +26,27 @@
       };
       transfer.fsckObjects = true;
       fetch.fsckobjects = true;
-      receive.fsckObjects=true;
+      receive.fsckObjects = true;
       init.defaultBranch = "main";
       push = {
         default = "current";
         followtags = true;
       };
-      merge = { conflictstyle = "zdiff3"; };
+      merge = {
+        conflictstyle = "zdiff3";
+      };
       diff = {
         algorithm = "histogram";
         context = 10;
       };
     };
     difftastic = {
-        enable = true;
-        background = "dark";
+      enable = true;
+      background = "dark";
 
     };
     delta = {
-    #  enable = true;
+      #  enable = true;
       options = {
         hyperlinks = true;
         line-numbers = true;

@@ -1,16 +1,17 @@
-{ ... }: {
-    programs.auto-cpufreq = {
-        enable = false;
-        settings = {
-            charger = {
-                governor = "performance";
-                turbo = "auto";
-            };
+{ ... }:
+{
+  programs.auto-cpufreq = {
+    enable = false;
+    settings = {
+      charger = {
+        governor = "performance";
+        turbo = "auto";
+      };
 
-            battery = {
-                governor = "powersave";
-                turbo = "auto";
-            };
-        };
+      battery = {
+        governor = "powersave";
+        turbo = "auto";
+      };
     };
+  };
 }

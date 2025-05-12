@@ -1,5 +1,7 @@
-{ ... }: {
-  imports = [ # Include the results of the hardware scan.
+{ ... }:
+{
+  imports = [
+    # Include the results of the hardware scan.
     ./locale.nix
     ./programs.nix
     ./bootloader.nix
@@ -11,4 +13,3 @@
     ./nixoptions.nix
   ];
 }
-

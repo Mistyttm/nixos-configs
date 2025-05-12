@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   accounts.email.accounts = {
     misty = {
       address = "emmey.leo@gmail.com";

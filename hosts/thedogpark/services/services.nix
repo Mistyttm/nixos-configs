@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   services = {
     gnome = {
       gnome-keyring = {
@@ -45,7 +46,10 @@
     after = [ "docker.service" ];
     requires = [ "docker.service" ];
 
-    path = with pkgs; [ docker tmux ];
+    path = with pkgs; [
+      docker
+      tmux
+    ];
 
     # Set the command to run using ExecStart
     serviceConfig = {
@@ -64,5 +68,8 @@
     wantedBy = [ "multi-user.target" ];
   };
 
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
+  networking.firewall.allowedTCPPorts = [
+    80
+    443
+  ];
 }

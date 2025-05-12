@@ -1,4 +1,5 @@
-{ config, ... }: {
+{ config, ... }:
+{
   sops.secrets."turn_secret" = {
     sopsFile = ../../../secrets/coturn.yaml;
     owner = "turnserver";
@@ -13,11 +14,11 @@
     no-tcp-relay = true;
     cert = "/var/lib/acme/mistyttm.dev/fullchain.pem";
     pkey = "/var/lib/acme/mistyttmm.dev/key.pem";
-    extraConfig=''
+    extraConfig = ''
       denied-peer-ip=10.0.0.0-10.255.255.255
       denied-peer-ip=192.168.0.0-192.168.255.255
       denied-peer-ip=172.16.0.0-172.31.255.255
-      
+
       no-multicast-peers
       denied-peer-ip=0.0.0.0-0.255.255.255
       denied-peer-ip=100.64.0.0-100.127.255.255
