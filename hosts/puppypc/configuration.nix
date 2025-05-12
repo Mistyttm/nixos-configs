@@ -1,6 +1,14 @@
-{ pkgs, ... }:
+{ pkgs, ... }: let
+  slimevrCustom = pkgs.slimevr.overrideAttrs (oldAttrs: {
+    postFixup = ''
+      ${oldAttrs.postFixup or ""}
 
-{
+      wrapProgram "$out/bin/slimevr" \
+        --set WEBKIT_DISABLE_DMABUF_RENDERER 1 \
+        --set WEBKIT_DISABLE_COMPOSITING_MODE 1
+    '';
+  });
+in {
   imports =
     [
       ./system/default.nix
@@ -74,6 +82,11 @@
     package = pkgs.virt-manager;
   };
 
+  programs.ghidra = {
+    enable = true;
+    gdb = true;
+  };
+
   virtualisation.waydroid.enable = true;
 
 #   virtualisation.virtualbox = {
@@ -93,6 +106,7 @@
       kdotool
       unityhub
       openmw
+      slimevrCustom
     ];
     shellAliases = {
       rebuild = "sudo nixos-rebuild switch --flake .#puppypc";
