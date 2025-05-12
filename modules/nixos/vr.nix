@@ -183,6 +183,12 @@ in {
     environment.systemPackages = cfg.wivrn.overlay ++ [
       pkgs.opencomposite
       pkgs.monado-vulkan-layers
+      pkgs.wayvr-dashboard
     ] ++ lib.optional cfg.wivrn.opencomposite.override cfg.wivrn.opencomposite.package ++ lib.optional cfg.slimevr.enable cfg.slimevr.package ++ lib.optional cfg.slimevr.enable cfg.slimevr.serverPackage;
+
+    networking.firewall = lib.mkIf cfg.slimevr.enable {
+      allowedTCPPorts = [ 21110 ];
+      allowedUDPPorts = [ 35903 6969 ];
+    };
   };
 }
