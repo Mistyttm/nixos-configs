@@ -16,6 +16,7 @@
       url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    bs-manager.url = "github:TomaSajt/nixpkgs/bs-manager";
     # Secrets management
     sops-nix.url = "github:Mic92/sops-nix";
     # Spotify
@@ -43,9 +44,14 @@
     ];
   };
 
-  outputs = inputs@{ nixpkgs, nixpkgs-xr, home-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, nix-minecraft, nix-vscode-extensions, auto-cpufreq, simple-nixos-mailserver, ... }: let
+  outputs = inputs@{ nixpkgs, nixpkgs-xr, home-manager, bs-manager, sddm-sugar-candy-nix, sops-nix, spicetify-nix, nix-minecraft, nix-vscode-extensions, auto-cpufreq, simple-nixos-mailserver, ... }: let
       system = "x86_64-linux";
-      vsc-extensions = nix-vscode-extensions.extensions.${system};
+      overlay-bs-manager = final: prev: {
+        personal = import bs-manager {
+          inherit system;
+          config.allowUnfree = true;
+        };
+      };
     in {
     nixpkgs.config.cudaSupport = true;
     nixosConfigurations = {
@@ -77,6 +83,7 @@
               overlays = [
                 sddm-sugar-candy-nix.overlays.default
                 nix-vscode-extensions.overlays.default
+                overlay-bs-manager
               ];
             };
           }
