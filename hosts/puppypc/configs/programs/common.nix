@@ -16,6 +16,6 @@
     bottles
     protontricks
     scrcpy
-    personal.bs-manager
+    bs-manager
   ];
 }
