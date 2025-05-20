@@ -43,10 +43,6 @@ in
         package = pkgs.wivrn;
         encoder = "nvenc";
         overlay = [ pkgs.wlx-overlay-s ];
-        opencomposite = {
-          override = true;
-          package = pkgs.xrizer;
-        };
       };
       slimevr = {
         enable = false;
@@ -57,6 +53,9 @@ in
           hash = "sha256-ciH26Hyr8FumB2rQB5sFcXqtcQ1R84XOlphkkLBjzvA=";
         };
       };
+      additionalOpenVR = [
+        pkgs.xrizer
+      ];
     };
     steam = {
       enable = true;
