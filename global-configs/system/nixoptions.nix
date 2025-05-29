@@ -1,6 +1,11 @@
-{ ... }:
+{ config, ... }:
 
 {
+  sops.secrets."access-tokens" = {
+    sopsFile = ../../secrets/github.yaml;
+    owner = "root";
+  };
+
   nix = {
     settings = {
       auto-optimise-store = true;
@@ -23,5 +28,8 @@
       dates = "weekly";
       options = "--delete-older-than 30d";
     };
+    # extraOptions = ''
+    #   include ${config.sops.secrets."access-tokens".path}
+    # '';
   };
 }
