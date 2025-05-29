@@ -53,6 +53,7 @@
         kreativ-software.csharpextensions
         ms-dotnettools.csharp
         sonarsource.sonarlint-vscode
+        ms-dotnettools.csdevkit
       ];
       userSettings = {
         editor = {
@@ -172,6 +173,7 @@
             plaintext = true;
             markdown = true;
             javascript = false;
+            csharp = false;
           };
         };
 
