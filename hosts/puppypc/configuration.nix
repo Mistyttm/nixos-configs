@@ -23,6 +23,8 @@ in
 
   boot.supportedFilesystems = [ "ntfs" ];
 
+  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+
   programs.gnupg = {
     agent = {
       enable = true;
@@ -110,6 +112,8 @@ in
       unityhub
       openmw
       slimevrCustom
+      sops
+      nixos-rebuild-ng
     ];
     shellAliases = {
       rebuild = "sudo nixos-rebuild switch --flake .#puppypc";
@@ -127,6 +131,6 @@ in
     };
   };
 
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 
 }
