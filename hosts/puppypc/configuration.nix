@@ -46,15 +46,15 @@ in
         encoder = "nvenc";
         overlay = [ pkgs.wlx-overlay-s ];
       };
-      slimevr = {
-        enable = false;
-        commitHash = "9ae42c99949d07d47b7026ff607ec161f1124958";
-        wivrnSlimeHash = "sha256-suOEuWXoNfCCvQjXdf0hOxAVF6DrBcSYQgDxNKfK18A=";
-        monado = {
-          rev = "c80de9e7cacf2bf9579f8ae8c621d8bf16e85d6c";
-          hash = "sha256-ciH26Hyr8FumB2rQB5sFcXqtcQ1R84XOlphkkLBjzvA=";
-        };
-      };
+#       slimevr = {
+#         enable = false;
+#         commitHash = "9ae42c99949d07d47b7026ff607ec161f1124958";
+#         wivrnSlimeHash = "sha256-suOEuWXoNfCCvQjXdf0hOxAVF6DrBcSYQgDxNKfK18A=";
+#         monado = {
+#           rev = "c80de9e7cacf2bf9579f8ae8c621d8bf16e85d6c";
+#           hash = "sha256-ciH26Hyr8FumB2rQB5sFcXqtcQ1R84XOlphkkLBjzvA=";
+#         };
+#       };
       additionalOpenVR = [
         pkgs.xrizer
       ];
