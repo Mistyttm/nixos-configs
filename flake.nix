@@ -59,6 +59,7 @@
       nix-vscode-extensions,
       auto-cpufreq,
       simple-nixos-mailserver,
+      self,
       ...
     }:
     let
@@ -71,9 +72,20 @@
       };
 
       homeVersion = "25.11"; # Update this when you update your NixOS version
+
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [ self.overlays.default ];
+      };
     in
     {
+      overlays.default = import ./pkgs;
+
       nixpkgs.config.cudaSupport = true;
+
+      packages.${system} = {
+        inherit (pkgs) my-app another-tool;
+      };
 
       nixosConfigurations = {
         puppypc = nixpkgs.lib.nixosSystem {
