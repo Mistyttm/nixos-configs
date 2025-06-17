@@ -71,7 +71,7 @@ in
         gamescope
         mangohud
       ];
-      extraCompatPackages =  with pkgs; [ proton-ge-bin ];
+      extraCompatPackages = with pkgs; [ proton-ge-bin ];
       package = pkgs.steam.override {
         extraEnv =
           if cfg.steam.portable then
