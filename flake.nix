@@ -10,6 +10,9 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixpkgs-vpm = {
+      url = "github:mistyttm/nixpkgs/add-vpm";
+    };
     nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
     # SDDM theme (DOESNT WORK)
     sddm-sugar-candy-nix = {
@@ -46,6 +49,7 @@
   outputs =
     inputs@{
       nixpkgs,
+      nixpkgs-vpm,
       nixpkgs-xr,
       home-manager,
       sddm-sugar-candy-nix,
@@ -59,9 +63,16 @@
     }:
     let
       system = "x86_64-linux";
+      overlay-vpm = final: prev: {
+        add-vpm = import nixpkgs-vpm {
+          inherit system;
+          config.allowUnfree = true;
+        };
+      };
     in
     {
       nixpkgs.config.cudaSupport = true;
+
       nixosConfigurations = {
         puppypc = nixpkgs.lib.nixosSystem {
           inherit system;
@@ -91,6 +102,7 @@
                 overlays = [
                   sddm-sugar-candy-nix.overlays.default
                   nix-vscode-extensions.overlays.default
+                  overlay-vpm
                 ];
               };
             }
@@ -123,6 +135,7 @@
                 overlays = [
                   sddm-sugar-candy-nix.overlays.default
                   nix-vscode-extensions.overlays.default
+                  # myPkgsOverlay
                 ];
               };
             }
@@ -151,6 +164,7 @@
               nixpkgs = {
                 overlays = [
                   nix-minecraft.overlay
+                  # myPkgsOverlay
                 ];
               };
             }
@@ -175,11 +189,13 @@
               # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
               nixpkgs = {
                 overlays = [
+                  # myPkgsOverlay
                 ];
               };
             }
           ];
         };
       };
+      formatter.x86_64-linux = nixpkgs.legacyPackages.${system}.nixfmt-tree;
     };
 }
