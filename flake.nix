@@ -12,6 +12,8 @@
     };
     nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
     # SDDM theme (DOESNT WORK)
+    nixpkgs-extra.url = "github:Mistyttm/nixpkgs-extra";
+
     sddm-sugar-candy-nix = {
       url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -47,6 +49,7 @@
     inputs@{
       nixpkgs,
       nixpkgs-xr,
+      nixpkgs-extra,
       home-manager,
       sddm-sugar-candy-nix,
       sops-nix,
@@ -63,21 +66,21 @@
       homeVersion = "25.11"; # Update this when you update your NixOS version
     in
     {
-      overlays.default = import ./pkgs;
+      # overlays.default = import ./pkgs;
 
       nixpkgs.config.cudaSupport = true;
 
-      packages.${system} =
-        let
-          pkgs = import nixpkgs {
-            inherit system;
-            overlays = [ self.overlays.default ];
-          };
-          # Get all the packages that your overlay adds
-          myOverlay = self.overlays.default;
-          myPackages = myOverlay pkgs pkgs;
-        in
-        myPackages;
+      # packages.${system} =
+      #   let
+      #     pkgs = import nixpkgs {
+      #       inherit system;
+      #       overlays = [ self.overlays.default ];
+      #     };
+      #     # Get all the packages that your overlay adds
+      #     myOverlay = self.overlays.default;
+      #     myPackages = myOverlay pkgs pkgs;
+      #   in
+      #   myPackages;
 
       nixosConfigurations = {
         puppypc = nixpkgs.lib.nixosSystem {
@@ -95,6 +98,7 @@
             sddm-sugar-candy-nix.nixosModules.default
             sops-nix.nixosModules.sops
             nixpkgs-xr.nixosModules.nixpkgs-xr
+            nixpkgs-extra.nixosModules.default
             {
               home-manager = {
                 useGlobalPkgs = true;
@@ -111,7 +115,7 @@
 
               nixpkgs = {
                 overlays = [
-                  self.overlays.default
+                  nixpkgs-extra.overlays.default
                   sddm-sugar-candy-nix.overlays.default
                   nix-vscode-extensions.overlays.default
                 ];
