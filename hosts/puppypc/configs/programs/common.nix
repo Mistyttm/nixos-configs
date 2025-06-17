@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   home.packages = with pkgs; [
     mullvad-vpn
     qbittorrent
@@ -17,5 +16,8 @@
     protontricks
     scrcpy
     bs-manager
+    add-vpm.vpm
+    vrc-get
+    satisfactorymodmanager
   ];
 }
