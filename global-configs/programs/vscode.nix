@@ -74,7 +74,7 @@
         };
 
         "[nix]".editor.defaultFormatter = "jnoortheen.nix-ide";
-        "[css]".editor.defaultFormatter = "sbenp.prettier-vscode";
+        "[css]".editor.defaultFormatter = "esbenp.prettier-vscode";
         "[javascript]".editor.defaultFormatter = "esbenp.prettier-vscode";
         "[markdown]".editor.defaultFormatter = "yzhang.markdown-all-in-one";
         "[typescript]".editor.defaultFormatter = "esbenp.prettier-vscode";
