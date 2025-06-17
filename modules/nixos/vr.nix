@@ -136,10 +136,7 @@ in
   config = lib.mkIf cfg.enable {
     services.wivrn = {
       enable = cfg.wivrn.enable;
-      package =
-        mkIfElse cfg.slimevr.enable
-          (forSlimeVR)
-          base;
+      package = mkIfElse cfg.slimevr.enable (forSlimeVR) base;
       openFirewall = true;
       defaultRuntime = true;
       autoStart = true;
