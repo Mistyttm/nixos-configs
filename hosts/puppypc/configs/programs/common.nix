@@ -16,7 +16,7 @@
     protontricks
     scrcpy
     bs-manager
-    add-vpm.vpm
+    vpm
     vrc-get
     satisfactorymodmanager
   ];

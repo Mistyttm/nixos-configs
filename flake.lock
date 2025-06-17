@@ -275,22 +275,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-vpm": {
-      "locked": {
-        "lastModified": 1749470796,
-        "narHash": "sha256-ycMLl7Ua2ORYTvKBVE6303Xa/QpW96E7Axgg3lFeQmI=",
-        "owner": "mistyttm",
-        "repo": "nixpkgs",
-        "rev": "e4511ccdf9ebf59742358ce55732add453a55308",
-        "type": "github"
-      },
-      "original": {
-        "owner": "mistyttm",
-        "ref": "add-vpm",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs-xr": {
       "inputs": {
         "flake-compat": "flake-compat_2",
@@ -399,7 +383,6 @@
         "nix-minecraft": "nix-minecraft",
         "nix-vscode-extensions": "nix-vscode-extensions",
         "nixpkgs": "nixpkgs_3",
-        "nixpkgs-vpm": "nixpkgs-vpm",
         "nixpkgs-xr": "nixpkgs-xr",
         "sddm-sugar-candy-nix": "sddm-sugar-candy-nix",
         "simple-nixos-mailserver": "simple-nixos-mailserver",

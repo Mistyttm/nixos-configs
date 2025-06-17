@@ -10,9 +10,6 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixpkgs-vpm = {
-      url = "github:mistyttm/nixpkgs/add-vpm";
-    };
     nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
     # SDDM theme (DOESNT WORK)
     sddm-sugar-candy-nix = {
@@ -49,7 +46,6 @@
   outputs =
     inputs@{
       nixpkgs,
-      nixpkgs-vpm,
       nixpkgs-xr,
       home-manager,
       sddm-sugar-candy-nix,
@@ -64,28 +60,24 @@
     }:
     let
       system = "x86_64-linux";
-      overlay-vpm = final: prev: {
-        add-vpm = import nixpkgs-vpm {
-          inherit system;
-          config.allowUnfree = true;
-        };
-      };
-
       homeVersion = "25.11"; # Update this when you update your NixOS version
-
-      pkgs = import nixpkgs {
-        inherit system;
-        overlays = [ self.overlays.default ];
-      };
     in
     {
       overlays.default = import ./pkgs;
 
       nixpkgs.config.cudaSupport = true;
 
-      packages.${system} = {
-        inherit (pkgs) my-app another-tool;
-      };
+      packages.${system} =
+        let
+          pkgs = import nixpkgs {
+            inherit system;
+            overlays = [ self.overlays.default ];
+          };
+          # Get all the packages that your overlay adds
+          myOverlay = self.overlays.default;
+          myPackages = myOverlay pkgs pkgs;
+        in
+        myPackages;
 
       nixosConfigurations = {
         puppypc = nixpkgs.lib.nixosSystem {
@@ -119,9 +111,9 @@
 
               nixpkgs = {
                 overlays = [
+                  self.overlays.default
                   sddm-sugar-candy-nix.overlays.default
                   nix-vscode-extensions.overlays.default
-                  overlay-vpm
                 ];
               };
             }
