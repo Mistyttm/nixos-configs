@@ -69,6 +69,8 @@
           config.allowUnfree = true;
         };
       };
+
+      homeVersion = "25.11"; # Update this when you update your NixOS version
     in
     {
       nixpkgs.config.cudaSupport = true;
@@ -76,6 +78,11 @@
       nixosConfigurations = {
         puppypc = nixpkgs.lib.nixosSystem {
           inherit system;
+
+          specialArgs = {
+            inherit homeVersion;
+          };
+
           modules = [
             ./modules/default.nix
             ./hosts/puppypc/configuration.nix
@@ -89,7 +96,7 @@
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 backupFileExtension = "backup";
-                extraSpecialArgs = { inherit spicetify-nix; };
+                extraSpecialArgs = { inherit spicetify-nix homeVersion; };
                 users = {
                   misty = import ./hosts/puppypc/home.nix;
                 };
@@ -110,6 +117,9 @@
         };
         mistylappytappy = nixpkgs.lib.nixosSystem {
           inherit system;
+          specialArgs = {
+            inherit homeVersion;
+          };
           modules = [
             ./modules/default.nix
             ./hosts/mistylappytappy/configuration.nix
@@ -122,7 +132,7 @@
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 backupFileExtension = "backup";
-                extraSpecialArgs = { inherit spicetify-nix; };
+                extraSpecialArgs = { inherit spicetify-nix homeVersion; };
                 users = {
                   misty = import ./hosts/mistylappytappy/home.nix;
                   wagtailpsychology = import ./hosts/mistylappytappy/work.nix;
@@ -143,6 +153,9 @@
         };
         thedogpark = nixpkgs.lib.nixosSystem {
           inherit system;
+          specialArgs = {
+            inherit homeVersion;
+          };
           modules = [
             ./modules/default.nix
             ./hosts/thedogpark/configuration.nix
@@ -156,6 +169,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "backup";
+              home-manager.extraSpecialArgs = { inherit homeVersion; };
 
               # TODO replace ryan with your own username
               home-manager.users.misty = import ./hosts/thedogpark/home.nix;
@@ -172,6 +186,9 @@
         };
         thekennel = nixpkgs.lib.nixosSystem {
           inherit system;
+          specialArgs = {
+            inherit homeVersion;
+          };
           modules = [
             ./hosts/thekennel/configuration.nix
 
@@ -183,6 +200,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "backup";
+              home-manager.extraSpecialArgs = { inherit homeVersion; };
 
               home-manager.users.misty = import ./hosts/thekennel/home.nix;
 

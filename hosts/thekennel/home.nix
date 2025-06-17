@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ homeVersion, pkgs, ... }:
 {
   # TODO please change the username & home directory to your own
   home.username = "misty";
@@ -25,7 +25,7 @@
   # You can update home Manager without changing this value. See
   # the home Manager release notes for a list of state version
   # changes in each release.
-  home.stateVersion = "25.11";
+  home.stateVersion = homeVersion;
 
   # Let home Manager install and manage itself.
   programs.home-manager.enable = true;

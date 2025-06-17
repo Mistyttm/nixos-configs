@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ homeVersion, ... }:
 {
   home.username = "misty";
   home.homeDirectory = "/home/misty";
@@ -10,7 +10,7 @@
     ./configs/gnupg/gnupg.nix
   ];
 
-  home.stateVersion = "25.11";
+  home.stateVersion = homeVersion;
 
   home.shellAliases = {
     rebuild = "sudo nixos-rebuild switch --flake .#puppypc";
