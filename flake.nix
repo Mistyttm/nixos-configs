@@ -34,6 +34,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     simple-nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+    kwin-effects-forceblur = {
+      url = "github:taj-ny/kwin-effects-forceblur";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   nixConfig = {
@@ -59,6 +63,7 @@
       auto-cpufreq,
       simple-nixos-mailserver,
       self,
+      kwin-effects-forceblur,
       ...
     }:
     let
@@ -66,28 +71,14 @@
       homeVersion = "25.11"; # Update this when you update your NixOS version
     in
     {
-      # overlays.default = import ./pkgs;
-
       nixpkgs.config.cudaSupport = true;
-
-      # packages.${system} =
-      #   let
-      #     pkgs = import nixpkgs {
-      #       inherit system;
-      #       overlays = [ self.overlays.default ];
-      #     };
-      #     # Get all the packages that your overlay adds
-      #     myOverlay = self.overlays.default;
-      #     myPackages = myOverlay pkgs pkgs;
-      #   in
-      #   myPackages;
 
       nixosConfigurations = {
         puppypc = nixpkgs.lib.nixosSystem {
           inherit system;
 
           specialArgs = {
-            inherit homeVersion;
+            inherit homeVersion kwin-effects-forceblur;
           };
 
           modules = [
