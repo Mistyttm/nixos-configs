@@ -2,6 +2,6 @@
 {
   imports = [
     ./gaming.nix
-    ./mautrix-discord.nix
+#     ./mautrix-discord.nix
   ];
 }
