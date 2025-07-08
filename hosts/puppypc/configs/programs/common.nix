@@ -19,5 +19,6 @@
     vpm
     vrc-get
     satisfactorymodmanager
+    plasma-panel-colorizer
   ];
 }
