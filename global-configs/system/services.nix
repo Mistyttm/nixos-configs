@@ -57,6 +57,11 @@
       openFirewall = true;
     };
     udev.packages = [ pkgs.sane-airscan ];
+
+    lact = {
+      enable = true;
+      package = pkgs.lact;
+    };
   };
 
   programs.noisetorch.enable = true;
