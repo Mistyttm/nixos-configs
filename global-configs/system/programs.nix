@@ -1,6 +1,4 @@
 {
-  config,
-  lib,
   pkgs,
   ...
 }:
@@ -18,6 +16,8 @@
     sddm-sugar-dark
     libaccounts-glib
     nil
+    bitwarden-desktop
+    bitwarden-cli
   ];
 
   programs.zsh.enable = true;
