@@ -20,8 +20,6 @@
         waderyan.gitblame
         donjayamanne.githistory
         github.vscode-github-actions
-        github.copilot
-        github.copilot-chat
         github.vscode-pull-request-github
         george-alisson.html-preview-vscode
         ecmel.vscode-html-css
