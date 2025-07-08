@@ -51,7 +51,16 @@
         kreativ-software.csharpextensions
         ms-dotnettools.csharp
         sonarsource.sonarlint-vscode
-        ms-dotnettools.csdevkit
+#         ms-dotnettools.csdevkit
+#         rust-lang.rust-analyzer
+        dustypomerleau.rust-syntax
+        fill-labs.dependi
+        swellaby.vscode-rust-test-adapter
+        hbenl.vscode-test-explorer
+        ms-vscode.test-adapter-converter
+        tamasfe.even-better-toml
+        jinxdash.prettier-rust
+        ms-vscode.cpptools
       ];
       userSettings = {
         editor = {
@@ -78,6 +87,7 @@
         "[typescript]".editor.defaultFormatter = "esbenp.prettier-vscode";
         "[typescriptreact]".editor.defaultFormatter = "esbenp.prettier-vscode";
         "[html]".editor.defaultFormatter = "esbenp.prettier-vscode";
+        "[rust]".editor.defaultFormatter = "jinxdash.prettier-rust";
 
         vsintellicode.modify.editor.suggestSelection = "automaticallyOverrodeDefaultValue";
 
@@ -207,6 +217,10 @@
         prettier = {
           bracketSameLine = true;
           tabWidth = 4;
+        };
+
+        nixEnvSelector = {
+          useFlakes = true;
         };
 
         nix = {
