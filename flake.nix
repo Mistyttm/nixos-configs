@@ -38,6 +38,7 @@
       url = "github:taj-ny/kwin-effects-forceblur";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    millennium.url = "git+https://github.com/Mistyttm/Millennium";
   };
 
   nixConfig = {
@@ -64,6 +65,7 @@
       simple-nixos-mailserver,
       self,
       kwin-effects-forceblur,
+      millennium,
       ...
     }:
     let
@@ -109,6 +111,7 @@
                   nixpkgs-extra.overlays.default
                   sddm-sugar-candy-nix.overlays.default
                   nix-vscode-extensions.overlays.default
+#                   millennium.overlays.default
                 ];
               };
             }
@@ -144,6 +147,7 @@
                 overlays = [
                   sddm-sugar-candy-nix.overlays.default
                   nix-vscode-extensions.overlays.default
+#                   millennium.overlays.default
                   # myPkgsOverlay
                 ];
               };
