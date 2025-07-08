@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, kwin-effects-forceblur, ... }:
 let
   slimevrCustom = pkgs.slimevr.overrideAttrs (oldAttrs: {
     postFixup = ''
@@ -38,27 +38,27 @@ in
   gaming = {
     enable = true;
     user = "misty";
-    vr = {
-      enable = true;
-      wivrn = {
-        enable = true;
-        package = pkgs.wivrn;
-        encoder = "nvenc";
-        overlay = [ pkgs.wlx-overlay-s ];
-      };
+#     vr = {
+#       enable = false;
+#       wivrn = {
+#         enable = true;
+#         package = pkgs.wivrn;
+#         encoder = "nvenc";
+#         overlay = [ pkgs.wlx-overlay-s ];
+#       };
 #       slimevr = {
 #         enable = false;
-#         commitHash = "9ae42c99949d07d47b7026ff607ec161f1124958";
-#         wivrnSlimeHash = "sha256-suOEuWXoNfCCvQjXdf0hOxAVF6DrBcSYQgDxNKfK18A=";
-#         monado = {
-#           rev = "c80de9e7cacf2bf9579f8ae8c621d8bf16e85d6c";
-#           hash = "sha256-ciH26Hyr8FumB2rQB5sFcXqtcQ1R84XOlphkkLBjzvA=";
-#         };
+# #         commitHash = "9ae42c99949d07d47b7026ff607ec161f1124958";
+# #         wivrnSlimeHash = "sha256-suOEuWXoNfCCvQjXdf0hOxAVF6DrBcSYQgDxNKfK18A=";
+# #         monado = {
+# #           rev = "c80de9e7cacf2bf9579f8ae8c621d8bf16e85d6c";
+# #           hash = "sha256-ciH26Hyr8FumB2rQB5sFcXqtcQ1R84XOlphkkLBjzvA=";
+# #         };
 #       };
-      additionalOpenVR = [
-        pkgs.xrizer
-      ];
-    };
+#       additionalOpenVR = [
+#         pkgs.xrizer
+#       ];
+#     };
     steam = {
       enable = true;
     };
@@ -77,6 +77,31 @@ in
     YARG = true;
   };
 
+  services.wivrn = {
+      enable = true;
+      package = pkgs.wivrn;
+      openFirewall = true;
+      defaultRuntime = true;
+      autoStart = true;
+      config = {
+        enable = true;
+        json = {
+          scale = 1.0;
+          bitrate = 50000000;
+          encoders = [
+            {
+              encoder = "nvenc";
+              width = 1.0;
+              height = 1.0;
+              offset_x = 0.0;
+              offset_y = 0.0;
+            }
+          ];
+          application = [ pkgs.wlx-overlay-s ];
+        };
+      };
+    };
+
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = true;
@@ -92,7 +117,7 @@ in
     gdb = true;
   };
 
-  virtualisation.waydroid.enable = true;
+  virtualisation.waydroid.enable = false;
 
   #   virtualisation.virtualbox = {
   #     host.enable = true;
@@ -109,11 +134,18 @@ in
       monado-vulkan-layers
       texliveFull
       kdotool
-      unityhub
+#       unityhub
       openmw
       slimevrCustom
       sops
       nixos-rebuild-ng
+      heroic
+      opencomposite
+      monado-vulkan-layers
+      wayvr-dashboard
+      xrizer
+    ] ++ [
+      kwin-effects-forceblur.packages.${pkgs.system}.default
     ];
     shellAliases = {
       rebuild = "sudo nixos-rebuild switch --flake .#puppypc";
