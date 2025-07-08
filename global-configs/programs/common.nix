@@ -36,4 +36,9 @@
     enableZshIntegration = true; # see note on other shells below
     nix-direnv.enable = true;
   };
+
+  services.easyeffects = {
+    enable = true;
+    package = pkgs.easyeffects;
+  };
 }
