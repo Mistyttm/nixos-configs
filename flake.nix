@@ -38,7 +38,7 @@
       url = "github:taj-ny/kwin-effects-forceblur";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    millennium.url = "git+https://github.com/Mistyttm/Millennium";
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
   };
 
   nixConfig = {
@@ -65,7 +65,7 @@
       simple-nixos-mailserver,
       self,
       kwin-effects-forceblur,
-      millennium,
+      chaotic,
       ...
     }:
     let
@@ -87,6 +87,7 @@
             ./modules/default.nix
             ./hosts/puppypc/configuration.nix
 
+            chaotic.nixosModules.default
             home-manager.nixosModules.home-manager
             sddm-sugar-candy-nix.nixosModules.default
             sops-nix.nixosModules.sops
@@ -126,6 +127,7 @@
             ./modules/default.nix
             ./hosts/mistylappytappy/configuration.nix
 
+            chaotic.nixosModules.default
             home-manager.nixosModules.home-manager
             auto-cpufreq.nixosModules.default
             sops-nix.nixosModules.sops
