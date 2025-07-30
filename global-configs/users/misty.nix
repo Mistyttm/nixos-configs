@@ -17,6 +17,7 @@
       "input"
       "scanner"
       "lp"
+      "gamemode"
     ];
   };
 }
