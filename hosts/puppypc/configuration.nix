@@ -144,6 +144,7 @@ in
       monado-vulkan-layers
       wayvr-dashboard
       xrizer
+      klassy
     ] ++ [
       kwin-effects-forceblur.packages.${pkgs.system}.default
     ];
@@ -158,6 +159,7 @@ in
     config = {
       permittedInsecurePackages = [
         "freeimage-unstable-2021-11-01"
+        "libsoup-2.74.3"
       ];
       cudaSupport = true;
     };
