@@ -1,6 +1,4 @@
 {
-  config,
-  lib,
   pkgs,
   ...
 }:
@@ -29,6 +27,8 @@
     signon-kwallet-extension
     kalk
     skanpage
+  ] ++ [
+    pkgs.darkly
   ];
 
   # Configure keymap in X11
