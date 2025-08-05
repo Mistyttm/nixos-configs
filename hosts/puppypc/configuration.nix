@@ -142,7 +142,7 @@ in
       heroic
       opencomposite
       monado-vulkan-layers
-      wayvr-dashboard
+#       wayvr-dashboard
       xrizer
       klassy
     ] ++ [
