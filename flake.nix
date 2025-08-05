@@ -91,7 +91,7 @@
             home-manager.nixosModules.home-manager
             sddm-sugar-candy-nix.nixosModules.default
             sops-nix.nixosModules.sops
-            nixpkgs-xr.nixosModules.nixpkgs-xr
+#             nixpkgs-xr.nixosModules.nixpkgs-xr
             nixpkgs-extra.nixosModules.default
             {
               home-manager = {
