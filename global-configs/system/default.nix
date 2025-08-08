@@ -11,5 +11,6 @@
     ./services.nix
     ./virtualisation.nix
     ./nixoptions.nix
+    ./zram.nix
   ];
 }
