@@ -159,7 +159,7 @@
         thedogpark = nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
-            inherit homeVersion;
+            inherit homeVersion inputs;
           };
           modules = [
             ./modules/default.nix
