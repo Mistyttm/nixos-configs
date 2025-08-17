@@ -39,10 +39,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-    microvm = {
-      url = "github:astro/microvm.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # microvm = {
+    #   url = "github:astro/microvm.nix";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
   };
 
   nixConfig = {
@@ -70,7 +70,7 @@
       self,
       kwin-effects-forceblur,
       chaotic,
-      microvm,
+      # microvm,
       ...
     }:
     let
@@ -171,7 +171,7 @@
             ./hosts/thedogpark/configuration.nix
 
             simple-nixos-mailserver.nixosModule
-            microvm.nixosModules.microvm
+            # microvm.nixosModules.microvm
             home-manager.nixosModules.home-manager
             sops-nix.nixosModules.sops
             {
@@ -204,7 +204,7 @@
             # make home-manager as a module of nixos
             # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
             home-manager.nixosModules.home-manager
-            microvm.nixosModules.microvm
+            # microvm.nixosModules.microvm
             sops-nix.nixosModules.sops
             {
               home-manager.useGlobalPkgs = true;
