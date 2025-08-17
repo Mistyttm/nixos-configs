@@ -1,4 +1,5 @@
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
+
 
 {
   imports = [
@@ -13,13 +14,15 @@
     ../../global-configs/system/virtualisation.nix
   ];
 
-  # Use the GRUB 2 boot loader.
-  boot.loader.grub.enable = true;
-  # boot.loader.grub.efiSupport = true;
-  # boot.loader.grub.efiInstallAsRemovable = true;
-  # boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  # Define on which hard drive you want to install Grub.
-  boot.loader.grub.device = "/dev/vda"; # or "nodev" for efi only
+  boot = {
+    kernelPackages = pkgs.linuxPackages_hardened;
+    loader = {
+      grub = {
+        enable = true;
+        device = "/dev/vda";
+      };
+    };
+  };
 
   networking.hostName = "thedogpark"; # Define your hostname.
   # Pick only one of the below networking options.
@@ -102,6 +105,16 @@
 
   users.users.misty = {
     extraGroups = [ "minecraft" ];
+  };
+
+  system.autoUpgrade = {
+    enable = true;
+    flake = inputs.self.outPath;
+    flags = [
+      "--print-build-logs"
+    ];
+    dates = "02:00";
+    randomizedDelaySec = "45min";
   };
 
   system.stateVersion = "25.11"; # Did you read the comment?
