@@ -3,7 +3,7 @@
 
   # Bootloader.
   boot = {
-    kernelPackages = pkgs.linuxPackages_cachyos;
+    kernelPackages = pkgs.linuxPackages_zen;
     initrd = {
       systemd = {
         enable = true;
