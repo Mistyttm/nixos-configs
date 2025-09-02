@@ -38,7 +38,7 @@
         esbenp.prettier-vscode
         yoavbls.pretty-ts-errors
         ms-python.vscode-pylance
-        ms-python.python
+#         ms-python.python
         ms-python.debugpy
         ms-vscode-remote.remote-ssh
         ms-vscode-remote.remote-ssh-edit
