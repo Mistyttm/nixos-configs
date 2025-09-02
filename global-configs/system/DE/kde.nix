@@ -27,6 +27,7 @@
     signon-kwallet-extension
     kalk
     skanpage
+    filelight
   ] ++ [
     pkgs.darkly
   ];
