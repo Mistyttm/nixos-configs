@@ -13,5 +13,6 @@
     ./xdg.nix
     ./spotify.nix
     ./cli.nix
+    ./mangohud/default.nix
   ];
 }
