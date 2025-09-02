@@ -145,6 +145,7 @@ in
 #       wayvr-dashboard
       xrizer
       klassy
+      steam-presence
     ] ++ [
       kwin-effects-forceblur.packages.${pkgs.system}.default
     ];
