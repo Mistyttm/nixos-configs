@@ -14,5 +14,7 @@
     gpush = "git push";
 
     ls = "eza -la";
+    cat = "bat";
+    grep = "rg";
   };
 }

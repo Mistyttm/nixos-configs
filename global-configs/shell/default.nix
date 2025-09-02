@@ -7,5 +7,7 @@
     ./terminals.nix
     ./zsh.nix
     ./eza.nix
+    ./bat.nix
+    ./ripgrep.nix
   ];
 }
