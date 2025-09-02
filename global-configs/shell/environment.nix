@@ -12,5 +12,7 @@
     gfetch = "git fetch origin --prune";
     gc = "git commit";
     gpush = "git push";
+
+    ls = "eza -la";
   };
 }

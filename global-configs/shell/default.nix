@@ -6,5 +6,6 @@
     ./starship.nix
     ./terminals.nix
     ./zsh.nix
+    ./eza.nix
   ];
 }
