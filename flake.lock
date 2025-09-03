@@ -561,6 +561,7 @@
         "nixpkgs": "nixpkgs_4",
         "nixpkgs-extra": "nixpkgs-extra",
         "nixpkgs-xr": "nixpkgs-xr",
+        "satisfactory": "satisfactory",
         "sddm-sugar-candy-nix": "sddm-sugar-candy-nix",
         "simple-nixos-mailserver": "simple-nixos-mailserver",
         "sops-nix": "sops-nix",
@@ -585,6 +586,22 @@
       "original": {
         "owner": "oxalica",
         "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "satisfactory": {
+      "locked": {
+        "lastModified": 1756653036,
+        "narHash": "sha256-ORYaCeP6UsCGBf5aktHD/iba8t2Mxr8N0cpPwhM0Lrc=",
+        "owner": "TomaSajt",
+        "repo": "nixpkgs",
+        "rev": "35fe573e0d0f0d572c3f0048b845adbf9a30bd35",
+        "type": "github"
+      },
+      "original": {
+        "owner": "TomaSajt",
+        "ref": "satisfactorymodmanager",
+        "repo": "nixpkgs",
         "type": "github"
       }
     },
