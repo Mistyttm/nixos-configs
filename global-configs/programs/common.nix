@@ -14,7 +14,7 @@
     vlc
     thunderbird
     birdtray
-    libreoffice
+    libreoffice-qt
     zenity
     libnotify
     teams-for-linux
