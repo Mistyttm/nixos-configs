@@ -5,5 +5,7 @@
     description = "Steam";
     home = "/var/lib/steamuser";
     createHome = true;
+    group = "steam";
   };
+  users.groups.steam = {};
 }
