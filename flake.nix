@@ -190,6 +190,7 @@
               home-manager.extraSpecialArgs = { inherit homeVersion; };
 
               home-manager.users.misty = import ./hosts/thedogpark/home.nix;
+              home-manager.users.steam = import ./hosts/thedogpark/steam.nix;
 
               # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
               nixpkgs = {
