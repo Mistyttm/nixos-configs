@@ -13,7 +13,7 @@
     nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
     # SDDM theme (DOESNT WORK)
     nixpkgs-extra.url = "github:Mistyttm/nixpkgs-extra";
-
+    satisfactory.url = "github:TomaSajt/nixpkgs/satisfactorymodmanager";
     sddm-sugar-candy-nix = {
       url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -71,11 +71,18 @@
       kwin-effects-forceblur,
       chaotic,
       # microvm,
+      satisfactory,
       ...
     }:
     let
       system = "x86_64-linux";
       homeVersion = "25.11"; # Update this when you update your NixOS version
+      overlay-satisfactory = final: prev: {
+        satis = import satisfactory {
+          inherit system;
+          config.allowUnfree = true;
+        };
+      };
     in
     {
       nixpkgs.config.cudaSupport = true;
@@ -117,6 +124,7 @@
                   nixpkgs-extra.overlays.default
                   sddm-sugar-candy-nix.overlays.default
                   nix-vscode-extensions.overlays.default
+                  overlay-satisfactory
 #                   millennium.overlays.default
                 ];
               };
