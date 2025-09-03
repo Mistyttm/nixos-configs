@@ -24,5 +24,6 @@
       };
     };
     certificateScheme = "acme-nginx";
+    stateVersion = 1;
   };
 }

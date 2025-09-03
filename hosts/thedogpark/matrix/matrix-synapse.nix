@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 {
   imports = [
     ./coturn.nix
@@ -33,12 +33,13 @@
       "sentry" # Error tracking and performance metrics
       "systemd" # Provide the JournalHandler used in the default log_config
       "url-preview" # Support for oEmbed URL previews
-      "user-search" # Support internationalized domain names in user-search
     ];
     extraConfigFiles = [
       config.sops.secrets."smtp_pass".path
     ];
     settings = {
+      enable_registration = true;
+      enable_registration_without_verification = true;
       server_name = "mistyttm.dev";
       public_baseurl = "https://mistyttm.dev";
       email = {
@@ -65,6 +66,32 @@
           email_validation = "[%(server_name)s] Validate your email";
         };
       };
+      database = {
+        name = "psycopg2";
+        args = {
+          user = "matrix-synapse";
+          database = "matrix-synapse";
+          host = "/run/postgresql";
+          cp_min = 5;
+          cp_max = 10;
+        };
+        allow_unsafe_locale = true;
+      };
+      listeners = [
+        {
+          port = 8008;
+          bind_addresses = [ "127.0.0.1" ];
+          type = "http";
+          tls = false;
+          x_forwarded = true;
+          resources = [
+            {
+              names = [ "client" "federation" ];
+              compress = false;
+            }
+          ];
+        }
+      ];
       registration_shared_secret_path = config.sops.secrets."registration_shared_secret".path;
 
       # TURN Server
@@ -124,26 +151,26 @@
           per_second = 10;
           burst_count = 20;
         };
-
+      };
         # Presence Tracking
-        presence = {
-          enabled = true;
-          incluide_offline_users_on_sync = true;
-        };
+      presence = {
+        enabled = true;
+        incluide_offline_users_on_sync = true;
+      };
 
         # Avatar MIME type
-        allowed_avatar_mimetypes = [
-          "image/png"
-          "image/jpeg"
-          "image/gif"
-        ];
-        max_avatar_size = "10M";
-      };
+      allowed_avatar_mimetypes = [
+        "image/png"
+        "image/jpeg"
+        "image/gif"
+      ];
+      max_avatar_size = "10M";
     };
   };
 
   services.postgresql = {
     enable = true;
+    package = pkgs.postgresql_16;
     ensureDatabases = [
       "mautrix-discord"
       "matrix-synapse"

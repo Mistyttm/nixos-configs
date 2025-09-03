@@ -1,9 +1,6 @@
 { config, lib, ... }:
 let
-  maybeListener = lib.lists.findFirst (
-    l: l.tls == false
-  ) null config.services.matrix-synapse.settings.listeners;
-  synapsePort = if maybeListener == null then 8008 else maybeListener.port;
+  synapsePort = 9005;
 in
 {
   services.mautrix-discord = {
@@ -14,6 +11,8 @@ in
         domain = "mistyttm.dev";
       };
       appservice = {
+        port = synapsePort;
+        hostname = "0.0.0.0";
         database = {
           uri = "postgres:///mautrix-discord?host=/run/postgresql&sslmode=disable";
         };

@@ -1,7 +1,7 @@
 { ... }:
 {
   imports = [
-    ./mailserver.nix
+    # ./mailserver.nix
     ./minecraft.nix
     ./nginx.nix
     ./services.nix
