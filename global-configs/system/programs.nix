@@ -51,20 +51,20 @@ in {
     Download = 0
   '';
 
-  systemd.services.trickled = {
-    description = "Trickle bandwidth limiter daemon";
-    after = [ "network.target" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      # Run in foreground mode, let systemd handle daemonization
-      ExecStart = "${trickleOverlay}/bin/trickled -f -c /etc/trickled.conf";
-      Type = "simple";  # Changed from "forking" to "simple"
-      # Removed PIDFile since we're using Type=simple
-      Restart = "on-failure";
-      RestartSec = "5s";
-      # Create runtime directory for any files trickled might need
-      RuntimeDirectory = "trickled";
-      RuntimeDirectoryMode = "0755";
-    };
-  };
+#   systemd.services.trickled = {
+#     description = "Trickle bandwidth limiter daemon";
+#     after = [ "network.target" ];
+#     wantedBy = [ "multi-user.target" ];
+#     serviceConfig = {
+#       # Run in foreground mode, let systemd handle daemonization
+#       ExecStart = "${trickleOverlay}/bin/trickled -f -c /etc/trickled.conf";
+#       Type = "simple";  # Changed from "forking" to "simple"
+#       # Removed PIDFile since we're using Type=simple
+#       Restart = "on-failure";
+#       RestartSec = "5s";
+#       # Create runtime directory for any files trickled might need
+#       RuntimeDirectory = "trickled";
+#       RuntimeDirectoryMode = "0755";
+#     };
+#   };
 }
