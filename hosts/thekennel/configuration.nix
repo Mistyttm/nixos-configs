@@ -34,6 +34,7 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.cudaSupport = true;
+  nixpkgs.config.nvidia.acceptLicense = true;
 
   programs.nix-ld.enable = true;
 
@@ -59,8 +60,12 @@
   };
 
   services.logind = {
-    lidSwitch = "ignore";
-    lidSwitchExternalPower = "ignore";
+    settings = {
+      Login = {
+        HandleLidSwitchExternalPower = "ignore";
+        HandleLidSwitch = "ignore";
+      };
+    };
   };
 
   system.stateVersion = "25.11";

@@ -4,6 +4,7 @@
   hardware.graphics.enable = true;
   hardware.graphics.extraPackages = with pkgs; [
     monado-vulkan-layers
+    intel-vaapi-driver
   ];
 
   # Load nvidia driver for Xorg and Wayland
@@ -35,8 +36,10 @@
       };
     };
 
+    nvidiaPersistenced = true;
+
     nvidiaSettings = true;
 
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
   };
 }
