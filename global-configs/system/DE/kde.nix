@@ -28,6 +28,7 @@
     kalk
     skanpage
     filelight
+    wallpaper-engine-plugin
   ] ++ [
     pkgs.darkly
   ];
