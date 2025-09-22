@@ -20,5 +20,6 @@
     vrc-get
     satis.satisfactorymodmanager
     plasma-panel-colorizer
+    r2modman
   ];
 }
