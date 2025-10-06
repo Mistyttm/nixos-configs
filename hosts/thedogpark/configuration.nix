@@ -80,6 +80,8 @@
     5349
     25565
     9005
+    7777
+    8888
   ];
   networking.firewall.allowedUDPPorts = [
     5173
@@ -87,6 +89,7 @@
     3478
     5349
     25565
+    7777
   ];
   networking.firewall.allowedTCPPortRanges = [
     {

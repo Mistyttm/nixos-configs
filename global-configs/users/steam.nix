@@ -1,7 +1,7 @@
 { ... }:
 {
   users.users.steam = {
-    isSystemUser = true;
+    isNormalUser = true;
     description = "Steam";
     home = "/var/lib/steamuser";
     createHome = true;

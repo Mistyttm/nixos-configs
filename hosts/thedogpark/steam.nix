@@ -12,7 +12,7 @@
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
     steamcmd
-    steamtui
+    steam-tui
   ];
 
   # This value determines the home Manager release that your
