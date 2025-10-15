@@ -10,12 +10,6 @@
     extraPackages = with pkgs; [
       kdePackages.sddm-kcm
     ];
-    settings = {
-      AutoLogin = {
-        Session = "plasma.desktop";
-        User = "misty";
-      };
-    };
     autoNumlock = true;
   };
 }
