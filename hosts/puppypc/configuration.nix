@@ -35,6 +35,8 @@ in
 
   services.flatpak.enable = false;
 
+  desktops.niri.enable = false;
+
   gaming = {
     enable = true;
     user = "misty";
