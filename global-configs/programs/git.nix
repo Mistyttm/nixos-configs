@@ -7,20 +7,15 @@
   programs.git = {
     enable = true;
     package = pkgs.gitAndTools.gitFull;
-    userName = "Mistyttm";
-    userEmail = "contact@mistyttm.dev";
-    extraConfig = {
+    settings = {
+      user = {
+        name = "Mistyttm";
+        email = "contact@mistyttm.dev";
+      };
       credential.helper = "libsecret";
       pull = {
         rebase = true;
       };
-    };
-    ignores = [
-      "*~"
-      "*#"
-    ];
-    lfs.enable = true;
-    extraConfig = {
       core = {
         compression = 9;
       };
@@ -40,21 +35,27 @@
         context = 10;
       };
     };
-    difftastic = {
-      enable = true;
-      background = "dark";
-
-    };
-    delta = {
-      #  enable = true;
-      options = {
-        hyperlinks = true;
-        line-numbers = true;
-        side-by-side = true;
-      };
-    };
+    ignores = [
+      "*~"
+      "*#"
+    ];
+    lfs.enable = true;
   };
   programs.gh = {
     enable = true;
+  };
+  programs.difftastic = {
+    enable = true;
+    options = {
+      background = "dark";
+    };
+  };
+  programs.delta = {
+    #  enable = true;
+    options = {
+      hyperlinks = true;
+      line-numbers = true;
+      side-by-side = true;
+    };
   };
 }
