@@ -80,7 +80,7 @@ in
   };
 
   services.wivrn = {
-      enable = true;
+      enable = false;
       package = pkgs.wivrn;
       openFirewall = true;
       defaultRuntime = true;
@@ -137,7 +137,7 @@ in
       texliveFull
       kdotool
 #       unityhub
-      openmw
+      # openmw
       slimevrCustom
       sops
       nixos-rebuild-ng

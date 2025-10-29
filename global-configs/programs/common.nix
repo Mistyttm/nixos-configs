@@ -19,7 +19,7 @@
     libnotify
     teams-for-linux
     cabextract
-    rpi-imager
+    # rpi-imager
     quickemu
     python3
     nil
