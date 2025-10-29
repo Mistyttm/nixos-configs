@@ -83,6 +83,7 @@
           config.allowUnfree = true;
         };
       };
+      overlay-wallpaper-engine = import ./patches/wallpaper-engine-plugin;
     in
     {
       nixpkgs.config.cudaSupport = true;
@@ -125,6 +126,7 @@
                   sddm-sugar-candy-nix.overlays.default
                   nix-vscode-extensions.overlays.default
                   overlay-satisfactory
+                  overlay-wallpaper-engine
 #                   millennium.overlays.default
                 ];
               };
