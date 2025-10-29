@@ -8,6 +8,7 @@
 
   nix = {
     settings = {
+      cores = 6;
       auto-optimise-store = true;
       substituters = [
         "https://nix-community.cachix.org"
@@ -31,5 +32,10 @@
     # extraOptions = ''
     #   include ${config.sops.secrets."access-tokens".path}
     # '';
+  };
+
+  systemd.services.nix-daemon.serviceConfig = {
+    MemoryHigh = "10G";
+    MemoryMax = "15G";
   };
 }
