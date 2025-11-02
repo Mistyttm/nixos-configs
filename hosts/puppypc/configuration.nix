@@ -80,7 +80,7 @@ in
   };
 
   services.wivrn = {
-      enable = false;
+      enable = true;
       package = pkgs.wivrn;
       openFirewall = true;
       defaultRuntime = true;
@@ -148,6 +148,9 @@ in
       xrizer
       klassy
       steam-presence
+      usbutils
+      v4l-utils
+      winboat
     ] ++ [
       kwin-effects-forceblur.packages.${pkgs.system}.default
     ];
