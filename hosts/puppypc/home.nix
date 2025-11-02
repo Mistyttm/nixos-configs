@@ -20,10 +20,7 @@
   programs.home-manager.enable = true;
 
   systemd.user.services.steam-presence = {
-#       description = ["Discord rich presence from Steam on Linux"];
-
-      Service = {
-        # Adjust this path if you’ve packaged it in Nix instead of cloning.
+    Service = {
         ExecStart = "${pkgs.steam-presence}/bin/steam-presence";
         Type = "simple";
         Nice = 19;

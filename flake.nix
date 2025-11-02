@@ -10,8 +10,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
-    # SDDM theme (DOESNT WORK)
+    # SDDM theme
     nixpkgs-extra.url = "github:Mistyttm/nixpkgs-extra";
     satisfactory.url = "github:TomaSajt/nixpkgs/satisfactorymodmanager";
     sddm-sugar-candy-nix = {
@@ -39,10 +38,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-    # microvm = {
-    #   url = "github:astro/microvm.nix";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
   };
 
   nixConfig = {
@@ -57,7 +52,6 @@
   outputs =
     inputs@{
       nixpkgs,
-      nixpkgs-xr,
       nixpkgs-extra,
       home-manager,
       sddm-sugar-candy-nix,
@@ -70,7 +64,6 @@
       self,
       kwin-effects-forceblur,
       chaotic,
-      # microvm,
       satisfactory,
       ...
     }:
@@ -86,8 +79,6 @@
       overlay-wallpaper-engine = import ./patches/wallpaper-engine-plugin;
     in
     {
-      nixpkgs.config.cudaSupport = true;
-
       nixosConfigurations = {
         puppypc = nixpkgs.lib.nixosSystem {
           inherit system;
@@ -104,7 +95,6 @@
             home-manager.nixosModules.home-manager
             sddm-sugar-candy-nix.nixosModules.default
             sops-nix.nixosModules.sops
-#             nixpkgs-xr.nixosModules.nixpkgs-xr
             nixpkgs-extra.nixosModules.default
             {
               home-manager = {
@@ -127,7 +117,6 @@
                   nix-vscode-extensions.overlays.default
                   overlay-satisfactory
                   overlay-wallpaper-engine
-#                   millennium.overlays.default
                 ];
               };
             }
@@ -164,8 +153,6 @@
                 overlays = [
                   sddm-sugar-candy-nix.overlays.default
                   nix-vscode-extensions.overlays.default
-#                   millennium.overlays.default
-                  # myPkgsOverlay
                 ];
               };
             }
@@ -181,7 +168,6 @@
             ./hosts/thedogpark/configuration.nix
 
             simple-nixos-mailserver.nixosModule
-            # microvm.nixosModules.microvm
             home-manager.nixosModules.home-manager
             sops-nix.nixosModules.sops
             {
@@ -194,11 +180,9 @@
               home-manager.users.misty = import ./hosts/thedogpark/home.nix;
               home-manager.users.steam = import ./hosts/thedogpark/steam.nix;
 
-              # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
               nixpkgs = {
                 overlays = [
                   nix-minecraft.overlay
-                  # myPkgsOverlay
                 ];
               };
             }
@@ -212,10 +196,7 @@
           modules = [
             ./hosts/thekennel/configuration.nix
 
-            # make home-manager as a module of nixos
-            # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
             home-manager.nixosModules.home-manager
-            # microvm.nixosModules.microvm
             sops-nix.nixosModules.sops
             {
               home-manager.useGlobalPkgs = true;
@@ -225,12 +206,7 @@
 
               home-manager.users.misty = import ./hosts/thekennel/home.nix;
 
-              # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
-              nixpkgs = {
-                overlays = [
-                  # myPkgsOverlay
-                ];
-              };
+              nixpkgs.overlays = [ ];
             }
           ];
         };
