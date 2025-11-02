@@ -106,7 +106,7 @@ in
           }
         ))
         (mkIf cfg.steam.enable pkgs.protonup-qt)
-        (mkIf cfg.dolphin pkgs.dolphin-emu-beta)
+        (mkIf cfg.dolphin pkgs.dolphin-emu)
         (mkIf cfg.lutris pkgs.lutris)
         (mkIf cfg.cloneHero pkgs.clonehero)
         (mkIf cfg.YARG pkgs.yarg)
