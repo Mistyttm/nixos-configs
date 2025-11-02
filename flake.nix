@@ -13,10 +13,6 @@
     # SDDM theme
     nixpkgs-extra.url = "github:Mistyttm/nixpkgs-extra";
     satisfactory.url = "github:TomaSajt/nixpkgs/satisfactorymodmanager";
-    sddm-sugar-candy-nix = {
-      url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     # Secrets management
     sops-nix.url = "github:Mic92/sops-nix";
     # Spotify
