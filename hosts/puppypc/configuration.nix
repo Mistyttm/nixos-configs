@@ -117,7 +117,7 @@ in
       v4l-utils
       winboat
     ] ++ [
-      kwin-effects-forceblur.packages.${pkgs.system}.default
+      kwin-effects-forceblur.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
     shellAliases = {
       rebuild = "sudo nixos-rebuild switch --flake .#puppypc";
