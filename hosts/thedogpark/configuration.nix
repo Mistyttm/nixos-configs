@@ -10,9 +10,12 @@
     ../../global-configs/system/locale.nix
     ../../global-configs/system/networking/ssh.nix
     ../../global-configs/system/nixoptions.nix
-    ./services/default.nix
-    ./matrix/default.nix
+    # Services moved to microvms
+    # ./services/default.nix
+    # ./matrix/default.nix
     ../../global-configs/system/virtualisation.nix
+    # MicroVM declarations
+    ./microvms/default.nix
   ];
 
   boot = {
@@ -63,42 +66,15 @@
     allowUnfree = true;
   };
 
-  # Open ports in the firewall.
+  # Open ports in the firewall - most services now run in MicroVMs
+  # Port forwarding is handled in microvms/default.nix
   networking.firewall.allowedTCPPorts = [
-    5173
-    24464
-    8448
-    443
-    3478
-    5349
-    25565
-    9005
-    7777
-    8888
+    5173   # Development
+    24464  # Additional service
   ];
   networking.firewall.allowedUDPPorts = [
     5173
     24464
-    3478
-    5349
-    25565
-    7777
-  ];
-  networking.firewall.allowedTCPPortRanges = [
-    {
-      from = 2456;
-      to = 2458;
-    }
-  ];
-  networking.firewall.allowedUDPPortRanges = [
-    {
-      from = 2456;
-      to = 2458;
-    }
-    {
-      from = 49152;
-      to = 65535;
-    }
   ];
 
   users.users.misty = {

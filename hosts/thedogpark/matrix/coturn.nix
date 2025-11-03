@@ -13,7 +13,7 @@
     realm = "mistyttm.dev";
     no-tcp-relay = true;
     cert = "/var/lib/acme/mistyttm.dev/fullchain.pem";
-    pkey = "/var/lib/acme/mistyttmm.dev/key.pem";
+    pkey = "/var/lib/acme/mistyttm.dev/key.pem";
     extraConfig = ''
       denied-peer-ip=10.0.0.0-10.255.255.255
       denied-peer-ip=192.168.0.0-192.168.255.255

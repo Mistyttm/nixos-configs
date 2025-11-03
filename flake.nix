@@ -34,6 +34,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    microvm = {
+      url = "github:microvm-nix/microvm.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   nixConfig = {
@@ -60,6 +64,7 @@
       kwin-effects-forceblur,
       chaotic,
       satisfactory,
+      microvm,
       ...
     }:
     let
@@ -159,6 +164,7 @@
             ./modules/default.nix
             ./hosts/thedogpark/configuration.nix
 
+            microvm.nixosModules.host
             simple-nixos-mailserver.nixosModule
             home-manager.nixosModules.home-manager
             sops-nix.nixosModules.sops
