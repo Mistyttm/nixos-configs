@@ -50,7 +50,6 @@
       nixpkgs,
       nixpkgs-extra,
       home-manager,
-      sddm-sugar-candy-nix,
       sops-nix,
       spicetify-nix,
       nix-minecraft,
@@ -68,7 +67,7 @@
       homeVersion = "25.11"; # Update this when you update your NixOS version
       overlay-satisfactory = final: prev: {
         satis = import satisfactory {
-          inherit system;
+          system = final.stdenv.hostPlatform.system;
           config.allowUnfree = true;
         };
       };
@@ -89,7 +88,6 @@
 
             chaotic.nixosModules.default
             home-manager.nixosModules.home-manager
-            sddm-sugar-candy-nix.nixosModules.default
             sops-nix.nixosModules.sops
             nixpkgs-extra.nixosModules.default
             {
@@ -109,7 +107,6 @@
               nixpkgs = {
                 overlays = [
                   nixpkgs-extra.overlays.default
-                  sddm-sugar-candy-nix.overlays.default
                   nix-vscode-extensions.overlays.default
                   overlay-satisfactory
                   overlay-wallpaper-engine
@@ -147,7 +144,6 @@
               };
               nixpkgs = {
                 overlays = [
-                  sddm-sugar-candy-nix.overlays.default
                   nix-vscode-extensions.overlays.default
                 ];
               };
@@ -201,8 +197,6 @@
               home-manager.extraSpecialArgs = { inherit homeVersion; };
 
               home-manager.users.misty = import ./hosts/thekennel/home.nix;
-
-              nixpkgs.overlays = [ ];
             }
           ];
         };

@@ -1,19 +1,15 @@
 {
   pkgs,
-  lib,
   spicetify-nix,
   ...
 }:
 let
-  spicePkgs = spicetify-nix.legacyPackages.${pkgs.system};
+  spicePkgs = spicetify-nix.legacyPackages.${pkgs.stdenv.hostPlatform.system};
 in
 {
 
-  nixpkgs.config.allowUnfreePredicate =
-    pkg:
-    builtins.elem (lib.getName pkg) [
-      "spotify"
-    ];
+  # Allow unfree for spotify - handled at system level
+  # nixpkgs.config should not be set in home-manager when using useGlobalPkgs
 
   imports = [ spicetify-nix.homeManagerModules.default ];
 
