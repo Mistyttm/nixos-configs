@@ -2,6 +2,7 @@
 {
   programs.firefox = {
     enable = true;
-    package = pkgs.firefox;
+    # Using ESR to avoid build reference issues on unstable
+    package = pkgs.firefox-esr;
   };
 }

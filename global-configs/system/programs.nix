@@ -21,8 +21,11 @@ trickleOverlay = (pkgs.trickle.overrideAttrs (oldAttrs: {
       ];
     }));
 in {
-  # Install firefox.
-  programs.firefox.enable = true;
+  # Install firefox ESR to avoid build reference issues
+  programs.firefox = {
+    enable = true;
+    package = pkgs.firefox-esr;
+  };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
