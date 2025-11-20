@@ -2,7 +2,7 @@
 {
   home.packages = with pkgs; [
     # davinci-resolve
-    tenacity
+    # tenacity
     obs-cmd
   ];
   programs.obs-studio = {
