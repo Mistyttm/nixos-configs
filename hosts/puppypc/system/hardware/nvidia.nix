@@ -4,6 +4,7 @@
   hardware.graphics.enable = true;
   hardware.graphics.extraPackages = with pkgs; [
     monado-vulkan-layers
+    nvidia-vaapi-driver
   ];
 
   services.xserver.videoDrivers = [ "nvidia" ];
