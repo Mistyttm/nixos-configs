@@ -4,7 +4,7 @@
       enable = true;
       autoStart = true;
       user = "misty";
-      desktopSession = "plasma";
+      desktopSession = "gamescope-wayland";
     };
     decky-loader = {
       enable = true;
