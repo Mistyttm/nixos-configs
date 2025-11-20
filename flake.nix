@@ -34,6 +34,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    jovian = {
+      url = "github:Jovian-Experiments/Jovian-NixOS";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
   nixConfig = {
@@ -60,6 +65,8 @@
       kwin-effects-forceblur,
       chaotic,
       satisfactory,
+      jovian,
+      nixos-hardware,
       ...
     }:
     let
@@ -197,6 +204,28 @@
               home-manager.extraSpecialArgs = { inherit homeVersion; };
 
               home-manager.users.misty = import ./hosts/thekennel/home.nix;
+            }
+          ];
+        };
+        foodbowl = nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = {
+            inherit homeVersion;
+          };
+          modules = [
+            ./hosts/foodbowl/configuration.nix
+
+            home-manager.nixosModules.home-manager
+            sops-nix.nixosModules.sops
+            nixos-hardware.nixosModules.raspberry-pi-4
+            jovian.nixosModules.jovian
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.backupFileExtension = "backup";
+              home-manager.extraSpecialArgs = { inherit homeVersion; };
+
+              home-manager.users.misty = import ./hosts/foodbowl/home.nix;
             }
           ];
         };
