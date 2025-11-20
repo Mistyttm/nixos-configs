@@ -17,7 +17,6 @@
       enableProductSerialAccess = true;
       enableSysctlConfig = true;
       enableZram = true;
-
     };
   };
 }
