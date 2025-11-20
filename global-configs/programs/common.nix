@@ -12,7 +12,7 @@
     obsidian
     spicetify-cli
     vlc
-    thunderbird
+    thunderbird-esr
     birdtray
     libreoffice-qt
     zenity
