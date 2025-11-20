@@ -133,10 +133,17 @@ in
     };
   };
 
-  services.xserver.desktopManager.gnome.enable = false;
+  services.desktopManager.gnome.enable = false;
   services.gnome.core-os-services.enable = false;
   systemd.user.services.orca.enable = false;
   services.gnome.at-spi2-core.enable = false;
+
+  services.sunshine = {
+    enable = true;
+    autoStart = true;
+    capSysAdmin = true;
+    openFirewall = true;
+  };
 
 
   programs.adb.enable = true;
