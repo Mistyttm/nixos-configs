@@ -59,29 +59,29 @@ in
   };
 
   services.wivrn = {
+    enable = true;
+    package = pkgs.wivrn;
+    openFirewall = true;
+    defaultRuntime = true;
+    autoStart = true;
+    config = {
       enable = true;
-      package = pkgs.wivrn;
-      openFirewall = true;
-      defaultRuntime = true;
-      autoStart = true;
-      config = {
-        enable = true;
-        json = {
-          scale = 1.0;
-          bitrate = 50000000;
-          encoders = [
-            {
-              encoder = "nvenc";
-              width = 1.0;
-              height = 1.0;
-              offset_x = 0.0;
-              offset_y = 0.0;
-            }
-          ];
-          application = [ pkgs.wlx-overlay-s ];
-        };
+      json = {
+        scale = 1.0;
+        bitrate = 50000000;
+        encoders = [
+          {
+            encoder = "nvenc";
+            width = 1.0;
+            height = 1.0;
+            offset_x = 0.0;
+            offset_y = 0.0;
+          }
+        ];
+        application = [ pkgs.wlx-overlay-s ];
       };
     };
+  };
 
   xdg.portal = {
     enable = true;
@@ -101,28 +101,43 @@ in
   virtualisation.waydroid.enable = false;
 
   environment = {
-    systemPackages = with pkgs; [
-      opencomposite
-      monado-vulkan-layers
-      texliveFull
-      kdotool
-      slimevrCustom
-      sops
-      nixos-rebuild-ng
-      heroic
-      xrizer
-      klassy
-      steam-presence
-      usbutils
-      v4l-utils
-      winboat
-    ] ++ [
-      kwin-effects-forceblur.packages.${pkgs.stdenv.hostPlatform.system}.default
-    ];
+    systemPackages =
+      with pkgs;
+      [
+        opencomposite
+        monado-vulkan-layers
+        texliveFull
+        kdotool
+        slimevrCustom
+        sops
+        nixos-rebuild-ng
+        heroic
+        xrizer
+        klassy
+        steam-presence
+        usbutils
+        v4l-utils
+        # winboat
+        nvidia-vaapi-driver
+        gamescope
+      ]
+      ++ [
+        kwin-effects-forceblur.packages.${pkgs.stdenv.hostPlatform.system}.default
+      ];
     shellAliases = {
       rebuild = "sudo nixos-rebuild switch --flake .#puppypc";
     };
+    sessionVariables = {
+      MOZ_DISABLE_RDD_SANDBOX = "1";
+      LIBVA_DRIVER_NAME = "nvidia";
+    };
   };
+
+  services.xserver.desktopManager.gnome.enable = false;
+  services.gnome.core-os-services.enable = false;
+  systemd.user.services.orca.enable = false;
+  services.gnome.at-spi2-core.enable = false;
+
 
   programs.adb.enable = true;
 
@@ -132,7 +147,9 @@ in
         "freeimage-unstable-2021-11-01"
         "libsoup-2.74.3"
       ];
-      cudaSupport = true;
+      # Temporarily disabled to avoid onnxruntime compilation
+      # Re-enable after getting stable build working
+      cudaSupport = true; # Was: true
     };
   };
 
