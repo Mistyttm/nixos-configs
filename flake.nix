@@ -197,6 +197,7 @@
 
             home-manager.nixosModules.home-manager
             sops-nix.nixosModules.sops
+            jovian.nixosModules.jovian
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
@@ -218,7 +219,6 @@
             home-manager.nixosModules.home-manager
             sops-nix.nixosModules.sops
             nixos-hardware.nixosModules.raspberry-pi-4
-            jovian.nixosModules.jovian
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
