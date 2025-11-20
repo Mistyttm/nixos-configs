@@ -10,7 +10,7 @@
       enable = true;
 
     };
-    steamOS = {
+    steamos = {
       enableBluetoothConfig = true;
       enableDefaultCmdlineConfig = true;
       enableEarlyOOM = true;
