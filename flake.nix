@@ -208,7 +208,7 @@
           ];
         };
         foodbowl = nixpkgs.lib.nixosSystem {
-          inherit system;
+          system = "aarch64-linux";
           specialArgs = {
             inherit homeVersion;
           };
