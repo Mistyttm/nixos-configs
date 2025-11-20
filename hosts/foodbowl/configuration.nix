@@ -2,7 +2,7 @@
 
 {
   imports = [
-    # Include the results of the hardware scan.
+    ./jovian.nix
     ../../global-configs/users/misty.nix
     ../../global-configs/system/locale.nix
     ../../global-configs/system/networking/ssh.nix
