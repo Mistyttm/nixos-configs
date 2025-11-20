@@ -4,14 +4,15 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./jovian.nix
     ../../global-configs/users/misty.nix
     ../../global-configs/system/locale.nix
     ../../global-configs/system/networking/ssh.nix
     ../../global-configs/system/nixoptions.nix
     ../../global-configs/system/virtualisation.nix
-    ./services/jellyfin.nix
+    # ./services/jellyfin.nix
     ./system/nvidia.nix
-    ./services/arr/default.nix
+    # ./services/arr/default.nix
   ];
 
   # Bootloader.
