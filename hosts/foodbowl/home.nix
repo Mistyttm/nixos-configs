@@ -11,12 +11,6 @@
     ../../global-configs/programs/fastfetch.nix
   ];
 
-  # Packages that should be installed to the user profile.
-  home.packages = with pkgs; [
-    direnv
-    nil
-  ];
-
   home.stateVersion = homeVersion;
 
   # Let home Manager install and manage itself.
