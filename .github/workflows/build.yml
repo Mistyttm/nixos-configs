@@ -33,7 +33,7 @@ jobs:
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
         with:
-          name: mistyttm
+          name: opinionatedcache
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
       - name: Build NixOS configuration for ${{ matrix.system }}
@@ -59,7 +59,7 @@ jobs:
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
         with:
-          name: mistyttm
+          name: opinionatedcache
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
       - name: Build NixOS configuration for foodbowl
