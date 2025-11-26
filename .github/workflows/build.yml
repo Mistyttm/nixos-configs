@@ -52,7 +52,7 @@ jobs:
           # Build only derivations not available in substituters
           nix build .#nixosConfigurations.${{ matrix.system }}.config.system.build.toplevel \
             --no-link \
-            --dry-run 2>&1 | grep -oP "(?<=will be built:).*" | tr ';' '\n' | xargs -r nix build --no-link --log-format bar-with-logs || true
+            --dry-run | grep -oP "(?<=will be built:).*" | tr ';' '\n' | xargs -r nix build --no-link --log-format bar-with-logs || true
       
       - name: Clean up build artifacts
         if: always()
