@@ -40,9 +40,6 @@ jobs:
             accept-flake-config = true
             max-jobs = auto
             cores = 0
-            # Only build, never download substitutes
-            substitute = false
-            builders-use-substitutes = false
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
@@ -57,6 +54,7 @@ jobs:
           nix build .#nixosConfigurations.${{ matrix.system }}.config.system.build.toplevel \
             --no-link \
             --keep-going \
+            --option substitute false \
             --log-format bar-with-logs || echo "Build completed (some failures expected for cached items)"
       
       - name: Clean up build artifacts
@@ -89,9 +87,6 @@ jobs:
             accept-flake-config = true
             max-jobs = auto
             cores = 0
-            # Only build, never download substitutes
-            substitute = false
-            builders-use-substitutes = false
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
@@ -106,6 +101,7 @@ jobs:
           nix build .#nixosConfigurations.foodbowl.config.system.build.toplevel \
             --no-link \
             --keep-going \
+            --option substitute false \
             --log-format bar-with-logs || echo "Build completed (some failures expected for cached items)"
       
       - name: Clean up build artifacts
