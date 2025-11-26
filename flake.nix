@@ -12,7 +12,6 @@
     };
     # SDDM theme
     nixpkgs-extra.url = "github:Mistyttm/nixpkgs-extra";
-    satisfactory.url = "github:TomaSajt/nixpkgs/satisfactorymodmanager";
     # Secrets management
     sops-nix.url = "github:Mic92/sops-nix";
     # Spotify
@@ -44,9 +43,11 @@
   nixConfig = {
     extra-substituters = [
       "https://nix-community.cachix.org"
+      "https://mistyttm.cachix.org"
     ];
     extra-trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "opinionatedcache.cachix.org-1:zDO4tZBL25vfhVFSHTT+0RNCjn5Z5nEs7sPiDZ6XhuE="
     ];
   };
 
@@ -64,7 +65,6 @@
       self,
       kwin-effects-forceblur,
       chaotic,
-      satisfactory,
       jovian,
       nixos-hardware,
       ...
@@ -72,12 +72,12 @@
     let
       system = "x86_64-linux";
       homeVersion = "25.11"; # Update this when you update your NixOS version
-      overlay-satisfactory = final: prev: {
-        satis = import satisfactory {
-          system = final.stdenv.hostPlatform.system;
-          config.allowUnfree = true;
-        };
-      };
+      # overlay-satisfactory = final: prev: {
+      #   satis = import satisfactory {
+      #     system = final.stdenv.hostPlatform.system;
+      #     config.allowUnfree = true;
+      #   };
+      # };
       overlay-wallpaper-engine = import ./patches/wallpaper-engine-plugin;
     in
     {
@@ -115,7 +115,6 @@
                 overlays = [
                   nixpkgs-extra.overlays.default
                   nix-vscode-extensions.overlays.default
-                  overlay-satisfactory
                   overlay-wallpaper-engine
                 ];
               };
