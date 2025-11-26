@@ -49,16 +49,20 @@ jobs:
 
       - name: Build NixOS configuration for ${{ matrix.system }}
         run: |
-          # Get list of derivations that need to be built (not in any cache)
-          echo "Checking what needs to be built..."
-          TO_BUILD=$(nix build .#nixosConfigurations.${{ matrix.system }}.config.system.build.toplevel --dry-run --json 2>&1 | jq -r '.[] | select(.willBuild == true) | .drvPath' 2>/dev/null || echo "")
+          # Get the store path we want to build
+          echo "Evaluating derivation..."
+          DRV=$(nix eval --raw .#nixosConfigurations.${{ matrix.system }}.config.system.build.toplevel.drvPath)
           
-          if [ -n "$TO_BUILD" ]; then
-            echo "Building uncached derivations..."
-            echo "$TO_BUILD" | while read -r drv; do
-              echo "Building: $drv"
-              nix build "$drv" --no-link --log-format bar-with-logs || true
-            done
+          # Check what would need to be built
+          echo "Checking what needs to be built..."
+          BUILD_LIST=$(nix-store --realise --dry-run "$DRV" 2>&1 | grep "will be built:" || echo "")
+          
+          if echo "$BUILD_LIST" | grep -q "will be built:"; then
+            echo "Building configuration with uncached packages..."
+            nix build .#nixosConfigurations.${{ matrix.system }}.config.system.build.toplevel \
+              --no-link \
+              --fallback \
+              --log-format bar-with-logs
           else
             echo "Everything already cached, nothing to build!"
           fi
@@ -102,16 +106,20 @@ jobs:
 
       - name: Build NixOS configuration for foodbowl
         run: |
-          # Get list of derivations that need to be built (not in any cache)
-          echo "Checking what needs to be built..."
-          TO_BUILD=$(nix build .#nixosConfigurations.foodbowl.config.system.build.toplevel --dry-run --json 2>&1 | jq -r '.[] | select(.willBuild == true) | .drvPath' 2>/dev/null || echo "")
+          # Get the store path we want to build
+          echo "Evaluating derivation..."
+          DRV=$(nix eval --raw .#nixosConfigurations.foodbowl.config.system.build.toplevel.drvPath)
           
-          if [ -n "$TO_BUILD" ]; then
-            echo "Building uncached derivations..."
-            echo "$TO_BUILD" | while read -r drv; do
-              echo "Building: $drv"
-              nix build "$drv" --no-link --log-format bar-with-logs || true
-            done
+          # Check what would need to be built
+          echo "Checking what needs to be built..."
+          BUILD_LIST=$(nix-store --realise --dry-run "$DRV" 2>&1 | grep "will be built:" || echo "")
+          
+          if echo "$BUILD_LIST" | grep -q "will be built:"; then
+            echo "Building configuration with uncached packages..."
+            nix build .#nixosConfigurations.foodbowl.config.system.build.toplevel \
+              --no-link \
+              --fallback \
+              --log-format bar-with-logs
           else
             echo "Everything already cached, nothing to build!"
           fi
