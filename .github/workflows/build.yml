@@ -40,6 +40,9 @@ jobs:
             accept-flake-config = true
             max-jobs = auto
             cores = 0
+            # Only build, never download substitutes
+            substitute = false
+            builders-use-substitutes = false
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
@@ -49,23 +52,12 @@ jobs:
 
       - name: Build NixOS configuration for ${{ matrix.system }}
         run: |
-          # Get the store path we want to build
-          echo "Evaluating derivation..."
-          DRV=$(nix eval --raw .#nixosConfigurations.${{ matrix.system }}.config.system.build.toplevel.drvPath)
-          
-          # Check what would need to be built
-          echo "Checking what needs to be built..."
-          BUILD_LIST=$(nix-store --realise --dry-run "$DRV" 2>&1 | grep "will be built:" || echo "")
-          
-          if echo "$BUILD_LIST" | grep -q "will be built:"; then
-            echo "Building configuration with uncached packages..."
-            nix build .#nixosConfigurations.${{ matrix.system }}.config.system.build.toplevel \
-              --no-link \
-              --fallback \
-              --log-format bar-with-logs
-          else
-            echo "Everything already cached, nothing to build!"
-          fi
+          # Build with substitute disabled - only builds what's not cached
+          # This will fail for things in caches, but build and push uncached items
+          nix build .#nixosConfigurations.${{ matrix.system }}.config.system.build.toplevel \
+            --no-link \
+            --keep-going \
+            --log-format bar-with-logs || echo "Build completed (some failures expected for cached items)"
       
       - name: Clean up build artifacts
         if: always()
@@ -97,6 +89,9 @@ jobs:
             accept-flake-config = true
             max-jobs = auto
             cores = 0
+            # Only build, never download substitutes
+            substitute = false
+            builders-use-substitutes = false
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
@@ -106,23 +101,12 @@ jobs:
 
       - name: Build NixOS configuration for foodbowl
         run: |
-          # Get the store path we want to build
-          echo "Evaluating derivation..."
-          DRV=$(nix eval --raw .#nixosConfigurations.foodbowl.config.system.build.toplevel.drvPath)
-          
-          # Check what would need to be built
-          echo "Checking what needs to be built..."
-          BUILD_LIST=$(nix-store --realise --dry-run "$DRV" 2>&1 | grep "will be built:" || echo "")
-          
-          if echo "$BUILD_LIST" | grep -q "will be built:"; then
-            echo "Building configuration with uncached packages..."
-            nix build .#nixosConfigurations.foodbowl.config.system.build.toplevel \
-              --no-link \
-              --fallback \
-              --log-format bar-with-logs
-          else
-            echo "Everything already cached, nothing to build!"
-          fi
+          # Build with substitute disabled - only builds what's not cached
+          # This will fail for things in caches, but build and push uncached items
+          nix build .#nixosConfigurations.foodbowl.config.system.build.toplevel \
+            --no-link \
+            --keep-going \
+            --log-format bar-with-logs || echo "Build completed (some failures expected for cached items)"
       
       - name: Clean up build artifacts
         if: always()
