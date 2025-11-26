@@ -18,7 +18,7 @@
     bs-manager
     vpm
     vrc-get
-    satis.satisfactorymodmanager
+    satisfactorymodmanager
     plasma-panel-colorizer
     r2modman
   ];
