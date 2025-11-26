@@ -46,16 +46,25 @@ jobs:
         with:
           name: opinionatedcache
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+          skipPush: true
 
       - name: Build NixOS configuration for ${{ matrix.system }}
         run: |
-          # Build with substitute disabled - only builds what's not cached
-          # This will fail for things in caches, but build and push uncached items
+          # Build normally, but with aggressive cleanup
           nix build .#nixosConfigurations.${{ matrix.system }}.config.system.build.toplevel \
             --no-link \
-            --keep-going \
-            --option substitute false \
-            --log-format bar-with-logs || echo "Build completed (some failures expected for cached items)"
+            --fallback \
+            --log-format internal-json -v 2>&1 | tee /tmp/build-log.json | while IFS= read -r line; do
+              echo "$line"
+              # Parse build progress and cleanup aggressively
+              if echo "$line" | grep -q '"level":.*"msg":"built"'; then
+                nix-store --gc --max-freed 5G 2>/dev/null || true
+              fi
+            done || true
+          
+          # Push everything we built to cache
+          echo "Pushing built packages to Cachix..."
+          nix path-info --all --json | jq -r '.[] | .path' | cachix push opinionatedcache || true
       
       - name: Clean up build artifacts
         if: always()
@@ -93,16 +102,25 @@ jobs:
         with:
           name: opinionatedcache
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+          skipPush: true
 
       - name: Build NixOS configuration for foodbowl
         run: |
-          # Build with substitute disabled - only builds what's not cached
-          # This will fail for things in caches, but build and push uncached items
+          # Build normally, but with aggressive cleanup
           nix build .#nixosConfigurations.foodbowl.config.system.build.toplevel \
             --no-link \
-            --keep-going \
-            --option substitute false \
-            --log-format bar-with-logs || echo "Build completed (some failures expected for cached items)"
+            --fallback \
+            --log-format internal-json -v 2>&1 | tee /tmp/build-log.json | while IFS= read -r line; do
+              echo "$line"
+              # Parse build progress and cleanup aggressively
+              if echo "$line" | grep -q '"level":.*"msg":"built"'; then
+                nix-store --gc --max-freed 5G 2>/dev/null || true
+              fi
+            done || true
+          
+          # Push everything we built to cache
+          echo "Pushing built packages to Cachix..."
+          nix path-info --all --json | jq -r '.[] | .path' | cachix push opinionatedcache || true
       
       - name: Clean up build artifacts
         if: always()
