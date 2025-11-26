@@ -1,6 +1,5 @@
 { pkgs, ... }:
 {
-
   # Bootloader.
   boot = {
     kernelPackages = pkgs.linuxPackages_zen;
@@ -9,6 +8,16 @@
         enable = true;
       };
     };
+
+    kernel = {
+      sysctl = {
+        "net.ipv4.ip_forward" = 1;
+      };
+    };
+
+    extraModprobeConfig = ''
+      options binder_linux devices="binder,hwbinder,vndbinder"
+    '';
 
     plymouth = {
       enable = true;
@@ -39,6 +48,8 @@
     ];
     kernelModules = [
       "ntsync"
+      "binder_linux"
+      "ashmem_linux"
     ];
 
     loader = {
