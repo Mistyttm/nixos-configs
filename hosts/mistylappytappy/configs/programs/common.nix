@@ -8,7 +8,7 @@
     #       withVencord = true;
     #     })
     protontricks
-    lightly-qt
+    # lightly-qt # Removed - only compatible with Plasma 5 (EOL)
     touchegg
   ];
 }
