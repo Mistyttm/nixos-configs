@@ -49,10 +49,19 @@ jobs:
 
       - name: Build NixOS configuration for ${{ matrix.system }}
         run: |
-          # Build only derivations not available in substituters
-          nix build .#nixosConfigurations.${{ matrix.system }}.config.system.build.toplevel \
-            --no-link \
-            --dry-run | grep -oP "(?<=will be built:).*" | tr ';' '\n' | xargs -r nix build --no-link --log-format bar-with-logs || true
+          # Get list of derivations that need to be built (not in any cache)
+          echo "Checking what needs to be built..."
+          TO_BUILD=$(nix build .#nixosConfigurations.${{ matrix.system }}.config.system.build.toplevel --dry-run --json 2>&1 | jq -r '.[] | select(.willBuild == true) | .drvPath' 2>/dev/null || echo "")
+          
+          if [ -n "$TO_BUILD" ]; then
+            echo "Building uncached derivations..."
+            echo "$TO_BUILD" | while read -r drv; do
+              echo "Building: $drv"
+              nix build "$drv" --no-link --log-format bar-with-logs || true
+            done
+          else
+            echo "Everything already cached, nothing to build!"
+          fi
       
       - name: Clean up build artifacts
         if: always()
@@ -93,10 +102,19 @@ jobs:
 
       - name: Build NixOS configuration for foodbowl
         run: |
-          # Build only derivations not available in substituters
-          nix build .#nixosConfigurations.foodbowl.config.system.build.toplevel \
-            --no-link \
-            --dry-run 2>&1 | grep -oP "(?<=will be built:).*" | tr ';' '\n' | xargs -r nix build --no-link --log-format bar-with-logs || true
+          # Get list of derivations that need to be built (not in any cache)
+          echo "Checking what needs to be built..."
+          TO_BUILD=$(nix build .#nixosConfigurations.foodbowl.config.system.build.toplevel --dry-run --json 2>&1 | jq -r '.[] | select(.willBuild == true) | .drvPath' 2>/dev/null || echo "")
+          
+          if [ -n "$TO_BUILD" ]; then
+            echo "Building uncached derivations..."
+            echo "$TO_BUILD" | while read -r drv; do
+              echo "Building: $drv"
+              nix build "$drv" --no-link --log-format bar-with-logs || true
+            done
+          else
+            echo "Everything already cached, nothing to build!"
+          fi
       
       - name: Clean up build artifacts
         if: always()
