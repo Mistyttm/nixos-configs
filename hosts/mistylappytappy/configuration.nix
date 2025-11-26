@@ -12,9 +12,6 @@
 
   boot.supportedFilesystems = [ "ntfs" ];
 
-  # Fix broken nixos-hires.png download in CI
-  boot.plymouth.enable = false;
-
   programs.gnupg = {
     agent = {
       enable = true;
