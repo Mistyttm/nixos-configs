@@ -13,9 +13,7 @@ on:
 
 jobs:
   build-x86_64:
-    runs-on:
-      group: tj-runner-group
-      labels: tj-runners
+    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.xlarge/image=ubuntu22-gpu-x64"
     strategy:
       matrix:
         system:
