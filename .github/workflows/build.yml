@@ -51,21 +51,19 @@ jobs:
           name: opinionatedcache
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
+      - name: Install nix-eval-jobs
+        run: |
+          nix profile install nixpkgs#nix-eval-jobs
+
       - name: Build NixOS configuration for ${{ matrix.system }}
         run: |
           echo "Finding uncached packages for ${{ matrix.system }}..."
           
-          # Try to build with max-jobs=0 to identify what's not cached
-          # This will fail but show us what needs to be built
-          nix build .#nixosConfigurations.${{ matrix.system }}.config.system.build.toplevel \
-            --no-link \
-            --max-jobs 0 \
-            --keep-going 2>&1 | tee /tmp/build-check.log || true
-          
-          # Extract derivation paths that need building
-          grep "cannot build derivation" /tmp/build-check.log | \
-            grep -oP "'/nix/store/[^']+\.drv'" | \
-            tr -d "'" > /tmp/tobuild.txt || true
+          # Use nix-eval-jobs to find all derivations and check cache status
+          nix-eval-jobs --flake ".#nixosConfigurations.${{ matrix.system }}.config.system.build.toplevel" \
+            --check-cache-status \
+            --force-recurse | \
+            jq -r 'select(.isCached == false) | .drvPath' > /tmp/tobuild.txt || true
           
           # Build the uncached derivations
           if [ -s /tmp/tobuild.txt ]; then
@@ -85,7 +83,7 @@ jobs:
                 df -h
               fi
             done
-            echo "Completed building uncached packages"
+            echo "Completed building $COUNT uncached packages"
           else
             echo "All packages already cached!"
           fi
