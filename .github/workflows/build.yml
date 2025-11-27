@@ -4,7 +4,11 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'flake.lock'
   pull_request:
+    paths:
+      - 'flake.lock'
   workflow_dispatch:
 
 jobs:
@@ -52,62 +56,6 @@ jobs:
         run: |
           # Build normally, but with aggressive cleanup
           nix build .#nixosConfigurations.${{ matrix.system }}.config.system.build.toplevel \
-            --no-link \
-            --fallback \
-            --log-format internal-json -v 2>&1 | tee /tmp/build-log.json | while IFS= read -r line; do
-              echo "$line"
-              # Parse build progress and cleanup aggressively
-              if echo "$line" | grep -q '"level":.*"msg":"built"'; then
-                nix-store --gc --max-freed 5G 2>/dev/null || true
-              fi
-            done || true
-          
-          # Push everything we built to cache
-          echo "Pushing built packages to Cachix..."
-          nix path-info --all --json | jq -r '.[] | .path' | cachix push opinionatedcache || true
-      
-      - name: Clean up build artifacts
-        if: always()
-        run: |
-          nix-collect-garbage -d
-          df -h
-
-  build-aarch64:
-    runs-on: ubuntu-latest-arm
-    steps:
-      - name: Free up disk space
-        run: |
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /opt/ghc
-          sudo rm -rf /opt/hostedtoolcache/CodeQL
-          sudo docker image prune --all --force
-          df -h
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install Nix
-        uses: cachix/install-nix-action@v27
-        with:
-          nix_path: nixpkgs=channel:nixos-unstable
-          extra_nix_config: |
-            experimental-features = nix-command flakes
-            accept-flake-config = true
-            max-jobs = auto
-            cores = 0
-
-      - name: Setup Cachix
-        uses: cachix/cachix-action@v15
-        with:
-          name: opinionatedcache
-          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-          skipPush: true
-
-      - name: Build NixOS configuration for foodbowl
-        run: |
-          # Build normally, but with aggressive cleanup
-          nix build .#nixosConfigurations.foodbowl.config.system.build.toplevel \
             --no-link \
             --fallback \
             --log-format internal-json -v 2>&1 | tee /tmp/build-log.json | while IFS= read -r line; do
