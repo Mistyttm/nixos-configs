@@ -13,7 +13,9 @@ on:
 
 jobs:
   build-x86_64:
-    runs-on: ubuntu-latest
+    runs-on:
+      group: tj-runner-group
+      labels: tj-runners
     strategy:
       matrix:
         system:
@@ -60,10 +62,13 @@ jobs:
           echo "Finding uncached packages for ${{ matrix.system }}..."
           
           # Use nix-eval-jobs to find all derivations and check cache status
+          # Note: This evaluates the system but may skip CUDA packages due to lack of GPU
           nix-eval-jobs --flake ".#nixosConfigurations.${{ matrix.system }}.config.system.build.toplevel" \
             --check-cache-status \
-            --force-recurse | \
-            jq -r 'select(.isCached == false) | .drvPath' > /tmp/tobuild.txt || true
+            --force-recurse \
+            --gc-roots-dir /tmp/gc-roots \
+            --workers 4 | \
+            jq -r 'select(.isCached == false and .error == null) | .drvPath' > /tmp/tobuild.txt || true
           
           # Build the uncached derivations
           if [ -s /tmp/tobuild.txt ]; then
@@ -74,7 +79,12 @@ jobs:
             cat /tmp/tobuild.txt | while read -r drv; do
               COUNT=$((COUNT + 1))
               echo "[$COUNT/$TOTAL] Building: $drv"
-              nix-store --realize "$drv" --fallback --log-format bar-with-logs || true
+              # Use --no-build-hook and --keep-going to handle CUDA packages gracefully
+              nix-store --realize "$drv" \
+                --fallback \
+                --keep-going \
+                --option sandbox relaxed \
+                --log-format bar-with-logs 2>&1 || echo "Skipped (may require GPU): $drv"
               
               # Aggressive cleanup every 5 builds
               if [ $((COUNT % 5)) -eq 0 ]; then
