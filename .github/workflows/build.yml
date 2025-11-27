@@ -13,7 +13,7 @@ on:
 
 jobs:
   build-x86_64:
-    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.xlarge/image=ubuntu22-gpu-x64"
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         system:
@@ -50,51 +50,25 @@ jobs:
         with:
           name: opinionatedcache
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-
-      - name: Install nix-eval-jobs
-        run: |
-          nix profile install nixpkgs#nix-eval-jobs
+          skipPush: true
 
       - name: Build NixOS configuration for ${{ matrix.system }}
         run: |
-          echo "Finding uncached packages for ${{ matrix.system }}..."
-          
-          # Use nix-eval-jobs to find all derivations and check cache status
-          # Note: This evaluates the system but may skip CUDA packages due to lack of GPU
-          nix-eval-jobs --flake ".#nixosConfigurations.${{ matrix.system }}.config.system.build.toplevel" \
-            --check-cache-status \
-            --force-recurse \
-            --gc-roots-dir /tmp/gc-roots \
-            --workers 4 | \
-            jq -r 'select(.isCached == false and .error == null) | .drvPath' > /tmp/tobuild.txt || true
-          
-          # Build the uncached derivations
-          if [ -s /tmp/tobuild.txt ]; then
-            TOTAL=$(wc -l < /tmp/tobuild.txt)
-            echo "Found $TOTAL uncached packages to build"
-            
-            COUNT=0
-            cat /tmp/tobuild.txt | while read -r drv; do
-              COUNT=$((COUNT + 1))
-              echo "[$COUNT/$TOTAL] Building: $drv"
-              # Use --no-build-hook and --keep-going to handle CUDA packages gracefully
-              nix-store --realize "$drv" \
-                --fallback \
-                --keep-going \
-                --option sandbox relaxed \
-                --log-format bar-with-logs 2>&1 || echo "Skipped (may require GPU): $drv"
-              
-              # Aggressive cleanup every 5 builds
-              if [ $((COUNT % 5)) -eq 0 ]; then
-                echo "Running garbage collection..."
-                nix-collect-garbage --max-freed 10G || true
-                df -h
+          # Build normally, but with aggressive cleanup
+          nix build .#nixosConfigurations.${{ matrix.system }}.config.system.build.toplevel \
+            --no-link \
+            --fallback \
+            --log-format internal-json -v 2>&1 | tee /tmp/build-log.json | while IFS= read -r line; do
+              echo "$line"
+              # Parse build progress and cleanup aggressively
+              if echo "$line" | grep -q '"level":.*"msg":"built"'; then
+                nix-store --gc --max-freed 5G 2>/dev/null || true
               fi
-            done
-            echo "Completed building $COUNT uncached packages"
-          else
-            echo "All packages already cached!"
-          fi
+            done || true
+          
+          # Push everything we built to cache
+          echo "Pushing built packages to Cachix..."
+          nix path-info --all --json | jq -r '.[] | .path' | cachix push opinionatedcache || true
       
       - name: Clean up build artifacts
         if: always()
