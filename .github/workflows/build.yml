@@ -50,25 +50,45 @@ jobs:
         with:
           name: opinionatedcache
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-          skipPush: true
 
       - name: Build NixOS configuration for ${{ matrix.system }}
         run: |
-          # Build normally, but with aggressive cleanup
+          echo "Finding uncached packages for ${{ matrix.system }}..."
+          
+          # Try to build with max-jobs=0 to identify what's not cached
+          # This will fail but show us what needs to be built
           nix build .#nixosConfigurations.${{ matrix.system }}.config.system.build.toplevel \
             --no-link \
-            --fallback \
-            --log-format internal-json -v 2>&1 | tee /tmp/build-log.json | while IFS= read -r line; do
-              echo "$line"
-              # Parse build progress and cleanup aggressively
-              if echo "$line" | grep -q '"level":.*"msg":"built"'; then
-                nix-store --gc --max-freed 5G 2>/dev/null || true
-              fi
-            done || true
+            --max-jobs 0 \
+            --keep-going 2>&1 | tee /tmp/build-check.log || true
           
-          # Push everything we built to cache
-          echo "Pushing built packages to Cachix..."
-          nix path-info --all --json | jq -r '.[] | .path' | cachix push opinionatedcache || true
+          # Extract derivation paths that need building
+          grep "cannot build derivation" /tmp/build-check.log | \
+            grep -oP "'/nix/store/[^']+\.drv'" | \
+            tr -d "'" > /tmp/tobuild.txt || true
+          
+          # Build the uncached derivations
+          if [ -s /tmp/tobuild.txt ]; then
+            TOTAL=$(wc -l < /tmp/tobuild.txt)
+            echo "Found $TOTAL uncached packages to build"
+            
+            COUNT=0
+            cat /tmp/tobuild.txt | while read -r drv; do
+              COUNT=$((COUNT + 1))
+              echo "[$COUNT/$TOTAL] Building: $drv"
+              nix-store --realize "$drv" --fallback --log-format bar-with-logs || true
+              
+              # Aggressive cleanup every 5 builds
+              if [ $((COUNT % 5)) -eq 0 ]; then
+                echo "Running garbage collection..."
+                nix-collect-garbage --max-freed 10G || true
+                df -h
+              fi
+            done
+            echo "Completed building uncached packages"
+          else
+            echo "All packages already cached!"
+          fi
       
       - name: Clean up build artifacts
         if: always()
