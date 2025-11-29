@@ -1,22 +1,21 @@
 # Host configuration for puppypc (desktop gaming PC)
 # This is a flake-parts module
 { inputs, config, ... }:
-let
-  homeVersion = config.flake.shared.homeVersion;
-  overlay-wallpaper-engine = config.flake.shared.overlays.overlay-wallpaper-engine;
-in
 {
   flake.nixosConfigurations.puppypc = inputs.nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
 
     specialArgs = {
-      inherit homeVersion;
+      inherit (config.flake.shared) homeVersion;
       inherit (inputs) kwin-effects-forceblur;
     };
 
     modules = [
       ../../modules/default.nix
       ../../hosts/puppypc/configuration.nix
+
+      # Dendritic aspects
+      config.flake.modules.nixos.git
 
       inputs.chaotic.nixosModules.default
       inputs.home-manager.nixosModules.home-manager
@@ -28,11 +27,17 @@ in
           useUserPackages = true;
           backupFileExtension = "backup";
           extraSpecialArgs = {
-            inherit homeVersion;
+            inherit (config.flake.shared) homeVersion;
             inherit (inputs) spicetify-nix;
           };
           users = {
-            misty = import ../../hosts/puppypc/home.nix;
+            misty = {
+              imports = [
+                ../../hosts/puppypc/home.nix
+                # Dendritic aspects for home-manager
+                config.flake.modules.homeManager.git
+              ];
+            };
           };
           sharedModules = [
             inputs.sops-nix.homeManagerModules.sops
@@ -43,7 +48,7 @@ in
           overlays = [
             inputs.nixpkgs-extra.overlays.default
             inputs.nix-vscode-extensions.overlays.default
-            overlay-wallpaper-engine
+            config.flake.shared.overlays.overlay-wallpaper-engine
           ];
         };
       }
