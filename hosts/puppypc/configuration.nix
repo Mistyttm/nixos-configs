@@ -60,7 +60,9 @@ in
 
   services.wivrn = {
     enable = true;
-    package = pkgs.wivrn;
+    package = pkgs.wivrn.override {
+      cudaSupport = true;
+    };
     openFirewall = true;
     defaultRuntime = true;
     autoStart = true;
@@ -141,9 +143,8 @@ in
         "freeimage-unstable-2021-11-01"
         "libsoup-2.74.3"
       ];
-      # Temporarily disabled to avoid onnxruntime compilation
-      # Re-enable after getting stable build working
-      cudaSupport = true; # Was: true
+      # CUDA support removed globally - now enabled per-package to avoid mass rebuilds
+      # cudaSupport = true;
     };
   };
 
