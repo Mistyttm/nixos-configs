@@ -1,0 +1,2 @@
+# This directory will contain system-level base configurations
+# Examples: locale.nix, bootloader.nix, nixoptions.nix, zram.nix
