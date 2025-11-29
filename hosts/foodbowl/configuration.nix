@@ -32,8 +32,9 @@
   networking.networkmanager.enable = true;
 
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.cudaSupport = true;
-  nixpkgs.config.nvidia.acceptLicense = true;
+  # CUDA not available on Raspberry Pi - removed
+  # nixpkgs.config.cudaSupport = true;
+  # nixpkgs.config.nvidia.acceptLicense = true;
 
   programs.nix-ld.enable = true;
 
