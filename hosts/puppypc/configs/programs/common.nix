@@ -21,6 +21,7 @@
     satisfactorymodmanager
     plasma-panel-colorizer
     r2modman
+    deadlock-mod-manager
   ];
 
   services.linux-wallpaperengine = {
