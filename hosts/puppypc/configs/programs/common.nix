@@ -3,7 +3,7 @@
     mullvad-vpn
     qbittorrent
     protontricks
-    ffmpeg
+    (ffmpeg.override { withCuda = true; })
     piper
     gimp
     blockbench
