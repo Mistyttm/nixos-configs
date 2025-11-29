@@ -27,7 +27,8 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.cudaSupport = true;
+  # CUDA support removed globally - now enabled per-package to avoid mass rebuilds
+  # nixpkgs.config.cudaSupport = true;
   nixpkgs.config.nvidia.acceptLicense = true;
 
   programs.nix-ld.enable = true;
