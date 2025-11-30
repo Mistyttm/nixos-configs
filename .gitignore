@@ -1,1 +1,4 @@
-.direnv/bin/nix-direnv-reload
+.direnv/
+
+# Pre-commit hooks (auto-generated)
+.pre-commit-config.yaml
