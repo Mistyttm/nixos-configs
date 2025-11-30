@@ -71,7 +71,7 @@
     }:
     let
       system = "x86_64-linux";
-      homeVersion = "25.11"; # Update this when you update your NixOS version
+      homeVersion = "26.05"; # Update this when you update your NixOS version
       # overlay-satisfactory = final: prev: {
       #   satis = import satisfactory {
       #     system = final.stdenv.hostPlatform.system;
