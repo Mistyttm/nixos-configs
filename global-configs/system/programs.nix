@@ -5,7 +5,7 @@
 {
   programs.firefox = {
     enable = true;
-    package = pkgs.firefox-esr;
+    package = pkgs.firefox;
   };
 
   # Allow unfree packages
