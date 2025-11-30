@@ -3,7 +3,7 @@ name: "Update Flake Inputs"
 on:
   schedule:
     # Run every 5 days
-    - cron: '0 0 */5 * *'
+    - cron: '0 */12 * * *'
   workflow_dispatch:
 
 jobs:
