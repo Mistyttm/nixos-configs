@@ -38,6 +38,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware";
+    pre-commit-hooks = {
+      url = "github:cachix/pre-commit-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   nixConfig = {
@@ -67,6 +71,7 @@
       chaotic,
       jovian,
       nixos-hardware,
+      pre-commit-hooks,
       ...
     }:
     let
@@ -230,5 +235,21 @@
         };
       };
       formatter.x86_64-linux = nixpkgs.legacyPackages.${system}.nixfmt-tree;
+
+      checks.x86_64-linux.pre-commit-check = pre-commit-hooks.lib.${system}.run {
+        src = ./.;
+        hooks = {
+          nixfmt = {
+            enable = true;
+            package = nixpkgs.legacyPackages.${system}.nixfmt-tree;
+          };
+          commitizen.enable = true;
+        };
+      };
+
+      devShells.x86_64-linux.default = nixpkgs.legacyPackages.${system}.mkShell {
+        inherit (self.checks.x86_64-linux.pre-commit-check) shellHook;
+        buildInputs = self.checks.x86_64-linux.pre-commit-check.enabledPackages;
+      };
     };
 }
