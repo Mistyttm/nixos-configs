@@ -38,7 +38,7 @@
         esbenp.prettier-vscode
         yoavbls.pretty-ts-errors
         ms-python.vscode-pylance
-#         ms-python.python
+        ms-python.python
         ms-python.debugpy
         ms-vscode-remote.remote-ssh
         ms-vscode-remote.remote-ssh-edit
@@ -51,8 +51,8 @@
         kreativ-software.csharpextensions
         ms-dotnettools.csharp
         sonarsource.sonarlint-vscode
-#         ms-dotnettools.csdevkit
-#         rust-lang.rust-analyzer
+        #         ms-dotnettools.csdevkit
+        #         rust-lang.rust-analyzer
         dustypomerleau.rust-syntax
         fill-labs.dependi
         swellaby.vscode-rust-test-adapter
@@ -63,6 +63,14 @@
         ms-vscode.cpptools
       ];
       userSettings = {
+
+        # REMOVE AI FEATURES
+        # please for the love of god don't turn this on for awhile, this shit is rotting your brain.
+        # Please learn how to use your brain properly again, you cannot rely on this piece of shit software
+        chat = {
+          disableAIFeatures = true;
+        };
+
         editor = {
           suggestSelection = "first";
           wordWrap = "on";
