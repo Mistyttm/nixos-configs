@@ -20,6 +20,7 @@
     nil
     bitwarden-desktop
     bitwarden-cli
+    nixfmt
   ];
 
   programs.zsh.enable = true;
