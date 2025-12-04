@@ -38,7 +38,7 @@
   };
 
   services.easyeffects = {
-    enable = true;
+    enable = false;
     package = pkgs.easyeffects;
   };
 }
