@@ -184,10 +184,10 @@
 
         github = {
           copilot.enable = {
-            "*" = true;
+            "*" = false;
             yaml = false;
-            plaintext = true;
-            markdown = true;
+            plaintext = false;
+            markdown = false;
             javascript = false;
             csharp = false;
           };
