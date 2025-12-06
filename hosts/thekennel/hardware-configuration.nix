@@ -51,6 +51,8 @@
       "username=jellyfin"
       "password=jellyfin1!"
       "x-systemd.automount"
+      "file_mode=0755"
+      "dir_mode=0755"
       "noauto"
       "nofail"
       "users"
