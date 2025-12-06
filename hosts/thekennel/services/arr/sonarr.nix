@@ -2,7 +2,7 @@
 {
   services.sonarr = {
     enable = true;
-    package = pkgs.radarr;
+    package = pkgs.sonarr;
     openFirewall = true;
     user = "sonarr";
     group = "sonarr";
