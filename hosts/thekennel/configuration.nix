@@ -79,14 +79,21 @@
     pinentryPackage = pkgs.pinentry-gnome3;
   };
 
-  # services.logind = {
-  #   settings = {
-  #     Login = {
-  #       HandleLidSwitchExternalPower = "ignore";
-  #       HandleLidSwitch = "ignore";
-  #     };
-  #   };
-  # };
+  networking.nameservers = [
+    "1.1.1.1"
+    "1.0.0.1"
+  ];
+
+  services.resolved = {
+    enable = true;
+    dnssec = "true";
+    domains = [ "~." ];
+    fallbackDns = [
+      "1.1.1.1"
+      "1.0.0.1"
+    ];
+    dnsovertls = "true";
+  };
 
   nixpkgs.config.cudaSupport = true;
 
