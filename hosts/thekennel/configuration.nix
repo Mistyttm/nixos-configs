@@ -18,7 +18,6 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.supportedFilesystems = [ "cifs" ];
 
   networking.hostName = "thekennel"; # Define your hostname.
 
@@ -63,6 +62,6 @@
   #   };
   # };
 
-  system.stateVersion = "25.11";
+  system.stateVersion = "26.05";
 
 }
