@@ -6,5 +6,6 @@
     ./mullvad.nix
     ./prowlarr.nix
     ./qbitorrent.nix
+    ./flaresolverr.nix
   ];
 }
