@@ -14,7 +14,7 @@
     ../../global-configs/system/DE/audio.nix
     ./services/jellyfin.nix
     ./system/nvidia.nix
-    # ./services/arr/default.nix
+    ./services/arr/default.nix
   ];
 
   # Bootloader.
