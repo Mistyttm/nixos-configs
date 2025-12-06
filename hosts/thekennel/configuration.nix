@@ -10,14 +10,41 @@
     ../../global-configs/system/networking/ssh.nix
     ../../global-configs/system/nixoptions.nix
     ../../global-configs/system/virtualisation.nix
+    ../../global-configs/system/DE/kde.nix
+    ../../global-configs/system/DE/audio.nix
     ./services/jellyfin.nix
     ./system/nvidia.nix
     # ./services/arr/default.nix
   ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.
+
+  boot = {
+    consoleLogLevel = 0;
+
+    initrd.verbose = false;
+
+    kernelParams = [
+      "quiet"
+      "loglevel=3"
+      "rd.systemd.show_status=false"
+      "rd.udev.log_level=3"
+      "udev.log_priority=3"
+    ];
+
+    loader = {
+      efi.canTouchEfiVariables = true;
+      systemd-boot = {
+        configurationLimit = 10;
+        enable = true;
+      };
+
+      timeout = 5;
+    };
+
+    plymouth.enable = true;
+  };
 
   networking.hostName = "thekennel"; # Define your hostname.
 
