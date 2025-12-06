@@ -7,5 +7,10 @@
     user = "sonarr";
     group = "sonarr";
     dataDir = "/var/lib/sonarr";
+    settings = {
+      update = {
+        automatically = true;
+      };
+    };
   };
 }

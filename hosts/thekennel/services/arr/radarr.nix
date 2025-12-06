@@ -7,5 +7,10 @@
     user = "radarr";
     group = "radarr";
     dataDir = "/var/lib/radarr";
+    settings = {
+      update = {
+        automatically = true;
+      };
+    };
   };
 }
