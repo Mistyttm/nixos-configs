@@ -3,9 +3,7 @@
   environment.systemPackages = with pkgs; [
     jellyfin
     jellyfin-web
-    (jellyfin-ffmpeg.override {
-      ffmpeg-headless = ffmpeg-headless.override { withCuda = true; };
-    })
+    jellyfin-ffmpeg
   ];
 
   services.jellyfin = {
