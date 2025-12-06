@@ -10,7 +10,7 @@
     ../../global-configs/system/networking/ssh.nix
     ../../global-configs/system/nixoptions.nix
     ../../global-configs/system/virtualisation.nix
-    # ./services/jellyfin.nix
+    ./services/jellyfin.nix
     ./system/nvidia.nix
     # ./services/arr/default.nix
   ];
