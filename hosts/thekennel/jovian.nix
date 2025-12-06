@@ -1,10 +1,11 @@
-{ ... }: {
+{ ... }:
+{
   jovian = {
     steam = {
       enable = true;
       autoStart = true;
       user = "misty";
-      desktopSession = "gamescope-wayland";
+      desktopSession = "plasma";
     };
     decky-loader = {
       enable = true;
