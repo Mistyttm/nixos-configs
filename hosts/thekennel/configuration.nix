@@ -18,8 +18,6 @@
   ];
 
   # Bootloader.
-  boot.loader.
-
   boot = {
     kernelPackages = pkgs.linuxPackages_zen;
     consoleLogLevel = 0;
