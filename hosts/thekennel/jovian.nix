@@ -7,16 +7,21 @@
       user = "misty";
       desktopSession = "plasma";
       environment = {
-        # Disable VRR/G-Sync which can cause flickering
+        # Disable hardware cursors - this is critical for Nvidia
+        WLR_NO_HARDWARE_CURSORS = "1";
+        KWIN_FORCE_SW_CURSOR = "1";
+
+        # Nvidia-specific fixes
         __GL_GSYNC_ALLOWED = "0";
         __GL_VRR_ALLOWED = "0";
+        __GL_SYNC_TO_VBLANK = "1";
 
-        # Fix hardware cursor issues (often the main culprit)
-        WLR_NO_HARDWARE_CURSORS = "1";
+        # Color space fix for yellow tint
+        GAMESCOPE_COLOR_SPACE = "sRGB";
 
-        # Additional stability options
-        __GL_YIELD = "USLEEP";
-        ENABLE_VKBASALT = "0";
+        # SDL controller settings
+        SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS = "0";
+        SDL_JOYSTICK_HIDAPI = "1";
       };
     };
     decky-loader = {
@@ -32,4 +37,12 @@
       enableZram = true;
     };
   };
+
+  environment.sessionVariables = {
+    WLR_NO_HARDWARE_CURSORS = "1";
+  };
+
+  boot.kernelParams = [
+    "nvidia-drm.modeset=1"
+  ];
 }
