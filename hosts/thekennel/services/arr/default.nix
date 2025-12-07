@@ -7,5 +7,6 @@
     ./prowlarr.nix
     ./qbitorrent.nix
     ./flaresolverr.nix
+    ./jellyseer.nix
   ];
 }
