@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  services.prowlarr = {
+  services.flaresolverr = {
     enable = true;
     openFirewall = true;
   };
