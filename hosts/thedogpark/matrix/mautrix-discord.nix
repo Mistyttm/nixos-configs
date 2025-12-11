@@ -12,6 +12,7 @@ in
         domain = "mistyttm.dev";
       };
       appservice = {
+        address = "http://localhost:8009";
         port = 8009;
         hostname = "0.0.0.0";
         database = {
