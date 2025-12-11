@@ -1,6 +1,6 @@
 { config, lib, ... }:
 let
-  synapsePort = 8448;
+  synapsePort = 8008;
 in
 {
   services.mautrix-discord = {
@@ -11,7 +11,7 @@ in
         domain = "mistyttm.dev";
       };
       appservice = {
-        port = synapsePort;
+        port = 8009;
         hostname = "0.0.0.0";
         database = {
           uri = "postgres:///mautrix-discord?host=/run/postgresql&sslmode=disable";
