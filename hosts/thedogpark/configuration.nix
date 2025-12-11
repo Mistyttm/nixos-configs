@@ -60,7 +60,6 @@
       "olm-3.2.16"
     ];
     allowUnfree = true;
-    allowBroken = true;
   };
 
   # Open ports in the firewall.
