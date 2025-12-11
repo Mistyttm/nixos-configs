@@ -5,6 +5,7 @@ in
 {
   services.mautrix-discord = {
     enable = true;
+    registerToSynapse = true;
     settings = {
       homeserver = {
         address = "http://localhost:${toString synapsePort}";
