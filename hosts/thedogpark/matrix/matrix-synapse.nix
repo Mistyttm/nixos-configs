@@ -29,7 +29,7 @@
       "jwt" # JSON Web Token authentication
       "oidc" # OpenID Connect authentication
       "postgres" # PostgreSQL database backend
-      "saml2" # SAML2 authentication
+      # "saml2" # SAML2 authentication
       "sentry" # Error tracking and performance metrics
       "systemd" # Provide the JournalHandler used in the default log_config
       "url-preview" # Support for oEmbed URL previews
