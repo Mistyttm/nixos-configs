@@ -1,6 +1,6 @@
 { config, lib, ... }:
 let
-  synapsePort = 9005;
+  synapsePort = 8448;
 in
 {
   services.mautrix-discord = {
