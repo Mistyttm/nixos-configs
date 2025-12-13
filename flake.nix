@@ -42,6 +42,7 @@
       url = "github:cachix/pre-commit-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
   };
 
   nixConfig = {
@@ -50,12 +51,14 @@
       "https://opinionatedcache.cachix.org"
       "https://cache.flox.dev"
       "https://cache.nixos-cuda.org"
+      "https://install.determinate.systems"
     ];
     extra-trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "opinionatedcache.cachix.org-1:zDO4tZBL25vfhVFSHTT+0RNCjn5Z5nEs7sPiDZ6XhuE="
       "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
       "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
+      "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
     ];
   };
 
@@ -76,6 +79,7 @@
       jovian,
       nixos-hardware,
       pre-commit-hooks,
+      determinate,
       ...
     }:
     let
@@ -106,6 +110,7 @@
             home-manager.nixosModules.home-manager
             sops-nix.nixosModules.sops
             nixpkgs-extra.nixosModules.default
+            determinate.nixosModules.default
             {
               home-manager = {
                 useGlobalPkgs = true;
@@ -143,6 +148,7 @@
             home-manager.nixosModules.home-manager
             auto-cpufreq.nixosModules.default
             sops-nix.nixosModules.sops
+            determinate.nixosModules.default
             {
               home-manager = {
                 useGlobalPkgs = true;
@@ -177,6 +183,7 @@
             simple-nixos-mailserver.nixosModule
             home-manager.nixosModules.home-manager
             sops-nix.nixosModules.sops
+            determinate.nixosModules.default
             {
               imports = [ nix-minecraft.nixosModules.minecraft-servers ];
               home-manager.useGlobalPkgs = true;
@@ -206,6 +213,7 @@
             home-manager.nixosModules.home-manager
             sops-nix.nixosModules.sops
             jovian.nixosModules.jovian
+            determinate.nixosModules.default
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
@@ -227,6 +235,7 @@
             home-manager.nixosModules.home-manager
             sops-nix.nixosModules.sops
             nixos-hardware.nixosModules.raspberry-pi-4
+            determinate.nixosModules.default
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
