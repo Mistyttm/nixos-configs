@@ -230,28 +230,28 @@
             }
           ];
         };
-        foodbowl = nixpkgs.lib.nixosSystem {
-          system = "aarch64-linux";
-          specialArgs = {
-            inherit homeVersion;
-          };
-          modules = [
-            ./hosts/foodbowl/configuration.nix
+        #foodbowl = nixpkgs.lib.nixosSystem {
+        #  system = "aarch64-linux";
+        #  specialArgs = {
+        #    inherit homeVersion;
+        #  };
+        #  modules = [
+        #    ./hosts/foodbowl/configuration.nix
 
-            home-manager.nixosModules.home-manager
-            sops-nix.nixosModules.sops
-            nixos-hardware.nixosModules.raspberry-pi-4
-            determinate.nixosModules.default
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.backupFileExtension = "backup";
-              home-manager.extraSpecialArgs = { inherit homeVersion; };
+        #    home-manager.nixosModules.home-manager
+        #    sops-nix.nixosModules.sops
+        #    nixos-hardware.nixosModules.raspberry-pi-4
+        #    determinate.nixosModules.default
+        #    {
+        #      home-manager.useGlobalPkgs = true;
+        #      home-manager.useUserPackages = true;
+        #      home-manager.backupFileExtension = "backup";
+        #      home-manager.extraSpecialArgs = { inherit homeVersion; };
 
-              home-manager.users.misty = import ./hosts/foodbowl/home.nix;
-            }
-          ];
-        };
+        #      home-manager.users.misty = import ./hosts/foodbowl/home.nix;
+        #    }
+        #  ];
+        #};
       };
       formatter.x86_64-linux = nixpkgs.legacyPackages.${system}.nixfmt-tree;
 
