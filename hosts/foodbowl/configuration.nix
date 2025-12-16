@@ -2,7 +2,6 @@
 
 {
   imports = [
-    ./jovian.nix
     ../../global-configs/users/misty.nix
     ../../global-configs/system/locale.nix
     ../../global-configs/system/networking/ssh.nix
