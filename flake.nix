@@ -94,6 +94,12 @@
       overlay-wallpaper-engine = import ./patches/wallpaper-engine-plugin;
     in
     {
+      hydraJobs = {
+        nixos =
+          builtins.mapAttrs
+            (_: cfg: cfg.config.system.build.toplevel)
+            self.nixosConfigurations;
+      };
       nixosConfigurations = {
         puppypc = nixpkgs.lib.nixosSystem {
           inherit system;
