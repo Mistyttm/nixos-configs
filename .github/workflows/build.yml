@@ -1,4 +1,4 @@
-name: Build and Cache NixOS Systems (Hydra-style)
+name: Build and Cache NixOS Systems
 
 on:
   workflow_run:
