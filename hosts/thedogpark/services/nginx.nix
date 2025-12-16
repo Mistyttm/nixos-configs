@@ -34,6 +34,15 @@ in
     };
   };
 
+  security.acme.certs."jellyfin.mistyttm.dev" = {
+    group = "nginx";
+    dnsProvider = "porkbun";
+    credentialFiles = {
+      PORKBUN_API_KEY_FILE = config.sops.secrets."porkbun-api-key".path;
+      PORKBUN_SECRET_API_KEY_FILE = config.sops.secrets."porkbun-secret-api-key".path;
+    };
+  };
+
   services.nginx.virtualHosts =
     let
       SSL = {
@@ -107,6 +116,33 @@ in
             return 200 '{"m.homeserver": {"base_url": "https://mistyttm.dev"}}';
             default_type application/json;
             add_header Access-Control-Allow-Origin *;
+          '';
+        };
+      };
+      "jellyfin.mistyttm.dev" = {
+        useACMEHost = "jellyfin.mistyttm.dev";
+        forceSSL = true;
+
+        locations."/" = {
+          proxyPass = "http://10.100.0.2:8096"; # WireGuard IP of your home server
+          proxyWebsockets = true;
+          extraConfig = ''
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+
+            # Jellyfin-specific
+            proxy_buffering off;
+            proxy_set_header Range $http_range;
+            proxy_set_header If-Range $http_if_range;
+
+            # Security headers
+            add_header X-Frame-Options "SAMEORIGIN" always;
+            add_header X-Content-Type-Options "nosniff" always;
+            add_header X-XSS-Protection "1; mode=block" always;
+
+            client_max_body_size 0; # Allow large file uploads
           '';
         };
       };
