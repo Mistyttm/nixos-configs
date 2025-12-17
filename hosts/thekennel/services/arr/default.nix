@@ -10,17 +10,23 @@
     ./jellyseer.nix
   ];
 
-  sops.secrets."qnap-media" = {
+  sops.secrets."qnap-media/username" = {
     sopsFile = ../../../../secrets/qnap.yaml;
-    owner = "root";
-    group = "root";
   };
 
-  system.activationScripts.qnapMediaCreds.text = ''
-    install -m 0400 /dev/null /run/secrets/qnap-media.cifs
-    echo "username=$(yq -r .username /run/secrets/qnap-media)" >> /run/secrets/qnap-media.cifs
-    echo "password=$(yq -r .password /run/secrets/qnap-media)" >> /run/secrets/qnap-media.cifs
-  '';
+  sops.secrets."qnap-media/password" = {
+    sopsFile = ../../../../secrets/qnap.yaml;
+  };
+
+  sops.templates.qnap-media-cifs = {
+    owner = "root";
+    group = "root";
+    mode = "0400";
+    content = ''
+      username=${config.sops.placeholder."qnap-media/username"}
+      password=${config.sops.placeholder."qnap-media/password"}
+    '';
+  };
 
   users.groups.media = { };
 
