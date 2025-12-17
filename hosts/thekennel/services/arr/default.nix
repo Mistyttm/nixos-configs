@@ -11,7 +11,7 @@
   ];
 
   sops.secrets."qnap-media" = {
-    sopsFile = ../../../secrets/qnap.yaml;
+    sopsFile = ../../../../secrets/qnap.yaml;
     owner = "root";
     group = "root";
   };
