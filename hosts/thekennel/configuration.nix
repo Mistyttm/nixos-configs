@@ -45,6 +45,8 @@
     plymouth.enable = true;
   };
 
+  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+
   networking.hostName = "thekennel"; # Define your hostname.
 
   # Enable networking
