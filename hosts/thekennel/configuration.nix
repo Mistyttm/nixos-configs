@@ -16,6 +16,7 @@
     ./system/nvidia.nix
     ./services/arr/default.nix
     ./services/wireguard.nix
+    ./services/nginx.nix
   ];
 
   # Bootloader.
