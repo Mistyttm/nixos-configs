@@ -4,7 +4,7 @@
 
   networking.wireguard.interfaces.wg0 = {
     ips = [ "10.100.0.2/24" ];
-    privateKeyFile = "/root/wireguard-private-key";
+    privateKeyFile = "/root/wireguard-keys/private";
 
     peers = [
       {
