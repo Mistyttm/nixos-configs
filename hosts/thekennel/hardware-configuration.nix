@@ -51,13 +51,14 @@
       "credentials=/run/secrets/rendered/qnap-media-cifs"
       "rw"
       "vers=3.1.1"
-      # "_netdev"
+      "_netdev"
       "iocharset=utf8"
       "serverino"
       "gid=986"
       "file_mode=0664"
       "dir_mode=0775"
       "x-systemd.automount"
+      "x-systemd.requires=sops-nix.service"
       "nofail"
     ];
   };
