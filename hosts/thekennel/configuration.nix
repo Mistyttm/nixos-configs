@@ -15,6 +15,7 @@
     ./services/jellyfin.nix
     ./system/nvidia.nix
     ./services/arr/default.nix
+    ./services/wireguard.nix
   ];
 
   # Bootloader.
