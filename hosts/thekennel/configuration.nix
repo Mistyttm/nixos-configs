@@ -97,6 +97,9 @@
     dnsovertls = "true";
   };
 
+  programs.zsh.enable = true;
+  users.users.misty.shell = pkgs.zsh;
+
   nixpkgs.config.cudaSupport = true;
 
   system.stateVersion = "26.05";
