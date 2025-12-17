@@ -48,12 +48,16 @@
     device = "//192.168.0.170/Public/Media";
     fsType = "cifs";
     options = [
-      "username=jellyfin"
-      "password=jellyfin1!"
+      "credentials=/run/secrets/rendered/qnap-media-cifs"
+      "rw"
+      "vers=3.1.1"
+      "iocharset=utf8"
+      "serverino"
+      "gid=986"
+      "file_mode=0664"
+      "dir_mode=0775"
       "x-systemd.automount"
-      "noauto"
       "nofail"
-      "users"
     ];
   };
 
