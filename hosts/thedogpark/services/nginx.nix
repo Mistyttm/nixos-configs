@@ -124,7 +124,7 @@ in
         forceSSL = true;
 
         locations."/" = {
-          proxyPass = "http://10.100.0.2:8096"; # WireGuard IP of your home server
+          proxyPass = "http://10.100.0.2:8097"; # WireGuard IP of your home server
           proxyWebsockets = true;
           extraConfig = ''
             proxy_set_header Host $host;

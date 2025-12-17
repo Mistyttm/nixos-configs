@@ -9,7 +9,7 @@
       listen = [
         {
           addr = "10.100.0.2";
-          port = 8096;
+          port = 8097;
         }
       ];
 
@@ -23,5 +23,5 @@
     };
   };
 
-  networking.firewall.allowedTCPPorts = [ 8096 ];
+  networking.firewall.allowedTCPPorts = [ 8097 ];
 }
