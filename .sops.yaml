@@ -1,7 +1,7 @@
 keys:
   - &admin_misty age1ztwty6h4qefyzdqkqy6sre4lqan3zxa8mk90dzrc8lkm8f5439ts3dksmq
   - &server_mistyttmdev age1vmeythszeduft4ma5h3hfvtp30rz2v70tja8amfchs50rhuwf9jsljkf5d
-  - &server_kennel age1v5u2fagr4c45v2w5hxu4hya6whrpnug95470y7n6xlnyj55jdg5qpgmq23
+  - &server_kennel age19ysep57z02y3hhf6c75cvz7njd66p2cqt85g4xqxzmgvk5slmsxq04jyp7
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
     key_groups:
