@@ -6,5 +6,6 @@
     ./media.nix
     ./development.nix
     ./git.nix
+    ./starship.nix
   ];
 }
