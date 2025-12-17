@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, ... }:
 {
   imports = [
     ./radarr.nix
@@ -10,11 +10,10 @@
     ./jellyseer.nix
   ];
 
-  sops.secrets.qnap-media = {
+  sops.secrets."qnap-media" = {
+    sopsFile = ../../../secrets/qnap.yaml;
     owner = "root";
     group = "root";
-    mode = "0400";
-    format = "yaml";
   };
 
   system.activationScripts.qnapMediaCreds.text = ''
