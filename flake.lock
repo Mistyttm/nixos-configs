@@ -532,7 +532,7 @@
         "type": "github"
       },
       "original": {
-        "owner": "nix-community",
+        "owner": "dseum",
         "repo": "nix-vscode-extensions",
         "type": "github"
       }
