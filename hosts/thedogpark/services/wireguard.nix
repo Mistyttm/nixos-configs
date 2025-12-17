@@ -10,7 +10,7 @@
     peers = [
       {
         # Your home server
-        publicKey = "SNAnn10zH9DRCAOFwcv7D9mIgxcnve0PqXhpRNCAyX4=";
+        publicKey = "PV35fOdFKVsftJ7lh+xVTYxDY9fw4mgN9hwlrDOnzlk=";
         allowedIPs = [ "10.100.0.2/32" ];
       }
     ];
