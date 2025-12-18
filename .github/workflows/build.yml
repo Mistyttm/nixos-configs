@@ -13,9 +13,32 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-x86_64:
+  eval:
+    name: Evaluate Hydra jobset
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+
+      - name: Evaluate flake jobset
+        run: |
+          set -euo pipefail
+          nix eval .#hydraJobs --json > /dev/null
+
+
+  build-x86_64:
+    name: Build and cache NixOS systems
+    needs: eval
+    runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
@@ -27,49 +50,50 @@ jobs:
           - thekennel
 
     steps:
-      - name: Reclaim disk
+      - name: Free disk space
         run: |
-          sudo rm -rf \
-            /usr/share/dotnet \
-            /usr/local/lib/android \
-            /opt/ghc \
-            /opt/hostedtoolcache/CodeQL \
-            /var/lib/docker
-          sudo docker image prune -af || true
+          sudo rm -rf /usr/share/dotnet \
+                      /usr/local/lib/android \
+                      /opt/ghc \
+                      /opt/hostedtoolcache/CodeQL
+          sudo docker image prune -af
           df -h
 
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: cachix/install-nix-action@v27
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
             accept-flake-config = true
-            auto-optimise-store = true
-            min-free = 5368709120   # 5GB
-            max-free = 10737418240  # 10GB
-            fallback = false
+            max-jobs = auto
+            cores = 0
 
-      - uses: cachix/cachix-action@v15
+      - name: Setup Cachix
+        uses: cachix/cachix-action@v15
         with:
           name: opinionatedcache
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           skipPush: true
 
-      - name: Evaluate and build (${{ matrix.system }})
+      - name: Build Hydra job (${{ matrix.system }})
         run: |
           set -euo pipefail
 
           nix build \
-            .#nixosConfigurations.${{ matrix.system }}.config.system.build.toplevel \
+            .#hydraJobs.nixos.${{ matrix.system }} \
             --no-link \
-            --keep-going \
-            --json \
-            > build.json
+            --fallback \
+            --json > build-result.json
 
-          jq -r '.[].outputs[]' build.json > realised-paths.txt
+          jq -r '.[].outputs[]' build-result.json > realised-paths.txt
 
-      - name: Push realised closures
+          echo "Realised outputs:"
+          cat realised-paths.txt
+
+      - name: Push build closures to Cachix
         run: |
           set -euo pipefail
 
@@ -82,6 +106,5 @@ jobs:
       - name: Garbage collect
         if: always()
         run: |
-          nix-store --gc
-          rm -rf /root/.cache/nix
+          nix-collect-garbage -d
           df -h
