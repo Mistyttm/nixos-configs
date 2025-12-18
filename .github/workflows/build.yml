@@ -1,15 +1,12 @@
 name: Build and Cache NixOS Systems
-
 on:
   workflow_run:
     workflows: ["Update Flake Inputs"]
     types: [completed]
     branches: [main]
-
   pull_request:
     paths:
       - flake.lock
-
   workflow_dispatch:
 
 jobs:
@@ -17,38 +14,32 @@ jobs:
     name: Evaluate Hydra jobset
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
+      
       - name: Install Nix
         uses: cachix/install-nix-action@v27
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
             accept-flake-config = true
-
+      
       - name: Evaluate flake jobset
         run: |
           set -euo pipefail
           nix eval .#hydraJobs --json > /dev/null
 
-
-  build-x86_64:
-    name: Build and cache NixOS systems
+  build-small-systems:
+    name: Build and cache small systems
     needs: eval
     runs-on: ubuntu-latest
-
     strategy:
       fail-fast: false
       matrix:
         system:
-          - puppypc
-          - mistylappytappy
           - thedogpark
           - thekennel
-
     steps:
       - name: Free disk space
         run: |
@@ -58,10 +49,10 @@ jobs:
                       /opt/hostedtoolcache/CodeQL
           sudo docker image prune -af
           df -h
-
+      
       - name: Checkout repository
         uses: actions/checkout@v4
-
+      
       - name: Install Nix
         uses: cachix/install-nix-action@v27
         with:
@@ -70,41 +61,243 @@ jobs:
             accept-flake-config = true
             max-jobs = auto
             cores = 0
-
+      
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
         with:
           name: opinionatedcache
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           skipPush: true
-
+      
       - name: Build Hydra job (${{ matrix.system }})
         run: |
           set -euo pipefail
-
           nix build \
             .#hydraJobs.nixos.${{ matrix.system }} \
             --no-link \
             --fallback \
             --json > build-result.json
-
           jq -r '.[].outputs[]' build-result.json > realised-paths.txt
-
           echo "Realised outputs:"
           cat realised-paths.txt
-
+      
       - name: Push build closures to Cachix
         run: |
           set -euo pipefail
-
           while read -r path; do
             nix-store --query --requisites "$path"
           done < realised-paths.txt \
             | sort -u \
             | cachix push opinionatedcache
-
+      
       - name: Garbage collect
         if: always()
         run: |
           nix-collect-garbage -d
+          df -h
+
+  build-puppypc:
+    name: Build and cache puppypc
+    needs: eval
+    runs-on: ubuntu-latest
+    steps:
+      - name: Maximize disk space
+        run: |
+          echo "Before cleanup:"
+          df -h
+          
+          # Remove unnecessary packages
+          sudo apt-get remove -y '^aspnetcore-.*' '^dotnet-.*' '^llvm-.*' 'php.*' '^mongodb-.*' '^mysql-.*' azure-cli google-chrome-stable firefox powershell mono-devel libgl1-mesa-dri
+          sudo apt-get autoremove -y
+          sudo apt-get clean
+          
+          # Remove large directories
+          sudo rm -rf \
+            /usr/share/dotnet \
+            /usr/local/lib/android \
+            /opt/ghc \
+            /opt/hostedtoolcache/CodeQL \
+            /usr/local/.ghcup \
+            /usr/local/share/boost \
+            /usr/local/share/chromium \
+            /usr/local/share/powershell
+          
+          # Remove Docker images
+          sudo docker image prune -af
+          sudo docker system prune -af
+          
+          echo "After cleanup:"
+          df -h
+      
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+            max-jobs = auto
+            cores = 0
+            min-free = 1073741824
+            max-free = 3221225472
+      
+      - name: Setup Cachix
+        uses: cachix/cachix-action@v15
+        with:
+          name: opinionatedcache
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          skipPush: true
+      
+      - name: Build Hydra job (puppypc)
+        run: |
+          set -euo pipefail
+          
+          echo "Disk space before build:"
+          df -h
+          
+          nix build \
+            .#hydraJobs.nixos.puppypc \
+            --no-link \
+            --fallback \
+            --json > build-result.json
+          
+          jq -r '.[].outputs[]' build-result.json > realised-paths.txt
+          echo "Realised outputs:"
+          cat realised-paths.txt
+          
+          echo "Disk space after build:"
+          df -h
+      
+      - name: Push build closures to Cachix
+        run: |
+          set -euo pipefail
+          
+          # Push in batches to avoid memory issues
+          while read -r path; do
+            nix-store --query --requisites "$path"
+          done < realised-paths.txt \
+            | sort -u \
+            | split -l 50 - batch-
+          
+          for batch in batch-*; do
+            echo "Pushing batch: $batch"
+            cat "$batch" | cachix push opinionatedcache
+            rm "$batch"
+            
+            # Periodic GC during push
+            nix-collect-garbage -d
+            echo "Disk space after batch:"
+            df -h
+          done
+      
+      - name: Final garbage collect
+        if: always()
+        run: |
+          nix-collect-garbage -d
+          echo "Final disk space:"
+          df -h
+
+  build-laptop:
+    name: Build and cache mistylappytappy
+    needs: eval
+    runs-on: ubuntu-latest
+    steps:
+      - name: Maximize disk space
+        run: |
+          echo "Before cleanup:"
+          df -h
+          
+          # Remove unnecessary packages
+          sudo apt-get remove -y '^aspnetcore-.*' '^dotnet-.*' '^llvm-.*' 'php.*' '^mongodb-.*' '^mysql-.*' azure-cli google-chrome-stable firefox powershell mono-devel libgl1-mesa-dri
+          sudo apt-get autoremove -y
+          sudo apt-get clean
+          
+          # Remove large directories
+          sudo rm -rf \
+            /usr/share/dotnet \
+            /usr/local/lib/android \
+            /opt/ghc \
+            /opt/hostedtoolcache/CodeQL \
+            /usr/local/.ghcup \
+            /usr/local/share/boost \
+            /usr/local/share/chromium \
+            /usr/local/share/powershell
+          
+          # Remove Docker images
+          sudo docker image prune -af
+          sudo docker system prune -af
+          
+          echo "After cleanup:"
+          df -h
+      
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+            max-jobs = auto
+            cores = 0
+            min-free = 1073741824
+            max-free = 3221225472
+      
+      - name: Setup Cachix
+        uses: cachix/cachix-action@v15
+        with:
+          name: opinionatedcache
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          skipPush: true
+      
+      - name: Build Hydra job (mistylappytappy)
+        run: |
+          set -euo pipefail
+          
+          echo "Disk space before build:"
+          df -h
+          
+          nix build \
+            .#hydraJobs.nixos.mistylappytappy \
+            --no-link \
+            --fallback \
+            --json > build-result.json
+          
+          jq -r '.[].outputs[]' build-result.json > realised-paths.txt
+          echo "Realised outputs:"
+          cat realised-paths.txt
+          
+          echo "Disk space after build:"
+          df -h
+      
+      - name: Push build closures to Cachix
+        run: |
+          set -euo pipefail
+          
+          # Push in batches to avoid memory issues
+          while read -r path; do
+            nix-store --query --requisites "$path"
+          done < realised-paths.txt \
+            | sort -u \
+            | split -l 50 - batch-
+          
+          for batch in batch-*; do
+            echo "Pushing batch: $batch"
+            cat "$batch" | cachix push opinionatedcache
+            rm "$batch"
+            
+            # Periodic GC during push
+            nix-collect-garbage -d
+            echo "Disk space after batch:"
+            df -h
+          done
+      
+      - name: Final garbage collect
+        if: always()
+        run: |
+          nix-collect-garbage -d
+          echo "Final disk space:"
           df -h
