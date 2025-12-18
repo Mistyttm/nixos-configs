@@ -22,7 +22,7 @@
     # Minecraft server management
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
     # VSCode extensions
-    nix-vscode-extensions.url = "github:dseum/nix-vscode-extensions";
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     auto-cpufreq = {
       url = "github:AdnanHodzic/auto-cpufreq";
       inputs.nixpkgs.follows = "nixpkgs";
