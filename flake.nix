@@ -160,7 +160,6 @@
                 extraSpecialArgs = { inherit spicetify-nix homeVersion; };
                 users = {
                   misty = import ./hosts/mistylappytappy/home.nix;
-                  wagtailpsychology = import ./hosts/mistylappytappy/work.nix;
                 };
                 sharedModules = [
                   inputs.sops-nix.homeManagerModules.sops
