@@ -1,4 +1,57 @@
-name: Build and Cache NixOS Systems
+- name: Install Nix
+        uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+            max-jobs = 2
+            cores = 2
+            keep-outputs = false
+            keep-derivations = false
+      
+      - name: Setup Cachix
+        uses: cachix/cachix-action@v15
+        with:
+          name: opinionatedcache
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          skipPush: true
+      
+      - name: Build Hydra job (mistylappytappy)
+        run: |
+          set -euo pipefail
+          
+          echo "Disk space before build:"
+          df -h
+          
+          # Build with more aggressive options
+          nix build \
+            .#hydraJobs.nixos.mistylappytappy \
+            --no-link \
+            --fallback \
+            --option keep-going true \
+            --json > build-result.json
+          
+          # Immediately GC after build
+          nix-collect-garbage -d
+          
+          jq -r '.[].outputs[]' build-result.json > realised-paths.txt
+          echo "Realised outputs:"
+          cat realised-paths.txt
+          
+          echo "Disk space after build and GC:"
+          df -h
+      
+      - name: Push build closures to Cachix
+        run: |
+          set -euo pipefail
+          
+          # Get all requisites
+          PATHS=$(while read -r path; do
+            nix-store --query --requisites "$path"
+          done < realised-paths.txt | sort -u)
+          
+          # Count total paths
+          TOTAL=$(echo "$PATHS" | wc -l)name: Build and Cache NixOS Systems
 on:
   workflow_run:
     workflows: ["Update Flake Inputs"]
@@ -106,9 +159,16 @@ jobs:
           echo "Before cleanup:"
           df -h
           
-          # Remove unnecessary packages
-          sudo apt-get remove -y '^aspnetcore-.*' '^dotnet-.*' '^llvm-.*' 'php.*' '^mongodb-.*' '^mysql-.*' azure-cli google-chrome-stable firefox powershell mono-devel libgl1-mesa-dri
-          sudo apt-get autoremove -y
+          # Stop services that might be using disk
+          sudo systemctl stop docker.socket docker.service containerd.service
+          
+          # Remove swap to free up disk space
+          sudo swapoff -a
+          sudo rm -f /swapfile /mnt/swapfile
+          
+          # Remove unnecessary packages (non-interactive)
+          sudo apt-get remove -y --purge '^aspnetcore-.*' '^dotnet-.*' '^llvm-.*' 'php.*' '^mongodb-.*' '^mysql-.*' azure-cli google-chrome-stable firefox powershell mono-devel libgl1-mesa-dri '^temurin-.*' '^adoptopenjdk-.*' || true
+          sudo apt-get autoremove -y --purge
           sudo apt-get clean
           
           # Remove large directories
@@ -116,15 +176,28 @@ jobs:
             /usr/share/dotnet \
             /usr/local/lib/android \
             /opt/ghc \
-            /opt/hostedtoolcache/CodeQL \
+            /opt/hostedtoolcache/* \
             /usr/local/.ghcup \
             /usr/local/share/boost \
             /usr/local/share/chromium \
-            /usr/local/share/powershell
+            /usr/local/share/powershell \
+            /usr/share/swift \
+            /usr/local/julia* \
+            /usr/share/kotlinc \
+            /usr/local/aws-cli \
+            /opt/az \
+            /usr/share/miniconda \
+            /usr/local/share/vcpkg \
+            /imagegeneration \
+            /opt/actionarchivecache
           
-          # Remove Docker images
-          sudo docker image prune -af
-          sudo docker system prune -af
+          # Clear apt cache
+          sudo rm -rf /var/lib/apt/lists/*
+          sudo rm -rf /var/cache/apt/archives/*
+          
+          # Remove Docker completely
+          sudo docker system prune -af --volumes || true
+          sudo rm -rf /var/lib/docker
           
           echo "After cleanup:"
           df -h
@@ -138,10 +211,10 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
             accept-flake-config = true
-            max-jobs = auto
-            cores = 0
-            min-free = 1073741824
-            max-free = 3221225472
+            max-jobs = 2
+            cores = 2
+            keep-outputs = false
+            keep-derivations = false
       
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
@@ -157,38 +230,53 @@ jobs:
           echo "Disk space before build:"
           df -h
           
+          # Build with more aggressive options
           nix build \
             .#hydraJobs.nixos.puppypc \
             --no-link \
             --fallback \
+            --option keep-going true \
             --json > build-result.json
+          
+          # Immediately GC after build
+          nix-collect-garbage -d
           
           jq -r '.[].outputs[]' build-result.json > realised-paths.txt
           echo "Realised outputs:"
           cat realised-paths.txt
           
-          echo "Disk space after build:"
+          echo "Disk space after build and GC:"
           df -h
       
       - name: Push build closures to Cachix
         run: |
           set -euo pipefail
           
-          # Push in batches to avoid memory issues
-          while read -r path; do
+          # Get all requisites
+          PATHS=$(while read -r path; do
             nix-store --query --requisites "$path"
-          done < realised-paths.txt \
-            | sort -u \
-            | split -l 50 - batch-
+          done < realised-paths.txt | sort -u)
           
+          # Count total paths
+          TOTAL=$(echo "$PATHS" | wc -l)
+          echo "Total paths to push: $TOTAL"
+          
+          # Push in very small batches with aggressive GC
+          echo "$PATHS" | split -l 25 - batch-
+          
+          BATCH_NUM=0
           for batch in batch-*; do
-            echo "Pushing batch: $batch"
+            BATCH_NUM=$((BATCH_NUM + 1))
+            echo "Pushing batch $BATCH_NUM ($(wc -l < "$batch") paths)"
+            
             cat "$batch" | cachix push opinionatedcache
             rm "$batch"
             
-            # Periodic GC during push
-            nix-collect-garbage -d
-            echo "Disk space after batch:"
+            # Aggressive GC after each batch
+            echo "Running GC after batch $BATCH_NUM..."
+            nix-store --gc
+            
+            echo "Disk space after batch $BATCH_NUM:"
             df -h
           done
       
@@ -209,9 +297,16 @@ jobs:
           echo "Before cleanup:"
           df -h
           
-          # Remove unnecessary packages
-          sudo apt-get remove -y '^aspnetcore-.*' '^dotnet-.*' '^llvm-.*' 'php.*' '^mongodb-.*' '^mysql-.*' azure-cli google-chrome-stable firefox powershell mono-devel libgl1-mesa-dri
-          sudo apt-get autoremove -y
+          # Stop services that might be using disk
+          sudo systemctl stop docker.socket docker.service containerd.service
+          
+          # Remove swap to free up disk space
+          sudo swapoff -a
+          sudo rm -f /swapfile /mnt/swapfile
+          
+          # Remove unnecessary packages (non-interactive)
+          sudo apt-get remove -y --purge '^aspnetcore-.*' '^dotnet-.*' '^llvm-.*' 'php.*' '^mongodb-.*' '^mysql-.*' azure-cli google-chrome-stable firefox powershell mono-devel libgl1-mesa-dri '^temurin-.*' '^adoptopenjdk-.*' || true
+          sudo apt-get autoremove -y --purge
           sudo apt-get clean
           
           # Remove large directories
@@ -219,15 +314,28 @@ jobs:
             /usr/share/dotnet \
             /usr/local/lib/android \
             /opt/ghc \
-            /opt/hostedtoolcache/CodeQL \
+            /opt/hostedtoolcache/* \
             /usr/local/.ghcup \
             /usr/local/share/boost \
             /usr/local/share/chromium \
-            /usr/local/share/powershell
+            /usr/local/share/powershell \
+            /usr/share/swift \
+            /usr/local/julia* \
+            /usr/share/kotlinc \
+            /usr/local/aws-cli \
+            /opt/az \
+            /usr/share/miniconda \
+            /usr/local/share/vcpkg \
+            /imagegeneration \
+            /opt/actionarchivecache
           
-          # Remove Docker images
-          sudo docker image prune -af
-          sudo docker system prune -af
+          # Clear apt cache
+          sudo rm -rf /var/lib/apt/lists/*
+          sudo rm -rf /var/cache/apt/archives/*
+          
+          # Remove Docker completely
+          sudo docker system prune -af --volumes || true
+          sudo rm -rf /var/lib/docker
           
           echo "After cleanup:"
           df -h
