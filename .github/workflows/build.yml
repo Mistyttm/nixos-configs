@@ -161,7 +161,7 @@ jobs:
           df -h
 
           nix build \
-            .#hydraJobs.nixos.${{ matrix.system }} \
+            .#hydraJobs.nixos.puppypc \
             --no-link \
             --json > build-result.json
 
