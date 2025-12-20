@@ -103,19 +103,12 @@ jobs:
     steps:
       - name: Maximize disk space
         run: |
-                    echo "Before cleanup:"
+          echo "Before cleanup:"
           df -h
           
-          # Stop services that might be using disk
-          sudo systemctl stop docker.socket docker.service containerd.service
-          
-          # Remove swap to free up disk space
-          sudo swapoff -a
-          sudo rm -f /swapfile /mnt/swapfile
-          
-          # Remove unnecessary packages (non-interactive)
-          sudo apt-get remove -y --purge '^aspnetcore-.*' '^dotnet-.*' '^llvm-.*' 'php.*' '^mongodb-.*' '^mysql-.*' azure-cli google-chrome-stable firefox powershell mono-devel libgl1-mesa-dri '^temurin-.*' '^adoptopenjdk-.*' || true
-          sudo apt-get autoremove -y --purge
+          # Remove unnecessary packages
+          sudo apt-get remove -y '^aspnetcore-.*' '^dotnet-.*' '^llvm-.*' 'php.*' '^mongodb-.*' '^mysql-.*' azure-cli google-chrome-stable firefox powershell mono-devel libgl1-mesa-dri
+          sudo apt-get autoremove -y
           sudo apt-get clean
           
           # Remove large directories
@@ -123,28 +116,15 @@ jobs:
             /usr/share/dotnet \
             /usr/local/lib/android \
             /opt/ghc \
-            /opt/hostedtoolcache/* \
+            /opt/hostedtoolcache/CodeQL \
             /usr/local/.ghcup \
             /usr/local/share/boost \
             /usr/local/share/chromium \
-            /usr/local/share/powershell \
-            /usr/share/swift \
-            /usr/local/julia* \
-            /usr/share/kotlinc \
-            /usr/local/aws-cli \
-            /opt/az \
-            /usr/share/miniconda \
-            /usr/local/share/vcpkg \
-            /imagegeneration \
-            /opt/actionarchivecache
+            /usr/local/share/powershell
           
-          # Clear apt cache
-          sudo rm -rf /var/lib/apt/lists/*
-          sudo rm -rf /var/cache/apt/archives/*
-          
-          # Remove Docker completely
-          sudo docker system prune -af --volumes || true
-          sudo rm -rf /var/lib/docker
+          # Remove Docker images
+          sudo docker image prune -af
+          sudo docker system prune -af
           
           echo "After cleanup:"
           df -h
@@ -158,8 +138,8 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
             accept-flake-config = true
-            max-jobs = 2
-            cores = 2
+            max-jobs = auto
+            cores = 0
             min-free = 1073741824
             max-free = 3221225472
       
@@ -182,8 +162,6 @@ jobs:
             --no-link \
             --fallback \
             --json > build-result.json
-
-          nix-collect-garbage -d
           
           jq -r '.[].outputs[]' build-result.json > realised-paths.txt
           echo "Realised outputs:"
