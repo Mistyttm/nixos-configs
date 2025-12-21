@@ -19,9 +19,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v27
+        uses: DeterminateSystems/nix-installer-action@main
         with:
-          extra_nix_config: |
+          extra-conf: |
             experimental-features = nix-command flakes
             accept-flake-config = true
 
@@ -41,22 +41,18 @@ jobs:
           - thedogpark
           - thekennel
     steps:
-      - name: Free disk space
-        run: |
-          sudo rm -rf /usr/share/dotnet \
-                      /usr/local/lib/android \
-                      /opt/ghc \
-                      /opt/hostedtoolcache/CodeQL
-          sudo docker image prune -af
-          df -h
+      - name: Maximize disk space for Nix
+        uses: wimpysworld/nothing-but-nix@main
+        with:
+          hatchet-protocol: 'cleave'
 
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v27
+        uses: DeterminateSystems/nix-installer-action@main
         with:
-          extra_nix_config: |
+          extra-conf: |
             experimental-features = nix-command flakes
             accept-flake-config = true
             max-jobs = auto
@@ -102,41 +98,18 @@ jobs:
     needs: eval
     runs-on: ubuntu-latest
     steps:
-      - name: Maximize disk space
-        run: |
-          echo "Before cleanup:"
-          df -h
-
-          # Remove unnecessary packages
-          sudo apt-get remove -y '^aspnetcore-.*' '^dotnet-.*' '^llvm-.*' 'php.*' '^mongodb-.*' '^mysql-.*' azure-cli google-chrome-stable firefox powershell mono-devel libgl1-mesa-dri
-          sudo apt-get autoremove -y
-          sudo apt-get clean
-
-          # Remove large directories
-          sudo rm -rf \
-            /usr/share/dotnet \
-            /usr/local/lib/android \
-            /opt/ghc \
-            /opt/hostedtoolcache/CodeQL \
-            /usr/local/.ghcup \
-            /usr/local/share/boost \
-            /usr/local/share/chromium \
-            /usr/local/share/powershell
-
-          # Remove Docker images
-          sudo docker image prune -af
-          sudo docker system prune -af
-
-          echo "After cleanup:"
-          df -h
+      - name: Maximize disk space for Nix
+        uses: wimpysworld/nothing-but-nix@main
+        with:
+          hatchet-protocol: 'rampage'
 
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v27
+        uses: DeterminateSystems/nix-installer-action@main
         with:
-          extra_nix_config: |
+          extra-conf: |
             experimental-features = nix-command flakes
             accept-flake-config = true
             max-jobs = auto
@@ -206,41 +179,18 @@ jobs:
     needs: eval
     runs-on: ubuntu-latest
     steps:
-      - name: Maximize disk space
-        run: |
-          echo "Before cleanup:"
-          df -h
-
-          # Remove unnecessary packages
-          sudo apt-get remove -y '^aspnetcore-.*' '^dotnet-.*' '^llvm-.*' 'php.*' '^mongodb-.*' '^mysql-.*' azure-cli google-chrome-stable firefox powershell mono-devel libgl1-mesa-dri
-          sudo apt-get autoremove -y
-          sudo apt-get clean
-
-          # Remove large directories
-          sudo rm -rf \
-            /usr/share/dotnet \
-            /usr/local/lib/android \
-            /opt/ghc \
-            /opt/hostedtoolcache/CodeQL \
-            /usr/local/.ghcup \
-            /usr/local/share/boost \
-            /usr/local/share/chromium \
-            /usr/local/share/powershell
-
-          # Remove Docker images
-          sudo docker image prune -af
-          sudo docker system prune -af
-
-          echo "After cleanup:"
-          df -h
+      - name: Maximize disk space for Nix
+        uses: wimpysworld/nothing-but-nix@main
+        with:
+          hatchet-protocol: 'rampage'
 
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v27
+        uses: DeterminateSystems/nix-installer-action@main
         with:
-          extra_nix_config: |
+          extra-conf: |
             experimental-features = nix-command flakes
             accept-flake-config = true
             max-jobs = auto
