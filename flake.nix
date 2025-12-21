@@ -77,7 +77,7 @@
       kwin-effects-forceblur,
       chaotic,
       jovian,
-      nixos-hardware,
+      # nixos-hardware,
       pre-commit-hooks,
       determinate,
       ...
@@ -258,6 +258,7 @@
             enable = true;
             package = nixpkgs.legacyPackages.${system}.nixfmt-rfc-style;
           };
+          deadnix.enable = true;
           commitizen.enable = true;
         };
       };
