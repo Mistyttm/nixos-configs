@@ -23,7 +23,7 @@ let
       rev = version;
       hash = cfg.slimevr.wivrnSlimeHash;
     };
-    monado = old.monado.overrideAttrs (older: rec {
+    monado = old.monado.overrideAttrs (_older: rec {
       src = pkgs.fetchFromGitLab {
         domain = "gitlab.freedesktop.org";
         owner = "monado";

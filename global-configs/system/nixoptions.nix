@@ -1,4 +1,4 @@
-{ config, ... }:
+{ ... }:
 
 {
   sops.secrets."access-tokens" = {
@@ -8,8 +8,8 @@
 
   nix = {
     settings = {
-      cores = 2;  # Further reduced to 2 for stability with PBO+EXPO during large builds
-      max-jobs = 1;  # Single package at a time to prevent memory pressure
+      cores = 2; # Further reduced to 2 for stability with PBO+EXPO during large builds
+      max-jobs = 1; # Single package at a time to prevent memory pressure
       auto-optimise-store = true;
       substituters = [
         "https://nix-community.cachix.org"
@@ -41,7 +41,7 @@
   # Increased memory limits for nix-daemon to prevent OOM during large builds
   # With 32GB RAM, these limits were too restrictive and caused system reboots
   systemd.services.nix-daemon.serviceConfig = {
-    MemoryHigh = "20G";  # Increased from 10G - throttling threshold
-    MemoryMax = "28G";   # Increased from 15G - hard limit (leave 4GB for system)
+    MemoryHigh = "20G"; # Increased from 10G - throttling threshold
+    MemoryMax = "28G"; # Increased from 15G - hard limit (leave 4GB for system)
   };
 }

@@ -46,7 +46,7 @@
   };
 
   nixpkgs.overlays = lib.singleton (
-    final: prev: {
+    _final: prev: {
       kdePackages = prev.kdePackages // {
         plasma-workspace =
           let

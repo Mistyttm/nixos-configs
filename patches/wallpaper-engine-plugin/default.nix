@@ -1,4 +1,4 @@
-final: prev: {
+_final: prev: {
   kdePackages = prev.kdePackages // {
     wallpaper-engine-plugin = prev.kdePackages.wallpaper-engine-plugin.overrideAttrs (oldAttrs: {
       # Apply Qt 6.10 compatibility patch

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 {
   services.flaresolverr = {
     enable = true;

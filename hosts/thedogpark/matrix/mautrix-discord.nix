@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ ... }:
 let
   synapsePort = 8008;
 in
