@@ -2,3 +2,6 @@
 
 # Pre-commit hooks (auto-generated)
 .pre-commit-config.yaml
+
+# Nix build outputs
+*result*/
