@@ -3,9 +3,28 @@ root = true
 [*]
 end_of_line = lf
 insert_final_newline = true
+charset = utf-8
+trim_trailing_whitespace = true
 
 [*.nix]
 indent_style = space
 indent_size = 2
-trim_trailing_whitespace = true
-charset = utf-8
+
+[*.{yml,yaml}]
+indent_style = space
+indent_size = 2
+
+[*.{json,md}]
+indent_style = space
+indent_size = 2
+
+[*.sh]
+indent_style = space
+indent_size = 2
+
+[Makefile]
+indent_style = tab
+
+[justfile]
+indent_style = space
+indent_size = 4
