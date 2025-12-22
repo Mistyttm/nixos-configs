@@ -10,10 +10,28 @@ on:
   workflow_dispatch:
 
 jobs:
-  eval:
-    name: Evaluate Hydra jobset
+  check:
+    name: Flake check
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+        with:
+          extra-conf: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+
+      - name: Run flake check
+        run: nix flake check --no-build
+
+  eval:
+    name: Evaluate Hydra jobset
+    needs: check
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
