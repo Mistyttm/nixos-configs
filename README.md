@@ -15,8 +15,11 @@
 [![Build](https://github.com/Mistyttm/nixos-configs/actions/workflows/build.yml/badge.svg)](https://github.com/Mistyttm/nixos-configs/actions/workflows/build.yml)
 [![Update Flake](https://github.com/Mistyttm/nixos-configs/actions/workflows/update-flake.yml/badge.svg)](https://github.com/Mistyttm/nixos-configs/actions/workflows/update-flake.yml)
 [![Topology](https://github.com/Mistyttm/nixos-configs/actions/workflows/update-topology.yml/badge.svg)](https://github.com/Mistyttm/nixos-configs/actions/workflows/update-topology.yml)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 
 This repository contains the configuration files for my NixOS systems. The configurations are managed using flakes.
+
+See [COMMITTING.md](COMMITTING.md) for commit message guidelines.
 
 
 ## Directory Structure
