@@ -280,7 +280,9 @@
 
       devShells.x86_64-linux.default = nixpkgs.legacyPackages.${system}.mkShell {
         inherit (self.checks.x86_64-linux.pre-commit-check) shellHook;
-        buildInputs = self.checks.x86_64-linux.pre-commit-check.enabledPackages;
+        buildInputs = self.checks.x86_64-linux.pre-commit-check.enabledPackages ++ [
+          nixpkgs.legacyPackages.${system}.just
+        ];
       };
 
       # nix-topology - generate infrastructure diagrams from NixOS configs
