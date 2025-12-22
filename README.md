@@ -14,6 +14,24 @@
 
 This repository contains the configuration files for my NixOS systems. The configurations are managed using flakes. I still have a number of things left to do, the configuration files are not modularised and are a bit of a mess. I will be working on cleaning them up and making them more modular in the future.
 
+## Infrastructure
+
+<details>
+<summary>Click to view network topology</summary>
+
+![Network Topology](./topology/main.svg)
+
+</details>
+
+<details>
+<summary>Click to view network-centric diagram</summary>
+
+![Network View](./topology/network.svg)
+
+</details>
+
+> Generated with [nix-topology](https://github.com/oddlama/nix-topology). Rebuild with: `nix build .#topology.x86_64-linux.config.output`
+
 ## Hosts
 
 ### `puppypc` - Main Desktop

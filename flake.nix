@@ -43,6 +43,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
+    nix-topology.url = "github:oddlama/nix-topology";
   };
 
   nixConfig = {
@@ -80,10 +81,15 @@
       # nixos-hardware,
       pre-commit-hooks,
       determinate,
+      nix-topology,
       ...
     }:
     let
       system = "x86_64-linux";
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [ nix-topology.overlays.default ];
+      };
       homeVersion = "26.05"; # Update this when you update your NixOS version
       # overlay-satisfactory = final: prev: {
       #   satis = import satisfactory {
@@ -114,6 +120,7 @@
             sops-nix.nixosModules.sops
             nixpkgs-extra.nixosModules.default
             determinate.nixosModules.default
+            nix-topology.nixosModules.default
             {
               home-manager = {
                 useGlobalPkgs = true;
@@ -130,6 +137,7 @@
 
               nixpkgs = {
                 overlays = [
+                  nix-topology.overlays.default
                   nixpkgs-extra.overlays.default
                   nix-vscode-extensions.overlays.default
                   overlay-wallpaper-engine
@@ -152,6 +160,7 @@
             auto-cpufreq.nixosModules.default
             sops-nix.nixosModules.sops
             determinate.nixosModules.default
+            nix-topology.nixosModules.default
             {
               home-manager = {
                 useGlobalPkgs = true;
@@ -167,6 +176,7 @@
               };
               nixpkgs = {
                 overlays = [
+                  nix-topology.overlays.default
                   nix-vscode-extensions.overlays.default
                 ];
               };
@@ -186,6 +196,7 @@
             home-manager.nixosModules.home-manager
             sops-nix.nixosModules.sops
             determinate.nixosModules.default
+            nix-topology.nixosModules.default
             {
               imports = [ nix-minecraft.nixosModules.minecraft-servers ];
               home-manager.useGlobalPkgs = true;
@@ -198,6 +209,7 @@
 
               nixpkgs = {
                 overlays = [
+                  nix-topology.overlays.default
                   nix-minecraft.overlay
                 ];
               };
@@ -216,6 +228,7 @@
             sops-nix.nixosModules.sops
             jovian.nixosModules.jovian
             determinate.nixosModules.default
+            nix-topology.nixosModules.default
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
@@ -223,6 +236,8 @@
               home-manager.extraSpecialArgs = { inherit homeVersion; };
 
               home-manager.users.misty = import ./hosts/thekennel/home.nix;
+
+              nixpkgs.overlays = [ nix-topology.overlays.default ];
             }
           ];
         };
@@ -266,6 +281,17 @@
       devShells.x86_64-linux.default = nixpkgs.legacyPackages.${system}.mkShell {
         inherit (self.checks.x86_64-linux.pre-commit-check) shellHook;
         buildInputs = self.checks.x86_64-linux.pre-commit-check.enabledPackages;
+      };
+
+      # nix-topology - generate infrastructure diagrams from NixOS configs
+      # Build with: nix build .#topology.x86_64-linux.config.output
+      topology.x86_64-linux = import nix-topology {
+        inherit pkgs;
+        modules = [
+          # Global topology configuration (networks, connections, external devices)
+          ./topology
+          { nixosConfigurations = self.nixosConfigurations; }
+        ];
       };
     };
 }
