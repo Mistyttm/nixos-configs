@@ -12,7 +12,34 @@
 
 ![Static Badge](https://img.shields.io/badge/Made_for_NixOS-white?style=for-the-badge&logo=nixos&logoSize=auto) ![Static Badge](https://img.shields.io/badge/Nix_Flakes-lightblue?style=for-the-badge&logo=nixos&logoSize=auto)
 
-This repository contains the configuration files for my NixOS systems. The configurations are managed using flakes. I still have a number of things left to do, the configuration files are not modularised and are a bit of a mess. I will be working on cleaning them up and making them more modular in the future.
+[![Build](https://github.com/Mistyttm/nixos-configs/actions/workflows/build.yml/badge.svg)](https://github.com/Mistyttm/nixos-configs/actions/workflows/build.yml)
+[![Update Flake](https://github.com/Mistyttm/nixos-configs/actions/workflows/update-flake.yml/badge.svg)](https://github.com/Mistyttm/nixos-configs/actions/workflows/update-flake.yml)
+[![Topology](https://github.com/Mistyttm/nixos-configs/actions/workflows/update-topology.yml/badge.svg)](https://github.com/Mistyttm/nixos-configs/actions/workflows/update-topology.yml)
+
+This repository contains the configuration files for my NixOS systems. The configurations are managed using flakes.
+
+
+## Directory Structure
+
+```
+.
+├── flake.nix              # Flake definition and host configurations
+├── hosts/                 # Per-host configurations
+│   ├── puppypc/           # Main desktop
+│   ├── mistylappytappy/   # Gaming laptop
+│   ├── thedogpark/        # Sydney VPS
+│   └── thekennel/         # Home server
+├── global-configs/        # Shared configurations
+│   ├── fonts/             # Font configuration
+│   ├── programs/          # User programs (browsers, games, etc.)
+│   ├── shell/             # Shell config (zsh, starship, etc.)
+│   ├── system/            # System config (DE, networking, etc.)
+│   └── users/             # User definitions
+├── modules/               # Custom NixOS/home-manager modules
+├── patches/               # Package patches
+├── secrets/               # Encrypted secrets (sops)
+└── topology/              # Infrastructure diagrams
+```
 
 ## Infrastructure
 
@@ -36,23 +63,42 @@ This repository contains the configuration files for my NixOS systems. The confi
 
 ### `puppypc` - Main Desktop
 
-- Hardware:
-  - AMD Ryzen 7 7800X3D
-  - 32GB DDR5 RAM
-  - RTX 3090
-  - B650 Gaming Plus wifi Mobo
-- Headset:
-  - Meta Quest 2
+|              |                                                     |
+| ------------ | --------------------------------------------------- |
+| **Hardware** | AMD Ryzen 7 7800X3D, 32GB DDR5, RTX 3090            |
+| **Kernel**   | Zen                                                 |
+| **Desktop**  | KDE Plasma                                          |
+| **Services** | WiVRn, SlimeVR                                      |
+| **Gaming**   | Steam, Lutris, Minecraft, Clone Hero, YARG, Dolphin |
 
-### `mistylappytappy` - Laptop
+### `mistylappytappy` - Gaming Laptop
 
-### `thedogpark` - Server
+|             |                             |
+| ----------- | --------------------------- |
+| **Kernel**  | Zen                         |
+| **Desktop** | KDE Plasma                  |
+| **Gaming**  | Steam (portable), Minecraft |
+
+### `thedogpark` - Sydney VPS
+
+|              |                                                       |
+| ------------ | ----------------------------------------------------- |
+| **Kernel**   | Hardened                                              |
+| **Services** | Matrix Synapse, Minecraft, nginx, WireGuard, fail2ban |
+
+### `thekennel` - Home Server
+
+|              |                                                                               |
+| ------------ | ----------------------------------------------------------------------------- |
+| **Hardware** | NVIDIA GPU (CUDA)                                                             |
+| **Kernel**   | Zen                                                                           |
+| **Desktop**  | KDE Plasma (Jovian)                                                           |
+| **Services** | Jellyfin, Sonarr, Radarr, Prowlarr, qBittorrent, Jellyseerr, nginx, WireGuard |
 
 ## To-Do
 
-- [ ] Modularise configuration files
-- [ ] Add configuration for raspberry pi 4
-  - [ ] Convert raspberrypi 4 to nixos
-- [ ] Clean up configuration files
-- [ ] Properly implement secrets management (currently only working in a single file on `thedogpark`)
-- [ ] Look at conveting systems to `btrfs`
+- [ ] Enable `foodbowl` (Raspberry Pi 4) configuration
+- [ ] Convert systems to btrfs
+- [x] ~~Clean up commented code and leftover TODOs~~
+- [x] ~~Implement secrets management~~ (sops-nix working across hosts)
+- [x] ~~Add infrastructure diagrams~~ (nix-topology)
