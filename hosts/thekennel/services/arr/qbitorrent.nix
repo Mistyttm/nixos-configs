@@ -1,14 +1,19 @@
-{ ... }:
+{ pkgs, ... }:
+let
+  downloadPath = "/mnt/localExpansion/qbittorrent/downloads";
+  tempPath = "/mnt/localExpansion/qbittorrent/incomplete";
+  torrentExportDir = "/mnt/localExpansion/qbittorrent/torrents";
+in
 {
   services.qbittorrent = {
     enable = true;
     openFirewall = true;
     serverConfig = {
       Downloads = {
-        SavePath = "/mnt/localExpansion/qbittorrent/downloads";
-        TempPath = "/mnt/localExpansion/qbittorrent/incomplete";
+        SavePath = downloadPath;
+        TempPath = tempPath;
         TempPathEnabled = true;
-        TorrentExportDir = "/mnt/localExpansion/qbittorrent/torrents";
+        TorrentExportDir = torrentExportDir;
       };
       Preferences = {
         WebUI = {
@@ -21,4 +26,18 @@
       };
     };
   };
+
+  # Fix: Ensure download paths are enforced on each service start
+  # qBittorrent stores its runtime config in /var/lib/qBittorrent and ignores
+  # the NixOS serverConfig after first run. This ensures paths are always correct.
+  systemd.services.qbittorrent.preStart = ''
+    CONFIG_FILE="/var/lib/qBittorrent/qBittorrent.conf"
+    if [ -f "$CONFIG_FILE" ]; then
+      ${pkgs.gnused}/bin/sed -i \
+        -e 's|^Downloads\\SavePath=.*|Downloads\\SavePath=${downloadPath}|' \
+        -e 's|^Downloads\\TempPath=.*|Downloads\\TempPath=${tempPath}|' \
+        -e 's|^Downloads\\TorrentExportDir=.*|Downloads\\TorrentExportDir=${torrentExportDir}|' \
+        "$CONFIG_FILE"
+    fi
+  '';
 }
