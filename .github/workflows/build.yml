@@ -25,6 +25,9 @@ jobs:
             experimental-features = nix-command flakes
             accept-flake-config = true
 
+      - name: Setup Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
       - name: Run flake check
         run: nix flake check --no-build
 
@@ -42,6 +45,9 @@ jobs:
           extra-conf: |
             experimental-features = nix-command flakes
             accept-flake-config = true
+
+      - name: Setup Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: Evaluate flake jobset
         run: |
@@ -77,6 +83,9 @@ jobs:
             cores = 0
             substitute = true
             builders =
+
+      - name: Setup Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
@@ -136,6 +145,9 @@ jobs:
             max-free = 3221225472
             substitute = true
             builders =
+
+      - name: Setup Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
@@ -217,6 +229,9 @@ jobs:
             max-free = 3221225472
             substitute = true
             builders =
+
+      - name: Setup Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
