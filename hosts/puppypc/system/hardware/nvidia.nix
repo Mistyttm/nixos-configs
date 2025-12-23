@@ -9,6 +9,20 @@
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
+  # Blacklist the new Nova/NovaCore driver (kernel 6.18+) which conflicts
+  # with the proprietary NVIDIA driver. The module name is nova_core.
+  boot.blacklistedKernelModules = [
+    "nova"
+    "novacore"
+    "nova_core"
+    "nouveau" # Also blacklist nouveau just in case
+  ];
+
+  # Disable nova_core via kernel command line (needed if built into kernel)
+  boot.kernelParams = [
+    "module_blacklist=nova_core,nova,novacore"
+  ];
+
   hardware.nvidia = {
 
     modesetting.enable = true;

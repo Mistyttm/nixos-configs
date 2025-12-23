@@ -58,6 +58,24 @@ in
     YARG = true;
   };
 
+  # Sunshine streaming for Moonlight clients
+  # TEMPORARILY DISABLED - investigating display issues after reboot
+  # services.sunshineStreaming = {
+  #   enable = true;
+  #   user = "misty";
+  #   hostName = "puppypc";
+  #   openFirewall = true;
+  #   autoStart = true;
+  #   # Add extra apps here if needed:
+  #   # extraApps = [
+  #   #   {
+  #   #     name = "Lutris";
+  #   #     detached = [ "${pkgs.lutris}/bin/lutris" ];
+  #   #     image-path = "lutris.png";
+  #   #   }
+  #   # ];
+  # };
+
   services.wivrn = {
     enable = true;
     package = pkgs.wivrn.override {
