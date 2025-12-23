@@ -28,6 +28,9 @@ jobs:
       - name: Setup Magic Nix Cache
         uses: DeterminateSystems/magic-nix-cache-action@main
 
+      - name: Refresh determinate input
+        run: nix flake update determinate
+
       - name: Run flake check
         run: nix flake check --no-build
 
@@ -48,6 +51,9 @@ jobs:
 
       - name: Setup Magic Nix Cache
         uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Refresh determinate input
+        run: nix flake update determinate
 
       - name: Evaluate flake jobset
         run: |
@@ -86,6 +92,9 @@ jobs:
 
       - name: Setup Magic Nix Cache
         uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Refresh determinate input
+        run: nix flake update determinate
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
@@ -148,6 +157,9 @@ jobs:
 
       - name: Setup Magic Nix Cache
         uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Refresh determinate input
+        run: nix flake update determinate
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
@@ -232,6 +244,9 @@ jobs:
 
       - name: Setup Magic Nix Cache
         uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Refresh determinate input
+        run: nix flake update determinate
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
