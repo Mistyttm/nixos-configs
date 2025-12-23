@@ -33,10 +33,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-    jovian = {
-      url = "github:Jovian-Experiments/Jovian-NixOS";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     pre-commit-hooks = {
       url = "github:cachix/pre-commit-hooks.nix";
@@ -77,7 +73,6 @@
       self,
       kwin-effects-forceblur,
       chaotic,
-      jovian,
       # nixos-hardware,
       pre-commit-hooks,
       determinate,
@@ -222,11 +217,11 @@
             inherit homeVersion;
           };
           modules = [
+            ./modules/default.nix
             ./hosts/thekennel/configuration.nix
 
             home-manager.nixosModules.home-manager
             sops-nix.nixosModules.sops
-            jovian.nixosModules.jovian
             determinate.nixosModules.default
             nix-topology.nixosModules.default
             {
