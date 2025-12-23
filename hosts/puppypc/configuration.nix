@@ -59,22 +59,23 @@ in
   };
 
   # Sunshine streaming for Moonlight clients
-  # TEMPORARILY DISABLED - investigating display issues after reboot
-  # services.sunshineStreaming = {
-  #   enable = true;
-  #   user = "misty";
-  #   hostName = "puppypc";
-  #   openFirewall = true;
-  #   autoStart = true;
-  #   # Add extra apps here if needed:
-  #   # extraApps = [
-  #   #   {
-  #   #     name = "Lutris";
-  #   #     detached = [ "${pkgs.lutris}/bin/lutris" ];
-  #   #     image-path = "lutris.png";
-  #   #   }
-  #   # ];
-  # };
+  services.sunshineStreaming = {
+    enable = true;
+    user = "misty";
+    hostName = "puppypc";
+    openFirewall = true;
+    autoStart = true;
+    # Stream all displays (0). Individual monitors can be selected in Moonlight client.
+    outputName = 2;
+    # Add extra apps here if needed:
+    # extraApps = [
+    #   {
+    #     name = "Lutris";
+    #     detached = [ "${pkgs.lutris}/bin/lutris" ];
+    #     image-path = "lutris.png";
+    #   }
+    # ];
+  };
 
   services.wivrn = {
     enable = true;

@@ -23,6 +23,25 @@ let
       pkgs.coreutils # For `id` command
     ];
   };
+
+  # Script that launches Steam and waits for it, so Sunshine can track it
+  steam-launch-and-wait = pkgs.writeShellApplication {
+    name = "steam-launch-and-wait";
+    text = ''
+      # Write the URL to the FIFO to launch Steam
+      echo "$1" > "/run/user/$(id --user)/steam-run-url.fifo"
+      # Wait a moment for Steam to start
+      sleep 2
+      # Wait for Steam to exit by monitoring the process
+      while pgrep -x "steam" > /dev/null || pgrep -f "steam.*.sh" > /dev/null; do
+        sleep 1
+      done
+    '';
+    runtimeInputs = [
+      pkgs.coreutils
+      pkgs.procps
+    ];
+  };
 in
 {
   options.services.sunshineStreaming = {
@@ -63,6 +82,12 @@ in
       default = { };
       description = "Additional settings for Sunshine";
     };
+
+    outputName = mkOption {
+      type = types.either types.int types.str;
+      default = 0;
+      description = "The display output to stream (0 = all displays, or use display number/name)";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -75,7 +100,7 @@ in
 
       settings = {
         sunshine_name = cfg.hostName;
-        output_name = 1;
+        output_name = cfg.outputName;
         key_rightalt_to_key_win = "enabled";
       }
       // cfg.extraSettings;
@@ -91,16 +116,18 @@ in
           }
           {
             name = "Steam Big Picture";
-            detached = [
-              "${lib.getExe steam-run-url} steam://open/bigpicture"
-            ];
+            # Use cmd instead of detached so Sunshine tracks the process
+            cmd = "${lib.getExe steam-launch-and-wait} steam://open/bigpicture";
+            # Close Big Picture when the stream ends
+            undo = "${lib.getExe steam-run-url} steam://close/bigpicture";
             image-path = "steam.png";
           }
           {
             name = "Steam Deck UI";
-            detached = [
-              "${lib.getExe steam-run-url} steam://open/gamepadui"
-            ];
+            # Use cmd instead of detached so Sunshine tracks the process
+            cmd = "${lib.getExe steam-launch-and-wait} steam://open/gamepadui";
+            # Close gamepad UI when the stream ends
+            undo = "${lib.getExe steam-run-url} steam://close/gamepadui";
             image-path = "steam.png";
           }
         ]
@@ -108,30 +135,11 @@ in
       };
     };
 
-    # Fix for the escapeSystemdExecArgs bug (NixOS/nixpkgs#463989)
-    # Override the sunshine systemd service to fix ExecStart composition
-    systemd.user.services.sunshine = {
-      # These overrides ensure proper service behavior
-      overrideStrategy = "asDropin";
-      wantedBy = lib.mkForce [ "graphical.target" ];
-      partOf = lib.mkForce [ "graphical.target" ];
-      wants = lib.mkForce [ "graphical.target" ];
-      after = lib.mkForce [ "graphical.target" ];
-
-      # Add steam-run-url to the service path
-      path = [ steam-run-url ];
-
-      serviceConfig = {
-        ExecStop = "${pkgs.procps}/bin/pkill -SIGTERM -f sunshine";
-        ExecStopPost = "${pkgs.procps}/bin/pkill -SIGKILL -f sunshine";
-        KillSignal = "SIGTERM";
-        TimeoutStopSec = "10s";
-        KillMode = "mixed";
-      };
-    };
-
-    # Allow running `steam-run-url` from shell for testing purposes
-    environment.systemPackages = [ steam-run-url ];
+    # Allow running steam helpers from shell for testing purposes
+    environment.systemPackages = [
+      steam-run-url
+      steam-launch-and-wait
+    ];
 
     # Service for `steam-run-url`. This listens for Steam URLs from a named
     # pipe (typically at path `/run/user/1000/steam-run-url.fifo`) and then
