@@ -10,6 +10,7 @@
     ../../global-configs/system/networking/ssh.nix
     ../../global-configs/system/nixoptions.nix
     ../../global-configs/system/virtualisation.nix
+    ../../global-configs/system/gnupg.nix
     ../../global-configs/system/DE/kde.nix
     ../../global-configs/system/DE/audio.nix
     ./services/jellyfin.nix
@@ -77,11 +78,6 @@
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-    pinentryPackage = pkgs.pinentry-gnome3;
-  };
 
   networking.nameservers = [
     "1.1.1.1"

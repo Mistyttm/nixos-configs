@@ -25,14 +25,6 @@ in
 
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
 
-  programs.gnupg = {
-    agent = {
-      enable = true;
-      enableSSHSupport = true;
-      pinentryPackage = pkgs.pinentry-gnome3;
-    };
-  };
-
   services.flatpak.enable = false;
 
   desktops.niri.enable = false;

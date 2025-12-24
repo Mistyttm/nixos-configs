@@ -9,6 +9,7 @@
     ../../global-configs/system/locale.nix
     ../../global-configs/system/networking/ssh.nix
     ../../global-configs/system/nixoptions.nix
+    ../../global-configs/system/gnupg.nix
     ./services/default.nix
     ./matrix/default.nix
     ../../global-configs/system/virtualisation.nix
@@ -47,13 +48,6 @@
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   programs.mtr.enable = true;
-  programs.gnupg = {
-    agent = {
-      enable = true;
-      enableSSHSupport = true;
-      pinentryPackage = pkgs.pinentry-gnome3;
-    };
-  };
 
   nixpkgs.config = {
     permittedInsecurePackages = [

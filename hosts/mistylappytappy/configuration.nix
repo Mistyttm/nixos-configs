@@ -12,14 +12,6 @@
 
   boot.supportedFilesystems = [ "ntfs" ];
 
-  programs.gnupg = {
-    agent = {
-      enable = true;
-      enableSSHSupport = true;
-      pinentryPackage = pkgs.pinentry-gnome3;
-    };
-  };
-
   gaming = {
     enable = true;
     user = "misty";
@@ -42,8 +34,4 @@
   };
 
   system.stateVersion = "25.11";
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
 }

@@ -6,6 +6,7 @@
     ./programs.nix
     ./bootloader.nix
     ./nixoptions.nix
+    ./gnupg.nix
     ./DE/default.nix
     ./networking/default.nix
     ./services.nix
