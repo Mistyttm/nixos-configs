@@ -1,9 +1,7 @@
-{ homeVersion, ... }:
+{ ... }:
 {
-  home.username = "misty";
-  home.homeDirectory = "/home/misty";
-
   imports = [
+    ../../global-configs/home-base.nix
     ../../global-configs/shell/default.nix
     ../../global-configs/programs/default.nix
     ../../global-configs/users/emailAccounts.nix
@@ -11,12 +9,8 @@
     ./configs/gnupg/gnupg.nix
   ];
 
-  home.stateVersion = homeVersion;
-
   home.shellAliases = {
     rebuild = "sudo nixos-rebuild switch --flake .#mistylappytappy";
     upgrade = "/home/misty/Documents/nixos-configs && nix flake upgrade && sudo nixos-rebuild switch --flake .#mistylappytappy";
   };
-
-  programs.home-manager.enable = true;
 }
