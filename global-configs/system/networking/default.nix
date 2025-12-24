@@ -7,5 +7,6 @@
     ./networkmanager.nix
     ./ssh.nix
     ./bluetooth.nix
+    ./dns.nix
   ];
 }

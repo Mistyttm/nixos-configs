@@ -8,6 +8,7 @@
     ../../global-configs/users/misty.nix
     ../../global-configs/system/locale.nix
     ../../global-configs/system/networking/ssh.nix
+    ../../global-configs/system/networking/dns.nix
     ../../global-configs/system/nixoptions.nix
     ../../global-configs/system/virtualisation.nix
     ../../global-configs/system/gnupg.nix
@@ -78,22 +79,6 @@
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   programs.mtr.enable = true;
-
-  networking.nameservers = [
-    "1.1.1.1"
-    "1.0.0.1"
-  ];
-
-  services.resolved = {
-    enable = true;
-    dnssec = "true";
-    domains = [ "~." ];
-    fallbackDns = [
-      "1.1.1.1"
-      "1.0.0.1"
-    ];
-    dnsovertls = "true";
-  };
 
   programs.zsh.enable = true;
   users.users.misty.shell = pkgs.zsh;
