@@ -540,11 +540,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1766542107,
-        "narHash": "sha256-HzOpS/uQXVCOtbwnx3yFaiCgde5JN1BlQ9Gpb2qdBQc=",
+        "lastModified": 1766628630,
+        "narHash": "sha256-ULKQFi7/TohrfOsLP/ESfwvd1DjAuwwshLkgj5lqijM=",
         "owner": "Infinidoge",
         "repo": "nix-minecraft",
-        "rev": "6afb00f25021088e772d52f9d4d7c6aaadbe9ed8",
+        "rev": "649604ce765f36edee9abbb44f65d88575811c41",
         "type": "github"
       },
       "original": {
