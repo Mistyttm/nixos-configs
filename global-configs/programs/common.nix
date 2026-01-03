@@ -25,7 +25,6 @@
     nil
   ];
   programs.java.enable = true;
-  fonts.fontconfig.enable = true;
   services.kdeconnect = {
     enable = true;
     indicator = true;
