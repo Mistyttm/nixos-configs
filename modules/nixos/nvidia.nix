@@ -89,6 +89,7 @@ in
       with pkgs;
       [
         monado-vulkan-layers
+        vulkan-hdr-layer-kwin6
       ]
       ++ cfg.extraGraphicsPackages;
 
