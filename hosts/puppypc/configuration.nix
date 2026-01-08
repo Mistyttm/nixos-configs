@@ -1,4 +1,9 @@
-{ pkgs, kwin-effects-forceblur, ... }:
+{
+  pkgs,
+  lib,
+  kwin-effects-forceblur,
+  ...
+}:
 let
   slimevrCustom = pkgs.slimevr.overrideAttrs (oldAttrs: {
     postFixup = ''
@@ -21,7 +26,7 @@ in
 
   networking.hostName = "puppypc";
 
-  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
+  boot.kernelPackages = lib.mkForce pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
   boot.supportedFilesystems = [ "ntfs" ];
 
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
