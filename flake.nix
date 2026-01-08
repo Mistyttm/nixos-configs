@@ -269,9 +269,9 @@
       checks.x86_64-linux.pre-commit-check = pre-commit-hooks.lib.${system}.run {
         src = ./.;
         hooks = {
-          nixfmt-rfc-style = {
+          nixfmt = {
             enable = true;
-            package = nixpkgs.legacyPackages.${system}.nixfmt-rfc-style;
+            package = nixpkgs.legacyPackages.${system}.nixfmt;
           };
           deadnix.enable = true;
           commitizen.enable = true;
