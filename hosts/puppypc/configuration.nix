@@ -21,6 +21,7 @@ in
 
   networking.hostName = "puppypc";
 
+  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
   boot.supportedFilesystems = [ "ntfs" ];
 
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
@@ -146,8 +147,6 @@ in
       LIBVA_DRIVER_NAME = "nvidia";
     };
   };
-
-  programs.adb.enable = true;
 
   nixpkgs = {
     config = {

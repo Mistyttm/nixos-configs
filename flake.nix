@@ -40,6 +40,7 @@
     };
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
     nix-topology.url = "github:oddlama/nix-topology";
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
   };
 
   nixConfig = {
@@ -49,6 +50,7 @@
       "https://cache.flox.dev"
       "https://cache.nixos-cuda.org"
       "https://install.determinate.systems"
+      "https://attic.xuyh0120.win/lantian"
     ];
     extra-trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
@@ -56,6 +58,7 @@
       "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
       "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
       "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
+      "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
     ];
   };
 
@@ -77,6 +80,7 @@
       pre-commit-hooks,
       determinate,
       nix-topology,
+      nix-cachyos-kernel,
       ...
     }:
     let
@@ -136,6 +140,7 @@
                   nixpkgs-extra.overlays.default
                   nix-vscode-extensions.overlays.default
                   overlay-wallpaper-engine
+                  nix-cachyos-kernel.overlays.pinned
                 ];
               };
             }
