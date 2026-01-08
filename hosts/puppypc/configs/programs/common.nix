@@ -10,7 +10,7 @@
     blockbench
     file
     nil
-    nixfmt-rfc-style
+    nixfmt
     wineWowPackages.waylandFull
     winetricks
     bottles
