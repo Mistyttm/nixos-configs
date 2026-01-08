@@ -35,6 +35,6 @@
   users.users.jellyfin.extraGroups = [ "media" ];
   users.users.sonarr.extraGroups = [ "media" ];
   users.users.radarr.extraGroups = [ "media" ];
-  users.users.usenet.extraGroups = [ "media" ];
+  users.users.sabnzbd.extraGroups = [ "media" ];
   users.users.bazarr.extraGroups = [ "media" ];
 }
