@@ -9,6 +9,7 @@
     ./flaresolverr.nix
     ./jellyseer.nix
     ./sabnzbd.nix
+    ./bazarr.nix
   ];
 
   sops.secrets."qnap-media/username" = {
@@ -35,4 +36,5 @@
   users.users.sonarr.extraGroups = [ "media" ];
   users.users.radarr.extraGroups = [ "media" ];
   users.users.usenet.extraGroups = [ "media" ];
+  users.users.bazarr.extraGroups = [ "media" ];
 }
