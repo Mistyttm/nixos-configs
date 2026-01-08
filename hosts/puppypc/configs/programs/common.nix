@@ -1,4 +1,5 @@
-{ pkgs, config, ... }: {
+{ pkgs, config, ... }:
+{
   home.packages = with pkgs; [
     mullvad-vpn
     qbittorrent
@@ -38,5 +39,25 @@
         extraOptions = [ "--silent" ];
       }
     ];
+  };
+
+  # Fix: Add startup delay to linux-wallpaperengine service
+  # The service starts before KWin has fully initialized displays,
+  # causing the wallpaper to render at 16x16 pixels initially
+  systemd.user.services.linux-wallpaperengine = {
+    Unit = {
+      # Wait for plasma-kwin_wayland to be ready
+      After = [
+        "graphical-session.target"
+        "plasma-kwin_wayland.service"
+      ];
+    };
+    Service = {
+      # Add a delay to ensure displays are fully enumerated
+      ExecStartPre = "${pkgs.coreutils}/bin/sleep 3";
+      # Restart on failure to recover from race conditions
+      Restart = "on-failure";
+      RestartSec = "3s";
+    };
   };
 }
