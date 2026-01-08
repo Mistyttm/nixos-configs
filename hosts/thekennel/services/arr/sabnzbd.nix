@@ -9,6 +9,9 @@
     openFirewall = true;
   };
 
+  # SABnzbd uses port 8085 by default, but the module only opens 8080
+  networking.firewall.allowedTCPPorts = [ 8085 ];
+
   # Override to run in foreground mode (remove -d flag)
   # The default module uses Type=forking with -d which fails on this system
   systemd.services.sabnzbd = {
