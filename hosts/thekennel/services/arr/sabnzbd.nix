@@ -7,6 +7,7 @@
   services.sabnzbd = {
     enable = true;
     openFirewall = true;
+    group = "media";
   };
 
   # SABnzbd uses port 8085 by default, but the module only opens 8080
