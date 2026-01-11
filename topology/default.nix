@@ -58,13 +58,13 @@ in
 
   # QNAP NAS (for media storage)
   nodes.qnap = mkDevice "QNAP NAS" {
-    info = "Media Storage";
+    info = "Media Storage (CIFS mount for *arr stack)";
     interfaceGroups = [ [ "eth0" ] ];
   };
 
   # Quest 2 VR Headset (connects to puppypc for PCVR)
   nodes.quest2 = mkDevice "Meta Quest 2" {
-    info = "VR Headset (WiVRn)";
+    info = "VR Headset (WiVRn streaming)";
     interfaceGroups = [ [ "wifi" ] ];
     connections.wifi = mkConnection "router" "lan4";
   };
@@ -73,11 +73,25 @@ in
   # NixOS Host Customizations
   # ============================================================================
 
-  # PuppyPC - Main Desktop
+  # PuppyPC - Main Desktop (Gaming & VR Workstation)
   nodes.puppypc = {
     name = "PuppyPC";
     hardware.info = "AMD Ryzen 7 7800X3D, 32GB DDR5, RTX 3090";
     interfaces.eth0.network = "home";
+    services.info = ''
+      Gaming:
+        • Steam, Lutris, Minecraft, Clone Hero, YARG
+        • Dolphin Emulator, Heroic Launcher
+        • Gamemode enabled
+      VR:
+        • WiVRn (Quest 2 wireless PCVR streaming)
+        • SlimeVR (full-body tracking)
+        • OpenComposite, Monado, wlx-overlay-s
+      Streaming:
+        • Sunshine (Moonlight host for thekennel)
+      Virtualisation:
+        • Waydroid, virt-manager
+    '';
   };
 
   # mistylappytappy - Laptop
@@ -90,12 +104,20 @@ in
         (mkConnection "router" "lan4")
       ];
     };
+    services.info = ''
+      Gaming:
+        • Steam (portable mode)
+        • Minecraft
+        • Gamemode enabled
+      Users:
+        • misty
+    '';
   };
 
   # thedogpark - VPS in Sydney
   nodes.thedogpark = {
     name = "TheDogPark";
-    hardware.info = "Sydney VPS";
+    hardware.info = "Sydney VPS (Hardened Kernel)";
     interfaces = {
       eth0.physicalConnections = [
         (mkConnection "internet" "*")
@@ -111,12 +133,30 @@ in
         renderer.hidePhysicalConnections = true;
       };
     };
+    services.info = ''
+      Matrix:
+        • Synapse (mistyttm.dev)
+        • Coturn (TURN server)
+        • Mautrix-Discord (bridge)
+      Game Servers:
+        • Minecraft (Fabric 1.21.4)
+        • Valheim (Docker)
+        • Satisfactory Dedicated Server
+      Web:
+        • Personal website (Vite)
+        • Nginx reverse proxy
+        • ACME/Let's Encrypt (Porkbun DNS)
+      Security:
+        • Fail2ban
+        • Hardened Linux kernel
+      Auto-upgrade enabled
+    '';
   };
 
   # thekennel - Home Server
   nodes.thekennel = {
     name = "TheKennel";
-    hardware.info = "Home Server (Jellyfin, *arr stack)";
+    hardware.info = "Home Server (Nvidia GPU, Zen Kernel)";
     interfaces = {
       eth0.network = "home";
       wg0 = {
@@ -126,5 +166,25 @@ in
         addresses = [ "10.100.0.2" ];
       };
     };
+    services.info = ''
+      Media:
+        • Jellyfin (transcoding)
+        • Jellyseerr (requests)
+        • Bazarr (subtitles)
+      *arr Stack:
+        • Radarr (movies)
+        • Sonarr (TV shows)
+        • Prowlarr (indexers)
+        • qBittorrent (downloads)
+        • Sabnzbd (usenet)
+        • FlareSolverr (captcha)
+      VPN:
+        • Mullvad (for downloads)
+        • WireGuard (to thedogpark)
+      Streaming:
+        • Moonlight client (from puppypc)
+        • Auto-login streaming mode
+      Nginx reverse proxy (internal)
+    '';
   };
 }
