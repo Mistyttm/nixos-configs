@@ -47,6 +47,7 @@ in
         jdk8
         jdk17
         jdk21
+        jdk25
       ];
     };
     dolphin = true;
