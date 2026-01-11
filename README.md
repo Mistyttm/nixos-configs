@@ -98,6 +98,27 @@ See [COMMITTING.md](COMMITTING.md) for commit message guidelines.
 | **Desktop**  | KDE Plasma (Jovian)                                                           |
 | **Services** | Jellyfin, Sonarr, Radarr, Prowlarr, qBittorrent, Jellyseerr, nginx, WireGuard |
 
+## Dependencies
+
+| Input                     | Source                                                                                                  | Description                 |
+| ------------------------- | ------------------------------------------------------------------------------------------------------- | --------------------------- |
+| `nixpkgs`                 | [nixos/nixpkgs](https://github.com/nixos/nixpkgs) (unstable)                                            | Main package repository     |
+| `home-manager`            | [nix-community/home-manager](https://github.com/nix-community/home-manager)                             | User environment management |
+| `nixpkgs-extra`           | [Mistyttm/nixpkgs-extra](https://github.com/Mistyttm/nixpkgs-extra)                                     | Custom packages             |
+| `sops-nix`                | [Mic92/sops-nix](https://github.com/Mic92/sops-nix)                                                     | Secrets management          |
+| `spicetify-nix`           | [Gerg-L/spicetify-nix](https://github.com/Gerg-L/spicetify-nix)                                         | Spotify theming             |
+| `nix-minecraft`           | [Infinidoge/nix-minecraft](https://github.com/Infinidoge/nix-minecraft)                                 | Minecraft server management |
+| `nix-vscode-extensions`   | [nix-community/nix-vscode-extensions](https://github.com/nix-community/nix-vscode-extensions)           | VSCode extensions           |
+| `auto-cpufreq`            | [AdnanHodzic/auto-cpufreq](https://github.com/AdnanHodzic/auto-cpufreq)                                 | CPU frequency scaling       |
+| `simple-nixos-mailserver` | [simple-nixos-mailserver/nixos-mailserver](https://gitlab.com/simple-nixos-mailserver/nixos-mailserver) | Mail server                 |
+| `kwin-effects-forceblur`  | [taj-ny/kwin-effects-forceblur](https://github.com/taj-ny/kwin-effects-forceblur)                       | KWin blur effects           |
+| `chaotic`                 | [chaotic-cx/nyx](https://github.com/chaotic-cx/nyx)                                                     | Chaotic-AUR Nix overlay     |
+| `nixos-hardware`          | [NixOS/nixos-hardware](https://github.com/NixOS/nixos-hardware)                                         | Hardware-specific modules   |
+| `pre-commit-hooks`        | [cachix/pre-commit-hooks.nix](https://github.com/cachix/pre-commit-hooks.nix)                           | Pre-commit hooks            |
+| `determinate`             | [DeterminateSystems/determinate](https://flakehub.com/f/DeterminateSystems/determinate)                 | Determinate Nix             |
+| `nix-topology`            | [oddlama/nix-topology](https://github.com/oddlama/nix-topology)                                         | Infrastructure diagrams     |
+| `nix-cachyos-kernel`      | [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel)                               | CachyOS kernel              |
+
 ## To-Do
 
 - [ ] Enable `foodbowl` (Raspberry Pi 4) configuration
