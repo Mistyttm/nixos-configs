@@ -23,6 +23,7 @@
     plasma-panel-colorizer
     r2modman
     deadlock-mod-manager
+    jackify
   ];
 
   services.linux-wallpaperengine = {
