@@ -3,6 +3,10 @@
   lib,
   ...
 }:
+let
+  cfg = config.services.sabnzbd;
+  sabnzbdIniPath = "/var/lib/${cfg.stateDir}/sabnzbd.ini";
+in
 {
   services.sabnzbd = {
     enable = true;
@@ -17,7 +21,7 @@
   # The default module uses Type=forking with -d which fails on this system
   systemd.services.sabnzbd = {
     serviceConfig = {
-      ExecStart = lib.mkForce "${config.services.sabnzbd.package}/bin/sabnzbd -f ${config.services.sabnzbd.configFile}";
+      ExecStart = lib.mkForce "${cfg.package}/bin/sabnzbd -f ${sabnzbdIniPath}";
       Type = lib.mkForce "simple";
     };
   };
