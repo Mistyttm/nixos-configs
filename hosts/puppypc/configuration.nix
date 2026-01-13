@@ -114,7 +114,7 @@ in
   };
 
   programs.ghidra = {
-    enable = true;
+    enable = false;
     gdb = true;
   };
 
