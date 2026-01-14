@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 let
   downloadPath = "/mnt/localExpansion/qbittorrent/downloads";
   tempPath = "/mnt/localExpansion/qbittorrent/incomplete";
@@ -21,23 +21,18 @@ in
           Username = "admin";
           Password_PBKDF2 = ''"@ByteArray(DiKrHs4S4j4pgnbP0+Vung==:eOcLXZTTGJqkayOBJJwaJM2dveNffFuRxcxsL57cliBfLtsHADg3xrd4w/HNy6TUSnBk1k2zJ3bof9dECXYHqg==)"'';
           AuthSubnetWhitelist = "@Invalid()";
-          Port = 8080;
+          Port = 8081;
         };
       };
     };
   };
 
-  # Fix: Ensure download paths are enforced on each service start
-  # qBittorrent stores its runtime config in /var/lib/qBittorrent and ignores
-  # the NixOS serverConfig after first run. This ensures paths are always correct.
+  # Fix: Force qBittorrent to use NixOS serverConfig on every start
+  # by removing the runtime config file so it regenerates from our settings
   systemd.services.qbittorrent.preStart = ''
     CONFIG_FILE="/var/lib/qBittorrent/qBittorrent.conf"
     if [ -f "$CONFIG_FILE" ]; then
-      ${pkgs.gnused}/bin/sed -i \
-        -e 's|^Downloads\\SavePath=.*|Downloads\\SavePath=${downloadPath}|' \
-        -e 's|^Downloads\\TempPath=.*|Downloads\\TempPath=${tempPath}|' \
-        -e 's|^Downloads\\TorrentExportDir=.*|Downloads\\TorrentExportDir=${torrentExportDir}|' \
-        "$CONFIG_FILE"
+      rm -f "$CONFIG_FILE"
     fi
   '';
 }

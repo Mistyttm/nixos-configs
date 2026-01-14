@@ -21,7 +21,7 @@ in
   # The default module uses Type=forking with -d which fails on this system
   systemd.services.sabnzbd = {
     serviceConfig = {
-      ExecStart = lib.mkForce "${cfg.package}/bin/sabnzbd -f ${sabnzbdIniPath}";
+      ExecStart = lib.mkForce "${cfg.package}/bin/sabnzbd -f ${sabnzbdIniPath} -s 0.0.0.0:8080";
       Type = lib.mkForce "simple";
     };
   };
