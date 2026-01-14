@@ -59,7 +59,7 @@
       "x-systemd.automount"
       "x-systemd.requires=sops-nix.service"
       "nofail"
-      "noauto"
+      # "noauto"
     ];
   };
 
