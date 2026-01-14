@@ -98,12 +98,12 @@
           username = "Misty_TTM";
           # Password moved to sops-nix
           connections = 190;
-          ssl = 1;
+          ssl = true;
           ssl_verify = 2;
           ssl_ciphers = "";
-          enable = 1;
-          required = 0;
-          optional = 0;
+          enable = true;
+          required = false;
+          optional = false;
           retention = 0;
           expire_date = "";
           quota = "";
@@ -120,12 +120,12 @@
           username = "Misty_TTM";
           # Password moved to sops-nix
           connections = 90;
-          ssl = 1;
+          ssl = true;
           ssl_verify = 3;
           ssl_ciphers = "";
-          enable = 1;
-          required = 0;
-          optional = 0;
+          enable = true;
+          required = false;
+          optional = false;
           retention = 0;
           expire_date = "";
           quota = "";
@@ -141,11 +141,11 @@
           timeout = 60;
           username = "Misty_TTM";
           connections = 90;
-          ssl = 1;
+          ssl = true;
           ssl_verify = 2;
-          enable = 1;
-          required = 0;
-          optional = 0;
+          enable = true;
+          required = false;
+          optional = false;
           priority = 1;
         };
         "newswest.frugalusenet.com" = {
@@ -156,11 +156,11 @@
           timeout = 60;
           username = "Misty_TTM";
           connections = 90;
-          ssl = 1;
+          ssl = true;
           ssl_verify = 2;
-          enable = 1;
-          required = 0;
-          optional = 0;
+          enable = true;
+          required = false;
+          optional = false;
           priority = 1;
         };
         "sanews.frugalusenet.com" = {
@@ -171,11 +171,11 @@
           timeout = 60;
           username = "Misty_TTM";
           connections = 190;
-          ssl = 1;
+          ssl = true;
           ssl_verify = 2;
-          enable = 1;
-          required = 0;
-          optional = 0;
+          enable = true;
+          required = false;
+          optional = false;
           priority = 1;
         };
         "asnews.frugalusenet.com" = {
@@ -186,12 +186,27 @@
           timeout = 60;
           username = "Misty_TTM";
           connections = 190;
-          ssl = 1;
+          ssl = true;
           ssl_verify = 2;
-          enable = 1;
-          required = 0;
-          optional = 0;
+          enable = true;
+          required = false;
+          optional = false;
           priority = 1;
+        };
+        "usnews.blocknews.net" = {
+          name = "usnews.blocknews.net";
+          displayname = "usnews.blocknews.net";
+          host = "usnews.blocknews.net";
+          port = 563;
+          timeout = 60;
+          username = "Misty_TTM";
+          connections = 20;
+          ssl = true;
+          ssl_verify = 2;
+          enable = true;
+          required = false;
+          optional = true;
+          priority = 2;
         };
       };
 
@@ -275,6 +290,8 @@
       [[sanews.frugalusenet.com]]
       password = ${config.sops.secrets."sabnzbd/frugal_password".placeholder}
       [[asnews.frugalusenet.com]]
+      password = ${config.sops.secrets."sabnzbd/frugal_password".placeholder}
+      [[usnews.blocknews.net]]
       password = ${config.sops.secrets."sabnzbd/frugal_password".placeholder}
     '';
   };
