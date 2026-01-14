@@ -28,54 +28,54 @@
 
         # User defined settings
         max_art_tries = 3;
-        top_only = false;
-        sfv_check = true;
-        script_can_fail = false;
-        enable_recursive = true;
-        flat_unpack = false;
+        top_only = 0;
+        sfv_check = 1;
+        script_can_fail = 0;
+        enable_recursive = 1;
+        flat_unpack = 0;
         par_option = "";
-        pre_check = false;
-        fail_hopeless_jobs = true;
-        fast_fail = true;
-        auto_disconnect = true;
-        no_dupes = false;
-        no_series_dupes = false;
-        no_smart_dupes = false;
-        dupes_propercheck = true;
-        pause_on_pwrar = true;
-        ignore_samples = false;
-        deobfuscate_final_filenames = true;
+        pre_check = 0;
+        fail_hopeless_jobs = 1;
+        fast_fail = 1;
+        auto_disconnect = 1;
+        no_dupes = 0;
+        no_series_dupes = 0;
+        no_smart_dupes = 0;
+        dupes_propercheck = 1;
+        pause_on_pwrar = 1;
+        ignore_samples = 0;
+        deobfuscate_final_filenames = 1;
         auto_sort = "";
-        direct_unpack = true;
-        propagation_delay = false;
-        folder_rename = true;
-        replace_spaces = false;
-        replace_underscores = false;
-        replace_dots = false;
-        safe_postproc = true;
-        pause_on_post_processing = false;
-        enable_all_par = false;
-        sanitize_safe = false;
-        new_nzb_on_failure = false;
+        direct_unpack = 1;
+        propagation_delay = 0;
+        folder_rename = 1;
+        replace_spaces = 0;
+        replace_underscores = 0;
+        replace_dots = 0;
+        safe_postproc = 1;
+        pause_on_post_processing = 0;
+        enable_all_par = 0;
+        sanitize_safe = 0;
+        new_nzb_on_failure = 0;
         history_retention_option = "all";
-        history_retention_number = true;
+        history_retention_number = 1;
         quota_period = "m";
-        enable_tv_sorting = false;
+        enable_tv_sorting = 0;
         tv_categories = "tv,";
-        enable_movie_sorting = false;
+        enable_movie_sorting = 0;
         movie_categories = "movies,";
-        enable_date_sorting = false;
+        enable_date_sorting = 0;
         date_categories = "tv,";
-        chk_rss_updated = false;
+        chk_rss_updated = 0;
         rss_rate = 60;
-        enable_par_cleanup = true;
-        process_unpacked_par2 = true;
-        enable_unrar = true;
-        enable_7zip = true;
-        enable_filejoin = true;
-        enable_tsjoin = true;
-        overwrite_files = false;
-        ignore_unrar_dates = false;
+        enable_par_cleanup = 1;
+        process_unpacked_par2 = 1;
+        enable_unrar = 1;
+        enable_7zip = 1;
+        enable_filejoin = 1;
+        enable_tsjoin = 1;
+        overwrite_files = 0;
+        ignore_unrar_dates = 0;
         max_url_retries = 10;
 
         # Whitelist
@@ -83,7 +83,7 @@
       };
 
       logging = {
-        log_level = true;
+        log_level = 1;
         max_log_size = 5242880;
         log_backups = 5;
       };
@@ -98,17 +98,17 @@
           username = "Misty_TTM";
           # Password moved to sops-nix
           connections = 190;
-          ssl = true;
+          ssl = 1;
           ssl_verify = 2;
           ssl_ciphers = "";
-          enable = true;
-          required = false;
-          optional = false;
-          retention = false;
+          enable = 1;
+          required = 0;
+          optional = 0;
+          retention = 0;
           expire_date = "";
           quota = "";
-          usage_at_start = false;
-          priority = false;
+          usage_at_start = 0;
+          priority = 0;
           notes = "";
         };
         "eunews.frugalusenet.com" = {
@@ -120,17 +120,17 @@
           username = "Misty_TTM";
           # Password moved to sops-nix
           connections = 90;
-          ssl = true;
+          ssl = 1;
           ssl_verify = 3;
           ssl_ciphers = "";
-          enable = true;
-          required = false;
-          optional = false;
-          retention = false;
+          enable = 1;
+          required = 0;
+          optional = 0;
+          retention = 0;
           expire_date = "";
           quota = "";
-          usage_at_start = false;
-          priority = true;
+          usage_at_start = 0;
+          priority = 1;
           notes = "";
         };
         "news.frugalusenet.com" = {
@@ -141,12 +141,12 @@
           timeout = 60;
           username = "Misty_TTM";
           connections = 90;
-          ssl = true;
+          ssl = 1;
           ssl_verify = 2;
-          enable = true;
-          required = false;
-          optional = false;
-          priority = true;
+          enable = 1;
+          required = 0;
+          optional = 0;
+          priority = 1;
         };
         "newswest.frugalusenet.com" = {
           name = "newswest.frugalusenet.com";
@@ -156,12 +156,12 @@
           timeout = 60;
           username = "Misty_TTM";
           connections = 90;
-          ssl = true;
+          ssl = 1;
           ssl_verify = 2;
-          enable = true;
-          required = false;
-          optional = false;
-          priority = true;
+          enable = 1;
+          required = 0;
+          optional = 0;
+          priority = 1;
         };
         "sanews.frugalusenet.com" = {
           name = "sanews.frugalusenet.com";
@@ -171,12 +171,12 @@
           timeout = 60;
           username = "Misty_TTM";
           connections = 190;
-          ssl = true;
+          ssl = 1;
           ssl_verify = 2;
-          enable = true;
-          required = false;
-          optional = false;
-          priority = true;
+          enable = 1;
+          required = 0;
+          optional = 0;
+          priority = 1;
         };
         "asnews.frugalusenet.com" = {
           name = "asnews.frugalusenet.com";
@@ -186,28 +186,28 @@
           timeout = 60;
           username = "Misty_TTM";
           connections = 190;
-          ssl = true;
+          ssl = 1;
           ssl_verify = 2;
-          enable = true;
-          required = false;
-          optional = false;
-          priority = true;
+          enable = 1;
+          required = 0;
+          optional = 0;
+          priority = 1;
         };
       };
 
       categories = {
         "*" = {
           name = "*";
-          order = false;
+          order = 0;
           pp = 3;
           script = "None";
           dir = "";
           newzbin = "";
-          priority = false;
+          priority = 0;
         };
         movies = {
           name = "movies";
-          order = true;
+          order = 1;
           pp = "";
           script = "Default";
           dir = "";
