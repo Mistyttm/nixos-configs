@@ -56,7 +56,9 @@
       "gid=986"
       "file_mode=0664"
       "dir_mode=0775"
+      "x-systemd.after=network-online.target"
       "x-systemd.requires=sops-nix.service"
+      "x-systemd.mount-timeout=30s"
       "nofail"
     ];
   };
