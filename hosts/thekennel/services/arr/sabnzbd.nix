@@ -275,24 +275,24 @@
     owner = "sabnzbd";
     content = ''
       [misc]
-      api_key = ${config.sops.secrets."sabnzbd/api_key".placeholder}
-      nzb_key = ${config.sops.secrets."sabnzbd/nzb_key".placeholder}
+      api_key = ${config.sops.placeholder."sabnzbd/api_key"}
+      nzb_key = ${config.sops.placeholder."sabnzbd/nzb_key"}
 
       [servers]
       [[aunews.frugalusenet.com]]
-      password = ${config.sops.secrets."sabnzbd/frugal_password".placeholder}
+      password = ${config.sops.placeholder."sabnzbd/frugal_password"}
       [[eunews.frugalusenet.com]]
-      password = ${config.sops.secrets."sabnzbd/frugal_password".placeholder}
+      password = ${config.sops.placeholder."sabnzbd/frugal_password"}
       [[news.frugalusenet.com]]
-      password = ${config.sops.secrets."sabnzbd/frugal_password".placeholder}
+      password = ${config.sops.placeholder."sabnzbd/frugal_password"}
       [[newswest.frugalusenet.com]]
-      password = ${config.sops.secrets."sabnzbd/frugal_password".placeholder}
+      password = ${config.sops.placeholder."sabnzbd/frugal_password"}
       [[sanews.frugalusenet.com]]
-      password = ${config.sops.secrets."sabnzbd/frugal_password".placeholder}
+      password = ${config.sops.placeholder."sabnzbd/frugal_password"}
       [[asnews.frugalusenet.com]]
-      password = ${config.sops.secrets."sabnzbd/frugal_password".placeholder}
+      password = ${config.sops.placeholder."sabnzbd/frugal_password"}
       [[usnews.blocknews.net]]
-      password = ${config.sops.secrets."sabnzbd/frugal_password".placeholder}
+      password = ${config.sops.placeholder."sabnzbd/frugal_password"}
     '';
   };
 }
