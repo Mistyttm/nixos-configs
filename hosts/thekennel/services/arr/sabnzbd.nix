@@ -225,7 +225,7 @@
           order = 1;
           pp = "";
           script = "Default";
-          dir = "";
+          dir = "movies";
           newzbin = "";
           priority = -100;
         };
@@ -234,7 +234,7 @@
           order = 2;
           pp = "";
           script = "Default";
-          dir = "";
+          dir = "tv";
           newzbin = "";
           priority = -100;
         };
@@ -243,7 +243,7 @@
           order = 3;
           pp = "";
           script = "Default";
-          dir = "";
+          dir = "audio";
           newzbin = "";
           priority = -100;
         };
@@ -252,7 +252,7 @@
           order = 4;
           pp = "";
           script = "Default";
-          dir = "";
+          dir = "software";
           newzbin = "";
           priority = -100;
         };
