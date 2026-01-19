@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 {
   imports = [
     ./radarr.nix
@@ -10,6 +10,7 @@
     ./jellyseer.nix
     ./sabnzbd.nix
     ./bazarr.nix
+    ./tdarr.nix
   ];
 
   sops.secrets."qnap-media/username" = {
@@ -29,6 +30,14 @@
       password=${config.sops.placeholder."qnap-media/password"}
     '';
   };
+
+  environment.systemPackages = with pkgs; [
+    btop # Resource monitor
+    ncdu # Disk usage analyzer
+    mediainfo # Media file inspector
+    mkvtoolnix # MKV manipulation tools
+    bc
+  ];
 
   users.groups.media = { };
 
