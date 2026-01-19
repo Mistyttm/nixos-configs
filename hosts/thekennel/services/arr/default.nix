@@ -10,7 +10,9 @@
     ./jellyseer.nix
     ./sabnzbd.nix
     ./bazarr.nix
-    ./tdarr.nix
+    # ./tdarr.nix
+    ./fail2ban.nix
+    # ./recyclarr.nix
   ];
 
   sops.secrets."qnap-media/username" = {
