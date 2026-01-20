@@ -101,6 +101,18 @@
                 }
               ];
             }
+            {
+              # Block AI upscales
+              trash_ids = [
+                "bfd8eb01832d646a0a89c4deb46f8564" # Upscaled
+              ];
+              assign_scores_to = [
+                {
+                  name = "WEB-1080p";
+                  score = -10000;
+                }
+              ];
+            }
           ];
         };
       };
@@ -247,6 +259,18 @@
                 {
                   name = "HD-1080p";
                   score = 0;
+                }
+              ];
+            }
+            {
+              # Block AI upscales
+              trash_ids = [
+                "bfd8eb01832d646a0a89c4deb46f8564" # Upscaled
+              ];
+              assign_scores_to = [
+                {
+                  name = "HD-1080p";
+                  score = -10000;
                 }
               ];
             }
