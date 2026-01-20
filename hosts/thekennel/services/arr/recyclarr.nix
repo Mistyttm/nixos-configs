@@ -5,7 +5,7 @@
   };
 
   sops.secrets."recyclarr/radarr_api_key" = {
-    sopsFile = ../../../../secrets/mmedia.yaml;
+    sopsFile = ../../../../secrets/media.yaml;
   };
 
   services.recyclarr = {
