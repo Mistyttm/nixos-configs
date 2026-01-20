@@ -12,7 +12,7 @@
     ./bazarr.nix
     # ./tdarr.nix
     ./fail2ban.nix
-    # ./recyclarr.nix
+    ./recyclarr.nix
   ];
 
   sops.secrets."qnap-media/username" = {

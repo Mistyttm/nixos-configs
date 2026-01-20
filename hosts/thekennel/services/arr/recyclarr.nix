@@ -2,7 +2,7 @@
 {
   services.recyclarr = {
     enable = true;
-    # Server component
     group = "media";
+    schedule = "daily";
   };
 }
