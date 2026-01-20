@@ -34,17 +34,8 @@
                 "fbcb31d8dabd2a319072b84fc0b7249c" # Extras
                 "47435ece6b99a0b477caf360e79ba0bb" # x265 (HD)
                 "32b367365729d530ca1c124a0b180c64" # Bad Dual Groups
-                "9b27ab6498ec0f31a3353992e19434ca" # DV (WEBDL) - REMOVED DUPLICATE
-                "7878c33f1963fefb3d6c8657d46c2f0a" # DV HDR10 4K
-                "1f733af03141f068a540eec352589a89" # DV HLG 4K
-                "27954b0a80aab882522a88a4d9eae1cd" # DV SDR 4K
-                "6d0d8de7b57e35518ac0308b0ddf404e" # DV 4K
-                "bb019e1cd00f304f80971c965de064dc" # HDR10+ 4K
-                "3497799d29a085e2ac2df9d468413c94" # HDR10 4K
-                "3e2c4e748b64a1a1118e0ea3f4cf6875" # HDR undefined 4K
-                "a3d82cbef5039f8d295478d28a887159" # HLG 4K
-                "17e889ce13117940092308f48b48b45b" # HLG 4K
-                "2a7e3be05d3861d6df7171ec74cad727" # PQ 4K
+                "23297a736ca77c0fc8e70f8edd7ee56c" # Upscaled
+                "15a05bc7c1a36e2b57fd628f8977e2fc" # AV1
               ];
               assign_scores_to = [
                 {
@@ -59,15 +50,11 @@
                 "e6258996055b9fbab7e9cb2f75819294" # WEB Tier 01
                 "58790d4e2fdcd9733aa7ae68ba2bb503" # WEB Tier 02
                 "d84935abd3f8556dcd51d4f27e22d0a6" # WEB Tier 03
-                "55c8c5bbd3c3f4f853ba56cd9ff60c79" # AMZN
-                # REMOVED: "9b27ab6498ec0f31a3353992e19434ca" # NF (this was the duplicate - it's DV not NF)
-                "d2d299244a92b8a52a4c9d4d98b1e665" # DSNP
-                "7be9c0572d8547e0db1c7c88498d611e" # ATVP
-                "f67c9ca88f463a48346062e8ad07713f" # PMTP
-                "4e9a630db98d5391aec1368a0256e2fe" # CRAV
-                "3ac5d84fce98bab1b531393e9c82f467" # PCOK
-                "f27d46a831e6b16fa3fee2c4e5d10984" # STAN
-                "77a7b25585c18af08f60b1547bb9b4fb" # CC
+                "b3b3a6ac74ecbd56bcdbefa4799fb9df" # AMZN
+                "170b1d363bd8516fbf3a3eb05d4faff6" # NF
+                "84272245b2988854bfb76a16e60baea5" # DSNP
+                "40e9380490e748672c2522eaaeb692f7" # ATVP
+                "cc5e51a9e85a6296ceefe097a77f12f4" # BCORE
               ];
               assign_scores_to = [
                 {
@@ -79,8 +66,8 @@
             {
               # Scene/P2P groups
               trash_ids = [
-                "d6819cba26b1a6508138d25fb5e32293" # Scene
-                "1b3994c551cbb92a2c781af061f4ab44" # P2P Groups Tier 01
+                "1b3994c551cbb92a2c781af061f4ab44" # Scene
+                "d0c516558625b04b363fa6c5c2c7cfd4" # WEB Scene
               ];
               assign_scores_to = [
                 {
@@ -92,7 +79,7 @@
             {
               # Season packs
               trash_ids = [
-                "e53bcd4d8c9bf70000fdc4edc4cf0903" # Season Pack
+                "3bc5f395426614e155e585a2f056cdf1" # Season Pack
               ];
               assign_scores_to = [
                 {
@@ -173,14 +160,16 @@
               # Unwanted formats - block these
               trash_ids = [
                 "ed38b889b31be83fda192888e2286d83" # BR-DISK
-                "90cedc1fea7ea5d11298bebd3d1d3223" # EVO
+                "90cedc1fea7ea5d11298bebd3d1d3223" # EVO (no WEBDL)
                 "ae9b7c9ebde1f3bd336a8cbd1ec4c5e5" # No-RlsGroup
                 "b8cd450cbfa689c0259a01d9e29ba3d6" # 3D
-                "9c11cd3f07101cdba90a2d81cf0e56b4" # LQ
+                "90a6f9a284dff5103f6346090e6280c8" # LQ
                 "e204b80c87be9497a8a6eaff48f72905" # LQ (Release Title)
                 "b6832f586342ef70d9c128d40c07b872" # Bad Dual Groups
-                "7357cf5161efbf8c4d5d0c30b4815ee2" # Dubbed
+                "7357cf5161efbf8c4d5d0c30b4815ee2" # Obfuscated (this is "Dubbed" equivalent)
                 "dc98083864ea246d05a42df0d05f81cc" # x265 (HD)
+                "bfd8eb01832d646a0a89c4deb46f8564" # Upscaled
+                "cae4ca30163749b891686f95532519bd" # AV1
               ];
               assign_scores_to = [
                 {
@@ -192,12 +181,12 @@
             {
               # Preferred WEB sources
               trash_ids = [
-                "e6258996055b9fbab7e9cb2f75819294" # WEB Tier 01
-                "58790d4e2fdcd9733aa7ae68ba2bb503" # WEB Tier 02
-                "d84935abd3f8556dcd51d4f27e22d0a6" # WEB Tier 03
-                "417804f7f2c4308c1f4c5d380d4c4475" # AMZN
-                "9364dd386c9b4a1100dde8264690add7" # NF
-                "b3b3a6ac74ecbd56bcdbefa4799fb9df" # DSNP
+                "c20f169ef63c5f40c2def54abaf4438e" # WEB Tier 01
+                "403816d65392c79236dcb6dd591aeda4" # WEB Tier 02
+                "af94e0fe497124d1f9ce732069ec8c3b" # WEB Tier 03
+                "b3b3a6ac74ecbd56bcdbefa4799fb9df" # AMZN
+                "170b1d363bd8516fbf3a3eb05d4faff6" # NF
+                "84272245b2988854bfb76a16e60baea5" # DSNP
                 "40e9380490e748672c2522eaaeb692f7" # ATVP
                 "cc5e51a9e85a6296ceefe097a77f12f4" # BCORE
               ];
@@ -219,8 +208,6 @@
                 "dfb86d5941bc9075d6af23b09c2aeecd" # HDR10
                 "e61e28db95d22bedcadf030b8f156d96" # HDR
                 "2a4d9069cc1fe3242ff9bdaebed239bb" # HDR (undefined)
-                "08d6d8834ad9ec87b1dc7ec8148e7a1f" # PQ
-                "9364dd386c9b4a1100dde8264690add7" # HLG
               ];
               assign_scores_to = [
                 {
@@ -232,7 +219,7 @@
             {
               # Movie versions
               trash_ids = [
-                "0f12c086e289cf966fa5948eac571f44" # Theatrical Cut
+                "0f12c086e289cf966fa5948eac571f44" # Hybrid
                 "eca37840c13c6ef2dd0262b141a5482f" # 4K Remaster
                 "e0c07d59beb37348e975a930d5e50319" # Criterion Collection
                 "957d0f44b592285f26449575e8b1167e" # Special Edition
@@ -259,18 +246,6 @@
                 {
                   name = "HD-1080p";
                   score = 0;
-                }
-              ];
-            }
-            {
-              # Block AI upscales
-              trash_ids = [
-                "bfd8eb01832d646a0a89c4deb46f8564" # Upscaled
-              ];
-              assign_scores_to = [
-                {
-                  name = "HD-1080p";
-                  score = -10000;
                 }
               ];
             }
