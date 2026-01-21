@@ -5,6 +5,7 @@
     enable = true;
     openFirewall = true; # Opens ports 8265 (web UI) and 8266 (API)
     enableCCExtractor = true;
+    cronPluginUpdate = "";
     nodes.gpu = {
       enable = true;
       workers = {
