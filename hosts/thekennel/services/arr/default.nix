@@ -13,6 +13,7 @@
     # ./tdarr.nix
     ./fail2ban.nix
     ./recyclarr.nix
+    ./tautulli.nix
   ];
 
   sops.secrets."qnap-media/username" = {
