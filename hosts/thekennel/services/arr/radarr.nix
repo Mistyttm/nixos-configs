@@ -5,7 +5,7 @@
     package = pkgs.radarr;
     openFirewall = true;
     user = "radarr";
-    group = "radarr";
+    group = "media";
     dataDir = "/var/lib/radarr";
     settings = {
       update = {

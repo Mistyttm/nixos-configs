@@ -5,7 +5,7 @@
     package = pkgs.sonarr;
     openFirewall = true;
     user = "sonarr";
-    group = "sonarr";
+    group = "media";
     dataDir = "/var/lib/sonarr";
     settings = {
       update = {
