@@ -7,8 +7,8 @@
     # enableCCExtractor = true;
     cronPluginUpdate = "";
     extraServerConfig = {
-      ffmpegPath = "${pkgs.ffmpeg-bin}/bin/ffmpeg";
-      ffprobePath = "${pkgs.ffmpeg-bin}/bin/ffprobe";
+      ffmpegPath = "${pkgs.jellyfin-ffmpeg}/bin/ffmpeg";
+      ffprobePath = "${pkgs.jellyfin-ffmpeg}/bin/ffprobe";
       handbrakePath = "${pkgs.handbrake}/bin/HandBrakeCLI";
       mkvpropeditPath = "${pkgs.mkvtoolnix}/bin/mkvpropedit";
     };
