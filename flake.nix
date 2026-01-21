@@ -240,7 +240,10 @@
 
               home-manager.users.misty = import ./hosts/thekennel/home.nix;
 
-              nixpkgs.overlays = [ nix-topology.overlays.default ];
+              nixpkgs.overlays = [
+                nix-topology.overlays.default
+                nixpkgs-extra.overlays.default
+              ];
             }
           ];
         };
