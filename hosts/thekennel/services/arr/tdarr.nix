@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   services.tdarr = {
@@ -6,6 +6,12 @@
     openFirewall = true; # Opens ports 8265 (web UI) and 8266 (API)
     # enableCCExtractor = true;
     cronPluginUpdate = "";
+    extraServerConfig = {
+      ffmpegPath = "${pkgs.ffmpeg-bin}/bin/ffmpeg";
+      ffprobePath = "${pkgs.ffmpeg-bin}/bin/ffprobe";
+      handbrakePath = "${pkgs.handbrake}/bin/HandBrakeCLI";
+      mkvpropeditPath = "${pkgs.mkvtoolnix}/bin/mkvpropedit";
+    };
     nodes.gpu = {
       enable = true;
       workers = {
