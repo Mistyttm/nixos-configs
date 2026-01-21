@@ -231,6 +231,7 @@
             sops-nix.nixosModules.sops
             determinate.nixosModules.default
             nix-topology.nixosModules.default
+            nixpkgs-extra.nixosModules.default
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
