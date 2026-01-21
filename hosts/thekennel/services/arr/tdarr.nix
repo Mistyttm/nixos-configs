@@ -1,18 +1,21 @@
 { ... }:
+
 {
   services.tdarr = {
     enable = true;
-    # Server component
-    server = {
+    openFirewall = true; # Opens ports 8265 (web UI) and 8266 (API)
+    enableCCExtractor = true;
+    cronPluginUpdate = true;
+    nodes.gpu = {
       enable = true;
-      port = 8266;
+      workers = {
+        transcodeGPU = 1; # Use 1 GPU worker (adjust as needed)
+        transcodeCPU = 1; # Optional: also use 1 CPU worker
+        healthcheckGPU = 1; # Optional: GPU healthcheck
+        healthcheckCPU = 1;
+      };
     };
-    # Node component (does the actual transcoding)
-    node = {
-      enable = true;
-      port = 8267;
-      serverIP = "127.0.0.1";
-    };
-    dataDir = "/var/lib/tdarr";
+    group = "media";
+
   };
 }
