@@ -49,4 +49,5 @@
   users.users.radarr.extraGroups = [ "media" ];
   users.users.sabnzbd.extraGroups = [ "media" ];
   users.users.bazarr.extraGroups = [ "media" ];
+  users.users.tdarr.extraGroups = [ "media" ];
 }
