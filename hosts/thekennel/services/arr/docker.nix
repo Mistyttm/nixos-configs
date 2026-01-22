@@ -1,9 +1,13 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 let
   nasRoot = "/mnt/media";
   localRoot = "/mnt/localExpansion";
 in
 {
+  environment.systemPackages = with pkgs; [
+    nvidia-docker
+  ];
+
   users.groups.tdarr = { };
 
   users.users.tdarr = {
