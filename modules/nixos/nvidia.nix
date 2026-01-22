@@ -81,6 +81,12 @@ in
       default = [ ];
       description = "Extra packages to add to hardware.graphics.extraPackages.";
     };
+
+    nvidiaContainerToolkit = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Enable the NVIDIA container toolkit for docker";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -131,5 +137,7 @@ in
         else
           config.boot.kernelPackages.nvidiaPackages.stable;
     };
+
+    hardware.nvidia-container-toolkit.enable = cfg.nvidiaContainerToolkit;
   };
 }
