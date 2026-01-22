@@ -14,6 +14,7 @@
     ./fail2ban.nix
     ./recyclarr.nix
     ./tautulli.nix
+    ./docker.nix
   ];
 
   sops.secrets."qnap-media/username" = {
@@ -42,7 +43,9 @@
     bc
   ];
 
-  users.groups.media = { };
+  users.groups.media = {
+    gid = 986;
+  };
 
   users.users.jellyfin.extraGroups = [ "media" ];
   users.users.sonarr.extraGroups = [ "media" ];
