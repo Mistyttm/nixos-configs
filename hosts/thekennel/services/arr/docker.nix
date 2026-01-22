@@ -24,6 +24,11 @@ in
     createHome = true;
   };
 
+  networking.firewall.allowedTCPPorts = [
+    8265
+    8266
+  ];
+
   virtualisation.oci-containers = {
     backend = "docker";
 
