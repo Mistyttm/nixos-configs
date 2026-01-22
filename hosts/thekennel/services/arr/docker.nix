@@ -64,7 +64,7 @@ in
         ];
 
         extraOptions = [
-          "--gpus=all"
+          "--device=nvidia.com/gpu=all"
           "--network=bridge"
         ];
       };
@@ -98,7 +98,7 @@ in
         ];
 
         extraOptions = [
-          "--gpus=all"
+          "--device=nvidia.com/gpu=all"
           "--network=container:tdarr"
         ];
 
