@@ -672,11 +672,11 @@
         "nixpkgs": "nixpkgs_9"
       },
       "locked": {
-        "lastModified": 1769167968,
-        "narHash": "sha256-Mg8sm07y+rYDcgE9bXBh6U7wFrocIyFEqXPoXf7DGGo=",
+        "lastModified": 1769168317,
+        "narHash": "sha256-M/xCL37rXd43Sg2C5MDYXFR8lZSXiooGh0gIg6c0mwg=",
         "owner": "Mistyttm",
         "repo": "nixpkgs-extra",
-        "rev": "037c43f49077e87ed8d4687f2a1ef69778cb04da",
+        "rev": "9001601a91633903f556cfec8fae461f6abdcf18",
         "type": "github"
       },
       "original": {
