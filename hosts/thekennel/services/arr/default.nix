@@ -15,6 +15,7 @@
     ./recyclarr.nix
     ./tautulli.nix
     ./docker.nix
+    ./heimdall.nix
   ];
 
   sops.secrets."qnap-media/username" = {
