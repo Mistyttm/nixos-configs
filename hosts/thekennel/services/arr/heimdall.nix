@@ -1,7 +1,7 @@
 { config, ... }:
 {
   sops.secrets."heimdall-app-key" = {
-    sopsFile = ../../../secrets/heimdall.yaml;
+    sopsFile = ../../../../secrets/heimdall.yaml;
     owner = config.users.users.heimdall.name;
     group = config.users.users.heimdall.group;
     mode = "0400";
