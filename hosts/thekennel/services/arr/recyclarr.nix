@@ -24,6 +24,45 @@
             preferred_ratio = 0.5;
           };
 
+          quality_profiles = [
+            {
+              name = "WEB-1080p";
+              reset_unmatched_scores = {
+                enabled = true;
+              };
+              upgrade = {
+                allowed = true;
+                until_quality = "WEB 1080p";
+                until_score = 10000;
+              };
+              min_format_score = 0;
+              quality_sort = "top";
+              qualities = [
+                {
+                  name = "WEB 1080p";
+                  qualities = [
+                    "WEBDL-1080p"
+                    "WEBRip-1080p"
+                  ];
+                }
+                {
+                  name = "WEB 720p";
+                  qualities = [
+                    "WEBDL-720p"
+                    "WEBRip-720p"
+                  ];
+                }
+                {
+                  name = "WEB 480p";
+                  qualities = [
+                    "WEBDL-480p"
+                    "WEBRip-480p"
+                  ];
+                }
+              ];
+            }
+          ];
+
           custom_formats = [
             {
               # Unwanted formats - block these
