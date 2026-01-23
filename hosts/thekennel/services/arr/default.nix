@@ -13,7 +13,6 @@
     ./tdarr.nix
     ./fail2ban.nix
     ./recyclarr.nix
-    ./tautulli.nix
     ./docker.nix
     ./heimdall.nix
   ];
