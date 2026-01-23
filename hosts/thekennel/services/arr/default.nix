@@ -14,7 +14,7 @@
     ./fail2ban.nix
     ./recyclarr.nix
     ./docker.nix
-    ./heimdall.nix
+    # ./heimdall.nix
   ];
 
   sops.secrets."qnap-media/username" = {
