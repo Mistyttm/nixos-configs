@@ -1,4 +1,4 @@
-{ ... }:
+{ config, pkgs, ... }:
 {
   services.nginx = {
     enable = true;
@@ -21,7 +21,45 @@
         '';
       };
     };
+
+    virtualHosts."heimdall-local" = {
+      listen = [
+        {
+          addr = "127.0.0.1";
+          port = 8098;
+        }
+      ];
+
+      root = "${config.services.heimdall.package}/share/heimdall/public";
+
+      extraConfig = ''
+        index index.php;
+        charset utf-8;
+        client_max_body_size 30M;
+      '';
+
+      locations."/" = {
+        tryFiles = "$uri $uri/ /index.php?$query_string";
+      };
+
+      locations."~ \\.php$" = {
+        extraConfig = ''
+          fastcgi_pass unix:${config.services.phpfpm.pools.heimdall.socket};
+          fastcgi_index index.php;
+          fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+          include ${pkgs.nginx}/conf/fastcgi_params;
+          fastcgi_param PHP_VALUE "upload_max_filesize=30M \n post_max_size=30M";
+        '';
+      };
+
+      locations."~ /\\.(?!well-known).*" = {
+        return = "404";
+      };
+    };
   };
 
-  networking.firewall.allowedTCPPorts = [ 8097 ];
+  networking.firewall.allowedTCPPorts = [
+    8097
+    8098
+  ];
 }
