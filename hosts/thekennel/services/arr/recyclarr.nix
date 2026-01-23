@@ -131,6 +131,13 @@
               quality_sort = "top";
               qualities = [
                 {
+                  name = "WEB 2160p";
+                  qualities = [
+                    "WEBDL-2160p"
+                    "WEBRip-2160p"
+                  ];
+                }
+                {
                   name = "WEB 1080p";
                   qualities = [
                     "WEBDL-1080p"
