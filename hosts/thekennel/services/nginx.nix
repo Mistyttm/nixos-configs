@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 {
   services.nginx = {
     enable = true;
@@ -22,7 +27,7 @@
       };
     };
 
-    virtualHosts."heimdall-local" = {
+    virtualHosts."heimdall-local" = lib.mkIf config.services.heimdall.enable {
       listen = [
         {
           addr = "127.0.0.1";
