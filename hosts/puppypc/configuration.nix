@@ -127,7 +127,7 @@ in
         opencomposite
         monado-vulkan-layers
         texliveFull
-        kdotool
+        # kdotool
         slimevrCustom
         sops
         nixos-rebuild-ng
