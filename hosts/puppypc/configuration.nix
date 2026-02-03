@@ -141,6 +141,7 @@ in
         nvidia-vaapi-driver
         gamescope
         vulkan-hdr-layer-kwin6
+        claude-vault
       ]
       ++ [
         kwin-effects-forceblur.packages.${pkgs.stdenv.hostPlatform.system}.default
