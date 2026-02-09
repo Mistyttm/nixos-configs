@@ -161,7 +161,6 @@ in
         "freeimage-unstable-2021-11-01"
         "libsoup-2.74.3"
       ];
-      # CUDA support removed globally - now enabled per-package to avoid mass rebuilds
       cudaSupport = true;
     };
   };
