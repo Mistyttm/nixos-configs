@@ -77,6 +77,7 @@
         overwrite_files = 0;
         ignore_unrar_dates = 0;
         max_url_retries = 10;
+        permissions = 755;
 
         # Whitelist
         host_whitelist = "thekennel, localhost, 127.0.0.1";
@@ -203,10 +204,27 @@
           connections = 20;
           ssl = true;
           ssl_verify = 2;
+          enable = false;
+          required = false;
+          optional = true;
+          priority = 2;
+        };
+        "bonus.frugalusenet.net" = {
+          name = "bonus.frugalusenet.net";
+          displayname = "bonus.frugalusenet.net";
+          host = "bonus.frugalusenet.net";
+          port = 563;
+          timeout = 60;
+          username = "Misty_TTM";
+          connections = 50;
+          ssl = true;
+          ssl_verify = 3;
           enable = true;
           required = false;
           optional = true;
           priority = 2;
+          retentions = 3000;
+          quota = "1000G";
         };
       };
 
@@ -292,6 +310,8 @@
       [[asnews.frugalusenet.com]]
       password = ${config.sops.placeholder."sabnzbd/frugal_password"}
       [[usnews.blocknews.net]]
+      password = ${config.sops.placeholder."sabnzbd/frugal_password"}
+      [[bonus.frugalusenet.com]]
       password = ${config.sops.placeholder."sabnzbd/frugal_password"}
     '';
   };
