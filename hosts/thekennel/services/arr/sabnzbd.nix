@@ -77,7 +77,7 @@
         overwrite_files = 0;
         ignore_unrar_dates = 0;
         max_url_retries = 10;
-        permissions = 755;
+        permissions = 777;
 
         # Whitelist
         host_whitelist = "thekennel, localhost, 127.0.0.1";
