@@ -130,12 +130,27 @@ in
       };
 
       package =
-        if cfg.driverChannel == "beta" then
-          config.boot.kernelPackages.nvidiaPackages.beta
-        else if cfg.driverChannel == "latest" then
-          config.boot.kernelPackages.nvidiaPackages.latest
-        else
-          config.boot.kernelPackages.nvidiaPackages.stable;
+        let
+          basePackage =
+            if cfg.driverChannel == "beta" then
+              config.boot.kernelPackages.nvidiaPackages.beta
+            else if cfg.driverChannel == "latest" then
+              config.boot.kernelPackages.nvidiaPackages.latest
+            else
+              config.boot.kernelPackages.nvidiaPackages.stable;
+          # TODO: remove when nvidia update the package
+          kernel619Patch = pkgs.fetchurl {
+            url = "https://raw.githubusercontent.com/CachyOS/kernel-patches/master/6.19/misc/nvidia/0003-Fix-compile-for-6.19.patch";
+            hash = "sha256-aUMXPpnQrs4gqCxO+57slHH0qKfdQEd9eC5UEMjXL5A=";
+          };
+        in
+        basePackage.overrideAttrs (oldAttrs: {
+          passthru = oldAttrs.passthru // {
+            open = oldAttrs.passthru.open.overrideAttrs (openOldAttrs: {
+              patches = (openOldAttrs.patches or [ ]) ++ [ kernel619Patch ];
+            });
+          };
+        });
     };
 
     hardware.nvidia-container-toolkit.enable = cfg.nvidiaContainerToolkit;
