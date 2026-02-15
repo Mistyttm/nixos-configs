@@ -142,6 +142,7 @@ in
         gamescope
         vulkan-hdr-layer-kwin6
         claude-vault
+        blender
       ]
       ++ [
         kwin-effects-forceblur.packages.${pkgs.stdenv.hostPlatform.system}.default
