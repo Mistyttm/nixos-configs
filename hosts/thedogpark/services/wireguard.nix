@@ -9,9 +9,19 @@
 
     peers = [
       {
-        # Your home server
+        # thekennel - home server
         publicKey = "PV35fOdFKVsftJ7lh+xVTYxDY9fw4mgN9hwlrDOnzlk=";
         allowedIPs = [ "10.100.0.2/32" ];
+      }
+      {
+        # puppypc - home desktop
+        publicKey = "3P03yC/x9XLleiWhb3KgiiF9Jei69eMOVOzaqczW5QQ=";
+        allowedIPs = [ "10.100.0.3/32" ];
+      }
+      {
+        # mistylappytappy - laptop
+        publicKey = "LAPTOP_PUBLIC_KEY_PLACEHOLDER";
+        allowedIPs = [ "10.100.0.4/32" ];
       }
     ];
   };

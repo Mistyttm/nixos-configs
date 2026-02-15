@@ -4,5 +4,6 @@
     # Include the results of the hardware scan.
     ./hardware/default.nix
     ./systemd.nix
+    ./wireguard.nix
   ];
 }

@@ -10,6 +10,11 @@
   ];
   networking.hostName = "mistylappytappy";
 
+  # Moonlight for remote graphical access to puppypc
+  environment.systemPackages = with pkgs; [
+    moonlight-qt
+  ];
+
   boot.supportedFilesystems = [ "ntfs" ];
 
   gaming = {

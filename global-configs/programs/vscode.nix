@@ -61,6 +61,7 @@
         tamasfe.even-better-toml
         jinxdash.prettier-rust
         ms-vscode.cpptools
+        github.copilot-chat
       ];
       userSettings = {
 
