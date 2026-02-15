@@ -11,7 +11,7 @@
     file
     nil
     nixfmt
-    wineWowPackages.waylandFull
+    wineWow64Packages.waylandFull
     winetricks
     bottles
     protontricks
