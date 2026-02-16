@@ -20,7 +20,7 @@
       }
       {
         # mistylappytappy - laptop
-        publicKey = "LAPTOP_PUBLIC_KEY_PLACEHOLDER";
+        publicKey = "4gYkapXc0P9tYPMxkjAjcT4wL2kEQ7QXbCD18K0Vsx4=";
         allowedIPs = [ "10.100.0.4/32" ];
       }
     ];
