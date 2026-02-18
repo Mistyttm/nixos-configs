@@ -21,7 +21,7 @@
 
           quality_definition = {
             type = "series";
-            preferred_ratio = 0.5;
+            preferred_ratio = 0.0;
           };
 
           quality_profiles = [
@@ -74,7 +74,6 @@
                 "47435ece6b99a0b477caf360e79ba0bb" # x265 (HD)
                 "32b367365729d530ca1c124a0b180c64" # Bad Dual Groups
                 "23297a736ca77c0fc8e70f8edd7ee56c" # Upscaled
-                "15a05bc7c1a36e2b57fd628f8977e2fc" # AV1
               ];
               assign_scores_to = [
                 {
@@ -152,7 +151,7 @@
 
           quality_definition = {
             type = "movie";
-            preferred_ratio = 0.5;
+            preferred_ratio = 0.0; # Prefer smallest file size
           };
 
           quality_profiles = [
@@ -215,7 +214,6 @@
                 "7357cf5161efbf8c4d5d0c30b4815ee2" # Obfuscated (this is "Dubbed" equivalent)
                 "dc98083864ea246d05a42df0d05f81cc" # x265 (HD)
                 "bfd8eb01832d646a0a89c4deb46f8564" # Upscaled
-                "cae4ca30163749b891686f95532519bd" # AV1
               ];
               assign_scores_to = [
                 {
