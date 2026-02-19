@@ -1,7 +1,6 @@
 {
   pkgs,
   lib,
-  kwin-effects-forceblur,
   ...
 }:
 let
@@ -121,32 +120,27 @@ in
   virtualisation.waydroid.enable = true;
 
   environment = {
-    systemPackages =
-      with pkgs;
-      [
-        opencomposite
-        monado-vulkan-layers
-        texliveFull
-        # kdotool
-        slimevrCustom
-        sops
-        nixos-rebuild-ng
-        heroic
-        xrizer
-        klassy
-        steam-presence
-        usbutils
-        v4l-utils
-        # winboat
-        nvidia-vaapi-driver
-        gamescope
-        vulkan-hdr-layer-kwin6
-        claude-vault
-        blender
-      ]
-      ++ [
-        kwin-effects-forceblur.packages.${pkgs.stdenv.hostPlatform.system}.default
-      ];
+    systemPackages = with pkgs; [
+      opencomposite
+      monado-vulkan-layers
+      texliveFull
+      # kdotool
+      slimevrCustom
+      sops
+      nixos-rebuild-ng
+      heroic
+      xrizer
+      klassy
+      steam-presence
+      usbutils
+      v4l-utils
+      # winboat
+      nvidia-vaapi-driver
+      gamescope
+      vulkan-hdr-layer-kwin6
+      claude-vault
+      blender
+    ];
     shellAliases = {
       rebuild = "sudo nixos-rebuild switch --flake .#puppypc";
     };

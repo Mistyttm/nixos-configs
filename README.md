@@ -111,7 +111,6 @@ See [COMMITTING.md](COMMITTING.md) for commit message guidelines.
 | `nix-vscode-extensions`   | [nix-community/nix-vscode-extensions](https://github.com/nix-community/nix-vscode-extensions)           | VSCode extensions           |
 | `auto-cpufreq`            | [AdnanHodzic/auto-cpufreq](https://github.com/AdnanHodzic/auto-cpufreq)                                 | CPU frequency scaling       |
 | `simple-nixos-mailserver` | [simple-nixos-mailserver/nixos-mailserver](https://gitlab.com/simple-nixos-mailserver/nixos-mailserver) | Mail server                 |
-| `kwin-effects-forceblur`  | [taj-ny/kwin-effects-forceblur](https://github.com/taj-ny/kwin-effects-forceblur)                       | KWin blur effects           |
 | `chaotic`                 | [chaotic-cx/nyx](https://github.com/chaotic-cx/nyx)                                                     | Chaotic-AUR Nix overlay     |
 | `nixos-hardware`          | [NixOS/nixos-hardware](https://github.com/NixOS/nixos-hardware)                                         | Hardware-specific modules   |
 | `pre-commit-hooks`        | [cachix/pre-commit-hooks.nix](https://github.com/cachix/pre-commit-hooks.nix)                           | Pre-commit hooks            |
