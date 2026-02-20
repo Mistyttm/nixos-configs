@@ -72,7 +72,6 @@
       auto-cpufreq,
       simple-nixos-mailserver,
       self,
-      kwin-effects-forceblur,
       chaotic,
       # nixos-hardware,
       pre-commit-hooks,
@@ -105,7 +104,7 @@
           inherit system;
 
           specialArgs = {
-            inherit homeVersion kwin-effects-forceblur;
+            inherit homeVersion;
           };
 
           modules = [
