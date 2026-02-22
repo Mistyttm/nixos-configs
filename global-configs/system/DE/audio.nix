@@ -29,5 +29,12 @@
         "hfp_ag"
       ];
     };
+    # Prevent unclean Bluetooth disconnects from crashing WirePlumber and
+    # taking down the entire audio stack (bluez transport release failures)
+    "wireplumber.profiles" = {
+      main = {
+        "monitor.bluez.seat-monitoring" = "disabled";
+      };
+    };
   };
 }
