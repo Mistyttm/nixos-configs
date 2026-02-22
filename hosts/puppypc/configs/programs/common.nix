@@ -31,11 +31,11 @@
     assetsPath = "${config.xdg.dataHome}/Steam/steamapps/common/wallpaper_engine/assets";
     wallpapers = [
       {
-        monitor = "DP-5";
+        monitor = "DP-2";
         wallpaperId = "3328281976";
       }
       {
-        monitor = "DP-4";
+        monitor = "DP-1";
         wallpaperId = "3215623224";
         extraOptions = [ "--silent" ];
       }
@@ -59,6 +59,10 @@
       # Restart on failure to recover from race conditions
       Restart = "on-failure";
       RestartSec = "3s";
+      # Prevent infinite crash-loop during shutdown when display outputs change
+      # (hit 247 restarts last session, blocking clean reboot)
+      StartLimitBurst = 5;
+      StartLimitIntervalSec = 60;
     };
   };
 }
