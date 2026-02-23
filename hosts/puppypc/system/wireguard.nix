@@ -2,6 +2,13 @@
 {
   networking.wireguard.enable = true;
 
+  # Wait for network (and DNS) to be fully online before starting,
+  # otherwise the hostname endpoint fails to resolve and no peers get configured.
+  systemd.services.wireguard-wg0 = {
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+  };
+
   networking.wireguard.interfaces.wg0 = {
     ips = [ "10.100.0.3/24" ];
     privateKeyFile = "/root/wireguard-keys/private";
