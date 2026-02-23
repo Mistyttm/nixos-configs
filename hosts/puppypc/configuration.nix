@@ -117,6 +117,8 @@ in
     gdb = true;
   };
 
+  programs.nix-ld.enable = true;
+
   virtualisation.waydroid.enable = true;
 
   environment = {
