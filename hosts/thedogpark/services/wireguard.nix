@@ -27,4 +27,9 @@
   };
 
   networking.firewall.allowedUDPPorts = [ 51820 ];
+
+  # Allow WireGuard peers to forward traffic through the hub (wg0 acts as the VPN router).
+  # Without this, NixOS's iptables FORWARD chain drops all peer-to-peer traffic
+  # even though ip_forward is enabled.
+  networking.firewall.trustedInterfaces = [ "wg0" ];
 }
