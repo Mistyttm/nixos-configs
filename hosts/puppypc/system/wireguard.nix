@@ -20,6 +20,9 @@
         endpoint = "mistyttm.dev:51820";
         allowedIPs = [ "10.100.0.0/24" ];
         persistentKeepalive = 25;
+        # Re-resolve the hostname endpoint periodically so transient DNS
+        # failures during boot/rebuild don't permanently break the tunnel.
+        dynamicEndpointRefreshSeconds = 30;
       }
     ];
   };
