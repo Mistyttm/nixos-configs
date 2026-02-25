@@ -12,6 +12,7 @@
   # Moonlight for remote graphical access to puppypc
   environment.systemPackages = with pkgs; [
     moonlight-qt
+    sshfs
   ];
 
   boot.supportedFilesystems = [ "ntfs" ];
