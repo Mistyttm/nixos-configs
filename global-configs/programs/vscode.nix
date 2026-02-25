@@ -62,6 +62,7 @@
         jinxdash.prettier-rust
         ms-vscode.cpptools
         github.copilot-chat
+        atomicspirit.nix-embedded-highlighter
       ];
       userSettings = {
 
