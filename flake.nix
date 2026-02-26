@@ -37,6 +37,10 @@
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
     nix-topology.url = "github:oddlama/nix-topology";
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
+    firefox-addons = {
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   nixConfig = {
@@ -78,6 +82,7 @@
       determinate,
       nix-topology,
       nix-cachyos-kernel,
+      firefox-addons,
       ...
     }:
     let
@@ -122,7 +127,7 @@
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 backupFileExtension = "backup";
-                extraSpecialArgs = { inherit spicetify-nix homeVersion; };
+                extraSpecialArgs = { inherit spicetify-nix homeVersion firefox-addons; };
                 users = {
                   misty = import ./hosts/puppypc/home.nix;
                 };
@@ -163,7 +168,7 @@
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 backupFileExtension = "backup";
-                extraSpecialArgs = { inherit spicetify-nix homeVersion; };
+                extraSpecialArgs = { inherit spicetify-nix homeVersion firefox-addons; };
                 users = {
                   misty = import ./hosts/mistylappytappy/home.nix;
                 };
