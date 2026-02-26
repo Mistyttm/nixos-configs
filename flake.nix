@@ -89,7 +89,18 @@
       system = "x86_64-linux";
       pkgs = import nixpkgs {
         inherit system;
-        overlays = [ nix-topology.overlays.default ];
+        overlays = [
+          nix-topology.overlays.default
+          # picosvg 0.22.3 has upstream test regressions that break the
+          # jetbrains-mono build chain (picosvg → nanoemoji → gftools → jetbrains-mono).
+          (_final: prev: {
+            python313Packages = prev.python313Packages // {
+              picosvg = prev.python313Packages.picosvg.overrideAttrs (_: {
+                doCheck = false;
+              });
+            };
+          })
+        ];
       };
       homeVersion = "26.05"; # Update this when you update your NixOS version
       # overlay-satisfactory = final: prev: {
