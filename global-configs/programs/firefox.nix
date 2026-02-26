@@ -94,6 +94,7 @@ in
   programs.firefox = {
     enable = true;
     package = pkgs.firefox;
+    pipewireSupport = true;
 
     policies = {
       DisableTelemetry = true;
