@@ -1,10 +1,10 @@
 { config, ... }:
 {
-  sops.secrets."recyclarr/sonarr_api_key" = {
+  sops.secrets."sonarr_api_key" = {
     sopsFile = ../../../../secrets/media.yaml;
   };
 
-  sops.secrets."recyclarr/radarr_api_key" = {
+  sops.secrets."radarr_api_key" = {
     sopsFile = ../../../../secrets/media.yaml;
   };
 
@@ -16,7 +16,7 @@
         sonarr-main = {
           base_url = "http://localhost:8989";
           api_key = {
-            _secret = config.sops.secrets."recyclarr/sonarr_api_key".path;
+            _secret = config.sops.secrets."sonarr_api_key".path;
           };
 
           quality_definition = {
