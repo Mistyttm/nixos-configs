@@ -50,7 +50,7 @@
 
   services.homepage-dashboard = {
     enable = true;
-    listenPort = 8082;
+    listenPort = 3000;
     openFirewall = true;
     environmentFiles = [ config.sops.templates."homepage-env".path ];
 
