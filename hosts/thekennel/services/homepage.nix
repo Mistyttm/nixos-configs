@@ -50,7 +50,10 @@
 
   systemd.services.homepage-dashboard = {
     serviceConfig = {
-      SupplementaryGroups = [ "media" ];
+      BindReadOnlyPaths = [
+        "/mnt/media"
+        "/mnt/localExpansion"
+      ];
     };
   };
 
@@ -67,7 +70,7 @@
       title = "The Kennel";
       favicon = "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/homepage.png";
       theme = "dark";
-      color = "purple";
+      color = "violet";
 
       layout = {
         "Media" = {
