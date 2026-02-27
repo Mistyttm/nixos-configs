@@ -86,7 +86,10 @@
           x_forwarded = true;
           resources = [
             {
-              names = [ "client" "federation" ];
+              names = [
+                "client"
+                "federation"
+              ];
               compress = false;
             }
           ];
@@ -152,13 +155,13 @@
           burst_count = 20;
         };
       };
-        # Presence Tracking
+      # Presence Tracking
       presence = {
         enabled = true;
         incluide_offline_users_on_sync = true;
       };
 
-        # Avatar MIME type
+      # Avatar MIME type
       allowed_avatar_mimetypes = [
         "image/png"
         "image/jpeg"
@@ -167,6 +170,8 @@
       max_avatar_size = "10M";
     };
   };
+
+  users.users.matrix-synapse.extraGroups = [ "mautrix-discord" ];
 
   services.postgresql = {
     enable = true;
