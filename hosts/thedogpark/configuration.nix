@@ -43,6 +43,7 @@
     jdk21
     cron
     nix-ld
+    just
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
