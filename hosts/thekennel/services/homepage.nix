@@ -88,6 +88,20 @@
 
     widgets = [
       {
+        greeting = {
+          top_left_label = "The Kennel";
+        };
+      }
+      {
+        openmeteo = {
+          label = "Brisbane";
+          latitude = -27.47;
+          longitude = 153.02;
+          units = "metric";
+          cache = 5;
+        };
+      }
+      {
         resources = {
           cpu = true;
           memory = true;
@@ -104,6 +118,11 @@
         resources = {
           disk = "/mnt/localExpansion";
           label = "Local Expansion";
+        };
+      }
+      {
+        speedtest = {
+          bitratePrecision = 0;
         };
       }
       {
