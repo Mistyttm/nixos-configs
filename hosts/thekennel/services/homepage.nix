@@ -37,14 +37,14 @@
     group = "root";
     mode = "0400";
     content = ''
-      HOMEPAGE_VAR_SONARR_API_KEY=${config.sops.placeholder."recyclarr/sonarr_api_key"}
-      HOMEPAGE_VAR_RADARR_API_KEY=${config.sops.placeholder."recyclarr/radarr_api_key"}
+      HOMEPAGE_VAR_SONARR_API_KEY=${config.sops.placeholder."sonarr_api_key"}
+      HOMEPAGE_VAR_RADARR_API_KEY=${config.sops.placeholder."radarr_api_key"}
       HOMEPAGE_VAR_SABNZBD_API_KEY=${config.sops.placeholder."sabnzbd/api_key"}
-      HOMEPAGE_VAR_JELLYFIN_API_KEY=${config.sops.placeholder."homepage/jellyfin_api_key"}
-      HOMEPAGE_VAR_JELLYSEERR_API_KEY=${config.sops.placeholder."homepage/jellyseerr_api_key"}
-      HOMEPAGE_VAR_PROWLARR_API_KEY=${config.sops.placeholder."homepage/prowlarr_api_key"}
-      HOMEPAGE_VAR_BAZARR_API_KEY=${config.sops.placeholder."homepage/bazarr_api_key"}
-      HOMEPAGE_VAR_QBITTORRENT_PASSWORD=${config.sops.placeholder."homepage/qbittorrent_password"}
+      HOMEPAGE_VAR_JELLYFIN_API_KEY=${config.sops.placeholder."jellyfin_api_key"}
+      HOMEPAGE_VAR_JELLYSEERR_API_KEY=${config.sops.placeholder."jellyseerr_api_key"}
+      HOMEPAGE_VAR_PROWLARR_API_KEY=${config.sops.placeholder."prowlarr_api_key"}
+      HOMEPAGE_VAR_BAZARR_API_KEY=${config.sops.placeholder."bazarr_api_key"}
+      HOMEPAGE_VAR_QBITTORRENT_PASSWORD=${config.sops.placeholder."qbittorrent_password"}
     '';
   };
 
