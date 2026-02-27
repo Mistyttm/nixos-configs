@@ -88,11 +88,6 @@
 
     widgets = [
       {
-        greeting = {
-          top_left_label = "The Kennel";
-        };
-      }
-      {
         openmeteo = {
           label = "Brisbane";
           latitude = -27.47;
@@ -108,12 +103,12 @@
           disk = "/";
         };
       }
-      {
-        resources = {
-          disk = "/mnt/media";
-          label = "NAS Media";
-        };
-      }
+      # {
+      #   resources = {
+      #     disk = "/mnt/media";
+      #     label = "NAS Media";
+      #   };
+      # }
       {
         resources = {
           disk = "/mnt/localExpansion";
