@@ -10,6 +10,7 @@
   environment.systemPackages = with pkgs; [
     moonlight-qt
     libdecor # Wayland decorations
+    xset
   ];
 
   # Auto-login for seamless boot-to-stream experience
@@ -22,9 +23,9 @@
 
   # Disable screen blanking/power management for always-on streaming
   services.xserver.displayManager.sessionCommands = ''
-    ${pkgs.xorg.xset}/bin/xset s off
-    ${pkgs.xorg.xset}/bin/xset -dpms
-    ${pkgs.xorg.xset}/bin/xset s noblank
+    ${pkgs.xset}/bin/xset s off
+    ${pkgs.xset}/bin/xset -dpms
+    ${pkgs.xset}/bin/xset s noblank
   '';
 
   # Keep the useful SteamOS-like system tweaks from Jovian
