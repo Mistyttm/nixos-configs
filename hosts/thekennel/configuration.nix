@@ -19,6 +19,7 @@
     ./services/arr
     ./services/wireguard.nix
     ./services/nginx.nix
+    ./services/homepage.nix
   ];
 
   # Bootloader.

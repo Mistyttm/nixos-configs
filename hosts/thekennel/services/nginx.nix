@@ -27,6 +27,34 @@
       };
     };
 
+    virtualHosts."homepage-lan" = {
+      listen = [
+        {
+          addr = "192.168.0.171";
+          port = 8082;
+        }
+      ];
+
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:8082";
+        proxyWebsockets = true;
+      };
+    };
+
+    virtualHosts."homepage-wireguard" = {
+      listen = [
+        {
+          addr = "10.100.0.2";
+          port = 8082;
+        }
+      ];
+
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:8082";
+        proxyWebsockets = true;
+      };
+    };
+
     virtualHosts."heimdall-local" = lib.mkIf config.services.heimdall.enable {
       listen = [
         {
@@ -64,6 +92,7 @@
   };
 
   networking.firewall.allowedTCPPorts = [
+    8082
     8097
     8098
   ];
