@@ -75,6 +75,7 @@
     nano
     tmux
     sops
+    speedtest-cli
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
