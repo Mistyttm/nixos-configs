@@ -88,15 +88,6 @@
 
     widgets = [
       {
-        openmeteo = {
-          label = "Brisbane";
-          latitude = -27.47;
-          longitude = 153.02;
-          units = "metric";
-          cache = 5;
-        };
-      }
-      {
         resources = {
           cpu = true;
           memory = true;
@@ -124,6 +115,15 @@
         search = {
           provider = "duckduckgo";
           target = "_blank";
+        };
+      }
+      {
+        openmeteo = {
+          label = "Brisbane";
+          latitude = -27.47;
+          longitude = 153.02;
+          units = "metric";
+          cache = 5;
         };
       }
     ];
