@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 {
   sops.secrets."sonarr_api_key" = {
     sopsFile = ../../../secrets/media.yaml;
@@ -50,10 +50,8 @@
 
   systemd.services.homepage-dashboard = {
     serviceConfig = {
-      BindReadOnlyPaths = [
-        "/mnt/media"
-        "/mnt/localExpansion"
-      ];
+      PrivateUsers = lib.mkForce false;
+      SupplementaryGroups = [ "media" ];
     };
   };
 
@@ -70,7 +68,7 @@
       title = "The Kennel";
       favicon = "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/homepage.png";
       theme = "dark";
-      color = "violet";
+      color = "slate";
 
       layout = {
         "Media" = {
