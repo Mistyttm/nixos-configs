@@ -6,6 +6,7 @@
     ../../global-configs/programs/xdg.nix
     ../../global-configs/programs/cli.nix
     ../../global-configs/programs/fastfetch.nix
+    ./configs/shell.nix
   ];
 
   # Packages that should be installed to the user profile.
