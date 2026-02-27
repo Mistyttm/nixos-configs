@@ -146,7 +146,7 @@
         radarr-main = {
           base_url = "http://localhost:7878";
           api_key = {
-            _secret = config.sops.secrets."recyclarr/radarr_api_key".path;
+            _secret = config.sops.secrets."radarr_api_key".path;
           };
 
           quality_definition = {
