@@ -48,6 +48,12 @@
     '';
   };
 
+  systemd.services.homepage-dashboard = {
+    serviceConfig = {
+      SupplementaryGroups = [ "media" ];
+    };
+  };
+
   services.homepage-dashboard = {
     enable = true;
     listenPort = 3000;
@@ -61,7 +67,7 @@
       title = "The Kennel";
       favicon = "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/homepage.png";
       theme = "dark";
-      color = "slate";
+      color = "purple";
 
       layout = {
         "Media" = {
