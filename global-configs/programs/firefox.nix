@@ -4,7 +4,7 @@
   ...
 }:
 let
-  addons = firefox-addons.packages.${pkgs.system};
+  addons = import "${firefox-addons}" { inherit pkgs; };
 
   # Extensions not packaged in NUR — fetched directly from AMO
   fetchFirefoxAddon =
