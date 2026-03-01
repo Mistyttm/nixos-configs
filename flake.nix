@@ -138,7 +138,7 @@
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 backupFileExtension = "backup";
-                extraSpecialArgs = { inherit spicetify-nix homeVersion firefox-addons; };
+                extraSpecialArgs = { inherit spicetify-nix homeVersion; };
                 users = {
                   misty = import ./hosts/puppypc/home.nix;
                 };
@@ -154,6 +154,7 @@
                   nix-vscode-extensions.overlays.default
                   overlay-wallpaper-engine
                   nix-cachyos-kernel.overlays.pinned
+                  firefox-addons.overlays.default
                 ];
               };
             }
@@ -179,7 +180,7 @@
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 backupFileExtension = "backup";
-                extraSpecialArgs = { inherit spicetify-nix homeVersion firefox-addons; };
+                extraSpecialArgs = { inherit spicetify-nix homeVersion; };
                 users = {
                   misty = import ./hosts/mistylappytappy/home.nix;
                 };
@@ -191,6 +192,7 @@
                 overlays = [
                   nix-topology.overlays.default
                   nix-vscode-extensions.overlays.default
+                  firefox-addons.overlays.default
                 ];
               };
             }
