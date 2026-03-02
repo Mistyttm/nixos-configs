@@ -185,7 +185,7 @@ in
         default = "ddg";
         force = true;
         engines = {
-          "DuckDuckGo" = {
+          "ddg" = {
             urls = [
               {
                 template = "https://duckduckgo.com/";
@@ -199,7 +199,7 @@ in
             ];
             definedAliases = [ "@ddg" ];
           };
-          "Google" = {
+          "google" = {
             urls = [
               {
                 template = "https://www.google.com/search";

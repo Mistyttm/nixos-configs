@@ -29,7 +29,7 @@ _final: prev: {
             liberation-sans-narrow
             liberation_ttf_v2
             libertine
-            libertine-g
+            linux-libertine-g
             noto-fonts-lgc-plus
             noto-fonts
             noto-fonts-cjk-sans
