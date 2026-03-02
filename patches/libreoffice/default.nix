@@ -12,25 +12,30 @@ _final: prev: {
   # Upstream fix: NixOS/nixpkgs#494721 (merged, not yet in the locked revision)
   # This replaces the broken notoSubset result with noto-fonts directly,
   # matching exactly what the upstream fix does.
-  libreoffice-qt = prev.libreoffice-qt.overrideAttrs (old: {
-    env = old.env // {
-      FONTCONFIG_FILE = prev.makeFontsConf {
-        fontDirectories = with prev; [
-          amiri
-          caladea
-          carlito
-          culmus
-          dejavu_fonts
-          rubik
-          liberation-sans-narrow
-          liberation_ttf_v2
-          libertine
-          libertine-g
-          noto-fonts-lgc-plus
-          noto-fonts
-          noto-fonts-cjk-sans
-        ];
+  #
+  # libreoffice-qt is the wrapper; FONTCONFIG_FILE lives on the unwrapped inner
+  # derivation, so we override the `unwrapped` argument passed to the wrapper.
+  libreoffice-qt = prev.libreoffice-qt.override {
+    unwrapped = prev.libreoffice-qt.unwrapped.overrideAttrs (old: {
+      env = old.env // {
+        FONTCONFIG_FILE = prev.makeFontsConf {
+          fontDirectories = with prev; [
+            amiri
+            caladea
+            carlito
+            culmus
+            dejavu_fonts
+            rubik
+            liberation-sans-narrow
+            liberation_ttf_v2
+            libertine
+            libertine-g
+            noto-fonts-lgc-plus
+            noto-fonts
+            noto-fonts-cjk-sans
+          ];
+        };
       };
-    };
-  });
+    });
+  };
 }
