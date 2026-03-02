@@ -110,6 +110,7 @@
       #   };
       # };
       overlay-wallpaper-engine = import ./patches/wallpaper-engine-plugin;
+      overlay-libreoffice = import ./patches/libreoffice;
     in
     {
       hydraJobs = {
@@ -153,6 +154,7 @@
                   nixpkgs-extra.overlays.default
                   nix-vscode-extensions.overlays.default
                   overlay-wallpaper-engine
+                  overlay-libreoffice
                   nix-cachyos-kernel.overlays.pinned
                   firefox-addons.overlays.default
                 ];
@@ -192,6 +194,7 @@
                 overlays = [
                   nix-topology.overlays.default
                   nix-vscode-extensions.overlays.default
+                  overlay-libreoffice
                   firefox-addons.overlays.default
                 ];
               };
