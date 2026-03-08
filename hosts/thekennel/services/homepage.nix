@@ -167,6 +167,13 @@
               };
             };
           }
+          {
+            "Dispatcharr" = {
+              icon = "dispatcharr";
+              href = "http://192.168.0.171:9191";
+              description = "IPTV stream management";
+            };
+          }
         ];
       }
       {
