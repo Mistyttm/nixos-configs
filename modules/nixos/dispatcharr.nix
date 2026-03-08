@@ -7,7 +7,6 @@
 let
   cfg = config.services.dispatcharr;
   pkg = cfg.package;
-  socketPath = "/run/dispatcharr/dispatcharr.sock";
 
   postgresHost = if cfg.database.createLocally then "/run/postgresql" else cfg.database.host;
 
@@ -75,6 +74,18 @@ in
     enable = lib.mkEnableOption "Dispatcharr, an IPTV stream management and dispatching service";
 
     package = lib.mkPackageOption pkgs "dispatcharr" { };
+
+    host = lib.mkOption {
+      type = lib.types.str;
+      default = "0.0.0.0";
+      description = "The address on which the Dispatcharr web UI listens.";
+    };
+
+    port = lib.mkOption {
+      type = lib.types.port;
+      default = 9191;
+      description = "The port on which the Dispatcharr web UI listens.";
+    };
 
     websocketPort = lib.mkOption {
       type = lib.types.port;
@@ -241,6 +252,7 @@ in
     };
 
     networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [
+      cfg.port
       cfg.websocketPort
     ];
 
@@ -323,7 +335,7 @@ in
               "--workers=${toString cfg.gunicorn.workers}"
               "--worker-class=${cfg.gunicorn.workerClass}"
               "--timeout=${toString cfg.gunicorn.timeout}"
-              "--bind=unix:${socketPath}"
+              "--bind=${cfg.host}:${toString cfg.port}"
             ]
             ++ cfg.gunicorn.extraArgs
           )
