@@ -109,6 +109,10 @@
       #     config.allowUnfree = true;
       #   };
       # };
+      overlay-dispatcharr = final: prev: {
+        dispatcharr-frontend = prev.callPackage ./packages/dispatcharr-frontend.nix { };
+        dispatcharr = final.callPackage ./packages/dispatcharr.nix { };
+      };
       overlay-wallpaper-engine = import ./patches/wallpaper-engine-plugin;
       overlay-libreoffice = import ./patches/libreoffice;
     in
@@ -153,6 +157,7 @@
                   nix-topology.overlays.default
                   nixpkgs-extra.overlays.default
                   nix-vscode-extensions.overlays.default
+                  overlay-dispatcharr
                   overlay-wallpaper-engine
                   overlay-libreoffice
                   nix-cachyos-kernel.overlays.pinned
@@ -194,6 +199,7 @@
                 overlays = [
                   nix-topology.overlays.default
                   nix-vscode-extensions.overlays.default
+                  overlay-dispatcharr
                   overlay-libreoffice
                   firefox-addons.overlays.default
                 ];
@@ -229,6 +235,7 @@
                 overlays = [
                   nix-topology.overlays.default
                   nix-minecraft.overlay
+                  overlay-dispatcharr
                 ];
               };
             }
@@ -259,6 +266,7 @@
               nixpkgs.overlays = [
                 nix-topology.overlays.default
                 nixpkgs-extra.overlays.default
+                overlay-dispatcharr
               ];
             }
           ];
@@ -286,7 +294,18 @@
         #  ];
         #};
       };
+      packages.x86_64-linux =
+        let
+          dispatcharr-frontend = pkgs.callPackage ./packages/dispatcharr-frontend.nix { };
+        in
+        {
+          inherit dispatcharr-frontend;
+          dispatcharr = pkgs.callPackage ./packages/dispatcharr.nix { inherit dispatcharr-frontend; };
+        };
+
       formatter.x86_64-linux = nixpkgs.legacyPackages.${system}.nixfmt-tree;
+
+      checks.x86_64-linux.dispatcharr = pkgs.callPackage ./tests/dispatcharr.nix { };
 
       checks.x86_64-linux.pre-commit-check = pre-commit-hooks.lib.${system}.run {
         src = ./.;
