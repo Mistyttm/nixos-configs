@@ -92,9 +92,42 @@
 
   services.homepage-dashboard = {
     enable = true;
+
+    customCSS = ''
+      /* Opaque service & bookmark cards */
+      .bg-theme-200\/50 {
+        background-color: rgb(var(--color-theme-200)) !important;
+      }
+      .dark .dark\:bg-theme-900\/50 {
+        background-color: rgb(var(--color-theme-900)) !important;
+      }
+    '';
+
     package = pkgs.homepage-dashboard.overrideAttrs (
-      _finalAttrs: oldAttrs: {
-        buildInputs = oldAttrs.buildInputs ++ [ pkgs.speedtest-cli ];
+      finalAttrs: oldAttrs: {
+        version = "1.10.1";
+
+        src = pkgs.fetchFromGitHub {
+          owner = "gethomepage";
+          repo = "homepage";
+          tag = "v${finalAttrs.version}";
+          hash = "";
+        };
+
+        pnpmDeps = pkgs.fetchPnpmDeps {
+          pname = finalAttrs.pname;
+          version = finalAttrs.version;
+          src = finalAttrs.src;
+          pnpm = pkgs.pnpm_10;
+          fetcherVersion = 3;
+          hash = "";
+        };
+
+        # Add speedtest-cli to the runtime PATH via the wrapper
+        postInstall = (oldAttrs.postInstall or "") + ''
+          wrapProgram $out/bin/homepage \
+            --prefix PATH : "${pkgs.lib.makeBinPath [ pkgs.speedtest-cli ]}"
+        '';
       }
     );
 
@@ -122,7 +155,7 @@
         };
         "Downloads" = {
           style = "row";
-          columns = 3;
+          columns = 5;
         };
         "Management" = {
           style = "row";
