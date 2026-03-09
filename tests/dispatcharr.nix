@@ -64,18 +64,21 @@ pkgs.testers.nixosTest {
     machine.wait_for_unit("dispatcharr-celery.service", timeout=30)
     machine.wait_for_unit("dispatcharr-celerybeat.service", timeout=30)
 
+    # Wait for nginx
+    machine.wait_for_unit("nginx.service", timeout=30)
+
     # Give gunicorn a moment to bind
     machine.sleep(5)
 
-    # Verify the web UI is reachable
+    # Verify the web UI is reachable via nginx
     machine.wait_until_succeeds(
         "curl -sf -o /dev/null -w '%{http_code}' http://localhost:9191/ | command grep -E '200|302'",
         timeout=60,
     )
 
-    # Verify WebSocket endpoint via Daphne
+    # Verify WebSocket endpoint via nginx
     machine.wait_until_succeeds(
-        "curl -sf -o /dev/null -w '%{http_code}' http://localhost:8001/ws/ | command grep -E '101|200|400|426'",
+        "curl -sf -o /dev/null -w '%{http_code}' http://localhost:9191/ws/ | command grep -E '101|200|400|426'",
         timeout=30,
     )
 
@@ -86,6 +89,9 @@ pkgs.testers.nixosTest {
 
     # Verify the dispatcharr user exists
     machine.succeed("id dispatcharr")
+
+    # Verify the gunicorn socket exists
+    machine.succeed("test -S /run/dispatcharr/dispatcharr.sock")
 
     # Verify the web UI and websocket firewall ports are open
     machine.succeed("ss -tlnp | command grep 9191")

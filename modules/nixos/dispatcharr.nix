@@ -7,6 +7,7 @@
 let
   cfg = config.services.dispatcharr;
   pkg = cfg.package;
+  socketPath = "/run/dispatcharr/dispatcharr.sock";
 
   postgresHost = if cfg.database.createLocally then "/run/postgresql" else cfg.database.host;
 
@@ -29,6 +30,13 @@ let
         DB_ENGINE = "sqlite";
       }
   )
+  // {
+    BACKUP_ROOT = "${cfg.dataDir}/backups";
+    LOGOS_DIR = "${cfg.dataDir}/logos";
+    UPLOADS_DIR = "${cfg.dataDir}/uploads";
+    PLUGINS_DIR = "${cfg.dataDir}/plugins";
+    DISPATCHARR_ALLOWED_SCRIPT_DIRS = "${cfg.dataDir}/scripts";
+  }
   // cfg.environment;
 
   envFile = "/run/dispatcharr/env";
@@ -74,12 +82,6 @@ in
     enable = lib.mkEnableOption "Dispatcharr, an IPTV stream management and dispatching service";
 
     package = lib.mkPackageOption pkgs "dispatcharr" { };
-
-    host = lib.mkOption {
-      type = lib.types.str;
-      default = "0.0.0.0";
-      description = "The address on which the Dispatcharr web UI listens.";
-    };
 
     port = lib.mkOption {
       type = lib.types.port;
@@ -215,7 +217,7 @@ in
 
       workerClass = lib.mkOption {
         type = lib.types.str;
-        default = "gevent";
+        default = "gthread";
         description = "Gunicorn worker class.";
       };
 
@@ -267,7 +269,16 @@ in
       "d ${cfg.dataDir}/epgs         0755 ${cfg.user} ${cfg.group} -"
       "d ${cfg.dataDir}/plugins      0755 ${cfg.user} ${cfg.group} -"
       "d ${cfg.dataDir}/backups      0755 ${cfg.user} ${cfg.group} -"
+      "d ${cfg.dataDir}/scripts      0755 ${cfg.user} ${cfg.group} -"
       "d /run/dispatcharr            0775 ${cfg.user} ${cfg.group} -"
+      "d /data                       0755 ${cfg.user} ${cfg.group} -"
+      "L+ /data/m3us                 - - - - ${cfg.dataDir}/m3us"
+      "L+ /data/epgs                 - - - - ${cfg.dataDir}/epgs"
+      "L+ /data/logos                - - - - ${cfg.dataDir}/logos"
+      "L+ /data/backups              - - - - ${cfg.dataDir}/backups"
+      "L+ /data/uploads              - - - - ${cfg.dataDir}/uploads"
+      "L+ /data/plugins              - - - - ${cfg.dataDir}/plugins"
+      "L+ /data/scripts              - - - - ${cfg.dataDir}/scripts"
     ];
 
     services.redis = lib.mkIf cfg.redis.createLocally {
@@ -328,6 +339,7 @@ in
         WorkingDirectory = "${pkg}/share/dispatcharr";
         RuntimeDirectory = "dispatcharr";
         RuntimeDirectoryMode = "0775";
+        UMask = "0007";
         ExecStart = wrapExecStart "gunicorn" (
           lib.concatStringsSep " " (
             [
@@ -335,7 +347,7 @@ in
               "--workers=${toString cfg.gunicorn.workers}"
               "--worker-class=${cfg.gunicorn.workerClass}"
               "--timeout=${toString cfg.gunicorn.timeout}"
-              "--bind=${cfg.host}:${toString cfg.port}"
+              "--bind=unix:${socketPath}"
             ]
             ++ cfg.gunicorn.extraArgs
           )
@@ -405,5 +417,43 @@ in
       };
     };
 
+    users.users.${config.services.nginx.user}.extraGroups = [ cfg.group ];
+
+    services.nginx = {
+      enable = true;
+      virtualHosts."dispatcharr-local" = {
+        listen = [
+          {
+            addr = "0.0.0.0";
+            port = cfg.port;
+          }
+        ];
+        locations."/" = {
+          proxyPass = "http://unix:${socketPath}:/";
+          proxyWebsockets = true;
+          extraConfig = ''
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header Host $host;
+          '';
+        };
+        locations."/static/" = {
+          alias = "${pkg}/share/dispatcharr/static/";
+        };
+        locations."/assets/" = {
+          alias = "${pkg}/share/dispatcharr/frontend/dist/assets/";
+        };
+        locations."/ws/" = {
+          proxyPass = "http://127.0.0.1:${toString cfg.websocketPort}";
+          proxyWebsockets = true;
+          extraConfig = ''
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Host $host;
+          '';
+        };
+      };
+    };
   };
 }
