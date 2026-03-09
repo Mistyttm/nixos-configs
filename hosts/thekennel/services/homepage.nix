@@ -104,25 +104,7 @@
     '';
 
     package = pkgs.homepage-dashboard.overrideAttrs (
-      finalAttrs: oldAttrs: {
-        version = "1.10.1";
-
-        src = pkgs.fetchFromGitHub {
-          owner = "gethomepage";
-          repo = "homepage";
-          tag = "v${finalAttrs.version}";
-          hash = "sha256-hJbF6VZRgC2oROdEonlWS6Oj229sKemnpQX+pf8+6rc=";
-        };
-
-        pnpmDeps = pkgs.fetchPnpmDeps {
-          pname = finalAttrs.pname;
-          version = finalAttrs.version;
-          src = finalAttrs.src;
-          pnpm = pkgs.pnpm_10;
-          fetcherVersion = 3;
-          hash = "sha256-YM1v2hkVsxS3AiQbLIHQ5yOkgqQoa+X9rR2yEJYRO/g=";
-        };
-
+      _finalAttrs: oldAttrs: {
         # Add speedtest-cli to the runtime PATH via the wrapper
         postInstall = (oldAttrs.postInstall or "") + ''
           wrapProgram $out/bin/homepage \
