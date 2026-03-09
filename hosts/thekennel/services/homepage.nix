@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 {
   sops.secrets."sonarr_api_key" = {
     sopsFile = ../../../secrets/media.yaml;
@@ -31,6 +36,20 @@
   sops.secrets."qbittorrent_password" = {
     sopsFile = ../../../secrets/media.yaml;
   };
+  sops.secrets."dispatcharr.username" = {
+    sopsFile = ../../../secrets/media.yaml;
+  };
+  sops.secrets."dispatcharr.password" = {
+    sopsFile = ../../../secrets/media.yaml;
+  };
+
+  sops.secrets."qnap.username" = {
+    sopsFile = ../../../secrets/media.yaml;
+  };
+
+  sops.secrets."qnap.password" = {
+    sopsFile = ../../../secrets/media.yaml;
+  };
 
   sops.templates."homepage-env" = {
     owner = "root";
@@ -45,6 +64,10 @@
       HOMEPAGE_VAR_PROWLARR_API_KEY=${config.sops.placeholder."prowlarr_api_key"}
       HOMEPAGE_VAR_BAZARR_API_KEY=${config.sops.placeholder."bazarr_api_key"}
       HOMEPAGE_VAR_QBITTORRENT_PASSWORD=${config.sops.placeholder."qbittorrent_password"}
+      HOMPAGE_VAR_DISPATCHARR_USERNAME=${config.sops.placeholder."dispatcharr.username"}
+      HOMPAGE_VAR_DISPATCHARR_PASSWORD=${config.sops.placeholder."dispatcharr.password"}
+      HOMEPAGE_VAR_QNAP_USERNAME=${config.sops.placeholder."qnap.username"}
+      HOMEPAGE_VAR_QNAP_PASSWORD=${config.sops.placeholder."qnap.password"}
     '';
   };
 
@@ -57,6 +80,12 @@
 
   services.homepage-dashboard = {
     enable = true;
+    package = pkgs.homepage-dashboard.overrideAttrs (
+      _finalAttrs: oldAttrs: {
+        buildInputs = oldAttrs.buildInputs ++ [ pkgs.speedtest-cli ];
+      }
+    );
+
     listenPort = 3000;
     openFirewall = true;
     environmentFiles = [ config.sops.templates."homepage-env".path ];
@@ -167,13 +196,6 @@
               };
             };
           }
-          {
-            "Dispatcharr" = {
-              icon = "dispatcharr";
-              href = "http://192.168.0.171:9191";
-              description = "IPTV stream management";
-            };
-          }
         ];
       }
       {
@@ -252,6 +274,33 @@
                 type = "prowlarr";
                 url = "http://127.0.0.1:9696";
                 key = "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}";
+              };
+            };
+          }
+          {
+            "Dispatcharr" = {
+              icon = "dispatcharr";
+              href = "http://192.168.0.171:9191";
+              description = "IPTV stream management";
+              widget = {
+                type = "dispatcharr";
+                url = "http://127.0.0.1:9191";
+                username = "{{HOMPAGE_VAR_DISPATCHARR_USERNAME}}";
+                password = "{{HOMPAGE_VAR_DISPATCHARR_PASSWORD}}";
+                enableActiveStreams = true;
+              };
+            };
+          }
+          {
+            "QNAP" = {
+              icon = "qnap";
+              href = "http://192.168.0.170:8080";
+              description = "NAS storage";
+              widget = {
+                type = "qnap";
+                url = "http://192.168.0.170:8080";
+                username = "{{HOMEPAGE_VAR_QNAP_USERNAME}}";
+                password = "{{HOMEPAGE_VAR_QNAP_PASSWORD}}";
               };
             };
           }
