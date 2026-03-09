@@ -98,6 +98,7 @@
       favicon = "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/homepage.png";
       theme = "dark";
       color = "slate";
+      background = "./homepage_background.jpg";
 
       layout = {
         "Media" = {
