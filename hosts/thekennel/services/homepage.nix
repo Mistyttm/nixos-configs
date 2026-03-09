@@ -71,6 +71,15 @@
     '';
   };
 
+  # Serve the background image via nginx so it's accessible as a URL
+  services.nginx.virtualHosts."homepage-lan".locations."/homepage_background.jpg" = {
+    alias = "${./homepage_background.jpg}";
+    extraConfig = ''
+      expires 7d;
+      add_header Cache-Control "public";
+    '';
+  };
+
   systemd.services.homepage-dashboard = {
     serviceConfig = {
       PrivateUsers = lib.mkForce false;
@@ -98,7 +107,10 @@
       favicon = "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/homepage.png";
       theme = "dark";
       color = "slate";
-      background = "${./homepage_background.jpg}";
+      background = {
+        image = "/homepage_background.jpg";
+        blur = "sm";
+      };
 
       layout = {
         "Media" = {
