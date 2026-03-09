@@ -112,7 +112,7 @@
       color = "slate";
       background = {
         image = "/homepage_background.jpg";
-        blur = "sm";
+        blur = "md";
       };
 
       layout = {
