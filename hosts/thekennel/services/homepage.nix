@@ -120,7 +120,7 @@
           src = finalAttrs.src;
           pnpm = pkgs.pnpm_10;
           fetcherVersion = 3;
-          hash = "";
+          hash = "sha256-YM1v2hkVsxS3AiQbLIHQ5yOkgqQoa+X9rR2yEJYRO/g=";
         };
 
         # Add speedtest-cli to the runtime PATH via the wrapper
