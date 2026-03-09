@@ -111,7 +111,7 @@
           owner = "gethomepage";
           repo = "homepage";
           tag = "v${finalAttrs.version}";
-          hash = "";
+          hash = "sha256-hJbF6VZRgC2oROdEonlWS6Oj229sKemnpQX+pf8+6rc=";
         };
 
         pnpmDeps = pkgs.fetchPnpmDeps {
