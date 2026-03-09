@@ -73,7 +73,10 @@
 
   # Serve the background image via nginx so it's accessible as a URL
   services.nginx.virtualHosts."homepage-lan".locations."/homepage_background.jpg" = {
-    alias = "${./homepage_background.jpg}";
+    root = pkgs.runCommand "homepage-bg-dir" { } ''
+      mkdir -p $out
+      cp ${./homepage_background.jpg} $out/homepage_background.jpg
+    '';
     extraConfig = ''
       expires 7d;
       add_header Cache-Control "public";
