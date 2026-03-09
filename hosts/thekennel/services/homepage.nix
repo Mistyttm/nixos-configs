@@ -109,7 +109,7 @@
       background = {
         image = "/homepage_background.jpg";
       };
-      cardBlur = "md";
+      cardBlur = "xl";
 
       layout = {
         "Media" = {
