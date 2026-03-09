@@ -27,6 +27,8 @@ pkgs.testers.nixosTest {
         (_: _: { inherit dispatcharr dispatcharr-frontend; })
       ];
 
+      services.nginx.recommendedProxySettings = true;
+
       # Enable Dispatcharr with test configuration
       services.dispatcharr = {
         enable = true;
