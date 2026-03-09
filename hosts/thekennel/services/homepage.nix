@@ -124,7 +124,7 @@
       layout = {
         "Media" = {
           style = "row";
-          columns = 5;
+          columns = 3;
         };
         "Downloads" = {
           style = "row";
@@ -132,7 +132,7 @@
         };
         "Management" = {
           style = "row";
-          columns = 3;
+          columns = 5;
         };
       };
     };
