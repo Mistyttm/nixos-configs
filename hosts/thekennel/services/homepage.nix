@@ -133,11 +133,11 @@
       layout = {
         "Media" = {
           style = "row";
-          columns = 3;
+          columns = 5;
         };
         "Downloads" = {
           style = "row";
-          columns = 5;
+          columns = 3;
         };
         "Management" = {
           style = "row";
