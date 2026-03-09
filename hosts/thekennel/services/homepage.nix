@@ -94,16 +94,6 @@
   services.homepage-dashboard = {
     enable = true;
 
-    customCSS = ''
-      /* Opaque service & bookmark cards */
-      .bg-theme-200\/50 {
-        background-color: rgb(var(--color-theme-200)) !important;
-      }
-      .dark .dark\:bg-theme-900\/50 {
-        background-color: rgb(var(--color-theme-900)) !important;
-      }
-    '';
-
     listenPort = 3000;
     openFirewall = true;
     environmentFiles = [ config.sops.templates."homepage-env".path ];
@@ -118,8 +108,8 @@
       color = "slate";
       background = {
         image = "/homepage_background.jpg";
-        blur = "md";
       };
+      cardBlur = "md";
 
       layout = {
         "Media" = {
