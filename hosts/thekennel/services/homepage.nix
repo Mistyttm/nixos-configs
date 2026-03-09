@@ -36,10 +36,10 @@
   sops.secrets."qbittorrent_password" = {
     sopsFile = ../../../secrets/media.yaml;
   };
-  sops.secrets."dispatcharr.username" = {
+  sops.secrets."dispatcharr/username" = {
     sopsFile = ../../../secrets/media.yaml;
   };
-  sops.secrets."dispatcharr.password" = {
+  sops.secrets."dispatcharr/password" = {
     sopsFile = ../../../secrets/media.yaml;
   };
 
@@ -64,8 +64,8 @@
       HOMEPAGE_VAR_PROWLARR_API_KEY=${config.sops.placeholder."prowlarr_api_key"}
       HOMEPAGE_VAR_BAZARR_API_KEY=${config.sops.placeholder."bazarr_api_key"}
       HOMEPAGE_VAR_QBITTORRENT_PASSWORD=${config.sops.placeholder."qbittorrent_password"}
-      HOMPAGE_VAR_DISPATCHARR_USERNAME=${config.sops.placeholder."dispatcharr.username"}
-      HOMPAGE_VAR_DISPATCHARR_PASSWORD=${config.sops.placeholder."dispatcharr.password"}
+      HOMEPAGE_VAR_DISPATCHARR_USERNAME=${config.sops.placeholder."dispatcharr/username"}
+      HOMEPAGE_VAR_DISPATCHARR_PASSWORD=${config.sops.placeholder."dispatcharr/password"}
       HOMEPAGE_VAR_QNAP_USERNAME=${config.sops.placeholder."qnap.username"}
       HOMEPAGE_VAR_QNAP_PASSWORD=${config.sops.placeholder."qnap.password"}
     '';
@@ -286,8 +286,8 @@
               widget = {
                 type = "dispatcharr";
                 url = "http://127.0.0.1:9191";
-                username = "{{HOMPAGE_VAR_DISPATCHARR_USERNAME}}";
-                password = "{{HOMPAGE_VAR_DISPATCHARR_PASSWORD}}";
+                username = "{{HOMEPAGE_VAR_DISPATCHARR_USERNAME}}";
+                password = "{{HOMEPAGE_VAR_DISPATCHARR_PASSWORD}}";
                 enableActiveStreams = true;
               };
             };
