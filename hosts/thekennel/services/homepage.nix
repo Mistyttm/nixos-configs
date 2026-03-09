@@ -84,6 +84,7 @@
   };
 
   systemd.services.homepage-dashboard = {
+    path = [ pkgs.speedtest-cli ];
     serviceConfig = {
       PrivateUsers = lib.mkForce false;
       SupplementaryGroups = [ "media" ];
@@ -102,16 +103,6 @@
         background-color: rgb(var(--color-theme-900)) !important;
       }
     '';
-
-    package = pkgs.homepage-dashboard.overrideAttrs (
-      _finalAttrs: oldAttrs: {
-        # Add speedtest-cli to the runtime PATH via the wrapper
-        postInstall = (oldAttrs.postInstall or "") + ''
-          wrapProgram $out/bin/homepage \
-            --prefix PATH : "${pkgs.lib.makeBinPath [ pkgs.speedtest-cli ]}"
-        '';
-      }
-    );
 
     listenPort = 3000;
     openFirewall = true;
