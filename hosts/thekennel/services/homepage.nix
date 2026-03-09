@@ -43,11 +43,11 @@
     sopsFile = ../../../secrets/media.yaml;
   };
 
-  sops.secrets."qnap.username" = {
+  sops.secrets."qnap/username" = {
     sopsFile = ../../../secrets/media.yaml;
   };
 
-  sops.secrets."qnap.password" = {
+  sops.secrets."qnap/password" = {
     sopsFile = ../../../secrets/media.yaml;
   };
 
@@ -66,8 +66,8 @@
       HOMEPAGE_VAR_QBITTORRENT_PASSWORD=${config.sops.placeholder."qbittorrent_password"}
       HOMEPAGE_VAR_DISPATCHARR_USERNAME=${config.sops.placeholder."dispatcharr/username"}
       HOMEPAGE_VAR_DISPATCHARR_PASSWORD=${config.sops.placeholder."dispatcharr/password"}
-      HOMEPAGE_VAR_QNAP_USERNAME=${config.sops.placeholder."qnap.username"}
-      HOMEPAGE_VAR_QNAP_PASSWORD=${config.sops.placeholder."qnap.password"}
+      HOMEPAGE_VAR_QNAP_USERNAME=${config.sops.placeholder."qnap/username"}
+      HOMEPAGE_VAR_QNAP_PASSWORD=${config.sops.placeholder."qnap/password"}
     '';
   };
 
