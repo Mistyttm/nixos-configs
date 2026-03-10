@@ -100,20 +100,30 @@ in
 
         locations."/".proxyPass = "http://localhost:8080/";
 
-        locations."~ ^(/_matrix|_synapse/client)" = {
+        locations."~ ^(/_matrix|/_synapse/client)" = {
           proxyPass = "http://localhost:8008";
           extraConfig = ''
             proxy_set_header X-Forwarded-For $remote_addr;
             proxy_set_header X-Forwarded-Proto $scheme;
-            proxy_set_header Host $host:$server_port;
+            proxy_set_header Host $host;
             client_max_body_size 50M;
             proxy_http_version 1.1;
+            proxy_read_timeout 300s;
+            proxy_send_timeout 300s;
           '';
         };
 
         locations."/.well-known/matrix/client" = {
           extraConfig = ''
             return 200 '{"m.homeserver": {"base_url": "https://mistyttm.dev"}}';
+            default_type application/json;
+            add_header Access-Control-Allow-Origin *;
+          '';
+        };
+
+        locations."/.well-known/matrix/server" = {
+          extraConfig = ''
+            return 200 '{"m.server": "mistyttm.dev:443"}';
             default_type application/json;
             add_header Access-Control-Allow-Origin *;
           '';
