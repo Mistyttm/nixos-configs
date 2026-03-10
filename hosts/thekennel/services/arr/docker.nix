@@ -8,6 +8,17 @@ in
     nvidia-docker
   ];
 
+  users.groups.dispatcharr = { };
+
+  users.users.dispatcharr = {
+    isSystemUser = true;
+    group = "dispatcharr";
+    extraGroups = [ "media" ];
+    description = "Dispatcharr service user";
+    home = "/var/lib/dispatcharr";
+    createHome = true;
+  };
+
   users.groups.tdarr = { };
 
   users.users.tdarr = {
@@ -27,12 +38,38 @@ in
   networking.firewall.allowedTCPPorts = [
     8265
     8266
+    9191
   ];
 
   virtualisation.oci-containers = {
     backend = "docker";
 
     containers = {
+      dispatcharr = {
+        image = "ghcr.io/dispatcharr/dispatcharr:latest";
+        autoStart = true;
+
+        ports = [
+          "9191:9191"
+        ];
+
+        environment = {
+          TZ = "Australia/Brisbane";
+          DISPATCHARR_ENV = "aio";
+          REDIS_HOST = "localhost";
+          CELERY_BROKER_URL = "redis://localhost:6379/0";
+          DISPATCHARR_LOG_LEVEL = "info";
+        };
+
+        volumes = [
+          "/data/dispatcharr:/data"
+        ];
+
+        extraOptions = [
+          "--network=bridge"
+        ];
+      };
+
       tdarr = {
         image = "ghcr.io/haveagitgat/tdarr:latest";
         autoStart = true;
@@ -114,6 +151,8 @@ in
 
   # Create necessary directories
   systemd.tmpfiles.rules = [
+    "d /var/lib/dispatcharr 0755 dispatcharr dispatcharr -"
+    "d /data/dispatcharr 0755 dispatcharr media -"
     "d /var/lib/tdarr 0755 tdarr tdarr -"
     "d /var/lib/tdarr/server 0755 tdarr tdarr -"
     "d /var/lib/tdarr/configs 0755 tdarr tdarr -"
