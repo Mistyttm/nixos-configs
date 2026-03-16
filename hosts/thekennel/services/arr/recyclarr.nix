@@ -32,23 +32,15 @@
               };
               upgrade = {
                 allowed = true;
-                # Allow upgrading up to Remux — Sonarr will grab Bluray/Remux
-                # when available (common for anime after BD release)
-                until_quality = "Bluray/Remux 1080p";
+                until_quality = "Bluray-1080p";
                 until_score = 10000;
               };
               min_format_score = 0;
               quality_sort = "top";
               qualities = [
-                # Remux + Bluray grouped together (recyclarr requires 2+ per group)
-                # Both are disc-sourced; Remux is lossless, Bluray is compressed
-                {
-                  name = "Bluray/Remux 1080p";
-                  qualities = [
-                    "Remux-1080p"
-                    "Bluray-1080p"
-                  ];
-                }
+                # Single qualities — no 'qualities' array, just 'name'
+                # Recyclarr only requires 2+ when creating a merged group
+                { name = "Bluray-1080p"; }
                 {
                   name = "WEB 1080p";
                   qualities = [
@@ -76,7 +68,6 @@
 
           custom_formats = [
             {
-              # Hard blocks
               trash_ids = [
                 "85c61753df5da1fb2aab6f2a47426b09" # BR-DISK
                 "9c11cd3f07101cdba90a2d81cf0e56b4" # LQ
@@ -84,7 +75,6 @@
                 "fbcb31d8dabd2a319072b84fc0b7249c" # Extras
                 "32b367365729d530ca1c124a0b180c64" # Bad Dual Groups
                 "23297a736ca77c0fc8e70f8edd7ee56c" # Upscaled
-                "bfd8eb01832d646a0a89c4deb46f8564" # AI Upscaled
               ];
               assign_scores_to = [
                 {
@@ -94,7 +84,7 @@
               ];
             }
             {
-              # Remux release groups — highest quality source
+              # Remux tier groups — high quality Bluray rips
               trash_ids = [
                 "9965a052eb87b0d10313b1cea89eb451" # Remux Tier 01
                 "8a1d0c3d7497e741736761a1da866a2e" # Remux Tier 02
@@ -108,7 +98,6 @@
               ];
             }
             {
-              # Preferred WEB sources
               trash_ids = [
                 "e6258996055b9fbab7e9cb2f75819294" # WEB Tier 01
                 "58790d4e2fdcd9733aa7ae68ba2bb503" # WEB Tier 02
@@ -127,7 +116,6 @@
               ];
             }
             {
-              # Scene/P2P groups
               trash_ids = [
                 "1b3994c551cbb92a2c781af061f4ab44" # Scene
                 "d0c516558625b04b363fa6c5c2c7cfd4" # WEB Scene
@@ -140,10 +128,7 @@
               ];
             }
             {
-              # Season packs
-              trash_ids = [
-                "3bc5f395426614e155e585a2f056cdf1" # Season Pack
-              ];
+              trash_ids = [ "3bc5f395426614e155e585a2f056cdf1" ]; # Season Pack
               assign_scores_to = [
                 {
                   name = "WEB-1080p";
@@ -152,13 +137,9 @@
               ];
             }
             {
-              # x265 (HD) — soft penalty only, NOT a hard block.
-              # Anime releases are almost exclusively x265; blocking this
-              # would reject all anime. The -10 just means a same-quality
-              # x264 WEB is slightly preferred when both exist.
-              trash_ids = [
-                "47435ece6b99a0b477caf360e79ba0bb" # x265 (HD)
-              ];
+              # Soft penalty — won't hard-block anime (which is almost always x265)
+              # but slightly prefers x264 WEB when both exist
+              trash_ids = [ "47435ece6b99a0b477caf360e79ba0bb" ]; # x265 (HD)
               assign_scores_to = [
                 {
                   name = "WEB-1080p";
@@ -190,20 +171,16 @@
               };
               upgrade = {
                 allowed = true;
-                until_quality = "Bluray/Remux 1080p";
+                until_quality = "Remux-1080p";
                 until_score = 10000;
               };
               min_format_score = 0;
               quality_sort = "top";
               qualities = [
-                # Remux + Bluray grouped (recyclarr requires 2+ qualities per group)
-                {
-                  name = "Bluray/Remux 1080p";
-                  qualities = [
-                    "Remux-1080p"
-                    "Bluray-1080p"
-                  ];
-                }
+                # Radarr treats Remux and Bluray as separate qualities (unlike Sonarr)
+                # so single-name entries work fine here
+                { name = "Remux-1080p"; }
+                { name = "Bluray-1080p"; }
                 {
                   name = "WEB 1080p";
                   qualities = [
@@ -231,7 +208,6 @@
 
           custom_formats = [
             {
-              # Hard blocks
               trash_ids = [
                 "ed38b889b31be83fda192888e2286d83" # BR-DISK
                 "90cedc1fea7ea5d11298bebd3d1d3223" # EVO (no WEBDL)
@@ -240,7 +216,7 @@
                 "90a6f9a284dff5103f6346090e6280c8" # LQ
                 "e204b80c87be9497a8a6eaff48f72905" # LQ (Release Title)
                 "b6832f586342ef70d9c128d40c07b872" # Bad Dual Groups
-                "dc98083864ea246d05a42df0d05f81cc" # x265 (HD) — movies always have x264 alternatives
+                "dc98083864ea246d05a42df0d05f81cc" # x265 (HD)
                 "bfd8eb01832d646a0a89c4deb46f8564" # Upscaled
               ];
               assign_scores_to = [
@@ -251,7 +227,6 @@
               ];
             }
             {
-              # Remux release groups — lossless disc rips, highest quality
               trash_ids = [
                 "3a3ff47579026e76d6504ebea39390de" # Remux Tier 01
                 "9f98181fe5a3fbeb0cc29340da2a468a" # Remux Tier 02
@@ -265,7 +240,6 @@
               ];
             }
             {
-              # Bluray encode groups — smaller than remux, still excellent
               trash_ids = [
                 "ed27ebfef2f323e964fb1f61391bcb35" # Bluray Tier 01
                 "c20c8647f2746a1f4c4262b0fbbeeeae" # Bluray Tier 02
@@ -279,7 +253,6 @@
               ];
             }
             {
-              # Preferred WEB sources
               trash_ids = [
                 "c20f169ef63c5f40c2def54abaf4438e" # WEB Tier 01
                 "403816d65392c79236dcb6dd591aeda4" # WEB Tier 02
@@ -298,7 +271,6 @@
               ];
             }
             {
-              # HDR formats — bonus on top of source score
               trash_ids = [
                 "e23edd2482476e595fb990b12e7c609c" # DV HDR10
                 "58d6a88f13e2db7f5059a41047876f00" # DV
@@ -317,7 +289,6 @@
               ];
             }
             {
-              # Special movie versions
               trash_ids = [
                 "0f12c086e289cf966fa5948eac571f44" # Hybrid
                 "eca37840c13c6ef2dd0262b141a5482f" # 4K Remaster
@@ -333,7 +304,6 @@
               ];
             }
             {
-              # Audio codecs — informational only
               trash_ids = [
                 "496f355514737f7d83bf7aa4d24f8169" # TrueHD Atmos
                 "2f22d89048b01681dde8afe203bf2e95" # DTS X
