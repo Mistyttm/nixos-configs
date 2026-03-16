@@ -39,6 +39,15 @@
         wallpaperId = "3215623224";
         extraOptions = [ "--silent" ];
       }
+      {
+        monitor = "DP-5";
+        wallpaperId = "3328281976";
+      }
+      {
+        monitor = "DP-4";
+        wallpaperId = "3215623224";
+        extraOptions = [ "--silent" ];
+      }
     ];
   };
 
