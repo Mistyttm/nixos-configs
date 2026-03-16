@@ -38,9 +38,18 @@
               min_format_score = 0;
               quality_sort = "top";
               qualities = [
-                # Single qualities — no 'qualities' array, just 'name'
-                # Recyclarr only requires 2+ when creating a merged group
+                # Sonarr does not have a standalone Remux quality —
+                # Bluray-1080p is the highest 1080p disc source available.
+                # 2160p WEB is below 1080p Bluray: we prefer a great 1080p
+                # disc encode over a compressed 4K stream for TV series.
                 { name = "Bluray-1080p"; }
+                {
+                  name = "WEB 2160p";
+                  qualities = [
+                    "WEBDL-2160p"
+                    "WEBRip-2160p"
+                  ];
+                }
                 {
                   name = "WEB 1080p";
                   qualities = [
@@ -54,6 +63,9 @@
                     "WEBDL-720p"
                     "WEBRip-720p"
                   ];
+                }
+                {
+                  name = "DVD";
                 }
                 {
                   name = "WEB 480p";
@@ -84,7 +96,7 @@
               ];
             }
             {
-              # Remux tier groups — high quality Bluray rips
+              # Remux tier release groups — highest quality Bluray rips
               trash_ids = [
                 "9965a052eb87b0d10313b1cea89eb451" # Remux Tier 01
                 "8a1d0c3d7497e741736761a1da866a2e" # Remux Tier 02
@@ -137,8 +149,8 @@
               ];
             }
             {
-              # Soft penalty — won't hard-block anime (which is almost always x265)
-              # but slightly prefers x264 WEB when both exist
+              # Soft penalty — won't hard-block anime (almost always x265)
+              # but slightly prefers x264 WEB when both exist at same quality
               trash_ids = [ "47435ece6b99a0b477caf360e79ba0bb" ]; # x265 (HD)
               assign_scores_to = [
                 {
@@ -171,16 +183,28 @@
               };
               upgrade = {
                 allowed = true;
-                until_quality = "Remux-1080p";
+                # Remux-2160p is the ceiling — lossless 4K disc copy
+                until_quality = "Remux-2160p";
                 until_score = 10000;
               };
               min_format_score = 0;
               quality_sort = "top";
               qualities = [
-                # Radarr treats Remux and Bluray as separate qualities (unlike Sonarr)
-                # so single-name entries work fine here
+                # 4K disc sources (best possible quality)
+                { name = "Remux-2160p"; }
+                { name = "Bluray-2160p"; }
+                # 4K streaming
+                {
+                  name = "WEB 2160p";
+                  qualities = [
+                    "WEBDL-2160p"
+                    "WEBRip-2160p"
+                  ];
+                }
+                # 1080p disc sources
                 { name = "Remux-1080p"; }
                 { name = "Bluray-1080p"; }
+                # 1080p streaming
                 {
                   name = "WEB 1080p";
                   qualities = [
@@ -227,6 +251,21 @@
               ];
             }
             {
+              # 2160p remux groups — lossless 4K disc rips, best possible
+              trash_ids = [
+                "9965a052eb87b0d10313b1cea89eb451" # Remux Tier 01
+                "8a1d0c3d7497e741736761a1da866a2e" # Remux Tier 02
+                "d01958ef0dea8f72096d88e2dff5a5d8" # Remux Tier 03
+              ];
+              assign_scores_to = [
+                {
+                  name = "WEB-1080p";
+                  score = 200;
+                }
+              ];
+            }
+            {
+              # 1080p remux / Bluray encode groups
               trash_ids = [
                 "3a3ff47579026e76d6504ebea39390de" # Remux Tier 01
                 "9f98181fe5a3fbeb0cc29340da2a468a" # Remux Tier 02
@@ -235,7 +274,7 @@
               assign_scores_to = [
                 {
                   name = "WEB-1080p";
-                  score = 200;
+                  score = 180;
                 }
               ];
             }
