@@ -4,7 +4,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ./moonlight.nix # Moonlight streaming client (replaces Jovian)
+    # ./moonlight.nix # Moonlight streaming client (replaces Jovian)
     ../../global-configs/users/misty.nix
     ../../global-configs/system/locale.nix
     ../../global-configs/system/networking/ssh.nix
@@ -12,8 +12,8 @@
     ../../global-configs/system/nixoptions.nix
     ../../global-configs/system/virtualisation.nix
     ../../global-configs/system/gnupg.nix
-    ../../global-configs/system/DE/kde.nix
-    ../../global-configs/system/DE/audio.nix
+    # ../../global-configs/system/DE/kde.nix
+    # ../../global-configs/system/DE/audio.nix
     ./services/jellyfin.nix
     ./system/nvidia.nix
     ./services/arr
