@@ -38,11 +38,9 @@
               min_format_score = 0;
               quality_sort = "top";
               qualities = [
-                # Sonarr does not have a standalone Remux quality —
-                # Bluray-1080p is the highest 1080p disc source available.
-                # 2160p WEB is below 1080p Bluray: we prefer a great 1080p
-                # disc encode over a compressed 4K stream for TV series.
-                { name = "Bluray-1080p"; }
+                # 2160p disc sources
+                { name = "Bluray-2160p Remux"; }
+                { name = "Bluray-2160p"; }
                 {
                   name = "WEB 2160p";
                   qualities = [
@@ -50,6 +48,9 @@
                     "WEBRip-2160p"
                   ];
                 }
+                # 1080p disc sources (Sonarr calls its remux "Bluray-1080p Remux")
+                { name = "Bluray-1080p Remux"; }
+                { name = "Bluray-1080p"; }
                 {
                   name = "WEB 1080p";
                   qualities = [
@@ -57,6 +58,8 @@
                     "WEBRip-1080p"
                   ];
                 }
+                # 720p
+                { name = "Bluray-720p"; }
                 {
                   name = "WEB 720p";
                   qualities = [
@@ -64,9 +67,9 @@
                     "WEBRip-720p"
                   ];
                 }
-                {
-                  name = "DVD";
-                }
+                # 480p/SD
+                { name = "Bluray-480p"; }
+                { name = "DVD"; }
                 {
                   name = "WEB 480p";
                   qualities = [
@@ -212,6 +215,8 @@
                     "WEBRip-1080p"
                   ];
                 }
+                # 720p
+                { name = "Bluray-720p"; }
                 {
                   name = "WEB 720p";
                   qualities = [
@@ -219,6 +224,9 @@
                     "WEBRip-720p"
                   ];
                 }
+                # 480p/SD
+                { name = "Bluray-480p"; }
+                { name = "DVD"; }
                 {
                   name = "WEB 480p";
                   qualities = [
