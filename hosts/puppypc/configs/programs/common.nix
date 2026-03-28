@@ -24,6 +24,7 @@
     r2modman
     deadlock-mod-manager
     jackify
+    heroic
   ];
 
   services.linux-wallpaperengine = {
