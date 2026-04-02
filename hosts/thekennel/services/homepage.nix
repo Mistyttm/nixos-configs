@@ -204,8 +204,8 @@
             };
           }
           {
-            "Seer" = {
-              icon = "seer";
+            "Seerr" = {
+              icon = "seerr";
               href = "http://192.168.0.171:5055";
               description = "Media requests";
               widget = {
