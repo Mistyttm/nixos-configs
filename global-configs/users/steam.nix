@@ -7,5 +7,5 @@
     createHome = true;
     group = "steam";
   };
-  users.groups.steam = {};
+  users.groups.steam = { };
 }

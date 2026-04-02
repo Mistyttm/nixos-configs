@@ -72,7 +72,7 @@
     description = "Satisfactory Dedicated Server";
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
-    
+
     serviceConfig = {
       Type = "simple";
       User = "steam";
@@ -81,17 +81,17 @@
       ExecStart = "/var/lib/steamuser/SatisfactoryDedicatedServer/FactoryServer.sh";
       Restart = "on-failure";
       RestartSec = "10s";
-      
+
       # Security settings
       NoNewPrivileges = true;
       PrivateTmp = true;
       ProtectSystem = "strict";
       ProtectHome = true;
       ReadWritePaths = [ "/var/lib/steamuser" ];
-      
+
       # Resource limits
       LimitNOFILE = 65536;
-      
+
       # Environment
       Environment = [
         "HOME=/var/lib/steamuser"

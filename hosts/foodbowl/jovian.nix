@@ -1,4 +1,5 @@
-{ ... }: {
+{ ... }:
+{
   jovian = {
     steam = {
       enable = true;
