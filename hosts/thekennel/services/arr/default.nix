@@ -45,6 +45,7 @@
     mediainfo # Media file inspector
     mkvtoolnix # MKV manipulation tools
     bc
+    i-sponsor-block-tv
   ];
 
   users.groups.media = {
