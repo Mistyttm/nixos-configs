@@ -186,12 +186,12 @@
             };
           }
           {
-            "Jellyseerr" = {
-              icon = "jellyseerr";
+            "Seer" = {
+              icon = "seer";
               href = "http://192.168.0.171:5055";
               description = "Media requests";
               widget = {
-                type = "jellyseerr";
+                type = "seer";
                 url = "http://127.0.0.1:5055";
                 key = "{{HOMEPAGE_VAR_JELLYSEERR_API_KEY}}";
               };
