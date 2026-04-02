@@ -76,7 +76,6 @@
     tmux
     sops
     speedtest-cli
-    i-sponsor-block-tv
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
