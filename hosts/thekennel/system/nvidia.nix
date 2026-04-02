@@ -7,6 +7,6 @@
     extraGraphicsPackages = with pkgs; [
       intel-vaapi-driver
     ];
-    nvidiaContainerToolkit = true;
+    nvidiaContainerToolkit = false;
   };
 }
