@@ -48,4 +48,20 @@ in
     "Z /data/tdarr 0750 tdarr tdarr -"
     "d ${localRoot}/tdarr 0755 tdarr media -"
   ];
+
+  systemd.services."tdarr-node-external".serviceConfig.ReadWritePaths = [
+    "${localRoot}/tdarr" # cache
+    "${localRoot}/tv" # library
+    "/mnt/media/Movies" # library
+  ];
+  systemd.services."tdarr-node-internal".serviceConfig.ReadWritePaths = [
+    "${localRoot}/tdarr" # cache
+    "${localRoot}/tv" # library
+    "/mnt/media/Movies" # library
+  ];
+  systemd.services."tdarr-server".serviceConfig.ReadWritePaths = [
+    "${localRoot}/tdarr" # cache
+    "${localRoot}/tv" # library
+    "/mnt/media/Movies" # library
+  ];
 }
