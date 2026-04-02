@@ -1,26 +1,46 @@
-{ pkgs, ... }:
-
+{ ... }:
+let
+  localRoot = "/mnt/localExpansion";
+in
 {
   services.tdarr = {
-    enable = false;
-    openFirewall = true; # Opens ports 8265 (web UI) and 8266 (API)
-    # enableCCExtractor = true;
-    cronPluginUpdate = "";
-    extraServerConfig = {
-      ffmpegPath = "${pkgs.jellyfin-ffmpeg}/bin/ffmpeg";
-      ffprobePath = "${pkgs.jellyfin-ffmpeg}/bin/ffprobe";
-      handbrakePath = "${pkgs.handbrake}/bin/HandBrakeCLI";
-      mkvpropeditPath = "${pkgs.mkvtoolnix}/bin/mkvpropedit";
-    };
-    nodes.gpu = {
+    enable = true;
+
+    # Keep data under /data to match existing layout expectations.
+    dataDir = "/data/tdarr";
+
+    server = {
       enable = true;
-      workers = {
-        transcodeGPU = 1; # Use 1 GPU worker (adjust as needed)
-        transcodeCPU = 1; # Optional: also use 1 CPU worker
-        healthcheckGPU = 1; # Optional: GPU healthcheck
-        healthcheckCPU = 1;
+      serverIP = "0.0.0.0";
+      serverPort = 8266;
+      webUIPort = 8265;
+      openFirewall = true;
+    };
+
+    nodes = {
+      internal = {
+        enable = true;
+        name = "InternalNode";
+        serverURL = "http://127.0.0.1:8266";
+      };
+
+      external = {
+        enable = true;
+        name = "ExternalNode";
+        serverURL = "http://127.0.0.1:8266";
       };
     };
-    group = "media";
   };
+
+  users.users.tdarr = {
+    uid = 985;
+    extraGroups = [
+      "media"
+      "video"
+    ];
+  };
+
+  systemd.tmpfiles.rules = [
+    "d ${localRoot}/tdarr 0755 tdarr media -"
+  ];
 }
