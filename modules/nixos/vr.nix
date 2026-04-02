@@ -23,7 +23,7 @@ let
       rev = version;
       hash = cfg.slimevr.wivrnSlimeHash;
     };
-    monado = old.monado.overrideAttrs (_older: rec {
+    monado = old.monado.overrideAttrs (_older: {
       src = pkgs.fetchFromGitLab {
         domain = "gitlab.freedesktop.org";
         owner = "monado";
@@ -138,7 +138,6 @@ in
       enable = cfg.wivrn.enable;
       package = mkIfElse cfg.slimevr.enable (forSlimeVR) base;
       openFirewall = true;
-      defaultRuntime = true;
       autoStart = true;
       config = {
         enable = true;
