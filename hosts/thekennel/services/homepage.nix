@@ -108,7 +108,7 @@
           src
           ;
         fetcherVersion = 1;
-        hash = "sha256-fP5y6q42Az8pcCLqiiifFtEh8lgISSZndWyfCX1mfgM=";
+        hash = "sha256-jnv9PnClm/jIQ4uU6c4A1UiAmwoihG0l6k3fUbD47I4=";
       };
     });
 
