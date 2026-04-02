@@ -24,6 +24,12 @@ in
         package = pkgs.tdarr-node;
         name = "InternalNode";
         serverURL = "http://127.0.0.1:8266";
+        workers = {
+          transcodeCPU = 0;
+          transcodeGPU = 2;
+          healthcheckCPU = 1;
+          healthcheckGPU = 1;
+        };
       };
 
       external = {
@@ -31,6 +37,12 @@ in
         package = pkgs.tdarr-node;
         name = "ExternalNode";
         serverURL = "http://127.0.0.1:8266";
+        workers = {
+          transcodeCPU = 0;
+          transcodeGPU = 2;
+          healthcheckCPU = 1;
+          healthcheckGPU = 1;
+        };
       };
     };
   };
