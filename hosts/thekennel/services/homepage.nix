@@ -93,6 +93,24 @@
 
   services.homepage-dashboard = {
     enable = true;
+    package = pkgs.homepage-dashboard.overrideAttrs (finalAttrs: {
+      version = "1.12.3";
+      src = pkgs.fetchFromGitHub {
+        owner = "gethomepage";
+        repo = "homepage";
+        rev = "refs/tags/v${finalAttrs.version}";
+        hash = "sha256-/8JAFYi7CSRvxEvqb36TTTWUbcaIht++OgKV1rSBcmg=";
+      };
+      pnpmDeps = pkgs.pnpm_10.fetchDeps {
+        inherit (finalAttrs)
+          pname
+          version
+          src
+          ;
+        fetcherVersion = 1;
+        hash = "sha256-fP5y6q42Az8pcCLqiiifFtEh8lgISSZndWyfCX1mfgM=";
+      };
+    });
 
     listenPort = 3000;
     openFirewall = true;
