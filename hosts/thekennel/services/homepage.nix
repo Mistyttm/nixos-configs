@@ -99,7 +99,7 @@
         owner = "gethomepage";
         repo = "homepage";
         rev = "refs/tags/v${finalAttrs.version}";
-        hash = "sha256-/8JAFYi7CSRvxEvqb36TTTWUbcaIht++OgKV1rSBcmg=";
+        hash = "sha256-jnv9PnClm/jIQ4uU6c4A1UiAmwoihG0l6k3fUbD47I4=";
       };
       pnpmDeps = pkgs.pnpm_10.fetchDeps {
         inherit (finalAttrs)
