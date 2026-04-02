@@ -1,0 +1,69 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "nix: fmt",
+      "type": "shell",
+      "command": "nix",
+      "args": ["fmt"],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "nix: check",
+      "type": "shell",
+      "command": "nix",
+      "args": ["flake", "check"],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "nix: build hydra job (puppypc)",
+      "type": "shell",
+      "command": "nix",
+      "args": ["build", ".#hydraJobs.nixos.puppypc"],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "nix: build hydra job (mistylappytappy)",
+      "type": "shell",
+      "command": "nix",
+      "args": ["build", ".#hydraJobs.nixos.mistylappytappy"],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "nix: build hydra job (thedogpark)",
+      "type": "shell",
+      "command": "nix",
+      "args": ["build", ".#hydraJobs.nixos.thedogpark"],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "nix: build hydra job (thekennel)",
+      "type": "shell",
+      "command": "nix",
+      "args": ["build", ".#hydraJobs.nixos.thekennel"],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "nix: build topology output",
+      "type": "shell",
+      "command": "nix",
+      "args": ["build", ".#topology.x86_64-linux.config.output"],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "just: pre-commit",
+      "type": "shell",
+      "command": "just",
+      "args": ["pre-commit"],
+      "group": "test",
+      "problemMatcher": []
+    }
+  ]
+}

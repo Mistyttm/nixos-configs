@@ -1,3 +1,12 @@
 {
-    "nixEnvSelector.nixFile": "${workspaceFolder}/flake.nix"
+    "nixEnvSelector.nixFile": "${workspaceFolder}/flake.nix",
+    "editor.formatOnSave": true,
+    "files.associations": {
+        "*.nix": "nix"
+    },
+    "[nix]": {
+        "editor.defaultFormatter": "jnoortheen.nix-ide"
+    },
+    "nix.enableLanguageServer": true,
+    "nix.serverPath": "nil"
 }
