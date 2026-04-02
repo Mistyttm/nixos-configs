@@ -115,6 +115,7 @@
       };
       overlay-wallpaper-engine = import ./patches/wallpaper-engine-plugin;
       overlay-libreoffice = import ./patches/libreoffice;
+      overlay-tdarr = import ./patches/tdarr;
     in
     {
       hydraJobs = {
@@ -267,6 +268,7 @@
                 nix-topology.overlays.default
                 nixpkgs-extra.overlays.default
                 overlay-dispatcharr
+                overlay-tdarr
               ];
             }
           ];
