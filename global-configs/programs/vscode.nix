@@ -215,6 +215,23 @@
           updateImportsOnFileMove.enabled = "always";
         };
 
+        chat.tools.urls.autoApprove = {
+          "https://code.visualstudio.com" = true;
+          "https://github.com/microsoft/vscode/wiki/*" = true;
+          "https://search.nixos.org" = {
+            approveRequest = true;
+            approveResponse = true;
+          };
+          "https://github.com/NixOS/*" = {
+            approveRequest = true;
+            approveResponse = true;
+          };
+          "https://wiki.nixos.org/*" = {
+            approveRequest = true;
+            approveResponse = true;
+          };
+        };
+
         diffEditor.ignoreTrimWhitespace = false;
 
         githubPullRequests.pullBranch = "never";
