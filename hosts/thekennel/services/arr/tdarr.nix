@@ -44,6 +44,8 @@ in
   };
 
   systemd.tmpfiles.rules = [
+    # Ensure ownership is corrected after migration from docker volumes.
+    "Z /data/tdarr 0750 tdarr tdarr -"
     "d ${localRoot}/tdarr 0755 tdarr media -"
   ];
 }
