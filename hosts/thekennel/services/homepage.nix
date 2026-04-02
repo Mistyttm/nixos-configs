@@ -101,13 +101,13 @@
         rev = "refs/tags/v${finalAttrs.version}";
         hash = "sha256-jnv9PnClm/jIQ4uU6c4A1UiAmwoihG0l6k3fUbD47I4=";
       };
-      pnpmDeps = pkgs.pnpm_10.fetchDeps {
+      pnpmDeps = pkgs.fetchPnpmDeps {
         inherit (finalAttrs)
           pname
           version
           src
           ;
-        fetcherVersion = 1;
+        fetcherVersion = 2;
         hash = "sha256-fP5y6q42Az8pcCLqiiifFtEh8lgISSZndWyfCX1mfgM=";
       };
     });
