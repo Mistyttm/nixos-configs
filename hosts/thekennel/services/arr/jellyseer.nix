@@ -1,6 +1,6 @@
 { ... }:
 {
-  services.jellyseerr = {
+  services.seer = {
     enable = true;
     openFirewall = true;
   };
