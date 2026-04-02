@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 let
   localRoot = "/mnt/localExpansion";
 in
@@ -11,6 +11,7 @@ in
 
     server = {
       enable = true;
+      package = pkgs.tdarr-server;
       serverIP = "0.0.0.0";
       serverPort = 8266;
       webUIPort = 8265;
@@ -20,12 +21,14 @@ in
     nodes = {
       internal = {
         enable = true;
+        package = pkgs.tdarr-node;
         name = "InternalNode";
         serverURL = "http://127.0.0.1:8266";
       };
 
       external = {
         enable = true;
+        package = pkgs.tdarr-node;
         name = "ExternalNode";
         serverURL = "http://127.0.0.1:8266";
       };
