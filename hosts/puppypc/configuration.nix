@@ -27,6 +27,7 @@ in
 
   boot.kernelPackages = lib.mkForce pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
   boot.supportedFilesystems = [ "ntfs" ];
+  boot.kernelModules = [ "ntsync" ];
 
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
 
@@ -81,7 +82,6 @@ in
       cudaSupport = true;
     };
     openFirewall = true;
-    defaultRuntime = true;
     autoStart = true;
     config = {
       enable = true;
@@ -118,6 +118,14 @@ in
   };
 
   programs.nix-ld.enable = true;
+
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc
+    zlib
+    openssl
+    icu
+    libunwind
+  ];
 
   virtualisation.waydroid.enable = true;
 
