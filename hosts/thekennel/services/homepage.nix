@@ -43,7 +43,7 @@
     sopsFile = ../../../secrets/media.yaml;
   };
 
-  sops.secrets."jellystat_api_key" = {
+  sops.secrets."jellystat/api_key" = {
     sopsFile = ../../../secrets/media.yaml;
   };
 
@@ -70,7 +70,7 @@
       HOMEPAGE_VAR_QBITTORRENT_PASSWORD=${config.sops.placeholder."qbittorrent_password"}
       HOMEPAGE_VAR_DISPATCHARR_USERNAME=${config.sops.placeholder."dispatcharr/username"}
       HOMEPAGE_VAR_DISPATCHARR_PASSWORD=${config.sops.placeholder."dispatcharr/password"}
-      HOMEPAGE_VAR_JELLYSTAT_API_KEY=${config.sops.placeholder."jellystat_api_key"}
+      HOMEPAGE_VAR_JELLYSTAT_API_KEY=${config.sops.placeholder."jellystat/api_key"}
       HOMEPAGE_VAR_QNAP_USERNAME=${config.sops.placeholder."qnap/username"}
       HOMEPAGE_VAR_QNAP_PASSWORD=${config.sops.placeholder."qnap/password"}
     '';
