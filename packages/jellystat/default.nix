@@ -30,6 +30,11 @@ buildNpmPackage (finalAttrs: {
 
   env.NODE_OPTIONS = "--openssl-legacy-provider";
 
+  postPatch = ''
+    substituteInPlace backend/server.js \
+      --replace-fail "const PORT = 3000;" "const PORT = Number(process.env.JS_PORT || 3000);"
+  '';
+
   nativeBuildInputs = [ makeWrapper ];
 
   installPhase = ''
