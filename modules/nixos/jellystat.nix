@@ -259,7 +259,6 @@ in
       authentication = ''
         host all all 127.0.0.1/32 trust
       '';
-      settings.listen_addresses = "127.0.0.1";
       ensureDatabases = [ cfg.database.name ];
       ensureUsers = [
         {
