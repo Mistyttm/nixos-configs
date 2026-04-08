@@ -251,6 +251,7 @@ in
       mkdir -p ${cfg.dataDir}/app
       ${pkgs.rsync}/bin/rsync -a --delete ${cfg.package}/share/jellystat/ ${cfg.dataDir}/app/
       chown -R ${cfg.user}:${cfg.group} ${cfg.dataDir}
+      chmod -R u+rwX,go+rX,go-w ${cfg.dataDir}/app
     '';
 
     services.postgresql = lib.mkIf cfg.database.createLocally {
@@ -260,6 +261,7 @@ in
         {
           name = cfg.database.user;
           ensureDBOwnership = true;
+          ensureClauses.createdb = true;
         }
       ];
     };
