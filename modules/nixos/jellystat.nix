@@ -256,6 +256,10 @@ in
 
     services.postgresql = lib.mkIf cfg.database.createLocally {
       enable = true;
+      authentication = ''
+        host all all 127.0.0.1/32 trust
+      '';
+      settings.listen_addresses = "127.0.0.1";
       ensureDatabases = [ cfg.database.name ];
       ensureUsers = [
         {
@@ -272,6 +276,7 @@ in
       after = lib.optionals cfg.database.createLocally [ "postgresql.service" ] ++ [
         "network-online.target"
       ];
+      requires = lib.optionals cfg.database.createLocally [ "postgresql.service" ];
       wants = [ "network-online.target" ];
 
       environment = appEnv;

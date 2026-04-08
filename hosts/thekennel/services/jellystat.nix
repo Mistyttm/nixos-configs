@@ -24,7 +24,7 @@
     # Use a local PostgreSQL instance for Jellystat.
     database = {
       createLocally = true;
-      host = "/run/postgresql";
+      host = "127.0.0.1";
       port = 5432;
       name = "jellystat";
       user = "jellystat";
