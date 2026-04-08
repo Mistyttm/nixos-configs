@@ -21,10 +21,10 @@
 
     group = "media";
 
-    # Keep this false by default to avoid implicit PostgreSQL server conflicts.
+    # Use a local PostgreSQL instance for Jellystat.
     database = {
-      createLocally = false;
-      host = "127.0.0.1";
+      createLocally = true;
+      host = "/run/postgresql";
       port = 5432;
       name = "jellystat";
       user = "jellystat";
