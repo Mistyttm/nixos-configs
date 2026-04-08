@@ -43,6 +43,10 @@
     sopsFile = ../../../secrets/media.yaml;
   };
 
+  sops.secrets."jellystat_api_key" = {
+    sopsFile = ../../../secrets/media.yaml;
+  };
+
   sops.secrets."qnap/username" = {
     sopsFile = ../../../secrets/media.yaml;
   };
@@ -66,6 +70,7 @@
       HOMEPAGE_VAR_QBITTORRENT_PASSWORD=${config.sops.placeholder."qbittorrent_password"}
       HOMEPAGE_VAR_DISPATCHARR_USERNAME=${config.sops.placeholder."dispatcharr/username"}
       HOMEPAGE_VAR_DISPATCHARR_PASSWORD=${config.sops.placeholder."dispatcharr/password"}
+      HOMEPAGE_VAR_JELLYSTAT_API_KEY=${config.sops.placeholder."jellystat_api_key"}
       HOMEPAGE_VAR_QNAP_USERNAME=${config.sops.placeholder."qnap/username"}
       HOMEPAGE_VAR_QNAP_PASSWORD=${config.sops.placeholder."qnap/password"}
     '';
@@ -223,6 +228,19 @@
               widget = {
                 type = "tdarr";
                 url = "http://127.0.0.1:8265";
+              };
+            };
+          }
+          {
+            "Jellystat" = {
+              icon = "jellystat";
+              href = "http://192.168.0.171:3005";
+              description = "Jellyfin statistics";
+              widget = {
+                type = "jellystat";
+                url = "http://127.0.0.1:3005";
+                key = "{{HOMEPAGE_VAR_JELLYSTAT_API_KEY}}";
+                days = 30;
               };
             };
           }

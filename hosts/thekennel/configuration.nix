@@ -17,6 +17,7 @@
     ./services/jellyfin.nix
     ./system/nvidia.nix
     ./services/arr
+    ./services/jellystat.nix
     ./services/wireguard.nix
     ./services/nginx.nix
     ./services/homepage.nix
