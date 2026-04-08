@@ -17,12 +17,16 @@ buildNpmPackage (finalAttrs: {
     hash = "sha256-M7Gw/TgDB+vA5wtYf5vLxLZ5r9D8B9pVEBE0FiRGlKs=";
   };
 
-  # Run a build once and replace this with the hash from the error output.
-  npmDepsHash = lib.fakeHash;
+  npmDepsFetcherVersion = 2;
+
+  npmDepsHash = "sha256-JjNYysGfeRD2riQddxqsYPlrg43nC7Vv0B1gi4vX6FE=";
+
+  makeCacheWritable = true;
 
   nodejs = nodejs_22;
 
   npmPackFlags = [ "--ignore-scripts" ];
+  npmFlags = [ "--legacy-peer-deps" ];
 
   env.NODE_OPTIONS = "--openssl-legacy-provider";
 
