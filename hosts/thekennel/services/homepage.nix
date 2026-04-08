@@ -137,7 +137,7 @@
       layout = {
         "Media" = {
           style = "row";
-          columns = 3;
+          columns = 4;
         };
         "Downloads" = {
           style = "row";
