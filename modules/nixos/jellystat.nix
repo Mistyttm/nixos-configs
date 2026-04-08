@@ -25,18 +25,22 @@ let
   // (lib.optionalAttrs (cfg.geolite.accountId != null) {
     JS_GEOLITE_ACCOUNT_ID = cfg.geolite.accountId;
   })
+  // (lib.optionalAttrs (cfg.jwtSecretFile != null) {
+    FILE__JWT_SECRET = toString cfg.jwtSecretFile;
+  })
+  // (lib.optionalAttrs (cfg.database.passwordFile != null) {
+    FILE__POSTGRES_PASSWORD = toString cfg.database.passwordFile;
+  })
+  // (lib.optionalAttrs (cfg.jsPasswordFile != null) {
+    FILE__JS_PASSWORD = toString cfg.jsPasswordFile;
+  })
+  // (lib.optionalAttrs (cfg.geolite.licenseKeyFile != null) {
+    FILE__JS_GEOLITE_LICENSE_KEY = toString cfg.geolite.licenseKeyFile;
+  })
   // cfg.environment;
-
-  generatedEnvFile = "${cfg.dataDir}/generated-env";
 
   startScript = pkgs.writeShellScript "jellystat-start" ''
     set -euo pipefail
-
-    if [ -f ${generatedEnvFile} ]; then
-      set -a
-      . ${generatedEnvFile}
-      set +a
-    fi
 
     # Keep Docker parity: expand FILE__FOO=/path/to/file into FOO=<file-content>.
     while IFS='=' read -r var_name var_value; do
@@ -246,22 +250,6 @@ in
 
       mkdir -p ${cfg.dataDir}/app
       ${pkgs.rsync}/bin/rsync -a --delete ${cfg.package}/share/jellystat/ ${cfg.dataDir}/app/
-
-      : > ${generatedEnvFile}
-      ${lib.optionalString (cfg.jwtSecretFile != null) ''
-        echo "JWT_SECRET=$(cat ${cfg.jwtSecretFile})" >> ${generatedEnvFile}
-      ''}
-      ${lib.optionalString (cfg.database.passwordFile != null) ''
-        echo "POSTGRES_PASSWORD=$(cat ${cfg.database.passwordFile})" >> ${generatedEnvFile}
-      ''}
-      ${lib.optionalString (cfg.jsPasswordFile != null) ''
-        echo "JS_PASSWORD=$(cat ${cfg.jsPasswordFile})" >> ${generatedEnvFile}
-      ''}
-      ${lib.optionalString (cfg.geolite.licenseKeyFile != null) ''
-        echo "JS_GEOLITE_LICENSE_KEY=$(cat ${cfg.geolite.licenseKeyFile})" >> ${generatedEnvFile}
-      ''}
-
-      chmod 0600 ${generatedEnvFile}
       chown -R ${cfg.user}:${cfg.group} ${cfg.dataDir}
     '';
 
