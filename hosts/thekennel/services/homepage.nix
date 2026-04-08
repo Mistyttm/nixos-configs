@@ -209,6 +209,19 @@
             };
           }
           {
+            "Jellystat" = {
+              icon = "jellystat";
+              href = "http://192.168.0.171:3005";
+              description = "Jellyfin statistics";
+              widget = {
+                type = "jellystat";
+                url = "http://127.0.0.1:3005";
+                key = "{{HOMEPAGE_VAR_JELLYSTAT_API_KEY}}";
+                days = 30;
+              };
+            };
+          }
+          {
             "Seerr" = {
               icon = "seerr";
               href = "http://192.168.0.171:5055";
@@ -228,19 +241,6 @@
               widget = {
                 type = "tdarr";
                 url = "http://127.0.0.1:8265";
-              };
-            };
-          }
-          {
-            "Jellystat" = {
-              icon = "jellystat";
-              href = "http://192.168.0.171:3005";
-              description = "Jellyfin statistics";
-              widget = {
-                type = "jellystat";
-                url = "http://127.0.0.1:3005";
-                key = "{{HOMEPAGE_VAR_JELLYSTAT_API_KEY}}";
-                days = 30;
               };
             };
           }
