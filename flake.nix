@@ -107,10 +107,15 @@
       # };
       localPackages =
         final:
-        nixpkgs.lib.filesystem.packagesFromDirectoryRecursive {
-          directory = ./packages;
-          callPackage = final.callPackage;
-        };
+        let
+          discovered = nixpkgs.lib.filesystem.packagesFromDirectoryRecursive {
+            directory = ./packages;
+            callPackage = final.callPackage;
+          };
+        in
+        builtins.mapAttrs (
+          _name: value: if builtins.isAttrs value && value ? default then value.default else value
+        ) discovered;
       overlay-packages = final: _prev: localPackages final;
       commonOverlays = [
         nix-topology.overlays.default
