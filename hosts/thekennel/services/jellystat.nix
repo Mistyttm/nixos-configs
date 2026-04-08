@@ -2,10 +2,16 @@
 {
   sops.secrets."jellystat/jwt_secret" = {
     sopsFile = ../../../secrets/media.yaml;
+    owner = config.services.jellystat.user;
+    group = config.services.jellystat.group;
+    mode = "0400";
   };
 
   sops.secrets."jellystat/postgres_password" = {
     sopsFile = ../../../secrets/media.yaml;
+    owner = config.services.jellystat.user;
+    group = config.services.jellystat.group;
+    mode = "0400";
   };
 
   services.jellystat = {
