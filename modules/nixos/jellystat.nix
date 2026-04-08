@@ -284,7 +284,7 @@ in
         Type = "simple";
         User = cfg.user;
         Group = cfg.group;
-        WorkingDirectory = "${cfg.dataDir}/app";
+        WorkingDirectory = "${cfg.dataDir}/app/backend";
         ExecStart = startScript;
         Restart = "always";
         RestartSec = "5s";
