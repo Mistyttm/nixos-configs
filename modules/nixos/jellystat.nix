@@ -10,6 +10,7 @@ let
   appEnv = {
     TZ = cfg.timeZone;
     JS_LISTEN_IP = cfg.listenAddress;
+    JS_PORT = toString cfg.port;
     JS_BASE_URL = cfg.baseUrl;
     POSTGRES_IP = cfg.database.host;
     POSTGRES_PORT = toString cfg.database.port;
@@ -64,7 +65,13 @@ in
     openFirewall = lib.mkOption {
       type = lib.types.bool;
       default = false;
-      description = "Open firewall for Jellystat's HTTP port (3000).";
+      description = "Open firewall for Jellystat's HTTP port.";
+    };
+
+    port = lib.mkOption {
+      type = lib.types.port;
+      default = 3000;
+      description = "Port Jellystat listens on (JS_PORT).";
     };
 
     dataDir = lib.mkOption {
@@ -227,7 +234,7 @@ in
       description = "Jellystat service user";
     };
 
-    networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [ 3000 ];
+    networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [ cfg.port ];
 
     systemd.tmpfiles.rules = [
       "d ${cfg.dataDir} 0750 ${cfg.user} ${cfg.group} -"
