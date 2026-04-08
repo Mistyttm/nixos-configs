@@ -87,20 +87,16 @@
     }:
     let
       system = "x86_64-linux";
+      picosvgOverlay = _final: prev: {
+        python313Packages = prev.python313Packages // {
+          picosvg = prev.python313Packages.picosvg.overrideAttrs (_: {
+            doCheck = false;
+          });
+        };
+      };
       pkgs = import nixpkgs {
         inherit system;
-        overlays = [
-          nix-topology.overlays.default
-          # picosvg 0.22.3 has upstream test regressions that break the
-          # jetbrains-mono build chain (picosvg → nanoemoji → gftools → jetbrains-mono).
-          (_final: prev: {
-            python313Packages = prev.python313Packages // {
-              picosvg = prev.python313Packages.picosvg.overrideAttrs (_: {
-                doCheck = false;
-              });
-            };
-          })
-        ];
+        overlays = commonOverlays ++ [ picosvgOverlay ];
       };
       homeVersion = "26.05"; # Update this when you update your NixOS version
       # overlay-satisfactory = final: prev: {
@@ -109,10 +105,17 @@
       #     config.allowUnfree = true;
       #   };
       # };
-      overlay-dispatcharr = final: prev: {
-        dispatcharr-frontend = prev.callPackage ./packages/dispatcharr-frontend.nix { };
-        dispatcharr = final.callPackage ./packages/dispatcharr.nix { };
-      };
+      localPackages =
+        final:
+        nixpkgs.lib.filesystem.packagesFromDirectoryRecursive {
+          directory = ./packages;
+          callPackage = final.callPackage;
+        };
+      overlay-packages = final: _prev: localPackages final;
+      commonOverlays = [
+        nix-topology.overlays.default
+        overlay-packages
+      ];
       overlay-wallpaper-engine = import ./patches/wallpaper-engine-plugin;
       overlay-libreoffice = import ./patches/libreoffice;
       overlay-tdarr = import ./patches/tdarr;
@@ -121,6 +124,7 @@
       hydraJobs = {
         nixos = builtins.mapAttrs (_: cfg: cfg.config.system.build.toplevel) self.nixosConfigurations;
       };
+      overlays.default = overlay-packages;
       nixosConfigurations = {
         puppypc = nixpkgs.lib.nixosSystem {
           inherit system;
@@ -154,11 +158,9 @@
               };
 
               nixpkgs = {
-                overlays = [
-                  nix-topology.overlays.default
+                overlays = commonOverlays ++ [
                   nixpkgs-extra.overlays.default
                   nix-vscode-extensions.overlays.default
-                  overlay-dispatcharr
                   overlay-wallpaper-engine
                   overlay-libreoffice
                   nix-cachyos-kernel.overlays.pinned
@@ -197,10 +199,8 @@
                 ];
               };
               nixpkgs = {
-                overlays = [
-                  nix-topology.overlays.default
+                overlays = commonOverlays ++ [
                   nix-vscode-extensions.overlays.default
-                  overlay-dispatcharr
                   overlay-libreoffice
                   firefox-addons.overlays.default
                 ];
@@ -233,11 +233,7 @@
               home-manager.users.steam = import ./hosts/thedogpark/steam.nix;
 
               nixpkgs = {
-                overlays = [
-                  nix-topology.overlays.default
-                  nix-minecraft.overlay
-                  overlay-dispatcharr
-                ];
+                overlays = commonOverlays ++ [ nix-minecraft.overlay ];
               };
             }
           ];
@@ -264,10 +260,8 @@
 
               home-manager.users.misty = import ./hosts/thekennel/home.nix;
 
-              nixpkgs.overlays = [
-                nix-topology.overlays.default
+              nixpkgs.overlays = commonOverlays ++ [
                 nixpkgs-extra.overlays.default
-                overlay-dispatcharr
                 overlay-tdarr
               ];
             }
@@ -296,14 +290,7 @@
         #  ];
         #};
       };
-      packages.x86_64-linux =
-        let
-          dispatcharr-frontend = pkgs.callPackage ./packages/dispatcharr-frontend.nix { };
-        in
-        {
-          inherit dispatcharr-frontend;
-          dispatcharr = pkgs.callPackage ./packages/dispatcharr.nix { inherit dispatcharr-frontend; };
-        };
+      packages.x86_64-linux = localPackages pkgs;
 
       formatter.x86_64-linux = nixpkgs.legacyPackages.${system}.nixfmt-tree;
 
