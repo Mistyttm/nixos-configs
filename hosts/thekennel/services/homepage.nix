@@ -215,7 +215,7 @@
               description = "Jellyfin statistics";
               widget = {
                 type = "jellystat";
-                url = "http://127.0.0.1:3005";
+                url = "http://192.168.0.171:3005";
                 key = "{{HOMEPAGE_VAR_JELLYSTAT_API_KEY}}";
                 days = 30;
               };
