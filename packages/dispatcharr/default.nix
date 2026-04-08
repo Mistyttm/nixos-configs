@@ -2,7 +2,6 @@
   lib,
   stdenv,
   fetchFromGitHub,
-  dispatcharr-frontend,
   python313,
   ffmpeg,
   streamlink,
@@ -45,6 +44,8 @@ let
     ffmpeg
     streamlink
   ];
+
+  dispatcharr-frontend = lib.callPackage ./dispatcharr-frontend.nix;
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "dispatcharr";
