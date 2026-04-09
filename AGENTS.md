@@ -100,12 +100,26 @@ Each host has:
 
 ## Cross-Host Awareness
 
-> **CRITICAL:** This repository contains configurations for **multiple separate machines**. The machine you are currently running on is almost certainly **not** the machine whose config files you are editing.
+> ### ⚠️ STOP AND READ THIS BEFORE RUNNING ANY SYSTEM COMMAND ⚠️
 >
-> - **Do not run `nixos-rebuild switch` or `nixos-rebuild test`** without explicitly confirming the target host matches the current machine.
-> - **Do not assume the current hostname is the target host.** If editing `hosts/thekennel/`, do not run commands that would apply those changes to `puppypc` (or wherever Copilot is running).
-> - **Do not run destructive system commands** (`systemctl restart`, `rm -rf /var/...`, etc.) based on config changes — these operate on the *current* machine, not the target.
-> - When build-testing a remote host's config, always use `nix build` to evaluate it without applying: `nix build .#nixosConfigurations.<hostname>.config.system.build.toplevel`
+> **This repository manages configurations for multiple separate physical machines. You are almost certainly running on `puppypc` — the only machine the AI regularly has a shell on — while editing configs for a completely different host.**
+>
+> **Before running any system-level command, you MUST check which machine you are currently on:**
+>
+> ```bash
+> hostname
+> # or
+> cat /etc/hostname
+> ```
+>
+> The only host where it may be appropriate to run system commands directly is **`puppypc`**. For every other host (`mistylappytappy`, `thedogpark`, `thekennel`), you are **editing config files for a machine you are not on**. System commands will affect `puppypc`, not the target host.
+>
+> **Rules:**
+>
+> - **Do not run `nixos-rebuild switch` or `nixos-rebuild test`** without first running `hostname` and explicitly confirming the current machine matches the target host.
+> - **Never assume the current hostname is the target host.** If you are editing `hosts/thekennel/` and `hostname` returns `puppypc`, those are different machines — any `nixos-rebuild` or `systemctl` call acts on `puppypc`.
+> - **Do not run destructive system commands** (`systemctl restart`, `rm -rf /var/...`, `ip link`, etc.) based on config changes for any host that is not the current machine.
+> - When build-testing a remote host's config, always use `nix build` to evaluate without applying: `nix build .#nixosConfigurations.<hostname>.config.system.build.toplevel`
 > - For remote deployment, this repo uses standard NixOS tooling. Do not shell out to deploy without explicit instruction.
 
 ---
@@ -281,9 +295,11 @@ When adding a new host, ensure it is included in `hydraJobs` in `flake.nix` (it 
 
 ## What Copilot Should NOT Do
 
-- **Do not run `nixos-rebuild switch/test/boot`** without explicit confirmation that the current machine matches the target host — editing `hosts/thekennel/` on `puppypc` and running `nixos-rebuild` would modify the wrong machine
-- **Do not run system-mutating commands** (`systemctl`, `rm -rf /var/...`, `ip`, etc.) based on config edits — those affect the current host, not the edited host
+- **Do not run `nixos-rebuild switch/test/boot`** without first running `hostname` to confirm the current machine matches the target host — editing `hosts/thekennel/` on `puppypc` and running `nixos-rebuild` would modify the wrong machine. **You are almost always on `puppypc`.**
+- **Do not run any system-mutating commands** (`systemctl`, `rm -rf /var/...`, `ip`, etc.) based on config edits for a non-current host — those commands affect whichever machine the shell is on, not the edited host. **Check `hostname` first.**
 - **Do not edit `flake.lock`** — it is managed by `nix flake update` (see note below)
+- **Do not install tools with `apt`, `brew`, `pip install -g`, `npm install -g`, or `cargo install`** — this is NixOS. Use `,` (comma) for ad-hoc tool access. See the *Running CLI Tools with Nix Comma* section.
+- **Do not suggest the user install anything imperatively** — just use `,`.
 - **Do not put secrets or tokens in `.nix` files** — use sops-nix
 - **Do not use the deprecated `sha256 = "..."` string form** in fetchers — use `hash = "sha256-..."` (SRI format)
 - **Do not add `allowUnfree = true` globally** — scope it to specific packages using `nixpkgs.config.allowUnfreePredicate`
@@ -377,6 +393,72 @@ When in doubt about nixpkgs conventions not covered here:
 - [NixOS module system](https://nixos.org/manual/nixos/stable/#sec-writing-modules) — options, types, mkIf, mkMerge
 - [home-manager option search](https://home-manager-options.extranix.com/) — all available home-manager options
 - [NixOS option search](https://search.nixos.org/options) — all available NixOS module options
+
+---
+
+## Running CLI Tools with Nix Comma
+
+This repo runs on NixOS. **Do not install tools via `apt`, `brew`, `pip install -g`, `npm install -g`, `cargo install`, or any other imperative package manager.** All ad-hoc CLI tools are accessed through **[nix-community/comma](https://github.com/nix-community/comma)** (`comma` / `,`), which runs any package from nixpkgs without installing it permanently.
+
+### CRITICAL RULES
+
+1. **Before running any unfamiliar CLI tool, check if it is available in your `PATH`.** If it is not, use `,` to run it through comma — never suggest installing it.
+2. **Never use `nix shell` or `nix run` directly for ad-hoc tool use.** Use `,` instead — it uses `nix-index` to find the right package automatically.
+3. **On "command not found"**: Do NOT advise installation. Immediately retry with `,`.
+4. **Do not add tools to any NixOS config just to use them for a one-off task** — that is exactly what comma is for.
+
+### Usage
+
+```bash
+# Run any command from nixpkgs, auto-resolved by comma:
+, <command> [args...]
+
+# Examples:
+, jq '.name' data.json
+, fd '\.nix$' .
+, rg 'TODO' .
+, pandoc README.md -o README.pdf
+, shellcheck script.sh
+, ffmpeg -i input.mp4 output.gif
+, nix-tree   # inspect the nix store
+, nix-diff /nix/store/abc... /nix/store/def...
+
+# If comma prompts you to choose between multiple packages, pick the most
+# appropriate one (usually the top-level package, not a -dev or -lib variant).
+```
+
+### How Comma Works
+
+Comma uses `nix-index` to locate which nixpkgs package provides a given binary, then invokes `nix run` with that package. The nix store acts as the cache — subsequent invocations of the same tool are fast. The `nix-index` database is kept up to date on this system; if a lookup fails, run:
+
+```bash
+nix-index
+```
+
+to refresh it before retrying.
+
+### When Comma Cannot Find a Tool
+
+If `,` exits with "not found in nix-index", the package may be named differently from its binary. Search nixpkgs:
+
+```bash
+nix search nixpkgs <keyword>
+```
+
+Then run with an explicit package name:
+
+```bash
+nix run nixpkgs#<package-name> -- [args...]
+```
+
+### Recap: Comma vs. Permanent Installation
+
+| Situation | What to do |
+|---|---|
+| One-off or exploratory tool use | `, <tool> [args]` |
+| Tool needed persistently in a host's environment | Add to the appropriate `hosts/<n>/` or `global-configs/` config |
+| Tool needed in the dev shell | Add to `devShells` in `flake.nix` |
+| Build-time tool in a derivation | Add to `nativeBuildInputs` in the package derivation |
 
 ---
 
