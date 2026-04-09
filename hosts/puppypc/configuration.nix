@@ -150,6 +150,7 @@ in
       vulkan-hdr-layer-kwin6
       claude-vault
       blender
+      easyeffects
     ];
     shellAliases = {
       rebuild = "sudo nixos-rebuild switch --flake .#puppypc";
