@@ -27,7 +27,7 @@
       url = "github:AdnanHodzic/auto-cpufreq";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    simple-nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+    # simple-nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     pre-commit-hooks = {
@@ -74,7 +74,7 @@
       nix-minecraft,
       nix-vscode-extensions,
       auto-cpufreq,
-      simple-nixos-mailserver,
+      # simple-nixos-mailserver,
       self,
       chaotic,
       # nixos-hardware,
@@ -222,7 +222,7 @@
             ./modules/default.nix
             ./hosts/thedogpark/configuration.nix
 
-            simple-nixos-mailserver.nixosModule
+            # simple-nixos-mailserver.nixosModule
             home-manager.nixosModules.home-manager
             sops-nix.nixosModules.sops
             determinate.nixosModules.default
