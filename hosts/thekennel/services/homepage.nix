@@ -154,11 +154,6 @@
         };
       }
       {
-        speedtest = {
-          bitratePrecision = 0;
-        };
-      }
-      {
         search = {
           provider = "duckduckgo";
           target = "_blank";
