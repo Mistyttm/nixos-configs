@@ -26,4 +26,7 @@
 
     Install.WantedBy = [ "default.target" ];
   };
+
+  # Avoid activation failures when a previous mimeapps.list.backup already exists.
+  xdg.configFile."mimeapps.list".force = true;
 }
