@@ -13,4 +13,7 @@
     rebuild = "sudo nixos-rebuild switch --flake .#mistylappytappy";
     upgrade = "/home/misty/Documents/nixos-configs && nix flake upgrade && sudo nixos-rebuild switch --flake .#mistylappytappy";
   };
+
+  # Avoid activation failures when a previous mimeapps.list.backup already exists.
+  xdg.configFile."mimeapps.list".force = true;
 }
