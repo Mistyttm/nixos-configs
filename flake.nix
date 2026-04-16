@@ -41,6 +41,10 @@
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   nixConfig = {
@@ -83,6 +87,7 @@
       nix-topology,
       nix-cachyos-kernel,
       firefox-addons,
+      nix-index-database,
       ...
     }:
     let
@@ -127,6 +132,10 @@
         sops-nix.nixosModules.sops
         determinate.nixosModules.default
         nix-topology.nixosModules.default
+        nix-index-database.nixosModules.default
+        {
+          programs.nix-index-database.comma.enable = true;
+        }
       ];
       overlay-wallpaper-engine = import ./patches/wallpaper-engine-plugin;
       overlay-libreoffice = import ./patches/libreoffice;

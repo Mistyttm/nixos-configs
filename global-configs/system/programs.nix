@@ -21,7 +21,6 @@
     bitwarden-desktop
     bitwarden-cli
     nixfmt
-    comma
   ];
 
   programs.zsh.enable = true;
