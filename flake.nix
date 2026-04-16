@@ -121,6 +121,13 @@
         nix-topology.overlays.default
         overlay-packages
       ];
+      commonModules = [
+        ./modules/default.nix
+        home-manager.nixosModules.home-manager
+        sops-nix.nixosModules.sops
+        determinate.nixosModules.default
+        nix-topology.nixosModules.default
+      ];
       overlay-wallpaper-engine = import ./patches/wallpaper-engine-plugin;
       overlay-libreoffice = import ./patches/libreoffice;
       overlay-tdarr = import ./patches/tdarr;
@@ -138,16 +145,11 @@
             inherit homeVersion;
           };
 
-          modules = [
-            ./modules/default.nix
+          modules = commonModules ++ [
             ./hosts/puppypc/configuration.nix
 
             chaotic.nixosModules.default
-            home-manager.nixosModules.home-manager
-            sops-nix.nixosModules.sops
             nixpkgs-extra.nixosModules.default
-            determinate.nixosModules.default
-            nix-topology.nixosModules.default
             {
               home-manager = {
                 useGlobalPkgs = true;
@@ -180,16 +182,11 @@
           specialArgs = {
             inherit homeVersion;
           };
-          modules = [
-            ./modules/default.nix
+          modules = commonModules ++ [
             ./hosts/mistylappytappy/configuration.nix
 
             chaotic.nixosModules.default
-            home-manager.nixosModules.home-manager
             auto-cpufreq.nixosModules.default
-            sops-nix.nixosModules.sops
-            determinate.nixosModules.default
-            nix-topology.nixosModules.default
             {
               home-manager = {
                 useGlobalPkgs = true;
@@ -218,15 +215,10 @@
           specialArgs = {
             inherit homeVersion inputs;
           };
-          modules = [
-            ./modules/default.nix
+          modules = commonModules ++ [
             ./hosts/thedogpark/configuration.nix
 
             # simple-nixos-mailserver.nixosModule
-            home-manager.nixosModules.home-manager
-            sops-nix.nixosModules.sops
-            determinate.nixosModules.default
-            nix-topology.nixosModules.default
             {
               imports = [ nix-minecraft.nixosModules.minecraft-servers ];
               home-manager.useGlobalPkgs = true;
@@ -248,14 +240,9 @@
           specialArgs = {
             inherit homeVersion;
           };
-          modules = [
-            ./modules/default.nix
+          modules = commonModules ++ [
             ./hosts/thekennel/configuration.nix
 
-            home-manager.nixosModules.home-manager
-            sops-nix.nixosModules.sops
-            determinate.nixosModules.default
-            nix-topology.nixosModules.default
             nixpkgs-extra.nixosModules.default
             {
               home-manager.useGlobalPkgs = true;
