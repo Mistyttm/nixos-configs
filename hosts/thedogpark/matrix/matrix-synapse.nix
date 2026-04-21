@@ -38,8 +38,8 @@
       config.sops.secrets."smtp_pass".path
     ];
     settings = {
-      enable_registration = true;
-      enable_registration_without_verification = true;
+      enable_registration = false;
+      enable_registration_without_verification = false;
       server_name = "mistyttm.dev";
       public_baseurl = "https://mistyttm.dev";
       email = {
