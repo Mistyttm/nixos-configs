@@ -40,6 +40,7 @@
     settings = {
       enable_registration = false;
       enable_registration_without_verification = false;
+      registration_requires_token = true;
       server_name = "mistyttm.dev";
       public_baseurl = "https://mistyttm.dev";
       email = {
@@ -116,12 +117,12 @@
         burst_count = 200;
       };
       rc_registration = {
-        per_second = 10;
-        burst_count = 20;
+        per_second = 0.1;
+        burst_count = 3;
       };
       rc_registration_token_validity = {
-        per_second = 10;
-        burst_count = 20;
+        per_second = 0.1;
+        burst_count = 3;
       };
       rc_joins = {
         local = {
