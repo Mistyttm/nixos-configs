@@ -44,19 +44,19 @@ in
   };
 
   services.nginx.virtualHosts =
-    let
-      SSL = {
-        enableACME = true;
-        forceSSL = true;
-      };
-    in
+    # let
+    #   SSL = {
+    #     enableACME = true;
+    #     forceSSL = true;
+    #   };
+    # in
     {
-      "minecraft.mistyttm.dev" = (
-        SSL
-        // {
-          locations."/".proxyPass = "http://127.0.0.1:25565/";
-        }
-      );
+      # "minecraft.mistyttm.dev" = (
+      #   SSL
+      #   // {
+      #     locations."/".proxyPass = "http://127.0.0.1:25565/";
+      #   }
+      # );
       "discord-media.mistyttm.dev" = {
         useACMEHost = "mistyttm.dev";
         forceSSL = true;

@@ -66,9 +66,7 @@
     443
     3478
     5349
-    25565
     9005
-    7777
     8888
   ];
   networking.firewall.allowedUDPPorts = [
@@ -76,8 +74,6 @@
     24464
     3478
     5349
-    25565
-    7777
   ];
   networking.firewall.allowedTCPPortRanges = [
     {
@@ -98,7 +94,7 @@
 
   users.users.misty = {
     shell = pkgs.zsh;
-    extraGroups = [ "minecraft" ];
+    # extraGroups = [ "minecraft" ];
   };
 
   system.autoUpgrade = {

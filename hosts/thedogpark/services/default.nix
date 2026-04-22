@@ -2,7 +2,7 @@
 {
   imports = [
     # ./mailserver.nix
-    ./minecraft.nix
+    # ./minecraft.nix
     ./motd.nix
     ./nginx.nix
     ./services.nix
