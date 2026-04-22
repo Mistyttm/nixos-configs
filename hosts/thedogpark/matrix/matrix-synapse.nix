@@ -111,6 +111,37 @@
       url_preview_enabled = true;
       max_spider_size = "20M";
 
+      # Retention policy baseline:
+      # - Shorter default retention for general rooms.
+      # - Allow private rooms to keep longer history via room-specific retention state.
+      retention = {
+        enabled = true;
+        default_policy = {
+          min_lifetime = "7d";
+          max_lifetime = "180d";
+        };
+        allowed_lifetime_min = "1d";
+        allowed_lifetime_max = "1460d";
+        purge_jobs = [
+          {
+            interval = "12h";
+            shortest_max_lifetime = "1d";
+            longest_max_lifetime = "30d";
+          }
+          {
+            interval = "1d";
+            shortest_max_lifetime = "31d";
+            longest_max_lifetime = "1460d";
+          }
+        ];
+      };
+
+      # Keep local uploads longer than remote media cache.
+      media_retention = {
+        remote_media_lifetime = "60d";
+        local_media_lifetime = "365d";
+      };
+
       # Rate Limiting
       rc_message = {
         per_second = 100;
