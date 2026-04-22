@@ -68,37 +68,37 @@
     wantedBy = [ "multi-user.target" ];
   };
 
-  systemd.services.satisfactory-server = {
-    description = "Satisfactory Dedicated Server";
-    after = [ "network.target" ];
-    wantedBy = [ "multi-user.target" ];
+  # systemd.services.satisfactory-server = {
+  #   description = "Satisfactory Dedicated Server";
+  #   after = [ "network.target" ];
+  #   wantedBy = [ "multi-user.target" ];
 
-    serviceConfig = {
-      Type = "simple";
-      User = "steam";
-      Group = "steam";
-      WorkingDirectory = "/var/lib/steamuser/SatisfactoryDedicatedServer";
-      ExecStart = "/var/lib/steamuser/SatisfactoryDedicatedServer/FactoryServer.sh";
-      Restart = "on-failure";
-      RestartSec = "10s";
+  #   serviceConfig = {
+  #     Type = "simple";
+  #     User = "steam";
+  #     Group = "steam";
+  #     WorkingDirectory = "/var/lib/steamuser/SatisfactoryDedicatedServer";
+  #     ExecStart = "/var/lib/steamuser/SatisfactoryDedicatedServer/FactoryServer.sh";
+  #     Restart = "on-failure";
+  #     RestartSec = "10s";
 
-      # Security settings
-      NoNewPrivileges = true;
-      PrivateTmp = true;
-      ProtectSystem = "strict";
-      ProtectHome = true;
-      ReadWritePaths = [ "/var/lib/steamuser" ];
+  #     # Security settings
+  #     NoNewPrivileges = true;
+  #     PrivateTmp = true;
+  #     ProtectSystem = "strict";
+  #     ProtectHome = true;
+  #     ReadWritePaths = [ "/var/lib/steamuser" ];
 
-      # Resource limits
-      LimitNOFILE = 65536;
+  #     # Resource limits
+  #     LimitNOFILE = 65536;
 
-      # Environment
-      Environment = [
-        "HOME=/var/lib/steamuser"
-        "USER=steam"
-      ];
-    };
-  };
+  #     # Environment
+  #     Environment = [
+  #       "HOME=/var/lib/steamuser"
+  #       "USER=steam"
+  #     ];
+  #   };
+  # };
 
   networking.firewall.allowedTCPPorts = [
     80
