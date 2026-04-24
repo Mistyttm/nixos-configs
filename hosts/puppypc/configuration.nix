@@ -25,6 +25,9 @@ in
 
   networking.hostName = "puppypc";
 
+  # No dual-boot remains on this host; avoid stale OS discovery entries.
+  boot.loader.grub.useOSProber = lib.mkForce false;
+
   boot.kernelPackages = lib.mkForce pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
   boot.supportedFilesystems = [ "ntfs" ];
   boot.kernelModules = [ "ntsync" ];
@@ -105,6 +108,29 @@ in
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = true;
+  };
+
+  # Improve Bluetooth audio stability on this host by reducing controller
+  # power-management churn and preferring classic BR/EDR audio transport.
+  hardware.bluetooth.settings = {
+    General = {
+      FastConnectable = true;
+      ControllerMode = "bredr";
+      Experimental = true;
+    };
+  };
+  boot.extraModprobeConfig = ''
+    options btusb enable_autosuspend=0
+  '';
+
+  # Favor stable playback/capture under transient CPU load on this desktop.
+  services.pipewire.extraConfig.pipewire."10-puppypc-stability" = {
+    "context.properties" = {
+      "default.clock.rate" = 48000;
+      "default.clock.quantum" = 1024;
+      "default.clock.min-quantum" = 256;
+      "default.clock.max-quantum" = 2048;
+    };
   };
 
   programs.virt-manager = {
