@@ -34,20 +34,20 @@
       {
         monitor = "DP-2";
         wallpaperId = "3328281976";
+        extraOptions = [ "--silent" ];
       }
       {
         monitor = "DP-1";
         wallpaperId = "3215623224";
-        extraOptions = [ "--silent" ];
       }
       {
         monitor = "DP-5";
         wallpaperId = "3328281976";
+        extraOptions = [ "--silent" ];
       }
       {
         monitor = "DP-4";
         wallpaperId = "3215623224";
-        extraOptions = [ "--silent" ];
       }
     ];
   };
@@ -62,17 +62,21 @@
         "graphical-session.target"
         "plasma-kwin_wayland.service"
       ];
+      # Keep failures from turning into session-wide restart storms.
+      StartLimitBurst = 3;
+      StartLimitIntervalSec = 60;
     };
     Service = {
       # Add a delay to ensure displays are fully enumerated
       ExecStartPre = "${pkgs.coreutils}/bin/sleep 3";
       # Restart on failure to recover from race conditions
       Restart = "on-failure";
-      RestartSec = "3s";
-      # Prevent infinite crash-loop during shutdown when display outputs change
-      # (hit 247 restarts last session, blocking clean reboot)
-      StartLimitBurst = 5;
-      StartLimitIntervalSec = 60;
+      RestartSec = "10s";
+      # Keep animated wallpaper from stealing scheduler time from real-time audio.
+      Nice = 10;
+      IOSchedulingClass = "best-effort";
+      IOSchedulingPriority = 7;
+      CPUWeight = 20;
     };
   };
 }
