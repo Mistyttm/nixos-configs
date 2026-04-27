@@ -36,36 +36,39 @@ jobs:
         run: |
           set -euxo pipefail
 
-          mapfile -t packages < <(
-            nix eval --json --apply 'pkgSet: builtins.attrNames pkgSet' .#packages.x86_64-linux | jq -r '.[]'
-          )
+          unfree_packages_json=$(nix eval --json --apply '
+            pkgSet:
+            let
+              isUnfreeLicense = lic:
+                if lic == null then
+                  false
+                else if builtins.isList lic then
+                  builtins.any isUnfreeLicense lic
+                else if builtins.isAttrs lic then
+                  if lic ? free then !(lic.free) else false
+                else
+                  false;
+              isUnfreePackage = pkg: isUnfreeLicense (pkg.meta.license or null);
+            in
+            builtins.attrNames (builtins.filterAttrs (_: pkg: isUnfreePackage pkg) pkgSet)
+          ' .#packages.x86_64-linux)
 
-          free_packages=()
-          unfree_packages=()
-
-          for pkg in "${packages[@]}"; do
-            pkg_path="packages/${pkg}"
-
-            if [ -d "$pkg_path" ] && rg -q 'license\s*=\s*.*unfree' "$pkg_path"; then
-              unfree_packages+=("$pkg")
-            else
-              free_packages+=("$pkg")
-            fi
-          done
-
-          to_json_array() {
-            if [ "$#" -eq 0 ]; then
-              echo '[]'
-            else
-              printf '%s\n' "$@" | jq -R . | jq -s .
-            fi
-          }
-
-          free_packages_json=$(to_json_array "${free_packages[@]}")
-          unfree_packages_json=$(to_json_array "${unfree_packages[@]}")
-
-          echo "Discovered free packages: $free_packages_json"
-          echo "Discovered unfree packages: $unfree_packages_json"
+          free_packages_json=$(nix eval --json --apply '
+            pkgSet:
+            let
+              isUnfreeLicense = lic:
+                if lic == null then
+                  false
+                else if builtins.isList lic then
+                  builtins.any isUnfreeLicense lic
+                else if builtins.isAttrs lic then
+                  if lic ? free then !(lic.free) else false
+                else
+                  false;
+              isUnfreePackage = pkg: isUnfreeLicense (pkg.meta.license or null);
+            in
+            builtins.attrNames (builtins.filterAttrs (_: pkg: !(isUnfreePackage pkg)) pkgSet)
+          ' .#packages.x86_64-linux)
 
           echo "free_packages_json=$free_packages_json" >> "$GITHUB_OUTPUT"
           echo "unfree_packages_json=$unfree_packages_json" >> "$GITHUB_OUTPUT"
