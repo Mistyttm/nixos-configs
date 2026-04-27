@@ -1,4 +1,4 @@
-name: Update Local Packages
+name: Dispatch Package Updates
 
 on:
   schedule:
@@ -7,27 +7,19 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  pull-requests: write
+  actions: write
+  contents: read
 
 concurrency:
-  group: update-local-packages
+  group: dispatch-package-updates
   cancel-in-progress: true
 
 jobs:
-  update-packages:
+  dispatch-packages:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Configure Git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
@@ -36,155 +28,42 @@ jobs:
             experimental-features = nix-command flakes
             accept-flake-config = true
 
-      - name: Setup Magic Nix Cache
-        uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: Discover local packages
+        id: discover
+        run: |
+          set -u
 
-      - name: Setup Cachix
-        uses: cachix/cachix-action@v15
+          packages_json=$(nix eval --json --apply 'pkgSet: builtins.attrNames pkgSet' .#packages.x86_64-linux 2>/dev/null || echo '[]')
+          echo "packages_json=$packages_json" >> "$GITHUB_OUTPUT"
+
+      - name: Dispatch per-package workflows
+        uses: actions/github-script@v7
+        env:
+          PACKAGES_JSON: ${{ steps.discover.outputs.packages_json }}
         with:
-          name: opinionatedcache
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          skipPush: true
+          script: |
+            let packages = [];
 
-      - name: Update local package versions
-        id: update_packages
-        run: |
-          set -euo pipefail
+            try {
+              packages = JSON.parse(process.env.PACKAGES_JSON || '[]');
+            } catch (error) {
+              core.warning(`Failed to parse package list: ${error.message}`);
+            }
 
-          mapfile -t packages < <(
-            nix eval --json --apply 'pkgSet: builtins.attrNames pkgSet' .#packages.x86_64-linux | jq -r '.[]'
-          )
+            for (const pkg of packages) {
+              try {
+                await github.rest.actions.createWorkflowDispatch({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  workflow_id: 'package-update.yml',
+                  ref: context.ref.replace('refs/heads/', ''),
+                  inputs: {
+                    package: pkg,
+                  },
+                });
 
-          if [ "${#packages[@]}" -eq 0 ]; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          for pkg in "${packages[@]}"; do
-            attr="packages.x86_64-linux.${pkg}"
-            echo "Checking updates for ${attr}"
-            nix run nixpkgs#nix-update -- --flake "$attr" --use-github-releases || true
-          done
-
-          nix fmt
-
-          if git diff --quiet -- packages; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Build changed local packages
-        id: build_packages
-        if: steps.update_packages.outputs.changed == 'true'
-        run: |
-          set -euo pipefail
-
-          mapfile -t changed_packages < <(
-            git diff --name-only -- packages \
-              | awk -F'/' '/^packages\// { print $2 }' \
-              | sort -u
-          )
-
-          : > failed-packages.txt
-          : > realised-paths.txt
-
-          for pkg in "${changed_packages[@]}"; do
-            [ -n "$pkg" ] || continue
-            echo "Building updated package: $pkg"
-            if nix build ".#packages.x86_64-linux.${pkg}" --no-link --json > "build-${pkg}.json"; then
-              jq -r '.[].outputs[]' "build-${pkg}.json" >> realised-paths.txt
-            else
-              echo "$pkg" >> failed-packages.txt
-            fi
-          done
-
-          if [ -s realised-paths.txt ]; then
-            sort -u realised-paths.txt > realised-paths-sorted.txt
-            while read -r path; do
-              nix-store --query --requisites "$path"
-            done < realised-paths-sorted.txt | sort -u > closure-paths.txt
-
-            if [ -s closure-paths.txt ]; then
-              echo "Pushing successful package closures to opinionatedcache"
-              cachix push opinionatedcache < closure-paths.txt
-            fi
-          fi
-
-          if [ -s failed-packages.txt ]; then
-            first_failed_package=$(head -n1 failed-packages.txt)
-            failed_old_version=$(git diff -- "packages/${first_failed_package}" | sed -nE 's/^-+[[:space:]]*version[[:space:]]*=[[:space:]]*"([^"]+)";/\1/p' | head -n1)
-            failed_new_version=$(git diff -- "packages/${first_failed_package}" | sed -nE 's/^\++[[:space:]]*version[[:space:]]*=[[:space:]]*"([^"]+)";/\1/p' | head -n1)
-
-            if [ -n "${failed_old_version}" ] && [ -n "${failed_new_version}" ]; then
-              failed_commit_message="update(packages/${first_failed_package}): ${failed_old_version} -> ${failed_new_version}"
-            else
-              failed_commit_message="update(packages/${first_failed_package}): build failed"
-            fi
-
-            echo "package_failed=true" >> "$GITHUB_OUTPUT"
-            echo "failed_scope=${first_failed_package}" >> "$GITHUB_OUTPUT"
-            {
-              echo "failed_commit_message<<EOF"
-              echo "$failed_commit_message"
-              echo "EOF"
-            } >> "$GITHUB_OUTPUT"
-            {
-              echo "failed_packages<<EOF"
-              cat failed-packages.txt
-              echo "EOF"
-            } >> "$GITHUB_OUTPUT"
-          else
-            echo "package_failed=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Commit and push package updates to main
-        if: steps.update_packages.outputs.changed == 'true' && steps.build_packages.outputs.package_failed != 'true'
-        run: |
-          set -euo pipefail
-
-          mapfile -t changed_packages < <(
-            git diff --name-only -- packages \
-              | awk -F'/' '/^packages\// { print $2 }' \
-              | sort -u
-          )
-
-          for pkg in "${changed_packages[@]}"; do
-            [ -n "$pkg" ] || continue
-            git add "packages/${pkg}"
-            if git diff --cached --quiet; then
-              continue
-            fi
-
-            old_version=$(git diff --cached -- "packages/${pkg}" | sed -nE 's/^-+[[:space:]]*version[[:space:]]*=[[:space:]]*"([^"]+)";/\1/p' | head -n1)
-            new_version=$(git diff --cached -- "packages/${pkg}" | sed -nE 's/^\++[[:space:]]*version[[:space:]]*=[[:space:]]*"([^"]+)";/\1/p' | head -n1)
-
-            if [ -n "${old_version}" ] && [ -n "${new_version}" ]; then
-              commit_message="update(packages/${pkg}): ${old_version} -> ${new_version}"
-            else
-              commit_message="update(packages/${pkg}): package update"
-            fi
-
-            git commit -m "$commit_message"
-          done
-
-          git push origin main
-
-      - name: Create PR when package build fails
-        if: steps.update_packages.outputs.changed == 'true' && steps.build_packages.outputs.package_failed == 'true'
-        uses: peter-evans/create-pull-request@v7
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: bot/package-update-build-failure
-          delete-branch: false
-          title: "${{ steps.build_packages.outputs.failed_commit_message }}"
-          commit-message: "${{ steps.build_packages.outputs.failed_commit_message }}"
-          body: |
-            Automated local package updates found newer versions, but one or more package builds failed.
-
-            Failed packages:
-            ${{ steps.build_packages.outputs.failed_packages }}
-
-            This PR is opened for manual review and fixes.
-          add-paths: |
-            packages
+                core.info(`Dispatched package-update.yml for ${pkg}`);
+              } catch (error) {
+                core.warning(`Failed to dispatch package-update.yml for ${pkg}: ${error.message}`);
+              }
+            }
