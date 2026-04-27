@@ -1,4 +1,4 @@
-name: Dispatch Package Updates
+name: Update Local Packages
 
 on:
   schedule:
@@ -7,16 +7,18 @@ on:
   workflow_dispatch:
 
 permissions:
-  actions: write
-  contents: read
+  contents: write
+  pull-requests: write
 
 concurrency:
-  group: dispatch-package-updates
+  group: update-local-packages
   cancel-in-progress: true
 
 jobs:
-  dispatch-packages:
+  discover:
     runs-on: ubuntu-latest
+    outputs:
+      packages_json: ${{ steps.discover.outputs.packages_json }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -31,39 +33,149 @@ jobs:
       - name: Discover local packages
         id: discover
         run: |
-          set -u
+          set +e
 
           packages_json=$(nix eval --json --apply 'pkgSet: builtins.attrNames pkgSet' .#packages.x86_64-linux 2>/dev/null || echo '[]')
           echo "packages_json=$packages_json" >> "$GITHUB_OUTPUT"
 
-      - name: Dispatch per-package workflows
-        uses: actions/github-script@v7
-        env:
-          PACKAGES_JSON: ${{ steps.discover.outputs.packages_json }}
+  update-package:
+    needs: discover
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        package: ${{ fromJSON(needs.discover.outputs.packages_json) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          script: |
-            let packages = [];
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-            try {
-              packages = JSON.parse(process.env.PACKAGES_JSON || '[]');
-            } catch (error) {
-              core.warning(`Failed to parse package list: ${error.message}`);
-            }
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
-            for (const pkg of packages) {
-              try {
-                await github.rest.actions.createWorkflowDispatch({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  workflow_id: 'package-update.yml',
-                  ref: context.ref.replace('refs/heads/', ''),
-                  inputs: {
-                    package: pkg,
-                  },
-                });
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+        with:
+          extra-conf: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
 
-                core.info(`Dispatched package-update.yml for ${pkg}`);
-              } catch (error) {
-                core.warning(`Failed to dispatch package-update.yml for ${pkg}: ${error.message}`);
-              }
-            }
+      - name: Setup Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Setup Cachix
+        uses: cachix/cachix-action@v15
+        with:
+          name: opinionatedcache
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          skipPush: true
+
+      - name: Update package version
+        id: update_package
+        continue-on-error: true
+        run: |
+          set +e
+
+          package='${{ matrix.package }}'
+          attr="packages.x86_64-linux.${package}"
+
+          nix run nixpkgs#nix-update -- --flake "$attr" --use-github-releases || true
+          nix fmt || true
+
+          if git diff --quiet -- "packages/${package}"; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+          exit 0
+
+      - name: Build updated package
+        id: build_package
+        if: steps.update_package.outputs.changed == 'true'
+        continue-on-error: true
+        run: |
+          set +e
+
+          package='${{ matrix.package }}'
+          package_file="packages/${package}"
+
+          old_version=$(git diff -- "$package_file" | sed -nE 's/^-+[[:space:]]*version[[:space:]]*=[[:space:]]*"([^"]+)";/\1/p' | head -n1)
+          new_version=$(git diff -- "$package_file" | sed -nE 's/^\++[[:space:]]*version[[:space:]]*=[[:space:]]*"([^"]+)";/\1/p' | head -n1)
+
+          if [ -n "${old_version}" ] && [ -n "${new_version}" ]; then
+            echo "commit_message=update(packages/${package}): ${old_version} -> ${new_version}" >> "$GITHUB_OUTPUT"
+          else
+            echo "commit_message=update(packages/${package}): package update" >> "$GITHUB_OUTPUT"
+          fi
+
+          if nix build ".#packages.x86_64-linux.${package}" --no-link --json > build.json 2>build.log; then
+            jq -r '.[].outputs[]' build.json > realised-paths.txt
+            if [ -s realised-paths.txt ]; then
+              while read -r path; do
+                nix-store --query --requisites "$path"
+              done < realised-paths.txt | sort -u > closure-paths.txt
+
+              if [ -s closure-paths.txt ]; then
+                cachix push opinionatedcache < closure-paths.txt || true
+              fi
+            fi
+
+            echo "package_failed=false" >> "$GITHUB_OUTPUT"
+          else
+            if grep -Eqi 'unfree|un-free|has an unfree license|package .* is marked as unfree' build.log; then
+              echo "failure_reason=unfree" >> "$GITHUB_OUTPUT"
+              echo "failure_summary=Build failed because this package or one of its dependencies is unfree. Opening a PR for testing." >> "$GITHUB_OUTPUT"
+            else
+              echo "failure_reason=build_failed" >> "$GITHUB_OUTPUT"
+              echo "failure_summary=Build failed for a non-unfree reason. Opening a PR for testing." >> "$GITHUB_OUTPUT"
+            fi
+
+            echo "package_failed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+          exit 0
+
+      - name: Commit and push package update to main
+        if: steps.update_package.outputs.changed == 'true' && steps.build_package.outputs.package_failed != 'true'
+        continue-on-error: true
+        run: |
+          set +e
+
+          package='${{ matrix.package }}'
+          git add "packages/${package}"
+
+          if git diff --cached --quiet; then
+            echo "No package changes to commit"
+            exit 0
+          fi
+
+          git commit -m "${{ steps.build_package.outputs.commit_message }}" || true
+          git pull --rebase origin main || true
+          git push origin HEAD:main || true
+
+          exit 0
+
+      - name: Create PR when package build fails
+        if: steps.update_package.outputs.changed == 'true' && steps.build_package.outputs.package_failed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        continue-on-error: true
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: bot/package-update-${{ matrix.package }}-build-failure
+          delete-branch: false
+          title: "${{ steps.build_package.outputs.commit_message }}"
+          commit-message: "${{ steps.build_package.outputs.commit_message }}"
+          body: |
+            Automated update for package `${{ matrix.package }}` found a build failure.
+
+            ${{ steps.build_package.outputs.failure_summary }}
+
+            This PR is opened for manual review and fixes.
+          add-paths: |
+            packages/${{ matrix.package }}
