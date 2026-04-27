@@ -40,34 +40,34 @@ jobs:
             pkgSet:
             let
               isUnfreeLicense = lic:
-                if lic == null then
-                  false
-                else if builtins.isList lic then
-                  builtins.any isUnfreeLicense lic
+                if lic == null then false
+                else if builtins.isList lic then builtins.any isUnfreeLicense lic
                 else if builtins.isAttrs lic then
-                  if lic ? free then !(lic.free) else false
-                else
-                  false;
+                  if lic ? free then !(lic.free)
+                  else (lic.shortName or "") == "unfree"
+                    || (lic.spdxId or "") == "unfree"
+                    || (lic.fullName or "") == "Unfree"
+                else false;
               isUnfreePackage = pkg: isUnfreeLicense (pkg.meta.license or null);
             in
-            builtins.attrNames (builtins.filterAttrs (_: pkg: isUnfreePackage pkg) pkgSet)
+              builtins.attrNames (builtins.filterAttrs (_: pkg: isUnfreePackage pkg) pkgSet)
           ' .#packages.x86_64-linux)
 
           free_packages_json=$(nix eval --json --apply '
             pkgSet:
             let
               isUnfreeLicense = lic:
-                if lic == null then
-                  false
-                else if builtins.isList lic then
-                  builtins.any isUnfreeLicense lic
+                if lic == null then false
+                else if builtins.isList lic then builtins.any isUnfreeLicense lic
                 else if builtins.isAttrs lic then
-                  if lic ? free then !(lic.free) else false
-                else
-                  false;
+                  if lic ? free then !(lic.free)
+                  else (lic.shortName or "") == "unfree"
+                    || (lic.spdxId or "") == "unfree"
+                    || (lic.fullName or "") == "Unfree"
+                else false;
               isUnfreePackage = pkg: isUnfreeLicense (pkg.meta.license or null);
             in
-            builtins.attrNames (builtins.filterAttrs (_: pkg: !(isUnfreePackage pkg)) pkgSet)
+              builtins.attrNames (builtins.filterAttrs (_: pkg: !(isUnfreePackage pkg)) pkgSet)
           ' .#packages.x86_64-linux)
 
           echo "free_packages_json=$free_packages_json" >> "$GITHUB_OUTPUT"
