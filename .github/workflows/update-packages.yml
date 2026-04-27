@@ -111,7 +111,8 @@ jobs:
             echo "commit_message=update(packages/${package}): package update" >> "$GITHUB_OUTPUT"
           fi
 
-          if nix build ".#packages.x86_64-linux.${package}" --no-link --json > build.json 2>build.log; then
+          : > build.log
+          if nix build ".#packages.x86_64-linux.${package}" --no-link --print-build-logs --json > >(tee build.json) 2> >(tee build.log >&2); then
             jq -r '.[].outputs[]' build.json > realised-paths.txt
             if [ -s realised-paths.txt ]; then
               while read -r path; do
@@ -126,6 +127,9 @@ jobs:
             echo "package_failed=false" >> "$GITHUB_OUTPUT"
           else
             log_excerpt=$(tail -n 120 build.log | sed 's/\r$//')
+            if [ -z "$log_excerpt" ]; then
+              log_excerpt="No stderr build output was captured. Check the workflow step logs and artifact for details."
+            fi
             {
               echo "failure_log_excerpt<<EOF"
               echo "$log_excerpt"
