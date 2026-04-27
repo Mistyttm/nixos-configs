@@ -10,8 +10,6 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # SDDM theme
-    nixpkgs-extra.url = "github:Mistyttm/nixpkgs-extra";
     # Secrets management
     sops-nix.url = "github:Mic92/sops-nix";
     # Spotify
@@ -71,7 +69,6 @@
   outputs =
     inputs@{
       nixpkgs,
-      nixpkgs-extra,
       home-manager,
       sops-nix,
       spicetify-nix,
@@ -152,7 +149,6 @@
             ./hosts/puppypc/configuration.nix
 
             chaotic.nixosModules.default
-            nixpkgs-extra.nixosModules.default
             {
               home-manager = {
                 useGlobalPkgs = true;
@@ -169,7 +165,6 @@
 
               nixpkgs = {
                 overlays = commonOverlays ++ [
-                  nixpkgs-extra.overlays.default
                   nix-vscode-extensions.overlays.default
                   overlay-wallpaper-engine
                   overlay-libreoffice
@@ -246,7 +241,6 @@
           modules = commonModules ++ [
             ./hosts/thekennel/configuration.nix
 
-            nixpkgs-extra.nixosModules.default
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
@@ -256,7 +250,6 @@
               home-manager.users.misty = import ./hosts/thekennel/home.nix;
 
               nixpkgs.overlays = commonOverlays ++ [
-                nixpkgs-extra.overlays.default
                 overlay-tdarr
               ];
             }
