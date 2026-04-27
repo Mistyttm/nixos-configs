@@ -49,13 +49,13 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "dispatcharr";
-  version = "0.20.2";
+  version = "0.23.0";
 
   src = fetchFromGitHub {
     owner = "Dispatcharr";
     repo = "Dispatcharr";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-ZK65rJYgAyzS1lQdzlxrw31qfsjxcDi8xuDr+JWVlhw=";
+    hash = "sha256-dWcQHjCpoghey7eZb1NrPZt1hiB6XU9nOk7GAC0Whk0=";
   };
 
   nativeBuildInputs = [
