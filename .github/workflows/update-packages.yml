@@ -116,7 +116,11 @@ jobs:
           package='${{ matrix.package }}'
           attr="packages.x86_64-linux.${package}"
 
-          nix run nixpkgs#nix-update -- --flake "$attr" --use-github-releases
+          if ! nix run nixpkgs#nix-update -- --flake "$attr" --use-update-script; then
+            if ! nix run nixpkgs#nix-update -- --flake "$attr" --use-github-releases; then
+              nix run nixpkgs#nix-update -- --flake "$attr"
+            fi
+          fi
           nix fmt
 
           if git diff --quiet -- "packages/${package}"; then
@@ -275,7 +279,11 @@ jobs:
           package='${{ matrix.package }}'
           attr="packages.x86_64-linux.${package}"
 
-          nix run nixpkgs#nix-update -- --flake "$attr" --use-github-releases
+          if ! nix run nixpkgs#nix-update -- --flake "$attr" --use-update-script; then
+            if ! nix run nixpkgs#nix-update -- --flake "$attr" --use-github-releases; then
+              nix run nixpkgs#nix-update -- --flake "$attr"
+            fi
+          fi
           nix fmt
 
           if git diff --quiet -- "packages/${package}"; then
