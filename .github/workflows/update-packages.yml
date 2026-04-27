@@ -125,6 +125,13 @@ jobs:
 
             echo "package_failed=false" >> "$GITHUB_OUTPUT"
           else
+            log_excerpt=$(tail -n 120 build.log | sed 's/\r$//')
+            {
+              echo "failure_log_excerpt<<EOF"
+              echo "$log_excerpt"
+              echo "EOF"
+            } >> "$GITHUB_OUTPUT"
+
             if grep -Eqi 'unfree|un-free|has an unfree license|package .* is marked as unfree' build.log; then
               echo "failure_reason=unfree" >> "$GITHUB_OUTPUT"
               echo "failure_summary=Build failed because this package or one of its dependencies is unfree. Opening a PR for testing." >> "$GITHUB_OUTPUT"
@@ -158,6 +165,18 @@ jobs:
 
           exit 0
 
+      - name: Upload build log artifact on failure
+        if: steps.update_package.outputs.changed == 'true' && steps.build_package.outputs.package_failed == 'true'
+        uses: actions/upload-artifact@v4
+        continue-on-error: true
+        with:
+          name: package-build-log-${{ matrix.package }}
+          path: |
+            build.log
+            build.json
+          if-no-files-found: ignore
+          retention-days: 14
+
       - name: Create PR when package build fails
         if: steps.update_package.outputs.changed == 'true' && steps.build_package.outputs.package_failed == 'true'
         uses: peter-evans/create-pull-request@v7
@@ -172,6 +191,13 @@ jobs:
             Automated update for package `${{ matrix.package }}` found a build failure.
 
             ${{ steps.build_package.outputs.failure_summary }}
+
+            Build log excerpt (tail):
+            ```text
+            ${{ steps.build_package.outputs.failure_log_excerpt }}
+            ```
+
+            Full logs are available as workflow artifact `package-build-log-${{ matrix.package }}`.
 
             This PR is opened for manual review and fixes.
           add-paths: |
