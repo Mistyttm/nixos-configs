@@ -34,33 +34,38 @@ jobs:
       - name: Discover free and unfree packages
         id: discover
         run: |
-          set +e
+          set -euxo pipefail
 
-          unfree_packages_json=$(nix eval --json --apply 'pkgSet:
-            let
-              isUnfree = pkg:
-                let lic = pkg.meta.license or null;
-                in builtins.isAttrs lic
-                  && (
-                    (lic.shortName or "") == "unfree"
-                    || (lic.spdxId or "") == "unfree"
-                    || (lic.fullName or "") == "Unfree"
-                  );
-            in builtins.attrNames (builtins.filterAttrs (_: pkg: isUnfree pkg) pkgSet)
-          ' .#packages.x86_64-linux 2>/dev/null || echo '[]')
+          mapfile -t packages < <(
+            nix eval --json --apply 'pkgSet: builtins.attrNames pkgSet' .#packages.x86_64-linux | jq -r '.[]'
+          )
 
-          free_packages_json=$(nix eval --json --apply 'pkgSet:
-            let
-              isUnfree = pkg:
-                let lic = pkg.meta.license or null;
-                in builtins.isAttrs lic
-                  && (
-                    (lic.shortName or "") == "unfree"
-                    || (lic.spdxId or "") == "unfree"
-                    || (lic.fullName or "") == "Unfree"
-                  );
-            in builtins.attrNames (builtins.filterAttrs (_: pkg: !(isUnfree pkg)) pkgSet)
-          ' .#packages.x86_64-linux 2>/dev/null || echo '[]')
+          free_packages=()
+          unfree_packages=()
+
+          for pkg in "${packages[@]}"; do
+            pkg_path="packages/${pkg}"
+
+            if [ -d "$pkg_path" ] && rg -q 'license\s*=\s*.*unfree' "$pkg_path"; then
+              unfree_packages+=("$pkg")
+            else
+              free_packages+=("$pkg")
+            fi
+          done
+
+          to_json_array() {
+            if [ "$#" -eq 0 ]; then
+              echo '[]'
+            else
+              printf '%s\n' "$@" | jq -R . | jq -s .
+            fi
+          }
+
+          free_packages_json=$(to_json_array "${free_packages[@]}")
+          unfree_packages_json=$(to_json_array "${unfree_packages[@]}")
+
+          echo "Discovered free packages: $free_packages_json"
+          echo "Discovered unfree packages: $unfree_packages_json"
 
           echo "free_packages_json=$free_packages_json" >> "$GITHUB_OUTPUT"
           echo "unfree_packages_json=$unfree_packages_json" >> "$GITHUB_OUTPUT"
@@ -103,7 +108,7 @@ jobs:
       - name: Update package version
         id: update_package
         run: |
-          set -euo pipefail
+          set -euxo pipefail
 
           package='${{ matrix.package }}'
           attr="packages.x86_64-linux.${package}"
@@ -123,7 +128,7 @@ jobs:
         id: build_package
         if: steps.update_package.outputs.changed == 'true'
         run: |
-          set -euo pipefail
+          set -euxo pipefail
 
           package='${{ matrix.package }}'
           package_file="packages/${package}"
@@ -172,7 +177,7 @@ jobs:
       - name: Commit and push package update to main
         if: steps.update_package.outputs.changed == 'true' && steps.build_package.outputs.package_failed != 'true'
         run: |
-          set -euo pipefail
+          set -euxo pipefail
 
           package='${{ matrix.package }}'
           git add "packages/${package}"
@@ -262,7 +267,7 @@ jobs:
       - name: Update package version
         id: update_package
         run: |
-          set -euo pipefail
+          set -euxo pipefail
 
           package='${{ matrix.package }}'
           attr="packages.x86_64-linux.${package}"
@@ -282,7 +287,7 @@ jobs:
         id: build_package
         if: steps.update_package.outputs.changed == 'true'
         run: |
-          set -euo pipefail
+          set -euxo pipefail
 
           package='${{ matrix.package }}'
           package_file="packages/${package}"
@@ -307,7 +312,7 @@ jobs:
       - name: Commit and push package update to main
         if: steps.update_package.outputs.changed == 'true' && steps.build_package.outputs.package_failed != 'true'
         run: |
-          set -euo pipefail
+          set -euxo pipefail
 
           package='${{ matrix.package }}'
           git add "packages/${package}"
