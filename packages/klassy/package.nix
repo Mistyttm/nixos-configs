@@ -4,7 +4,6 @@
   gettext,
   pkg-config,
   kdePackages,
-  nix-update-script,
 }:
 kdePackages.mkKdeDerivation {
   pname = "klassy";
@@ -57,6 +56,4 @@ kdePackages.mkKdeDerivation {
     platforms = lib.platforms.linux;
     mainProgram = "klassy";
   };
-
-  passthru.updateScript = nix-update-script { };
 }
