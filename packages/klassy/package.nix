@@ -1,12 +1,8 @@
 {
   lib,
   fetchFromGitHub,
-  cmake,
   gettext,
   pkg-config,
-  libX11,
-  wayland,
-  wayland-protocols,
   kdePackages,
   nix-update-script,
 }:
@@ -20,47 +16,29 @@ kdePackages.mkKdeDerivation {
     hash = "sha256-+bYS2Upr84BS0IdA0HlCK0FF05yIMVbRvB8jlN5EOUM=";
   };
 
-  nativeBuildInputs = [
-    cmake
-    kdePackages.extra-cmake-modules
+  extraNativeBuildInputs = [
     gettext
     pkg-config
-    kdePackages.wrapQtAppsHook
   ];
 
-  buildInputs = [
-    # Qt6
+  extraBuildInputs = [
+    kdePackages.extra-cmake-modules
+    # Required Qt6 components
     kdePackages.qtbase
-    kdePackages.qtdeclarative
     kdePackages.qtsvg
-    kdePackages.qttools
 
-    # KF6 libraries
-    kdePackages.kconfig
+    # Required KF6 components
     kdePackages.kcoreaddons
+    kdePackages.kcolorscheme
+    kdePackages.kconfig
+    kdePackages.kcmutils
     kdePackages.kguiaddons
     kdePackages.ki18n
     kdePackages.kiconthemes
-    kdePackages.kcmutils
-    kdePackages.kpackage
-    kdePackages.kservice
     kdePackages.kwindowsystem
-    kdePackages.kconfigwidgets
-    kdePackages.frameworkintegration
-    kdePackages.kcolorscheme
-    kdePackages.kirigami
 
-    # Wayland support
-    kdePackages.kwayland
-    wayland
-    wayland-protocols
-    kdePackages.plasma-wayland-protocols
-
-    # KDE Decoration
+    # Required for window decoration build
     kdePackages.kdecoration
-
-    # System libraries
-    libX11
   ];
 
   cmakeFlags = [
@@ -68,12 +46,6 @@ kdePackages.mkKdeDerivation {
     "-DKDE_INSTALL_USE_QT_SYS_PATHS=ON"
     "-DBUILD_QT6=ON"
     "-DBUILD_QT5=OFF"
-  ];
-
-  # Disable extra outputs that klassy doesn't produce
-  outputs = [
-    "out"
-    "dev"
   ];
 
   dontWrapQtApps = true;
