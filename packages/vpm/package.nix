@@ -8,7 +8,7 @@ buildDotnetGlobalTool {
 
   nugetName = "vrchat.vpm.cli";
 
-  nugetSha256 = "sha256-Pz8KBpjmpzx+6gD4nqGVBEp5z4UX6hFqZHGy8hJCD4k=";
+  nugetHash = "sha256-Pz8KBpjmpzx+6gD4nqGVBEp5z4UX6hFqZHGy8hJCD4k=";
 
   meta = {
     description = "VRChat Package Manager CLI";
