@@ -6,14 +6,14 @@
 
 python3.pkgs.buildPythonApplication (finalAttrs: {
   pname = "i-sponsor-block-tv";
-  version = "2.6.1";
+  version = "2.7.0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "dmunozv04";
     repo = "iSponsorBlockTV";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-AGjLehhGYz8FyojSFmSYKLCkHAExtpQiukQnTNt1YoY=";
+    hash = "sha256-lWFUJyl4Go6omXWdIRN60skCH7aMXYSuHLbm45Zowr4=";
   };
 
   # Strip exact version pins so nixpkgs packages can satisfy the requirements.
