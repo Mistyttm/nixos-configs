@@ -1,6 +1,5 @@
 {
   lib,
-  mkKdeDerivation,
   fetchFromGitHub,
   cmake,
   gettext,
@@ -11,7 +10,7 @@
   kdePackages,
   nix-update-script,
 }:
-mkKdeDerivation {
+kdePackages.mkKdeDerivation {
   pname = "klassy";
   version = "6.4.breeze6.4.0";
   src = fetchFromGitHub {
