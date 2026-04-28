@@ -173,7 +173,6 @@ in
       nvidia-vaapi-driver
       gamescope
       vulkan-hdr-layer-kwin6
-      claude-vault
       blender
       easyeffects
     ];
