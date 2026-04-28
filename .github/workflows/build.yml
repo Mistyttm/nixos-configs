@@ -25,9 +25,6 @@ jobs:
             experimental-features = nix-command flakes
             accept-flake-config = true
 
-      - name: Setup Magic Nix Cache
-        uses: DeterminateSystems/magic-nix-cache-action@main
-
       - name: Refresh determinate input
         run: nix flake update determinate
 
@@ -66,9 +63,6 @@ jobs:
             substitute = true
             builders =
 
-      - name: Setup Magic Nix Cache
-        uses: DeterminateSystems/magic-nix-cache-action@main
-
       - name: Refresh determinate input
         run: nix flake update determinate
 
@@ -81,16 +75,19 @@ jobs:
 
       - name: Build Hydra job (${{ matrix.system }})
         run: |
-          set -euo pipefail
+          set -uo pipefail
           nix build \
             .#hydraJobs.nixos.${{ matrix.system }} \
+            --keep-going \
             --no-link \
-            --json > build-result.json
+            --json > build-result.json || BUILD_EXIT=$?
           jq -r '.[].outputs[]' build-result.json > realised-paths.txt
           echo "Realised outputs:"
           cat realised-paths.txt
+          exit ${BUILD_EXIT:-0}
 
       - name: Push build closures to Cachix
+        if: always()
         run: |
           set -euo pipefail
           while read -r path; do
@@ -131,9 +128,6 @@ jobs:
             substitute = true
             builders =
 
-      - name: Setup Magic Nix Cache
-        uses: DeterminateSystems/magic-nix-cache-action@main
-
       - name: Refresh determinate input
         run: nix flake update determinate
 
@@ -146,15 +140,16 @@ jobs:
 
       - name: Build Hydra job (puppypc)
         run: |
-          set -euo pipefail
+          set -uo pipefail
 
           echo "Disk space before build:"
           df -h
 
           nix build \
             .#hydraJobs.nixos.puppypc \
+            --keep-going \
             --no-link \
-            --json > build-result.json
+            --json > build-result.json || BUILD_EXIT=$?
 
           jq -r '.[].outputs[]' build-result.json > realised-paths.txt
           echo "Realised outputs:"
@@ -162,8 +157,10 @@ jobs:
 
           echo "Disk space after build:"
           df -h
+          exit ${BUILD_EXIT:-0}
 
       - name: Push build closures to Cachix
+        if: always()
         run: |
           set -euo pipefail
 
@@ -218,9 +215,6 @@ jobs:
             substitute = true
             builders =
 
-      - name: Setup Magic Nix Cache
-        uses: DeterminateSystems/magic-nix-cache-action@main
-
       - name: Refresh determinate input
         run: nix flake update determinate
 
@@ -233,15 +227,16 @@ jobs:
 
       - name: Build Hydra job (mistylappytappy)
         run: |
-          set -euo pipefail
+          set -uo pipefail
 
           echo "Disk space before build:"
           df -h
 
           nix build \
             .#hydraJobs.nixos.mistylappytappy \
+            --keep-going \
             --no-link \
-            --json > build-result.json
+            --json > build-result.json || BUILD_EXIT=$?
 
           jq -r '.[].outputs[]' build-result.json > realised-paths.txt
           echo "Realised outputs:"
@@ -249,8 +244,10 @@ jobs:
 
           echo "Disk space after build:"
           df -h
+          exit ${BUILD_EXIT:-0}
 
       - name: Push build closures to Cachix
+        if: always()
         run: |
           set -euo pipefail
 
