@@ -54,7 +54,7 @@ in
       ];
     };
     dolphin = true;
-    lutris = true;
+    lutris = false;
     gamemode = true;
     cloneHero = true;
     YARG = true;
