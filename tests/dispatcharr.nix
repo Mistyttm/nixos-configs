@@ -9,7 +9,9 @@
 }:
 let
   dispatcharr-frontend = pkgs.callPackage ../packages/dispatcharr-frontend.nix { };
-  dispatcharr = pkgs.callPackage ../packages/dispatcharr.nix { inherit dispatcharr-frontend; };
+  dispatcharr = pkgs.callPackage ../packages/dispatcharr/package.nix {
+    inherit dispatcharr-frontend;
+  };
 in
 pkgs.testers.nixosTest {
   name = "dispatcharr";
