@@ -100,15 +100,14 @@ jobs:
 
           package='${{ matrix.package }}'
           attr="packages.x86_64-linux.${package}"
-          pkg_file="packages/${package}/default.nix"
 
           # buildDotnetGlobalTool packages cannot be updated via nix-update because
           # the position Nix records resolves to the builder inside the nixpkgs store
           # path rather than our flake source. Detect this upfront and go straight to
           # the NuGet API instead.
-          if grep -q 'buildDotnetGlobalTool' "$pkg_file" 2>/dev/null; then
+          if grep -rq 'buildDotnetGlobalTool' "packages/${package}/" 2>/dev/null; then
             echo "Detected buildDotnetGlobalTool — using NuGet updater"
-            nuget_name=$(grep -oP 'nugetName\s*=\s*"\K[^"]+' "$pkg_file")
+            nuget_name=$(grep -roP 'nugetName\s*=\s*"\K[^"]+' "packages/${package}/")
             nuget_name_lc=$(echo "$nuget_name" | tr '[:upper:]' '[:lower:]')
             latest=$(curl -fsSL "https://api.nuget.org/v3-flatcontainer/${nuget_name_lc}/index.json" \
               | python3 -c 'import sys, json; print(json.load(sys.stdin)["versions"][-1])')
@@ -256,11 +255,10 @@ jobs:
 
           package='${{ matrix.package }}'
           attr="packages.x86_64-linux.${package}"
-          pkg_file="packages/${package}/default.nix"
 
-          if grep -q 'buildDotnetGlobalTool' "$pkg_file" 2>/dev/null; then
+          if grep -rq 'buildDotnetGlobalTool' "packages/${package}/" 2>/dev/null; then
             echo "Detected buildDotnetGlobalTool — using NuGet updater"
-            nuget_name=$(grep -oP 'nugetName\s*=\s*"\K[^"]+' "$pkg_file")
+            nuget_name=$(grep -roP 'nugetName\s*=\s*"\K[^"]+' "packages/${package}/")
             nuget_name_lc=$(echo "$nuget_name" | tr '[:upper:]' '[:lower:]')
             latest=$(curl -fsSL "https://api.nuget.org/v3-flatcontainer/${nuget_name_lc}/index.json" \
               | python3 -c 'import sys, json; print(json.load(sys.stdin)["versions"][-1])')
