@@ -23,7 +23,6 @@
     plasma-panel-colorizer
     r2modman
     deadlock-mod-manager
-    jackify
     heroic
   ];
 
