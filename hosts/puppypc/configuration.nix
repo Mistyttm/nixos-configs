@@ -167,7 +167,6 @@ in
       heroic
       xrizer
       klassy
-      steam-presence
       usbutils
       v4l-utils
       # winboat
