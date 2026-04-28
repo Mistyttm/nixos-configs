@@ -36,42 +36,27 @@ jobs:
         run: |
           set -euxo pipefail
 
-          unfree_packages_json=$(nix eval --json --apply '
-            pkgSet:
-            let
-              isUnfreeLicense = lic:
-                if lic == null then false
-                else if builtins.isList lic then builtins.any isUnfreeLicense lic
-                else if builtins.isAttrs lic then
-                  if lic ? free then !(lic.free)
-                  else (lic.shortName or "") == "unfree"
-                    || (lic.spdxId or "") == "unfree"
-                    || (lic.fullName or "") == "Unfree"
-                else false;
-              isUnfreePackage = pkg: isUnfreeLicense (pkg.meta.license or null);
-            in
-              builtins.attrNames (builtins.filterAttrs (_: pkg: isUnfreePackage pkg) pkgSet)
-          ' .#packages.x86_64-linux)
+          classify_packages() {
+            nix eval --json --apply "
+              pkgSet:
+              let
+                isUnfreeLicense = lic:
+                  if lic == null then false
+                  else if builtins.isList lic then builtins.any isUnfreeLicense lic
+                  else if builtins.isAttrs lic then
+                    if lic ? free then !(lic.free)
+                    else (lic.shortName or \"\") == \"unfree\"
+                      || (lic.spdxId or \"\") == \"unfree\"
+                      || (lic.fullName or \"\") == \"Unfree\"
+                  else false;
+                isUnfreePackage = pkg: isUnfreeLicense (pkg.meta.license or null);
+              in
+                builtins.attrNames (builtins.filterAttrs (_: pkg: $1 pkg) pkgSet)
+            " .#packages.x86_64-linux
+          }
 
-          free_packages_json=$(nix eval --json --apply '
-            pkgSet:
-            let
-              isUnfreeLicense = lic:
-                if lic == null then false
-                else if builtins.isList lic then builtins.any isUnfreeLicense lic
-                else if builtins.isAttrs lic then
-                  if lic ? free then !(lic.free)
-                  else (lic.shortName or "") == "unfree"
-                    || (lic.spdxId or "") == "unfree"
-                    || (lic.fullName or "") == "Unfree"
-                else false;
-              isUnfreePackage = pkg: isUnfreeLicense (pkg.meta.license or null);
-            in
-              builtins.attrNames (builtins.filterAttrs (_: pkg: !(isUnfreePackage pkg)) pkgSet)
-          ' .#packages.x86_64-linux)
-
-          echo "free_packages_json=$free_packages_json" >> "$GITHUB_OUTPUT"
-          echo "unfree_packages_json=$unfree_packages_json" >> "$GITHUB_OUTPUT"
+          echo "unfree_packages_json=$(classify_packages 'isUnfreePackage')" >> "$GITHUB_OUTPUT"
+          echo "free_packages_json=$(classify_packages '(pkg: !(isUnfreePackage pkg))')" >> "$GITHUB_OUTPUT"
 
   update-free-package:
     if: needs.discover.outputs.free_packages_json != '[]'
@@ -111,16 +96,29 @@ jobs:
       - name: Update package version
         id: update_package
         run: |
-          set -euxo pipefail
+          set -euo pipefail
 
           package='${{ matrix.package }}'
           attr="packages.x86_64-linux.${package}"
+          pkg_file="packages/${package}/default.nix"
 
-          if ! nix run nixpkgs#nix-update -- --flake "$attr" --use-update-script; then
-            if ! nix run nixpkgs#nix-update -- --flake "$attr" --use-github-releases; then
-              nix run nixpkgs#nix-update -- --flake "$attr"
-            fi
+          # buildDotnetGlobalTool packages cannot be updated via nix-update because
+          # the position Nix records resolves to the builder inside the nixpkgs store
+          # path rather than our flake source. Detect this upfront and go straight to
+          # the NuGet API instead.
+          if grep -q 'buildDotnetGlobalTool' "$pkg_file" 2>/dev/null; then
+            echo "Detected buildDotnetGlobalTool — using NuGet updater"
+            nuget_name=$(grep -oP 'nugetName\s*=\s*"\K[^"]+' "$pkg_file")
+            nuget_name_lc=$(echo "$nuget_name" | tr '[:upper:]' '[:lower:]')
+            latest=$(curl -fsSL "https://api.nuget.org/v3-flatcontainer/${nuget_name_lc}/index.json" \
+              | python3 -c 'import sys, json; print(json.load(sys.stdin)["versions"][-1])')
+            echo "Latest NuGet version for ${nuget_name}: ${latest}"
+            nix run nixpkgs#common-updater-scripts -- update-source-version "$attr" "$latest" --source-key=nupkg.src
+          else
+            nix run nixpkgs#nix-update -- --flake "$attr" --use-update-script \
+              || nix run nixpkgs#nix-update -- --flake "$attr"
           fi
+
           nix fmt
 
           if git diff --quiet -- "packages/${package}"; then
@@ -129,19 +127,17 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
-          exit 0
-
       - name: Build updated package
         id: build_package
         if: steps.update_package.outputs.changed == 'true'
         run: |
-          set -euxo pipefail
+          set -euo pipefail
 
           package='${{ matrix.package }}'
           package_file="packages/${package}"
 
-          old_version=$(git diff -- "$package_file" | sed -nE 's/^-+[[:space:]]*version[[:space:]]*=[[:space:]]*"([^"]+)";/\1/p' | head -n1)
-          new_version=$(git diff -- "$package_file" | sed -nE 's/^\++[[:space:]]*version[[:space:]]*=[[:space:]]*"([^"]+)";/\1/p' | head -n1)
+          old_version=$(git diff -- "$package_file" | sed -nE 's/^-[[:space:]]*version[[:space:]]*=[[:space:]]*"([^"]+)";/\1/p' | head -n1)
+          new_version=$(git diff -- "$package_file" | sed -nE 's/^\+[[:space:]]*version[[:space:]]*=[[:space:]]*"([^"]+)";/\1/p' | head -n1)
 
           if [ -n "${old_version}" ] && [ -n "${new_version}" ]; then
             echo "commit_message=update(packages/${package}): ${old_version} -> ${new_version}" >> "$GITHUB_OUTPUT"
@@ -151,46 +147,33 @@ jobs:
 
           : > build.log
           if nix build ".#packages.x86_64-linux.${package}" --no-link --print-build-logs --json > >(tee build.json) 2> >(tee build.log >&2); then
-            jq -r '.[].outputs[]' build.json > realised-paths.txt
-            if [ -s realised-paths.txt ]; then
-              while read -r path; do
-                nix-store --query --requisites "$path"
-              done < realised-paths.txt | sort -u > closure-paths.txt
-
-              if [ -s closure-paths.txt ]; then
-                cachix push opinionatedcache < closure-paths.txt
-              fi
-            fi
-
+            jq -r '.[].outputs[]' build.json \
+              | xargs -I{} nix-store --query --requisites {} \
+              | sort -u \
+              | cachix push opinionatedcache
             echo "package_failed=false" >> "$GITHUB_OUTPUT"
           else
             log_excerpt=$(tail -n 120 build.log | sed 's/\r$//')
-            if [ -z "$log_excerpt" ]; then
-              log_excerpt="No stderr build output was captured. Check the workflow step logs and artifact for details."
-            fi
             {
               echo "failure_log_excerpt<<EOF"
-              echo "$log_excerpt"
+              echo "${log_excerpt:-No stderr output captured. Check workflow logs for details.}"
               echo "EOF"
             } >> "$GITHUB_OUTPUT"
-
             echo "failure_reason=build_failed" >> "$GITHUB_OUTPUT"
-            echo "failure_summary=Build failed for this free package. Opening a PR for testing." >> "$GITHUB_OUTPUT"
+            echo "failure_summary=Build failed for this free package. Opening a PR for manual review." >> "$GITHUB_OUTPUT"
             echo "package_failed=true" >> "$GITHUB_OUTPUT"
           fi
 
-          exit 0
-
-      - name: Commit and push package update to main
+      - name: Commit and push package update
         if: steps.update_package.outputs.changed == 'true' && steps.build_package.outputs.package_failed != 'true'
         run: |
-          set -euxo pipefail
+          set -euo pipefail
 
           package='${{ matrix.package }}'
           git add "packages/${package}"
 
           if git diff --cached --quiet; then
-            echo "No package changes to commit"
+            echo "No staged changes to commit"
             exit 0
           fi
 
@@ -198,9 +181,7 @@ jobs:
           git pull --rebase origin main
           git push origin HEAD:main
 
-          exit 0
-
-      - name: Upload build log artifact on failure
+      - name: Upload build log on failure
         if: steps.update_package.outputs.changed == 'true' && steps.build_package.outputs.package_failed == 'true'
         uses: actions/upload-artifact@v4
         with:
@@ -211,7 +192,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 14
 
-      - name: Create PR when package build fails
+      - name: Open PR on build failure
         if: steps.update_package.outputs.changed == 'true' && steps.build_package.outputs.package_failed == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
@@ -221,18 +202,15 @@ jobs:
           title: "${{ steps.build_package.outputs.commit_message }}"
           commit-message: "${{ steps.build_package.outputs.commit_message }}"
           body: |
-            Automated update for free package `${{ matrix.package }}` found a build failure.
+            Automated update for `${{ matrix.package }}` encountered a build failure.
 
             ${{ steps.build_package.outputs.failure_summary }}
 
-            Build log excerpt (tail):
             ```text
             ${{ steps.build_package.outputs.failure_log_excerpt }}
             ```
 
             Full logs are available as workflow artifact `package-build-log-${{ matrix.package }}`.
-
-            This PR is opened for manual review and fixes.
           add-paths: |
             packages/${{ matrix.package }}
 
@@ -274,16 +252,25 @@ jobs:
       - name: Update package version
         id: update_package
         run: |
-          set -euxo pipefail
+          set -euo pipefail
 
           package='${{ matrix.package }}'
           attr="packages.x86_64-linux.${package}"
+          pkg_file="packages/${package}/default.nix"
 
-          if ! nix run nixpkgs#nix-update -- --flake "$attr" --use-update-script; then
-            if ! nix run nixpkgs#nix-update -- --flake "$attr" --use-github-releases; then
-              nix run nixpkgs#nix-update -- --flake "$attr"
-            fi
+          if grep -q 'buildDotnetGlobalTool' "$pkg_file" 2>/dev/null; then
+            echo "Detected buildDotnetGlobalTool — using NuGet updater"
+            nuget_name=$(grep -oP 'nugetName\s*=\s*"\K[^"]+' "$pkg_file")
+            nuget_name_lc=$(echo "$nuget_name" | tr '[:upper:]' '[:lower:]')
+            latest=$(curl -fsSL "https://api.nuget.org/v3-flatcontainer/${nuget_name_lc}/index.json" \
+              | python3 -c 'import sys, json; print(json.load(sys.stdin)["versions"][-1])')
+            echo "Latest NuGet version for ${nuget_name}: ${latest}"
+            nix run nixpkgs#common-updater-scripts -- update-source-version "$attr" "$latest" --source-key=nupkg.src
+          else
+            nix run nixpkgs#nix-update -- --flake "$attr" --use-update-script \
+              || nix run nixpkgs#nix-update -- --flake "$attr"
           fi
+
           nix fmt
 
           if git diff --quiet -- "packages/${package}"; then
@@ -292,19 +279,17 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
-          exit 0
-
-      - name: Mark unfree package for testing PR
+      - name: Prepare PR metadata
         id: build_package
         if: steps.update_package.outputs.changed == 'true'
         run: |
-          set -euxo pipefail
+          set -euo pipefail
 
           package='${{ matrix.package }}'
           package_file="packages/${package}"
 
-          old_version=$(git diff -- "$package_file" | sed -nE 's/^-+[[:space:]]*version[[:space:]]*=[[:space:]]*"([^"]+)";/\1/p' | head -n1)
-          new_version=$(git diff -- "$package_file" | sed -nE 's/^\++[[:space:]]*version[[:space:]]*=[[:space:]]*"([^"]+)";/\1/p' | head -n1)
+          old_version=$(git diff -- "$package_file" | sed -nE 's/^-[[:space:]]*version[[:space:]]*=[[:space:]]*"([^"]+)";/\1/p' | head -n1)
+          new_version=$(git diff -- "$package_file" | sed -nE 's/^\+[[:space:]]*version[[:space:]]*=[[:space:]]*"([^"]+)";/\1/p' | head -n1)
 
           if [ -n "${old_version}" ] && [ -n "${new_version}" ]; then
             echo "commit_message=update(packages/${package}): ${old_version} -> ${new_version}" >> "$GITHUB_OUTPUT"
@@ -312,45 +297,10 @@ jobs:
             echo "commit_message=update(packages/${package}): package update" >> "$GITHUB_OUTPUT"
           fi
 
-          : > build.log
-          echo "failure_reason=unfree" >> "$GITHUB_OUTPUT"
-          echo "failure_summary=Package is marked unfree. Skipping CI build and opening a PR for manual testing." >> "$GITHUB_OUTPUT"
-          echo "failure_log_excerpt=Build skipped because package meta.license is unfree." >> "$GITHUB_OUTPUT"
           echo "package_failed=true" >> "$GITHUB_OUTPUT"
+          echo "failure_summary=Package is marked unfree — skipping CI build and opening a PR for manual testing." >> "$GITHUB_OUTPUT"
 
-          exit 0
-
-      - name: Commit and push package update to main
-        if: steps.update_package.outputs.changed == 'true' && steps.build_package.outputs.package_failed != 'true'
-        run: |
-          set -euxo pipefail
-
-          package='${{ matrix.package }}'
-          git add "packages/${package}"
-
-          if git diff --cached --quiet; then
-            echo "No package changes to commit"
-            exit 0
-          fi
-
-          git commit -m "${{ steps.build_package.outputs.commit_message }}"
-          git pull --rebase origin main
-          git push origin HEAD:main
-
-          exit 0
-
-      - name: Upload build log artifact on failure
-        if: steps.update_package.outputs.changed == 'true' && steps.build_package.outputs.package_failed == 'true'
-        uses: actions/upload-artifact@v4
-        with:
-          name: package-build-log-${{ matrix.package }}
-          path: |
-            build.log
-            build.json
-          if-no-files-found: ignore
-          retention-days: 14
-
-      - name: Create PR when package build fails
+      - name: Open PR for manual testing
         if: steps.update_package.outputs.changed == 'true' && steps.build_package.outputs.package_failed == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
@@ -360,15 +310,8 @@ jobs:
           title: "${{ steps.build_package.outputs.commit_message }}"
           commit-message: "${{ steps.build_package.outputs.commit_message }}"
           body: |
-            Automated update for unfree package `${{ matrix.package }}` requires a testing PR.
+            Automated update for unfree package `${{ matrix.package }}`.
 
             ${{ steps.build_package.outputs.failure_summary }}
-
-            Build status detail:
-            ```text
-            ${{ steps.build_package.outputs.failure_log_excerpt }}
-            ```
-
-            This PR is opened for manual review and fixes.
           add-paths: |
             packages/${{ matrix.package }}
