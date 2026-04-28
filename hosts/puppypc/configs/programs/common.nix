@@ -13,7 +13,6 @@
     nixfmt
     wineWow64Packages.waylandFull
     winetricks
-    bottles
     protontricks
     scrcpy
     bs-manager
