@@ -107,7 +107,7 @@ jobs:
           # the NuGet API instead.
           if grep -rq 'buildDotnetGlobalTool' "packages/${package}/" 2>/dev/null; then
             echo "Detected buildDotnetGlobalTool — using NuGet updater"
-            nuget_name=$(grep -roP 'nugetName\s*=\s*"\K[^"]+' "packages/${package}/")
+            nuget_name=$(grep -rh 'nugetName' "packages/${package}/" | grep -oP 'nugetName\s*=\s*"\K[^"]+')
             nuget_name_lc=$(echo "$nuget_name" | tr '[:upper:]' '[:lower:]')
             latest=$(curl -fsSL "https://api.nuget.org/v3-flatcontainer/${nuget_name_lc}/index.json" \
               | python3 -c 'import sys, json; print(json.load(sys.stdin)["versions"][-1])')
@@ -258,7 +258,7 @@ jobs:
 
           if grep -rq 'buildDotnetGlobalTool' "packages/${package}/" 2>/dev/null; then
             echo "Detected buildDotnetGlobalTool — using NuGet updater"
-            nuget_name=$(grep -roP 'nugetName\s*=\s*"\K[^"]+' "packages/${package}/")
+            nuget_name=$(grep -rh 'nugetName' "packages/${package}/" | grep -oP 'nugetName\s*=\s*"\K[^"]+')
             nuget_name_lc=$(echo "$nuget_name" | tr '[:upper:]' '[:lower:]')
             latest=$(curl -fsSL "https://api.nuget.org/v3-flatcontainer/${nuget_name_lc}/index.json" \
               | python3 -c 'import sys, json; print(json.load(sys.stdin)["versions"][-1])')
