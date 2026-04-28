@@ -1,5 +1,6 @@
 {
   lib,
+  callPackage,
   stdenv,
   fetchFromGitHub,
   python313,
@@ -45,7 +46,7 @@ let
     streamlink
   ];
 
-  dispatcharr-frontend = lib.callPackage ./dispatcharr-frontend.nix;
+  dispatcharr-frontend = callPackage ./dispatcharr-frontend.nix { };
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "dispatcharr";
