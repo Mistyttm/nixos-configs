@@ -157,7 +157,7 @@
             "typescript:S6544".level = "off";
           };
           ls = {
-            javaHome = "${pkgs.jdk17}";
+            javaHome = "${pkgs.jdk21}";
           };
           disableTelemetry = true;
           pathToNodeExecutable = "${pkgs.nodejs}/bin/node";
