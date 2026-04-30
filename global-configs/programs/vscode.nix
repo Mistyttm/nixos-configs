@@ -230,6 +230,10 @@
             approveRequest = true;
             approveResponse = true;
           };
+          "https://raw.githubusercontent.com/*" = {
+            approveRequest = true;
+            approveResponse = true;
+          };
         };
 
         diffEditor.ignoreTrimWhitespace = false;
