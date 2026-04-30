@@ -112,7 +112,7 @@ jobs:
             latest=$(curl -fsSL "https://api.nuget.org/v3-flatcontainer/${nuget_name_lc}/index.json" \
               | python3 -c 'import sys, json; print(json.load(sys.stdin)["versions"][-1])')
             echo "Latest NuGet version for ${nuget_name}: ${latest}"
-            nix shell nixpkgs#common-updater-scripts --command update-source-version "$attr" "$latest" --source-key=nupkg.src
+            nix run nixpkgs#nix-update -- --flake "$attr" --version "$latest"
           else
             nix run nixpkgs#nix-update -- --flake "$attr" --use-update-script \
               || nix run nixpkgs#nix-update -- --flake "$attr"
@@ -263,7 +263,7 @@ jobs:
             latest=$(curl -fsSL "https://api.nuget.org/v3-flatcontainer/${nuget_name_lc}/index.json" \
               | python3 -c 'import sys, json; print(json.load(sys.stdin)["versions"][-1])')
             echo "Latest NuGet version for ${nuget_name}: ${latest}"
-            nix shell nixpkgs#common-updater-scripts --command update-source-version "$attr" "$latest" --source-key=nupkg.src
+            nix run nixpkgs#nix-update -- --flake "$attr" --version "$latest"
           else
             nix run nixpkgs#nix-update -- --flake "$attr" --use-update-script \
               || nix run nixpkgs#nix-update -- --flake "$attr"
