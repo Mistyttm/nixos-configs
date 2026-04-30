@@ -101,22 +101,8 @@ jobs:
           package='${{ matrix.package }}'
           attr="packages.x86_64-linux.${package}"
 
-          # buildDotnetGlobalTool packages cannot be updated via nix-update because
-          # the position Nix records resolves to the builder inside the nixpkgs store
-          # path rather than our flake source. Detect this upfront and go straight to
-          # the NuGet API instead.
-          if grep -rq 'buildDotnetGlobalTool' "packages/${package}/" 2>/dev/null; then
-            echo "Detected buildDotnetGlobalTool — using NuGet updater"
-            nuget_name=$(grep -rh 'nugetName' "packages/${package}/" | grep -oP 'nugetName\s*=\s*"\K[^"]+')
-            nuget_name_lc=$(echo "$nuget_name" | tr '[:upper:]' '[:lower:]')
-            latest=$(curl -fsSL "https://api.nuget.org/v3-flatcontainer/${nuget_name_lc}/index.json" \
-              | python3 -c 'import sys, json; print(json.load(sys.stdin)["versions"][-1])')
-            echo "Latest NuGet version for ${nuget_name}: ${latest}"
-            nix run nixpkgs#nix-update -- --flake "$attr" --version "$latest"
-          else
-            nix run nixpkgs#nix-update -- --flake "$attr" --use-update-script \
-              || nix run nixpkgs#nix-update -- --flake "$attr"
-          fi
+          nix run nixpkgs#nix-update -- --flake "$attr" --use-update-script \
+            || nix run nixpkgs#nix-update -- --flake "$attr"
 
           nix fmt
 
@@ -256,18 +242,8 @@ jobs:
           package='${{ matrix.package }}'
           attr="packages.x86_64-linux.${package}"
 
-          if grep -rq 'buildDotnetGlobalTool' "packages/${package}/" 2>/dev/null; then
-            echo "Detected buildDotnetGlobalTool — using NuGet updater"
-            nuget_name=$(grep -rh 'nugetName' "packages/${package}/" | grep -oP 'nugetName\s*=\s*"\K[^"]+')
-            nuget_name_lc=$(echo "$nuget_name" | tr '[:upper:]' '[:lower:]')
-            latest=$(curl -fsSL "https://api.nuget.org/v3-flatcontainer/${nuget_name_lc}/index.json" \
-              | python3 -c 'import sys, json; print(json.load(sys.stdin)["versions"][-1])')
-            echo "Latest NuGet version for ${nuget_name}: ${latest}"
-            nix run nixpkgs#nix-update -- --flake "$attr" --version "$latest"
-          else
-            nix run nixpkgs#nix-update -- --flake "$attr" --use-update-script \
-              || nix run nixpkgs#nix-update -- --flake "$attr"
-          fi
+          nix run nixpkgs#nix-update -- --flake "$attr" --use-update-script \
+            || nix run nixpkgs#nix-update -- --flake "$attr"
 
           nix fmt
 
