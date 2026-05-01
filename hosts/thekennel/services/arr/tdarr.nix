@@ -66,17 +66,20 @@ in
     "${localRoot}/tv" # library
     "${localRoot}/movies" # library
     "/mnt/media/Movies" # library
+    "/mnt/media/TV" # library
   ];
   systemd.services."tdarr-node-internal".serviceConfig.ReadWritePaths = [
     "${localRoot}/tdarr" # cache
     "${localRoot}/tv" # library
     "${localRoot}/movies" # library
     "/mnt/media/Movies" # library
+    "/mnt/media/TV" # library
   ];
   systemd.services."tdarr-server".serviceConfig.ReadWritePaths = [
     "${localRoot}/tdarr" # cache
     "${localRoot}/tv" # library
     "${localRoot}/movies" # library
     "/mnt/media/Movies" # library
+    "/mnt/media/TV" # library
   ];
 }
