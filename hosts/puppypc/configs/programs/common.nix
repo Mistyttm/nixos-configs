@@ -1,7 +1,6 @@
 { pkgs, config, ... }:
 {
   home.packages = with pkgs; [
-    mullvad-vpn
     qbittorrent
     protontricks
     (ffmpeg.override { withCuda = true; })
