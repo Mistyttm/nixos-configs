@@ -1,9 +1,10 @@
-{ ... }:
+{ config, ... }:
 
 {
   sops.secrets."access-tokens" = {
     sopsFile = ../../secrets/github.yaml;
     owner = "root";
+    mode = "0400";
   };
 
   nix = {
@@ -30,12 +31,21 @@
       dates = "weekly";
       options = "--delete-older-than 30d";
     };
-    # GitHub token for higher API rate limits
-    # Can't use include here due to build-time validation
-    # Instead, configure via netrc or use manual token
-    # extraOptions = ''
-    #   !include ${config.sops.secrets."access-tokens".path}
-    # '';
+    extraOptions = ''
+      netrc-file = /etc/nix/netrc
+    '';
+  };
+
+  # Write the netrc file at activation using the decrypted sops secret
+  system.activationScripts.nix-github-netrc = {
+    deps = [ "setupSecrets" ];
+    text = ''
+      raw=$(cat ${config.sops.secrets."access-tokens".path})
+      token="''${raw#github.com=}"
+      install -m 600 -o root /dev/null /nix/var/determinate/netrc
+      echo "machine api.github.com login x-access-token password $token" > /nix/var/determinate/netrc
+      echo "machine github.com login x-access-token password $token" >> /nix/var/determinate/netrc
+    '';
   };
 
   # Increased memory limits for nix-daemon to prevent OOM during large builds
@@ -44,4 +54,5 @@
     MemoryHigh = "20G"; # Increased from 10G - throttling threshold
     MemoryMax = "28G"; # Increased from 15G - hard limit (leave 4GB for system)
   };
+
 }
