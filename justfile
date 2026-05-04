@@ -10,21 +10,21 @@ default:
 # Rebuild Commands
 # ============================================================================
 
-# Rebuild and switch to a specific host
+# Rebuild and switch to a specific host using nh (shows build progress)
 rebuild host:
-    sudo nixos-rebuild switch --flake .#{{host}}
+    NH_SHOW_ACTIVATION_LOGS=1 nh os switch . -H {{host}}
 
 # Rebuild current host (auto-detect hostname)
 rebuild-current:
-    sudo nixos-rebuild switch --flake .#$(hostname)
+    NH_SHOW_ACTIVATION_LOGS=1 nh os switch .
 
 # Test build without switching
 build host:
-    nixos-rebuild build --flake .#{{host}}
+    NH_SHOW_ACTIVATION_LOGS=1 nh os build . -H {{host}}
 
 # Build and show what would change
 dry-run host:
-    nixos-rebuild dry-activate --flake .#{{host}}
+    NH_SHOW_ACTIVATION_LOGS=1 nh os dry-activate . -H {{host}}
 
 # ============================================================================
 # Flake Commands

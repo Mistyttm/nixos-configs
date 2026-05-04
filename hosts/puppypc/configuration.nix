@@ -177,7 +177,7 @@ in
       easyeffects
     ];
     shellAliases = {
-      rebuild = "sudo nixos-rebuild switch --flake .#puppypc";
+      rebuild = "NH_SHOW_ACTIVATION_LOGS=1 nh os switch . -H puppypc";
     };
     sessionVariables = {
       MOZ_DISABLE_RDD_SANDBOX = "1";

@@ -10,8 +10,8 @@
   ];
 
   home.shellAliases = {
-    rebuild = "sudo nixos-rebuild switch --flake .#mistylappytappy";
-    upgrade = "/home/misty/Documents/nixos-configs && nix flake upgrade && sudo nixos-rebuild switch --flake .#mistylappytappy";
+    rebuild = "NH_SHOW_ACTIVATION_LOGS=1 nh os switch . -H mistylappytappy";
+    upgrade = "/home/misty/Documents/nixos-configs && nix flake upgrade && NH_SHOW_ACTIVATION_LOGS=1 nh os switch . -H mistylappytappy";
   };
 
   # Avoid activation failures when a previous mimeapps.list.backup already exists.
