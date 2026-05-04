@@ -26,11 +26,6 @@
     optimise = {
       automatic = true;
     };
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 30d";
-    };
     extraOptions = ''
       netrc-file = /etc/nix/netrc
     '';
@@ -55,4 +50,10 @@
     MemoryMax = "28G"; # Increased from 15G - hard limit (leave 4GB for system)
   };
 
+  programs.nh = {
+    enable = true;
+    clean.enable = true;
+    clean.extraArgs = "--keep-since 4d --keep 3";
+    flake = builtins.toString ../..; # evaluate flake root at build time
+  };
 }
