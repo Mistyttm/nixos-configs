@@ -51,7 +51,7 @@ Use this skill for implementation tasks in this repository where safety and scop
 
 ## Guardrails
 
-- Do not run nixos-rebuild switch/test/boot without explicit user instruction and host confirmation.
+- Do not run `nh os switch/test/boot` without explicit user instruction and host confirmation; run `nh` as your normal user (do not prefix with `sudo`) so it can self-elevate when needed.
 - Do not mutate services on a non-target machine.
 - Do not edit flake.lock manually.
 - Do not install tools imperatively; use comma for one-off tools.

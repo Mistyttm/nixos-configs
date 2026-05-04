@@ -116,7 +116,7 @@ Each host has:
 >
 > **Rules:**
 >
-> - **Do not run `nixos-rebuild switch` or `nixos-rebuild test`** without first running `hostname` and explicitly confirming the current machine matches the target host.
+> - **Do not run `nh os switch` or `nh os test`** without first running `hostname` and explicitly confirming the current machine matches the target host. Run `nh` as your normal user (do not prefix with `sudo`); `nh` will self-elevate when it needs privileged operations.
 > - **Never assume the current hostname is the target host.** If you are editing `hosts/thekennel/` and `hostname` returns `puppypc`, those are different machines — any `nixos-rebuild` or `systemctl` call acts on `puppypc`.
 > - **Do not run destructive system commands** (`systemctl restart`, `rm -rf /var/...`, `ip link`, etc.) based on config changes for any host that is not the current machine.
 > - When build-testing a remote host's config, always use `nix build` to evaluate without applying: `nix build .#nixosConfigurations.<hostname>.config.system.build.toplevel`
@@ -295,7 +295,7 @@ When adding a new host, ensure it is included in `hydraJobs` in `flake.nix` (it 
 
 ## What Copilot Should NOT Do
 
-- **Do not run `nixos-rebuild switch/test/boot`** without first running `hostname` to confirm the current machine matches the target host — editing `hosts/thekennel/` on `puppypc` and running `nixos-rebuild` would modify the wrong machine. **You are almost always on `puppypc`.**
+- **Do not run `nh os switch/test/boot`** without first running `hostname` to confirm the current machine matches the target host — editing `hosts/thekennel/` on `puppypc` and running `nh os switch` would modify the wrong machine. **You are almost always on `puppypc`.**
 - **Do not run any system-mutating commands** (`systemctl`, `rm -rf /var/...`, `ip`, etc.) based on config edits for a non-current host — those commands affect whichever machine the shell is on, not the edited host. **Check `hostname` first.**
 - **Do not edit `flake.lock`** — it is managed by `nix flake update` (see note below)
 - **Do not install tools with `apt`, `brew`, `pip install -g`, `npm install -g`, or `cargo install`** — this is NixOS. Use `,` (comma) for ad-hoc tool access. See the *Running CLI Tools with Nix Comma* section.

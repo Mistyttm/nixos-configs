@@ -8,7 +8,7 @@ applyTo: "**/*.nix"
 - Treat [AGENTS.md](AGENTS.md) as the authoritative project policy.
 - Assume the shell is running on puppypc unless verified otherwise.
 - Before any system-level command, run hostname and confirm the target host matches.
-- Never run nixos-rebuild switch/test/boot unless the user explicitly asks and host is confirmed.
+-- Never run `nh os switch/test/boot` unless the user explicitly asks and host is confirmed; run `nh` as your regular user (it will self-elevate when needed).
 - Prefer evaluation/build commands instead of system mutation:
   - nix build .#nixosConfigurations.<host>.config.system.build.toplevel
   - nix build .#hydraJobs.nixos.<host>
