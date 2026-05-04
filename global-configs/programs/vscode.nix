@@ -63,6 +63,7 @@
         ms-vscode.cpptools
         github.copilot-chat
         oxc.oxc-vscode
+        skellock.just
         # atomicspirit.nix-embedded-highlighter
       ];
       userSettings = {
