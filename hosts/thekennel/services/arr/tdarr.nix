@@ -11,7 +11,16 @@ in
 
     server = {
       enable = true;
-      package = pkgs.tdarr-server;
+      package = pkgs.tdarr-server.overrideAttrs (
+        finalAttrs: _oldAttrs: {
+          version = "2.71.01";
+          src = pkgs.fetchzip {
+            url = "https://storage.tdarr.io/versions/${finalAttrs.version}/linux_x64/Tdarr_Server.zip";
+            hash = "sha256-PnRu0Xr95vFwSVVgHnE+k6+T5gu5m2qQo8DoIxFm2Bs=";
+            stripRoot = false;
+          };
+        }
+      );
       serverIP = "0.0.0.0";
       serverPort = 8266;
       webUIPort = 8265;
@@ -21,27 +30,23 @@ in
     nodes = {
       internal = {
         enable = true;
-        package = pkgs.tdarr-node;
+        package = pkgs.tdarr-node.overrideAttrs (
+          finalAttrs: _oldAttrs: {
+            version = "2.71.01";
+            src = pkgs.fetchzip {
+              url = "https://storage.tdarr.io/versions/${finalAttrs.version}/linux_x64/Tdarr_Node.zip";
+              hash = "sha256-0AdD+8pCfPyLMEEEbzPRZFzv+V1Kkg/Qxnt+nngD1Ds=";
+              stripRoot = false;
+            };
+          }
+        );
         name = "InternalNode";
         serverURL = "http://127.0.0.1:8266";
         workers = {
           transcodeCPU = 0;
           transcodeGPU = 2;
-          healthcheckCPU = 1;
-          healthcheckGPU = 1;
-        };
-      };
-
-      external = {
-        enable = true;
-        package = pkgs.tdarr-node;
-        name = "ExternalNode";
-        serverURL = "http://127.0.0.1:8266";
-        workers = {
-          transcodeCPU = 0;
-          transcodeGPU = 2;
-          healthcheckCPU = 1;
-          healthcheckGPU = 1;
+          healthcheckCPU = 2;
+          healthcheckGPU = 2;
         };
       };
     };

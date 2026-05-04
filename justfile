@@ -78,8 +78,7 @@ topology:
 
 # Collect garbage (keep recent generations)
 gc:
-    sudo nix-collect-garbage -d
-    nix-collect-garbage -d
+    nh clean all --ask
 
 # Remove old generations (keep last 5)
 gc-generations:
