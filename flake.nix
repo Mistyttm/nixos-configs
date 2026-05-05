@@ -10,6 +10,15 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    lix = {
+      url = "https://git.lix.systems/lix-project/lix/archive/main.tar.gz";
+      flake = false;
+    };
+    lix-module = {
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.lix.follows = "lix";
+    };
     # Secrets management
     sops-nix.url = "github:Mic92/sops-nix";
     # Spotify
@@ -32,7 +41,6 @@
       url = "github:cachix/pre-commit-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
     nix-topology.url = "github:oddlama/nix-topology";
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     firefox-addons = {
@@ -70,6 +78,8 @@
     inputs@{
       nixpkgs,
       home-manager,
+      lix-module,
+      # lix,
       sops-nix,
       spicetify-nix,
       nix-minecraft,
@@ -80,7 +90,6 @@
       chaotic,
       # nixos-hardware,
       pre-commit-hooks,
-      determinate,
       nix-topology,
       nix-cachyos-kernel,
       firefox-addons,
@@ -121,9 +130,9 @@
         ./modules/default.nix
         home-manager.nixosModules.home-manager
         sops-nix.nixosModules.sops
-        determinate.nixosModules.default
         nix-topology.nixosModules.default
         nix-index-database.nixosModules.default
+        lix-module.nixosModules.default
         {
           programs.nix-index-database.comma.enable = true;
         }
