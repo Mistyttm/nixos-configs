@@ -1,6 +1,15 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   localRoot = "/mnt/localExpansion";
+  nasRoot = "/mnt/media";
+
+  libraries = [
+    "${localRoot}/tdarr" # cache
+    "${localRoot}/tv" # library
+    "${localRoot}/movies" # library
+    "${nasRoot}/Movies" # library
+    "${nasRoot}/TV" # library
+  ];
 in
 {
   services.tdarr = {
@@ -66,18 +75,19 @@ in
     "d ${localRoot}/tdarr 0755 tdarr media -"
   ];
 
-  systemd.services."tdarr-node-internal".serviceConfig.ReadWritePaths = [
-    "${localRoot}/tdarr" # cache
-    "${localRoot}/tv" # library
-    "${localRoot}/movies" # library
-    "/mnt/media/Movies" # library
-    "/mnt/media/TV" # library
+  systemd.services."tdarr-node-internal".serviceConfig = lib.mkMerge [
+    {
+      ReadWritePaths = libraries;
+      MemoryAccounting = true;
+      MemoryMax = "4G";
+    }
   ];
-  systemd.services."tdarr-server".serviceConfig.ReadWritePaths = [
-    "${localRoot}/tdarr" # cache
-    "${localRoot}/tv" # library
-    "${localRoot}/movies" # library
-    "/mnt/media/Movies" # library
-    "/mnt/media/TV" # library
+
+  systemd.services."tdarr-server".serviceConfig = lib.mkMerge [
+    {
+      ReadWritePaths = libraries;
+      MemoryAccounting = true;
+      MemoryMax = "4G";
+    }
   ];
 }
