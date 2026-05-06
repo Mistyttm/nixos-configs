@@ -12,6 +12,10 @@
       cores = 2; # Further reduced to 2 for stability with PBO+EXPO during large builds
       max-jobs = 1; # Single package at a time to prevent memory pressure
       auto-optimise-store = true;
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       substituters = [
         "https://nix-community.cachix.org"
         "https://cache.nixos.org/"
@@ -37,9 +41,9 @@
     text = ''
       raw=$(cat ${config.sops.secrets."access-tokens".path})
       token="''${raw#github.com=}"
-      install -m 600 -o root /dev/null /nix/var/determinate/netrc
-      echo "machine api.github.com login x-access-token password $token" > /nix/var/determinate/netrc
-      echo "machine github.com login x-access-token password $token" >> /nix/var/determinate/netrc
+      install -m 600 -o root /dev/null /etc/nix/netrc
+      echo "machine api.github.com login x-access-token password $token" > /etc/nix/netrc
+      echo "machine github.com login x-access-token password $token" >> /etc/nix/netrc
     '';
   };
 

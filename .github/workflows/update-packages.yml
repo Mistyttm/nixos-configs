@@ -24,12 +24,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
+      - name: Install Lix
+        uses: samueldr/lix-gha-installer-action@8dc19fbd6451fa106a68ecb2dafeeeb90dff3a29
         with:
-          extra-conf: |
+          extra_nix_config: |
             experimental-features = nix-command flakes
             accept-flake-config = true
+            max-jobs = auto
+            cores = 0
+            substitute = true
+            builders =
 
       - name: Discover free and unfree packages
         id: discover
@@ -79,12 +83,16 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
+      - name: Install Lix
+        uses: samueldr/lix-gha-installer-action@8dc19fbd6451fa106a68ecb2dafeeeb90dff3a29
         with:
-          extra-conf: |
+          extra_nix_config: |
             experimental-features = nix-command flakes
             accept-flake-config = true
+            max-jobs = auto
+            cores = 0
+            substitute = true
+            builders =
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
@@ -220,12 +228,16 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
+      - name: Install Lix
+        uses: samueldr/lix-gha-installer-action@8dc19fbd6451fa106a68ecb2dafeeeb90dff3a29
         with:
-          extra-conf: |
+          extra_nix_config: |
             experimental-features = nix-command flakes
             accept-flake-config = true
+            max-jobs = auto
+            cores = 0
+            substitute = true
+            builders =
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15

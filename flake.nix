@@ -59,7 +59,6 @@
       "https://opinionatedcache.cachix.org"
       "https://cache.flox.dev"
       "https://cache.nixos-cuda.org"
-      "https://install.determinate.systems"
       "https://attic.xuyh0120.win/lantian"
       "https://misty-nixpkgs-extra.cachix.org"
     ];
@@ -132,7 +131,7 @@
         sops-nix.nixosModules.sops
         nix-topology.nixosModules.default
         nix-index-database.nixosModules.default
-        lix-module.nixosModules.default
+        lix-module.nixosModules.lixFromNixpkgs
         {
           programs.nix-index-database.comma.enable = true;
         }

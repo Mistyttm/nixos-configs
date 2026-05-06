@@ -18,15 +18,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
+      - name: Install Lix
+        uses: samueldr/lix-gha-installer-action@8dc19fbd6451fa106a68ecb2dafeeeb90dff3a29
         with:
-          extra-conf: |
+          extra_nix_config: |
             experimental-features = nix-command flakes
             accept-flake-config = true
-
-      - name: Refresh determinate input
-        run: nix flake update determinate
+            max-jobs = auto
+            cores = 0
+            substitute = true
+            builders =
 
       - name: Evaluate flake jobset
         run: |
@@ -52,19 +53,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
+      - name: Install Lix
+        uses: samueldr/lix-gha-installer-action@8dc19fbd6451fa106a68ecb2dafeeeb90dff3a29
         with:
-          extra-conf: |
+          extra_nix_config: |
             experimental-features = nix-command flakes
             accept-flake-config = true
             max-jobs = auto
             cores = 0
             substitute = true
             builders =
-
-      - name: Refresh determinate input
-        run: nix flake update determinate
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
@@ -115,10 +113,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
+      - name: Install Lix
+        uses: samueldr/lix-gha-installer-action@8dc19fbd6451fa106a68ecb2dafeeeb90dff3a29
         with:
-          extra-conf: |
+          extra_nix_config: |
             experimental-features = nix-command flakes
             accept-flake-config = true
             max-jobs = auto
@@ -127,9 +125,6 @@ jobs:
             max-free = 3221225472
             substitute = true
             builders =
-
-      - name: Refresh determinate input
-        run: nix flake update determinate
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
@@ -202,10 +197,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
+      - name: Install Lix
+        uses: samueldr/lix-gha-installer-action@8dc19fbd6451fa106a68ecb2dafeeeb90dff3a29
         with:
-          extra-conf: |
+          extra_nix_config: |
             experimental-features = nix-command flakes
             accept-flake-config = true
             max-jobs = auto
@@ -214,9 +209,6 @@ jobs:
             max-free = 3221225472
             substitute = true
             builders =
-
-      - name: Refresh determinate input
-        run: nix flake update determinate
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15

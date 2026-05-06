@@ -115,7 +115,7 @@ See [COMMITTING.md](COMMITTING.md) for commit message guidelines.
 | `chaotic`                 | [chaotic-cx/nyx](https://github.com/chaotic-cx/nyx)                                                     | Chaotic-AUR Nix overlay     |
 | `nixos-hardware`          | [NixOS/nixos-hardware](https://github.com/NixOS/nixos-hardware)                                         | Hardware-specific modules   |
 | `pre-commit-hooks`        | [cachix/pre-commit-hooks.nix](https://github.com/cachix/pre-commit-hooks.nix)                           | Pre-commit hooks            |
-| `determinate`             | [DeterminateSystems/determinate](https://flakehub.com/f/DeterminateSystems/determinate)                 | Determinate Nix             |
+| `lix-module`              | [lix-project/nixos-module](https://git.lix.systems/lix-project/nixos-module)                            | Lix Nix implementation       |
 | `nix-topology`            | [oddlama/nix-topology](https://github.com/oddlama/nix-topology)                                         | Infrastructure diagrams     |
 | `nix-cachyos-kernel`      | [xddxdd/nix-cachyos-kernel](https://github.com/xddxdd/nix-cachyos-kernel)                               | CachyOS kernel              |
 

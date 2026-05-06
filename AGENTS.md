@@ -93,7 +93,7 @@ Each host has:
 | `nix-topology` | Infrastructure diagram generation |
 | `nix-cachyos-kernel` | CachyOS kernel overlay (puppypc) |
 | `firefox-addons` | Firefox extension management |
-| `determinate` | Determinate Nix installer integration |
+| `lix-module` | Lix Nix implementation |
 | `nixpkgs-extra` | Custom packages (SDDM theme etc.) |
 
 ---
