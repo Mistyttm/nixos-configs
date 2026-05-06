@@ -58,6 +58,8 @@
     allowUnfree = true;
   };
 
+  nix.settings.accept-flake-config = true;
+
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [
     5173
