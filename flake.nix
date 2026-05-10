@@ -129,7 +129,7 @@
         sops-nix.nixosModules.sops
         nix-topology.nixosModules.default
         nix-index-database.nixosModules.default
-        lix-module.nixosModules.lixFromNixpkgs
+        lix-module.nixosModules.default
         {
           programs.nix-index-database.comma.enable = true;
         }
