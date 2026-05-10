@@ -1,16 +1,39 @@
-{ config, ... }:
-
 {
-  sops.secrets."access-tokens" = {
+  config,
+  ...
+}:
+{
+  sops.secrets.github_token = {
     sopsFile = ../../secrets/github.yaml;
+    # no `path` override needed, defaults to /run/secrets/github_token
+  };
+
+  # Use the template feature to render the netrc file with the secret interpolated
+  sops.templates."nix-netrc" = {
+    path = "/etc/nix/netrc";
     owner = "root";
-    mode = "0400";
+    group = "root";
+    mode = "0600";
+    content = ''
+      machine github.com
+      login token
+      password ${config.sops.placeholder.github_token}
+    '';
+  };
+
+  sops.templates."nix-access-tokens" = {
+    path = "/etc/nix/access-tokens.conf";
+    owner = "root";
+    mode = "0600";
+    content = ''
+      access-tokens = github.com=${config.sops.placeholder.github_token}
+    '';
   };
 
   nix = {
     settings = {
-      cores = 2; # Further reduced to 2 for stability with PBO+EXPO during large builds
-      max-jobs = 1; # Single package at a time to prevent memory pressure
+      cores = 2;
+      max-jobs = 1;
       auto-optimise-store = true;
       experimental-features = [
         "nix-command"
@@ -32,32 +55,19 @@
     };
     extraOptions = ''
       netrc-file = /etc/nix/netrc
+      !include /etc/nix/access-tokens.conf
     '';
   };
 
-  # Write the netrc file at activation using the decrypted sops secret
-  system.activationScripts.nix-github-netrc = {
-    deps = [ "setupSecrets" ];
-    text = ''
-      raw=$(cat ${config.sops.secrets."access-tokens".path})
-      token="''${raw#github.com=}"
-      install -m 600 -o root /dev/null /etc/nix/netrc
-      echo "machine api.github.com login x-access-token password $token" > /etc/nix/netrc
-      echo "machine github.com login x-access-token password $token" >> /etc/nix/netrc
-    '';
-  };
-
-  # Increased memory limits for nix-daemon to prevent OOM during large builds
-  # With 32GB RAM, these limits were too restrictive and caused system reboots
   systemd.services.nix-daemon.serviceConfig = {
-    MemoryHigh = "20G"; # Increased from 10G - throttling threshold
-    MemoryMax = "28G"; # Increased from 15G - hard limit (leave 4GB for system)
+    MemoryHigh = "20G";
+    MemoryMax = "28G";
   };
 
   programs.nh = {
     enable = true;
     clean.enable = true;
     clean.extraArgs = "--keep-since 4d --keep 3";
-    flake = builtins.toString ../..; # evaluate flake root at build time
+    flake = builtins.toString ../..;
   };
 }
