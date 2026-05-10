@@ -209,23 +209,6 @@
           optional = true;
           priority = 2;
         };
-        "bonus.frugalusenet.net" = {
-          name = "bonus.frugalusenet.net";
-          displayname = "bonus.frugalusenet.net";
-          host = "bonus.frugalusenet.net";
-          port = 563;
-          timeout = 60;
-          username = "Misty_TTM";
-          connections = 50;
-          ssl = true;
-          ssl_verify = 3;
-          enable = true;
-          required = false;
-          optional = true;
-          priority = 2;
-          retentions = 3000;
-          quota = "1000G";
-        };
       };
 
       categories = {
