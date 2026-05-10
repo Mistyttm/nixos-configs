@@ -63,22 +63,4 @@
   users.users.radarr.extraGroups = [ "media" ];
   users.users.sabnzbd.extraGroups = [ "media" ];
   users.users.bazarr.extraGroups = [ "media" ];
-  # users.users.tdarr.extraGroups = [ "media" ];
-
-  #  systemd.services.isponsorblocktv = {
-  #    description = "isponsorblocktv background service";
-  #    after = [
-  #      "network.target"
-  #      "multi-user.target"
-  #    ];
-  #    wantedBy = [ "multi-user.target" ];
-  #    serviceConfig = {
-  #      Type = "simple";
-  #      ExecStart = "${lib.getExe pkgs.isponsorblocktv}";
-  #      Restart = "on-failure";
-  #      RestartSec = 10;
-  #      User = "sponsor";
-  #      StandardOutput = "journal";
-  #    };
-  #  };
 }
