@@ -18,6 +18,7 @@ in
         TempPath = tempPath;
         TempPathEnabled = true;
         TorrentExportDir = torrentExportDir;
+        DefaultSavePath = downloadPath;
       };
       Preferences = {
         WebUI = {
