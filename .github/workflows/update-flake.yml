@@ -27,7 +27,6 @@ jobs:
         uses: samueldr/lix-gha-installer-action@v2026-02-22
         with:
           extra_nix_config: |
-            nixpkgs=channel:nixos-unstable
             experimental-features = nix-command flakes
             accept-flake-config = true
             max-jobs = auto
