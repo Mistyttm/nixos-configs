@@ -1,0 +1,65 @@
+{ self, inputs, ... }:
+{
+  flake.nixosModules.bootloader =
+    { lib, pkgs, ... }:
+    {
+      boot = {
+        initrd = {
+          systemd = {
+            enable = true;
+          };
+        };
+
+        kernel = {
+          sysctl = {
+            "net.ipv4.ip_forward" = 1;
+          };
+        };
+
+        extraModprobeConfig = ''
+          options binder_linux devices="binder,hwbinder,vndbinder"
+        '';
+
+        plymouth = {
+          enable = true;
+          theme = "cuts";
+          themePackages = with pkgs; [
+            # By default we would install all themes
+            (adi1090x-plymouth-themes.override {
+              selected_themes = [ "cuts" ];
+            })
+          ];
+        };
+
+        # Enable "Silent Boot"
+        consoleLogLevel = 0;
+        initrd.verbose = false;
+        kernelParams = [
+          "quiet"
+          "splash"
+          "boot.shell_on_fail"
+          "loglevel=3"
+          "rd.systemd.show_status=false"
+          "rd.udev.log_level=3"
+          "udev.log_priority=3"
+        ];
+        kernelModules = [
+          "ntsync"
+          "binder_linux"
+          "ashmem_linux"
+        ];
+
+        loader = {
+          efi = {
+            canTouchEfiVariables = true;
+          };
+          grub = {
+            enable = true;
+            efiSupport = true;
+            devices = [ "nodev" ];
+          };
+          timeout = 5;
+        };
+      };
+    };
+}

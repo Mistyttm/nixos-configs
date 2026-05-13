@@ -1,0 +1,84 @@
+{ self, inputs, ... }:
+{
+
+  flake.nixosModules.thekennelHardware =
+    {
+      config,
+      lib,
+      modulesPath,
+      ...
+    }:
+
+    {
+      imports = [
+        (modulesPath + "/installer/scan/not-detected.nix")
+      ];
+
+      boot.initrd.availableKernelModules = [
+        "xhci_pci"
+        "ahci"
+        "usb_storage"
+        "usbhid"
+        "sd_mod"
+      ];
+      boot.initrd.kernelModules = [ ];
+      boot.kernelModules = [ ];
+      boot.extraModulePackages = [ ];
+
+      fileSystems."/" = {
+        device = "/dev/disk/by-uuid/f1c23a92-b403-4585-afc8-9f0bed4ab9cf";
+        fsType = "ext4";
+      };
+
+      fileSystems."/boot" = {
+        device = "/dev/disk/by-uuid/44CB-093C";
+        fsType = "vfat";
+        options = [
+          "fmask=0077"
+          "dmask=0077"
+        ];
+      };
+
+      fileSystems."/mnt/localExpansion" = {
+        device = "/dev/disk/by-uuid/f6c142e4-7dc9-46d4-ae90-5c2ee4c0560f";
+        fsType = "ext4";
+      };
+
+      fileSystems."/mnt/media" = {
+        device = "//192.168.0.170/Public/Media";
+        fsType = "cifs";
+        options = [
+          "credentials=/run/secrets/rendered/qnap-media-cifs"
+          "rw"
+          "vers=3.1.1"
+          "_netdev"
+          "iocharset=utf8"
+          "serverino"
+          "gid=986"
+          "file_mode=0664"
+          "dir_mode=0775"
+          "x-systemd.automount"
+          "x-systemd.after=network-online.target"
+          "x-systemd.requires=network-online.target"
+          "x-systemd.requires=sops-nix.service"
+          "x-systemd.mount-timeout=30s"
+          "nofail"
+        ];
+      };
+
+      swapDevices = [
+        { device = "/dev/disk/by-uuid/67b0fdb8-b022-4ef2-b30e-6f0e02b3ba94"; }
+      ];
+
+      # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
+      # (the default) this is the recommended approach. When using systemd-networkd it's
+      # still possible to use this option, but it's recommended to use it in conjunction
+      # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
+      networking.useDHCP = lib.mkDefault true;
+      # networking.interfaces.eno1.useDHCP = lib.mkDefault true;
+      # networking.interfaces.wlo1.useDHCP = lib.mkDefault true;
+
+      nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+      hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+    };
+}

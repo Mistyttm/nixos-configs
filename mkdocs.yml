@@ -1,0 +1,9 @@
+site_name: dendritic-test
+site_description: Nix-based configuration and host docs for dendritic-test
+docs_dir: docs
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - Flake: flake.md

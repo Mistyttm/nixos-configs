@@ -1,6 +1,0 @@
-{ ... }:
-{
-  imports = [
-    ./matrix-synapse.nix
-  ];
-}

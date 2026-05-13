@@ -1,0 +1,12 @@
+{ inputs, ... }:
+{
+  flake.nixosModules.gnupg =
+    { pkgs, lib, ... }:
+    {
+      programs.gnupg.agent = {
+        enable = true;
+        enableSSHSupport = true;
+        pinentryPackage = pkgs.pinentry-gnome3;
+      };
+    };
+}
