@@ -1,12 +1,18 @@
-{ inputs, self, ... }:
+{ ... }:
 {
   flake.nixosModules.plasma =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
       services.desktopManager.plasma6.enable = true;
 
       # printing
       services.printing.enable = true;
+
+      # XDG portal configuration for Plasma
+      xdg.portal = {
+        extraPortals = [ pkgs.xdg-desktop-portal-kde ];
+        config.common.default = "kde";
+      };
 
       environment.plasma6.excludePackages = with pkgs.kdePackages; [
         konsole
