@@ -33,6 +33,14 @@
       url = "github:AdnanHodzic/auto-cpufreq";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    devshell = {
+      url = "github:numtide/devshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    pre-commit-hooks = {
+      url = "github:cachix/pre-commit-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -46,6 +54,7 @@
         imports = [
           inputs.home-manager.flakeModules.home-manager
           inputs.mkdocs-flake.flakeModule
+          inputs.devshell.flakeModule
         ]
         ++ (modules.imports or [ ]);
       }
