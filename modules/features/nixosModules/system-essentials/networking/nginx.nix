@@ -198,7 +198,7 @@
 
       profile = profiles.${hostName} or null;
 
-      cfg = config.dendritic.nginx;
+      cfg = config.doggate.nginx;
     in
     {
       options.doggate.nginx.enable = lib.mkEnableOption "Unified, host-profile-driven nginx configuration";
@@ -222,21 +222,23 @@
           }
         ) (profile.sopsSecrets or { });
 
-        security.acme = lib.mkIf (profile ? acme) (
-          profile.acme
-          // {
-            certs = lib.mapAttrs (
-              _: cert:
-              cert
-              // {
-                credentialFiles = {
-                  PORKBUN_API_KEY_FILE = config.sops.secrets."porkbun-api-key".path;
-                  PORKBUN_SECRET_API_KEY_FILE = config.sops.secrets."porkbun-secret-api-key".path;
-                };
-              }
-            ) profile.acme.certs;
-          }
-        );
+        security.acme =
+          if profile != null && profile ? acme then
+            profile.acme
+            // {
+              certs = lib.mapAttrs (
+                _: cert:
+                cert
+                // {
+                  credentialFiles = {
+                    PORKBUN_API_KEY_FILE = config.sops.secrets."porkbun-api-key".path;
+                    PORKBUN_SECRET_API_KEY_FILE = config.sops.secrets."porkbun-secret-api-key".path;
+                  };
+                }
+              ) profile.acme.certs;
+            }
+          else
+            { };
       };
     };
 }
