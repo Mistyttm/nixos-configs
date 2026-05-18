@@ -1,7 +1,11 @@
-{ self, inputs, ... }:
+{ ... }:
 {
   flake.nixosModules.bootloader =
-    { lib, pkgs, ... }:
+    {
+      config,
+      pkgs,
+      ...
+    }:
     {
       boot = {
         initrd = {
@@ -53,11 +57,18 @@
           efi = {
             canTouchEfiVariables = true;
           };
-          grub = {
-            enable = true;
-            efiSupport = true;
-            devices = [ "nodev" ];
-          };
+          grub =
+            if config.networking.hostName == "thedogpark" then
+              {
+                enable = true;
+                device = "/dev/vda";
+              }
+            else
+              {
+                enable = true;
+                efiSupport = true;
+                devices = [ "nodev" ];
+              };
           timeout = 5;
         };
       };
