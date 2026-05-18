@@ -1,7 +1,7 @@
 { self, inputs, ... }:
 {
   flake.nixosModules.system-essentials =
-    { lib, pkgs, ... }:
+    { ... }:
     {
       imports = [
         inputs.sops-nix.nixosModules.sops
@@ -23,6 +23,7 @@
         self.nixosModules.resolvd
         self.nixosModules.ssh
         self.nixosModules.wireguard
+        self.nixosModules.nginx
       ];
     };
 }
