@@ -1,4 +1,4 @@
-{ self, inputs, ... }:
+{ self, ... }:
 {
   flake.nixosModules.nginx =
     { lib, config, ... }:
@@ -70,10 +70,10 @@
 
           sopsSecrets = {
             "porkbun-api-key" = {
-              sopsFile = ../../secrets/porkbun.yaml;
+              sopsFile = self.secrets.porkbun;
             };
             "porkbun-secret-api-key" = {
-              sopsFile = ../../secrets/porkbun.yaml;
+              sopsFile = self.secrets.porkbun;
             };
           };
 

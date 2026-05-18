@@ -38,8 +38,13 @@
         ];
       };
 
-      doggate.wireguard = {
-        enable = true;
+      doggate = {
+        nginx = {
+          enable = true;
+        };
+        wireguard = {
+          enable = true;
+        };
       };
 
       nixpkgs.config.cudaSupport = true;
