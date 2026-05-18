@@ -1,4 +1,4 @@
-{ self, inputs, ... }:
+{ ... }:
 
 {
   flake.nixosModules.tdarr =
@@ -14,6 +14,8 @@
         "${nasRoot}/Movies" # library
         "${nasRoot}/TV" # library
       ];
+
+      tdarrVersion = "2.74.01";
     in
     {
       services.tdarr = {
@@ -26,7 +28,7 @@
           enable = true;
           package = pkgs.tdarr-server.overrideAttrs (
             finalAttrs: _oldAttrs: {
-              version = "2.71.01";
+              version = tdarrVersion;
               src = pkgs.fetchzip {
                 url = "https://storage.tdarr.io/versions/${finalAttrs.version}/linux_x64/Tdarr_Server.zip";
                 hash = "sha256-PnRu0Xr95vFwSVVgHnE+k6+T5gu5m2qQo8DoIxFm2Bs=";
@@ -45,7 +47,7 @@
             enable = true;
             package = pkgs.tdarr-node.overrideAttrs (
               finalAttrs: _oldAttrs: {
-                version = "2.71.01";
+                version = tdarrVersion;
                 src = pkgs.fetchzip {
                   url = "https://storage.tdarr.io/versions/${finalAttrs.version}/linux_x64/Tdarr_Node.zip";
                   hash = "sha256-0AdD+8pCfPyLMEEEbzPRZFzv+V1Kkg/Qxnt+nngD1Ds=";
