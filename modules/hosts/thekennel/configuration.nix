@@ -25,14 +25,12 @@
       networking.hostName = "thekennel";
 
       boot = {
-        kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
-        supportedFilesystems = [ "ntfs" ];
-        kernelModules = [ "ntsync" ];
+        kernelPackages = pkgs.linuxPackages_zen;
       };
 
       hardware.nvidia-custom = {
         enable = true;
-        driverChannel = "beta";
+        driverChannel = "stable";
         blacklistNova = true;
         extraGraphicsPackages = with pkgs; [
           nvidia-vaapi-driver
