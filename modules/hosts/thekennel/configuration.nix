@@ -22,7 +22,7 @@
         fail2ban
       ];
 
-      networking.hostName = "puppypc";
+      networking.hostName = "thekennel";
 
       boot = {
         kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
