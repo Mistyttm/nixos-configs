@@ -19,6 +19,7 @@
         mullvad
         jellyfin
         homepage
+        fail2ban
       ];
 
       networking.hostName = "puppypc";
