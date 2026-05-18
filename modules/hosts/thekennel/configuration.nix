@@ -18,6 +18,7 @@
         nvidia
         mullvad
         jellyfin
+        homepage
       ];
 
       networking.hostName = "puppypc";
