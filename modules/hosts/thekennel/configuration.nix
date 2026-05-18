@@ -1,8 +1,8 @@
-{ self, inputs, ... }:
+{ self, ... }:
 {
 
   flake.nixosModules.thekennelConfiguration =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
       # import any other modules from here
       imports = with self.nixosModules; [
@@ -56,6 +56,28 @@
       environment.sessionVariables = {
         MOZ_DISABLE_RDD_SANDBOX = "1";
         LIBVA_DRIVER_NAME = "nvidia";
+      };
+
+      fileSystems."/mnt/media" = {
+        device = "//192.168.0.170/Public/Media";
+        fsType = "cifs";
+        options = [
+          "credentials=/run/secrets/rendered/qnap-media-cifs"
+          "rw"
+          "vers=3.1.1"
+          "_netdev"
+          "iocharset=utf8"
+          "serverino"
+          "gid=986"
+          "file_mode=0664"
+          "dir_mode=0775"
+          "x-systemd.automount"
+          "x-systemd.after=network-online.target"
+          "x-systemd.requires=network-online.target"
+          "x-systemd.requires=sops-nix.service"
+          "x-systemd.mount-timeout=30s"
+          "nofail"
+        ];
       };
 
       system.stateVersion = "24.05";

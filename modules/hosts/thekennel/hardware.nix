@@ -1,4 +1,4 @@
-{ self, inputs, ... }:
+{ ... }:
 {
 
   flake.nixosModules.thekennelHardware =
@@ -42,28 +42,6 @@
       fileSystems."/mnt/localExpansion" = {
         device = "/dev/disk/by-uuid/f6c142e4-7dc9-46d4-ae90-5c2ee4c0560f";
         fsType = "ext4";
-      };
-
-      fileSystems."/mnt/media" = {
-        device = "//192.168.0.170/Public/Media";
-        fsType = "cifs";
-        options = [
-          "credentials=/run/secrets/rendered/qnap-media-cifs"
-          "rw"
-          "vers=3.1.1"
-          "_netdev"
-          "iocharset=utf8"
-          "serverino"
-          "gid=986"
-          "file_mode=0664"
-          "dir_mode=0775"
-          "x-systemd.automount"
-          "x-systemd.after=network-online.target"
-          "x-systemd.requires=network-online.target"
-          "x-systemd.requires=sops-nix.service"
-          "x-systemd.mount-timeout=30s"
-          "nofail"
-        ];
       };
 
       swapDevices = [
