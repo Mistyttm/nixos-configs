@@ -3,12 +3,6 @@
   flake.nixosModules.matrix-synapse =
     { config, pkgs, ... }:
     {
-      imports = [
-        ./coturn.nix
-        ./mautrix-discord.nix
-        # ./mjolnir.nix
-      ];
-
       sops.secrets."registration_shared_secret" = {
         sopsFile = self.secrets.synapse;
         owner = "matrix-synapse";
