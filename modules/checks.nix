@@ -6,6 +6,8 @@
       ...
     }:
     {
+      formatter = pkgs.nixfmt;
+
       pre-commit = {
         settings.hooks = {
           nixfmt = {
