@@ -51,9 +51,8 @@
       nixpkgs.config.cudaSupport = true;
 
       environment.systemPackages = with pkgs; [
-        piper
-        gamescope
-        texliveFull
+        direnv
+        nil
       ];
 
       environment.shellAliases = {
@@ -86,6 +85,8 @@
           "nofail"
         ];
       };
+
+      programs.java.enable = true;
 
       system.stateVersion = "24.05";
     };

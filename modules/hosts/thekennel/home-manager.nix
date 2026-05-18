@@ -1,4 +1,4 @@
-{ self, inputs, ... }:
+{ self, ... }:
 {
   flake.nixosModules.thekennelHomeManager =
     { ... }:
@@ -13,24 +13,18 @@
           git
           gpg
           xdg
-          vscode
-          easyeffects
           direnv
-          kdeconnect
-          gui-packages
           eza
           fastfetch
           ripgrep
           starship
           zsh
-          kitty
           direnv
-          kdeconnect
         ];
 
         gpg = {
           enable = true;
-          publicKeySource = ./PuppyPC.asc;
+          # publicKeySource = ./PuppyPC.asc;
         };
 
         programs.puppy.git = {
