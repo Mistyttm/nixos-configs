@@ -17,6 +17,7 @@
         nix-ld
         mullvad
         fail2ban
+        matrix
       ];
 
       networking.hostName = "thedogpark";
