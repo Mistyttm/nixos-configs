@@ -6,8 +6,6 @@
 {
   flake.nixosModules.nixoptions =
     {
-      pkgs,
-      lib,
       config,
       ...
     }:
@@ -15,7 +13,7 @@
       #! List of default nixosModule imports for all systems
       imports = [
         inputs.nix-index-database.nixosModules.default
-        inputs.lix-module.nixosModules.default
+        inputs.lix-module.nixosModules.lixFromNixpkgs
       ];
 
       sops.secrets."github_token" = {
