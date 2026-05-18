@@ -37,8 +37,8 @@
       url = "github:numtide/devshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    pre-commit-hooks = {
-      url = "github:cachix/pre-commit-hooks.nix";
+    git-hooks-nix = {
+      url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -53,6 +53,7 @@
       // {
         imports = [
           inputs.home-manager.flakeModules.home-manager
+          inputs.git-hooks-nix.flakeModule
           inputs.mkdocs-flake.flakeModule
           inputs.devshell.flakeModule
         ]

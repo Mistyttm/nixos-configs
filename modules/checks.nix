@@ -1,15 +1,13 @@
-{ inputs, ... }:
+{ ... }:
 {
   perSystem =
     {
       pkgs,
-      system,
       ...
     }:
     {
-      checks.pre-commit-check = (inputs.pre-commit-hooks.lib."${system}").run {
-        src = ./.;
-        hooks = {
+      pre-commit = {
+        settings.hooks = {
           nixfmt = {
             enable = true;
             package = pkgs.nixfmt;
