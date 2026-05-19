@@ -1,4 +1,4 @@
-{ self, inputs, ... }:
+{ self, ... }:
 
 {
   flake.nixosModules.jellystat =
@@ -68,7 +68,12 @@
       options.services.jellystat = {
         enable = lib.mkEnableOption "Jellystat statistics service for Jellyfin";
 
-        package = lib.mkPackageOption pkgs "jellystat" { };
+        package = lib.mkOption {
+          type = lib.types.package;
+          default = self.packages.${pkgs.stdenv.hostPlatform.system}.jellystat;
+          defaultText = lib.literalExpression "self.packages.${pkgs.stdenv.hostPlatform.system}.jellystat";
+          description = "Jellystat package to run.";
+        };
 
         openFirewall = lib.mkOption {
           type = lib.types.bool;
