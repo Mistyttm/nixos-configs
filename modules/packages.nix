@@ -1,18 +1,23 @@
-{ inputs, ... }:
+{ inputs, withSystem, ... }:
 {
   flake.overlays.default =
-    final: prev:
-    prev.lib.filesystem.packagesFromDirectoryRecursive {
-      callPackage = prev.callPackage;
-      directory = ../packages;
-    };
+    _final: prev:
+    withSystem prev.stdenv.hostPlatform.system (
+      { config, ... }:
+      {
+        local = config.packages;
+      }
+    );
 
   perSystem =
-    { pkgs, ... }:
+    { system, ... }:
     {
-      packages = pkgs.lib.filesystem.packagesFromDirectoryRecursive {
-        callPackage = pkgs.callPackage;
-        directory = ../packages;
+      _module.args.pkgs = import inputs.nixpkgs {
+        inherit system;
+        overlays = [
+          inputs.self.overlays.default
+        ];
       };
+      pkgsDirectory = ../packages;
     };
 }

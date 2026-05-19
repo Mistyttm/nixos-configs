@@ -46,6 +46,7 @@
       url = "github:numtide/devshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
     git-hooks-nix = {
       url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -67,6 +68,7 @@
           inputs.mkdocs-flake.flakeModule
           inputs.devshell.flakeModule
           inputs.nix-topology.flakeModule
+          inputs.pkgs-by-name-for-flake-parts.flakeModule
         ]
         ++ (modules.imports or [ ]);
       }
