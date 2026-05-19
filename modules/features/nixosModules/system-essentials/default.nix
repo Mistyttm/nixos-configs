@@ -5,6 +5,7 @@
     {
       imports = [
         inputs.sops-nix.nixosModules.sops
+        inputs.nix-topology.nixosModules.default
 
         self.nixosModules.audio
         self.nixosModules.bootloader
