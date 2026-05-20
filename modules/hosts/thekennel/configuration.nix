@@ -2,7 +2,7 @@
 {
 
   flake.nixosModules.thekennelConfiguration =
-    { pkgs, ... }:
+    { config, pkgs, ... }:
     {
       # import any other modules from here
       imports = with self.nixosModules; [
@@ -61,6 +61,24 @@
       environment.sessionVariables = {
         MOZ_DISABLE_RDD_SANDBOX = "1";
         LIBVA_DRIVER_NAME = "nvidia";
+      };
+
+      sops.secrets."qnap-media/username" = {
+        sopsFile = self.secrets.qnap;
+      };
+
+      sops.secrets."qnap-media/password" = {
+        sopsFile = self.secrets.qnap;
+      };
+
+      sops.templates.qnap-media-cifs = {
+        owner = "root";
+        group = "root";
+        mode = "0400";
+        content = ''
+          username=${config.sops.placeholder."qnap-media/username"}
+          password=${config.sops.placeholder."qnap-media/password"}
+        '';
       };
 
       fileSystems."/mnt/media" = {
