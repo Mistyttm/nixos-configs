@@ -15,7 +15,29 @@
         "${nasRoot}/TV" # library
       ];
 
-      tdarrVersion = "2.74.01";
+      # tdarrVersion = "2.74.01";
+
+      # tdarrServerPackage = pkgs.tdarr-server.overrideAttrs (
+      #   finalAttrs: _oldAttrs: {
+      #     version = tdarrVersion;
+      #     src = pkgs.fetchzip {
+      #       url = "https://storage.tdarr.io/versions/${finalAttrs.version}/linux_x64/Tdarr_Server.zip";
+      #       hash = "sha256-PnRu0Xr95vFwSVVgHnE+k6+T5gu5m2qQo8DoIxFm2Bs=";
+      #       stripRoot = false;
+      #     };
+      #   }
+      # );
+
+      # tdarrNodePackage = pkgs.tdarr-node.overrideAttrs (
+      #   finalAttrs: _oldAttrs: {
+      #     version = tdarrVersion;
+      #     src = pkgs.fetchzip {
+      #       url = "https://storage.tdarr.io/versions/${finalAttrs.version}/linux_x64/Tdarr_Node.zip";
+      #       hash = "sha256-0AdD+8pCfPyLMEEEbzPRZFzv+V1Kkg/Qxnt+nngD1Ds=";
+      #       stripRoot = false;
+      #     };
+      #   }
+      # );
     in
     {
       services.tdarr = {
@@ -26,16 +48,7 @@
 
         server = {
           enable = true;
-          package = pkgs.tdarr-server.overrideAttrs (
-            finalAttrs: _oldAttrs: {
-              version = tdarrVersion;
-              src = pkgs.fetchzip {
-                url = "https://storage.tdarr.io/versions/${finalAttrs.version}/linux_x64/Tdarr_Server.zip";
-                hash = "sha256-PnRu0Xr95vFwSVVgHnE+k6+T5gu5m2qQo8DoIxFm2Bs=";
-                stripRoot = false;
-              };
-            }
-          );
+          package = pkgs.tdarr-server;
           serverIP = "0.0.0.0";
           serverPort = 8266;
           webUIPort = 8265;
@@ -45,16 +58,7 @@
         nodes = {
           internal = {
             enable = true;
-            package = pkgs.tdarr-node.overrideAttrs (
-              finalAttrs: _oldAttrs: {
-                version = tdarrVersion;
-                src = pkgs.fetchzip {
-                  url = "https://storage.tdarr.io/versions/${finalAttrs.version}/linux_x64/Tdarr_Node.zip";
-                  hash = "sha256-0AdD+8pCfPyLMEEEbzPRZFzv+V1Kkg/Qxnt+nngD1Ds=";
-                  stripRoot = false;
-                };
-              }
-            );
+            package = pkgs.tdarr-node;
             name = "InternalNode";
             serverURL = "http://127.0.0.1:8266";
             workers = {
