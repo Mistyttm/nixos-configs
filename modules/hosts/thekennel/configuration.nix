@@ -52,6 +52,12 @@
       environment.systemPackages = with pkgs; [
         direnv
         nil
+        intel-vaapi-driver
+        btop # Resource monitor
+        ncdu # Disk usage analyzer
+        mediainfo # Media file inspector
+        mkvtoolnix # MKV manipulation tools
+        bc
       ];
 
       environment.shellAliases = {
