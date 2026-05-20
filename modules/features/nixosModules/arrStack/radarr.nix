@@ -14,6 +14,7 @@
           update = {
             automatically = true;
           };
+          port = 8989;
         };
       };
       users.users.radarr.extraGroups = [ "media" ];
