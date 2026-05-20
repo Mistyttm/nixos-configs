@@ -105,6 +105,8 @@
 
       programs.java.enable = true;
 
+      programs.mtr.enable = true;
+
       system.stateVersion = "24.05";
     };
 
