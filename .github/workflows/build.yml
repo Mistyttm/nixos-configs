@@ -185,7 +185,7 @@ jobs:
           df -h
 
   build-laptop:
-    name: Build and cache mistylappytappy
+    name: Build and cache puppylaptop
     needs: eval
     runs-on: ubuntu-latest
     steps:
@@ -217,7 +217,7 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           skipPush: true
 
-      - name: Build Hydra job (mistylappytappy)
+      - name: Build Hydra job (puppylaptop)
         run: |
           set -uo pipefail
 
@@ -225,7 +225,7 @@ jobs:
           df -h
 
           nix build \
-            .#hydraJobs.nixos.mistylappytappy \
+            .#hydraJobs.nixos.puppylaptop \
             --keep-going \
             --no-link \
             --json > build-result.json || BUILD_EXIT=$?
