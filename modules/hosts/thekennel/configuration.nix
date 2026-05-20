@@ -13,7 +13,6 @@
         docker
         fonts
         cli-tools
-        bat
         nix-ld
         nvidia
         mullvad

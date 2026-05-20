@@ -1,8 +1,8 @@
-{ self, inputs, ... }:
+{ self, ... }:
 {
 
   flake.nixosModules.puppypcConfiguration =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
       # import any other modules from here
       imports = with self.nixosModules; [
@@ -22,7 +22,6 @@
         wivrn
         fonts
         cli-tools
-        bat
         nix-ld
         nvidia
         amd-cpu

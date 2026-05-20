@@ -1,8 +1,8 @@
-{ self, inputs, ... }:
+{ self, ... }:
 {
 
   flake.nixosModules.puppylaptopConfiguration =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
       # import any other modules from here
       imports = with self.nixosModules; [
@@ -21,7 +21,6 @@
         steam
         fonts
         cli-tools
-        bat
         nix-ld
         nvidia
         mullvad

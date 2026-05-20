@@ -1,7 +1,7 @@
 { self, ... }:
 {
   flake.nixosModules.thekennelHomeManager =
-    { ... }:
+    { config, ... }:
     {
       imports = [
         self.nixosModules.homeManager
@@ -15,6 +15,7 @@
           xdg
           direnv
           eza
+          bat
           fastfetch
           ripgrep
           starship
@@ -27,8 +28,11 @@
           # publicKeySource = ./PuppyPC.asc;
         };
 
-        programs.puppy.git = {
-          enable = true;
+        programs.puppy = {
+          starship.hostname = config.networking.hostName;
+          git = {
+            enable = true;
+          };
         };
       };
     };

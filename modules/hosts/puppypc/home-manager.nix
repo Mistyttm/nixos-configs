@@ -1,7 +1,7 @@
-{ self, inputs, ... }:
+{ self, ... }:
 {
   flake.nixosModules.puppypcHomeManager =
-    { ... }:
+    { config, ... }:
     {
       imports = [
         self.nixosModules.homeManager
@@ -19,6 +19,7 @@
           kdeconnect
           gui-packages
           eza
+          bat
           fastfetch
           ripgrep
           starship
@@ -26,6 +27,9 @@
           kitty
           direnv
           kdeconnect
+          gameModding
+          mangohud
+          linux-wallpaperengine
         ];
 
         gpg = {
@@ -33,9 +37,12 @@
           publicKeySource = ./PuppyPC.asc;
         };
 
-        programs.puppy.git = {
-          enable = true;
-          signingKey = "5D6050A7E4497C4A";
+        programs.puppy = {
+          starship.hostname = config.networking.hostName;
+          git = {
+            enable = true;
+            signingKey = "5D6050A7E4497C4A";
+          };
         };
       };
     };

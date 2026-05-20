@@ -1,7 +1,7 @@
-{ self, inputs, ... }:
+{ self, ... }:
 {
   flake.nixosModules.puppylaptopHomeManager =
-    { ... }:
+    { config, ... }:
     {
       imports = [
         self.nixosModules.homeManager
@@ -20,6 +20,7 @@
           gui-packages
           mangohud
           eza
+          bat
           fastfetch
           ripgrep
           starship
@@ -36,9 +37,12 @@
           publicKeySource = ./PuppyLaptop.asc;
         };
 
-        programs.puppy.git = {
-          enable = true;
-          signingKey = "5D6050A7E4497C4A";
+        programs.puppy = {
+          starship.hostname = config.networking.hostName;
+          git = {
+            enable = true;
+            signingKey = "5D6050A7E4497C4A";
+          };
         };
       };
     };
