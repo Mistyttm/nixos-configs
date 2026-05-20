@@ -68,6 +68,13 @@
         LIBVA_DRIVER_NAME = "nvidia";
       };
 
+      networking.firewall.allowedTCPPorts = [
+        5173
+      ];
+      networking.firewall.allowedUDPPorts = [
+        5173
+      ];
+
       system.stateVersion = "24.05";
     };
 
