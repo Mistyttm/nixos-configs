@@ -1,7 +1,7 @@
-{ inputs, ... }:
+{ ... }:
 {
   flake.homeModules.vscode =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
       programs.vscode = {
         enable = true;
@@ -65,7 +65,7 @@
             jinxdash.prettier-rust
             ms-vscode.cpptools
             github.copilot-chat
-            oxc.oxc-vscode
+            # oxc.oxc-vscode
             skellock.just
             # atomicspirit.nix-embedded-highlighter
           ];
