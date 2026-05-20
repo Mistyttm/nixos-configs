@@ -19,6 +19,8 @@
         jellyfin
         homepage
         fail2ban
+        arrStack
+        downloaders
       ];
 
       networking.hostName = "thekennel";
