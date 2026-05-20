@@ -1,4 +1,5 @@
 {
+  self,
   ...
 }:
 {
@@ -9,11 +10,11 @@
     }:
     {
       sops.secrets."sonarr_api_key" = {
-        sopsFile = ../../../secrets/media.yaml;
+        sopsFile = self.secrets.media;
       };
 
       sops.secrets."radarr_api_key" = {
-        sopsFile = ../../../secrets/media.yaml;
+        sopsFile = self.secrets.media;
       };
 
       services.recyclarr = {
