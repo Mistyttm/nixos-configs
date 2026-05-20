@@ -1,9 +1,7 @@
-{ self, inputs, ... }:
+{ self, ... }:
 {
   flake.nixosModules.sabnzbd =
     {
-      pkgs,
-      lib,
       config,
       ...
     }:
@@ -271,13 +269,13 @@
 
       networking.firewall.allowedTCPPorts = [ 8085 ];
       sops.secrets."sabnzbd/api_key" = {
-        sopsFile = ../../../../secrets/sabnzbd.yaml;
+        sopsFile = self.secrets.sabnzbd;
       };
       sops.secrets."sabnzbd/nzb_key" = {
-        sopsFile = ../../../../secrets/sabnzbd.yaml;
+        sopsFile = self.secrets.sabnzbd;
       };
       sops.secrets."sabnzbd/frugal_password" = {
-        sopsFile = ../../../../secrets/sabnzbd.yaml;
+        sopsFile = self.secrets.sabnzbd;
       };
 
       sops.templates."sabnzbd-secrets.ini" = {
