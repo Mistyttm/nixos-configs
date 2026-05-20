@@ -1,7 +1,7 @@
-{ inputs, ... }:
+{ ... }:
 {
   flake.homeModules.xdg =
-    { pkgs, lib, ... }:
+    { ... }:
     {
       xdg = {
         enable = true;
@@ -13,6 +13,7 @@
         mimeApps = {
           enable = true;
         };
+        configFile."mimeapps.list".force = true;
       };
     };
 }
