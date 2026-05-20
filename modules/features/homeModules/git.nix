@@ -1,4 +1,4 @@
-{ inputs, self, ... }:
+{ ... }:
 {
   flake.homeModules.git =
     {
@@ -22,7 +22,7 @@
 
         programs.git = {
           enable = true;
-          package = self.packages.${pkgs.stdenv.hostPlatform.system}.git;
+          package = pkgs.gitFull;
           signing = lib.mkIf (config.programs.puppy.git.signingKey != null) {
             key = config.programs.puppy.git.signingKey;
             signByDefault = true;
@@ -68,46 +68,6 @@
           enable = true;
           options = {
             background = "dark";
-          };
-        };
-      };
-    };
-
-  perSystem =
-    { pkgs, ... }:
-    {
-      packages.git = inputs.wrapper-modules.wrappers.git.wrap {
-        inherit pkgs;
-        package = pkgs.gitFull;
-
-        extraPackages = [ pkgs.gitFull ];
-
-        settings = {
-          user = {
-            name = "Mistyttm";
-            email = "contact@mistyttm.dev";
-          };
-          credential.helper = "libsecret";
-          pull.rebase = true;
-          core = {
-            compression = 9;
-            excludesfile = builtins.toFile "gitignore" ''
-              *~
-              *#
-            '';
-          };
-          transfer.fsckObjects = true;
-          fetch.fsckobjects = true;
-          receive.fsckObjects = true;
-          init.defaultBranch = "main";
-          push = {
-            default = "current";
-            followtags = true;
-          };
-          merge.conflictstyle = "zdiff3";
-          diff = {
-            algorithm = "histogram";
-            context = 10;
           };
         };
       };
