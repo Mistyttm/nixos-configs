@@ -14,7 +14,6 @@
           update = {
             automatically = true;
           };
-          port = 8989;
         };
       };
       users.users.sonarr.extraGroups = [ "media" ];

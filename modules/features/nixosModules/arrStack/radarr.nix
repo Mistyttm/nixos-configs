@@ -1,7 +1,7 @@
-{ self, inputs, ... }:
+{ ... }:
 {
   flake.nixosModules.radarr =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
       services.radarr = {
         enable = true;
@@ -14,7 +14,6 @@
           update = {
             automatically = true;
           };
-          port = 7878;
         };
       };
       users.users.radarr.extraGroups = [ "media" ];
