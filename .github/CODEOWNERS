@@ -1,0 +1,17 @@
+# CODEOWNERS - Auto-assign reviewers for pull requests
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything
+* @Mistyttm
+
+# Host-specific configs
+/hosts/puppypc/ @Mistyttm
+/hosts/mistylappytappy/ @Mistyttm
+/hosts/thedogpark/ @Mistyttm
+/hosts/thekennel/ @Mistyttm
+
+# CI/CD
+/.github/ @Mistyttm
+
+# Secrets (extra attention)
+/secrets/ @Mistyttm
