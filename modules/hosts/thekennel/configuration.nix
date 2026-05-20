@@ -21,6 +21,7 @@
         fail2ban
         arrStack
         downloaders
+        nginx
       ];
 
       networking.hostName = "thekennel";
