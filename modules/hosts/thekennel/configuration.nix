@@ -6,8 +6,8 @@
     {
       # import any other modules from here
       imports = with self.nixosModules; [
-        puppypcHardware
-        puppypcHomeManager
+        thekennelHardware
+        thekennelHomeManager
         system-essentials
         misty
         docker
