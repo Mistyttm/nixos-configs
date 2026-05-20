@@ -1,9 +1,9 @@
-{ self, inputs, ... }:
+{ ... }:
 {
   flake.nixosModules.sonarr =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
-      services.radarr = {
+      services.sonarr = {
         enable = true;
         package = pkgs.sonarr;
         openFirewall = true;
