@@ -1,4 +1,4 @@
-{ input, ... }:
+{ ... }:
 {
   flake.homeModules.gpg =
     {
@@ -31,6 +31,11 @@
             }
           ];
           homedir = "${config.xdg.dataHome}/gnupg";
+        };
+
+        services.gpg-agent = {
+          enable = true;
+          pinentry.package = pkgs.pinentry-qt; # or pinentry-gnome3, pinentry-curses, etc.
         };
       };
     };
