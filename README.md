@@ -14,35 +14,31 @@
 
 [![Build](https://github.com/Mistyttm/nixos-configs/actions/workflows/build.yml/badge.svg)](https://github.com/Mistyttm/nixos-configs/actions/workflows/build.yml)
 [![Update Flake](https://github.com/Mistyttm/nixos-configs/actions/workflows/update-flake.yml/badge.svg)](https://github.com/Mistyttm/nixos-configs/actions/workflows/update-flake.yml)
-[![Update Packages](https://github.com/Mistyttm/nixos-configs/actions/workflows/update-packages.yml/badge.svg)](https://github.com/Mistyttm/nixos-configs/actions/workflows/update-packages.yml)
+<!-- [![Update Packages](https://github.com/Mistyttm/nixos-configs/actions/workflows/update-packages.yml/badge.svg)](https://github.com/Mistyttm/nixos-configs/actions/workflows/update-packages.yml) -->
 [![Topology](https://github.com/Mistyttm/nixos-configs/actions/workflows/update-topology.yml/badge.svg)](https://github.com/Mistyttm/nixos-configs/actions/workflows/update-topology.yml)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 
 This repository contains the configuration files for my NixOS systems. The configurations are managed using flakes.
 
-See [COMMITTING.md](COMMITTING.md) for commit message guidelines.
+> [!IMPORTANT]
+> Recently I completely converted this entire repo over to the dendritic + flake-parts pattern. This has taken me a large amount of work and I'm very proud of it. There will be isues and missing documentation.
 
+See [COMMITTING.md](COMMITTING.md) for commit message guidelines.
 
 ## Directory Structure
 
 ```
 .
-├── flake.nix              # Flake definition and host configurations
-├── hosts/                 # Per-host configurations
-│   ├── puppypc/           # Main desktop
-│   ├── mistylappytappy/   # Gaming laptop
-│   ├── thedogpark/        # Sydney VPS
-│   └── thekennel/         # Home server
-├── global-configs/        # Shared configurations
-│   ├── fonts/             # Font configuration
-│   ├── programs/          # User programs (browsers, games, etc.)
-│   ├── shell/             # Shell config (zsh, starship, etc.)
-│   ├── system/            # System config (DE, networking, etc.)
-│   └── users/             # User definitions
-├── modules/               # Custom NixOS/home-manager modules
-├── patches/               # Package patches
-├── secrets/               # Encrypted secrets (sops)
-└── topology/              # Infrastructure diagrams
+├── flake.nix                  # Flake definition and host configurations
+├── modules/                   # Custom NixOS/home-manager modules
+│   ├── features/
+│   └── hosts/                 # Per-host configurations
+│       ├── puppypc/           # Main desktop
+│       ├── mistylappytappy/   # Gaming laptop
+│       ├── thedogpark/        # Sydney VPS
+│       └── thekennel/         # Home server
+├── secrets/                   # Encrypted secrets (sops)
+└── topology/                  # Infrastructure diagrams
 ```
 
 ## Infrastructure
