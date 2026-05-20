@@ -1,13 +1,9 @@
 {
-  self,
-  inputs,
   ...
 }:
 {
   flake.nixosModules.recyclarr =
     {
-      pkgs,
-      lib,
       config,
       ...
     }:
@@ -25,7 +21,7 @@
         configuration = {
           sonarr = {
             sonarr-main = {
-              base_url = "http://localhost:${toString config.services.sonarr.settings.port}";
+              base_url = "http://localhost:${toString config.services.sonarr.settings.server.port}";
               api_key = {
                 _secret = config.sops.secrets."sonarr_api_key".path;
               };
@@ -179,7 +175,7 @@
           };
           radarr = {
             radarr-main = {
-              base_url = "http://localhost:${toString config.services.radarr.settings.port}";
+              base_url = "http://localhost:${toString config.services.radarr.settings.server.port}";
               api_key = {
                 _secret = config.sops.secrets."radarr_api_key".path;
               };
