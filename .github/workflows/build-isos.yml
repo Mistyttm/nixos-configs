@@ -48,7 +48,7 @@ jobs:
         id: build
         run: |
           set -euo pipefail
-          nixos-rebuild build-image \
+          nix run nixpkgs#nixos-rebuild build-image \
             --image-variant iso-installer \
             --flake ".#${{ matrix.nixos-config }}"
 
