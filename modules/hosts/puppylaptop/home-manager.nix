@@ -41,7 +41,7 @@
           starship.hostname = config.networking.hostName;
           git = {
             enable = true;
-            signingKey = "5D6050A7E4497C4A";
+            signingKey = "05E283AA410E1548";
           };
         };
       };
