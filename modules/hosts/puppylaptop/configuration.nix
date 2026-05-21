@@ -60,7 +60,7 @@
         LIBVA_DRIVER_NAME = "nvidia";
       };
 
-      system.stateVersion = "24.05";
+      system.stateVersion = "25.05";
     };
 
 }
