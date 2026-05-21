@@ -93,12 +93,6 @@
       profile = profiles.${selectedProfileName} or null;
     in
     {
-      sops.secrets."laptop_key" = {
-        sopsFile = self.secrets.wireguard;
-        owner = "root";
-        group = "root";
-      };
-
       options.doggate.wireguard = {
         enable = lib.mkEnableOption "Unified, host-profile-driven WireGuard configuration";
 
@@ -123,6 +117,12 @@
       };
 
       config = lib.mkIf (cfg.enable && profile != null) {
+        sops.secrets."laptop_key" = {
+          sopsFile = self.secrets.wireguard;
+          owner = "root";
+          group = "root";
+        };
+
         environment.systemPackages = with pkgs; [
           wireguard-tools
         ];
