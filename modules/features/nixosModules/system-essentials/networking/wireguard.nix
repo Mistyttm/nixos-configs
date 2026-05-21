@@ -37,7 +37,7 @@
           allowedUDPPorts = [ ];
           interfaces.wg0 = {
             ips = [ "10.100.0.3/24" ];
-            privateKeyFile = "/root/wireguard-keys/private";
+            privateKeyFile = config.sops.secrets."laptop_key".path;
 
             peers = [
               thedogpark
@@ -66,8 +66,8 @@
                 allowedIPs = [ "10.100.0.3/32" ];
               }
               {
-                # mistylappytappy - laptop
-                publicKey = "4gYkapXc0P9tYPMxkjAjcT4wL2kEQ7QXbCD18K0Vsx4=";
+                # pupppylaptop - laptop
+                publicKey = "YLEqUsdRe8LCXOHK6/8ct3ncSaaCqAoQLjiWWeGVl2s=";
                 allowedIPs = [ "10.100.0.4/32" ];
               }
             ];
@@ -93,6 +93,12 @@
       profile = profiles.${selectedProfileName} or null;
     in
     {
+      sops.secrets."laptop_key" = {
+        sopsFile = self.secrets.wireguard;
+        owner = "root";
+        group = "root";
+      };
+
       options.doggate.wireguard = {
         enable = lib.mkEnableOption "Unified, host-profile-driven WireGuard configuration";
 
@@ -120,7 +126,7 @@
         environment.systemPackages = with pkgs; [
           wireguard-tools
         ];
-        
+
         networking.wireguard = {
           enable = true;
           interfaces.wg0 = lib.mkMerge [
