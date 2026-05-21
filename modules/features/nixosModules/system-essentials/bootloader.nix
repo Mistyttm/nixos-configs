@@ -4,6 +4,7 @@
     {
       config,
       pkgs,
+      lib,
       ...
     }:
     {
@@ -69,7 +70,7 @@
                 efiSupport = true;
                 devices = [ "nodev" ];
               };
-          timeout = 5;
+          timeout = lib.mkDefault 5;
         };
       };
     };

@@ -1,0 +1,98 @@
+name: Build NixOS ISOs
+
+on:
+  schedule:
+    # Weekly on Sunday at 02:00 UTC
+    - cron: "0 2 * * 0"
+  push:
+    paths:
+      # Rebuild whenever anything inside the system-essentials module directory changes
+      - "system-essentials/**"
+  workflow_dispatch:
+    # Allow manual triggering from the GitHub UI
+
+permissions:
+  contents: write   # needed to create/update releases and upload assets
+
+jobs:
+  build:
+    name: Build ISO (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x86_64
+            runner: ubuntu-latest
+            nixos-config: thepetshop-x86_64
+          - arch: aarch64
+            runner: ubuntu-24.04-arm  # native arm runner; remove if unavailable and use QEMU instead
+            nixos-config: thepetshop-aarch64
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Lix
+        uses: samueldr/lix-gha-installer-action@v2026-02-22
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+            max-jobs = auto
+            cores = 0
+            substitute = true
+            builders =
+
+      - name: Build ISO
+        id: build
+        run: |
+          set -euo pipefail
+          RESULT=$(nix build \
+            --no-link \
+            --print-out-paths \
+            ".#nixosConfigurations.${{ matrix.nixos-config }}.config.system.build.images.iso-installer" \
+            2>&1 | tee /tmp/build.log | tail -1)
+          echo "out=$RESULT" >> "$GITHUB_OUTPUT"
+
+          # Find the .iso file inside the result
+          ISO_PATH=$(find "$RESULT" -name "*.iso" | head -1)
+          echo "iso_path=$ISO_PATH" >> "$GITHUB_OUTPUT"
+
+          ISO_NAME=$(basename "$ISO_PATH")
+          echo "iso_name=$ISO_NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Compute SHA256
+        id: checksum
+        run: |
+          sha256sum "${{ steps.build.outputs.iso_path }}" \
+            | awk '{print $1}' \
+            > "${{ steps.build.outputs.iso_name }}.sha256"
+          echo "checksum=$(cat "${{ steps.build.outputs.iso_name }}.sha256")" >> "$GITHUB_OUTPUT"
+
+      - name: Determine release tag
+        id: tag
+        run: |
+          # Use a date-based rolling tag so the release is always "latest"
+          # but old assets are replaced rather than accumulated.
+          echo "tag=iso-$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+
+      - name: Upload ISO to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.tag }}
+          name: "NixOS Installer ISOs — ${{ steps.tag.outputs.tag }}"
+          body: |
+            Automated ISO builds for **thepetshop** NixOS installer.
+
+            | File | SHA256 |
+            |------|--------|
+            | `${{ steps.build.outputs.iso_name }}` | `${{ steps.checksum.outputs.checksum }}` |
+
+            Built from flake rev: `${{ github.sha }}`
+          draft: false
+          prerelease: false
+          make_latest: true
+          files: |
+            ${{ steps.build.outputs.iso_path }}
+            ${{ steps.build.outputs.iso_name }}.sha256
