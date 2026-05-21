@@ -48,15 +48,12 @@ jobs:
         id: build
         run: |
           set -euo pipefail
-          RESULT=$(nix build \
-            --no-link \
-            --print-out-paths \
-            ".#nixosConfigurations.${{ matrix.nixos-config }}.config.system.build.images.iso-installer" \
-            2>&1 | tee /tmp/build.log | tail -1)
-          echo "out=$RESULT" >> "$GITHUB_OUTPUT"
+          nixos-rebuild build-image \
+            --image-variant iso-installer \
+            --flake ".#${{ matrix.nixos-config }}"
 
-          # Find the .iso file inside the result
-          ISO_PATH=$(find "$RESULT" -name "*.iso" | head -1)
+          # nixos-rebuild build-image leaves a result/ symlink
+          ISO_PATH=$(find result/ -name "*.iso" | head -1)
           echo "iso_path=$ISO_PATH" >> "$GITHUB_OUTPUT"
 
           ISO_NAME=$(basename "$ISO_PATH")
