@@ -200,21 +200,6 @@
               optional = false;
               priority = 1;
             };
-            "usnews.blocknews.net" = {
-              name = "usnews.blocknews.net";
-              displayname = "usnews.blocknews.net";
-              host = "usnews.blocknews.net";
-              port = 563;
-              timeout = 60;
-              username = "Misty_TTM";
-              connections = 20;
-              ssl = true;
-              ssl_verify = 2;
-              enable = false;
-              required = false;
-              optional = true;
-              priority = 2;
-            };
           };
 
           categories = {
@@ -297,8 +282,6 @@
           [[sanews.frugalusenet.com]]
           password = ${config.sops.placeholder."sabnzbd/frugal_password"}
           [[asnews.frugalusenet.com]]
-          password = ${config.sops.placeholder."sabnzbd/frugal_password"}
-          [[usnews.blocknews.net]]
           password = ${config.sops.placeholder."sabnzbd/frugal_password"}
           [[bonus.frugalusenet.com]]
           password = ${config.sops.placeholder."sabnzbd/frugal_password"}
