@@ -49,6 +49,11 @@ jobs:
         # Speeds up repeated builds by caching store paths in GitHub Actions cache.
         # Remove if you have a dedicated Cachix/Attic cache instead.
 
+      - name: Maximize disk space for Nix
+        uses: wimpysworld/nothing-but-nix@main
+        with:
+          hatchet-protocol: 'carve'
+
       - name: Build ISO
         id: build
         run: |
