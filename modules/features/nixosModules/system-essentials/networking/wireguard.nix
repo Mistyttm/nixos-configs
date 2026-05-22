@@ -1,4 +1,4 @@
-{ self, inputs, ... }:
+{ self, ... }:
 {
   flake.nixosModules.wireguard =
     {
@@ -24,7 +24,7 @@
           allowedUDPPorts = [ ];
           interfaces.wg0 = {
             ips = [ "10.100.0.4/24" ];
-            privateKeyFile = "/root/wireguard-keys/private";
+            privateKeyFile = config.sops.secrets."puppypc_key".path;
 
             peers = [
               thedogpark
@@ -52,7 +52,7 @@
           interfaces.wg0 = {
             ips = [ "10.100.0.1/24" ];
             listenPort = 51820;
-            privateKeyFile = "/root/wireguard-keys/private";
+            privateKeyFile = config.sops.secrets."dogpark_key".path;
 
             peers = [
               {
@@ -74,12 +74,11 @@
           };
         };
 
-        # Template profile for thekennel.
         thekennel = {
           allowedUDPPorts = [ ];
           interfaces.wg0 = {
             ips = [ "10.100.0.2/24" ];
-            privateKeyFile = "/root/wireguard-keys/private";
+            privateKeyFile = config.sops.secrets."thekennel_key".path;
 
             peers = [
               thedogpark
@@ -118,6 +117,24 @@
 
       config = lib.mkIf (cfg.enable && profile != null) {
         sops.secrets."laptop_key" = {
+          sopsFile = self.secrets.wireguard;
+          owner = "root";
+          group = "root";
+        };
+
+        sops.secrets."puppypc_key" = {
+          sopsFile = self.secrets.wireguard;
+          owner = "root";
+          group = "root";
+        };
+
+        sops.secrets."thekennel_key" = {
+          sopsFile = self.secrets.wireguard;
+          owner = "root";
+          group = "root";
+        };
+
+        sops.secrets."dogpark_key" = {
           sopsFile = self.secrets.wireguard;
           owner = "root";
           group = "root";
