@@ -44,14 +44,23 @@ jobs:
             substitute = true
             builders =
 
+      - name: Set up Nix binary cache (Cachix or substituters)
+        uses: DeterminateSystems/magic-nix-cache-action@v8
+        # Speeds up repeated builds by caching store paths in GitHub Actions cache.
+        # Remove if you have a dedicated Cachix/Attic cache instead.
+
       - name: Build ISO
         id: build
         run: |
           set -euo pipefail
-          nix shell nixpkgs#nixos-rebuild --command \
-            nixos-rebuild build-image \
-              --image-variant iso-installer \
-              --flake ".#${{ matrix.nixos-config }}"
+          # Instantiate nixos-rebuild directly from the locked nixpkgs in the
+          # flake, so it runs under Lix rather than dragging in upstream Nix
+          # (which rejects the ?rev= URLs Lix writes into flake.lock).
+          NIXOS_REBUILD=$(nix build --no-link --print-out-paths \
+            --expr '(builtins.getFlake (toString ./.)).inputs.nixpkgs.legacyPackages.${{ matrix.arch }}-linux.nixos-rebuild')
+          "$NIXOS_REBUILD/bin/nixos-rebuild" build-image \
+            --image-variant iso-installer \
+            --flake "path:.#${{ matrix.nixos-config }}"
 
           # nixos-rebuild build-image leaves a result/ symlink
           ISO_PATH=$(find result/ -name "*.iso" | head -1)
