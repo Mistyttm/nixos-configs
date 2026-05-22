@@ -53,16 +53,8 @@ jobs:
         id: build
         run: |
           set -euo pipefail
-          # Instantiate nixos-rebuild directly from the locked nixpkgs in the
-          # flake, so it runs under Lix rather than dragging in upstream Nix
-          # (which rejects the ?rev= URLs Lix writes into flake.lock).
-          NIXOS_REBUILD=$(nix build --no-link --print-out-paths \
-            --expr '(builtins.getFlake "path:."  ).inputs.nixpkgs.legacyPackages.${{ matrix.arch }}-linux.nixos-rebuild')
-          "$NIXOS_REBUILD/bin/nixos-rebuild" build-image \
-            --image-variant iso-installer \
-            --flake "path:.#${{ matrix.nixos-config }}"
+          nix build "path:.#packages.${{ matrix.arch }}-linux.thepetshop-iso"
 
-          # nixos-rebuild build-image leaves a result/ symlink
           ISO_PATH=$(find result/ -name "*.iso" | head -1)
           echo "iso_path=$ISO_PATH" >> "$GITHUB_OUTPUT"
 
