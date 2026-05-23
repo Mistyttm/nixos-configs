@@ -15,6 +15,7 @@
 
           virtualHosts = {
             "jellyfin-internal" = {
+              serverName = "jellyfin.mistyttm.dev";
               listen = [
                 {
                   addr = "10.100.0.2";
