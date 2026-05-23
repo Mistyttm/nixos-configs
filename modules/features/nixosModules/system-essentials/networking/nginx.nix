@@ -15,7 +15,6 @@
 
           virtualHosts = {
             "jellyfin-internal" = {
-              serverName = "jellyfin.mistyttm.dev";
               listen = [
                 {
                   addr = "10.100.0.2";
@@ -101,7 +100,7 @@
               locations."/" = {
                 proxyPass = "http://localhost:${toString config.services.mautrix-discord.settings.appservice.port}";
                 extraConfig = ''
-                  proxy_set_header Host "jellyfin.mistyttm.dev";
+                  proxy_set_header Host $host;
                   proxy_set_header X-Real-IP $remote_addr;
                   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
                   proxy_set_header X-Forwarded-Proto $scheme;
@@ -207,7 +206,7 @@
       config = lib.mkIf (cfg.enable && profile != null) {
         services.nginx = {
           enable = true;
-          recommendedProxySettings = true;
+          # recommendedProxySettings = true;
           recommendedTlsSettings = true;
           virtualHosts = profile.virtualHosts;
         };
