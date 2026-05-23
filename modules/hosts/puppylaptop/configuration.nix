@@ -60,6 +60,8 @@
         LIBVA_DRIVER_NAME = "nvidia";
       };
 
+      programs.nh.flake = "/home/misty/.config/.nixos";
+
       system.stateVersion = "25.05";
     };
 

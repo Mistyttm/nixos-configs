@@ -83,6 +83,8 @@
         }
       ];
 
+      programs.nh.flake = "/home/misty/nixos-configs";
+
       nixpkgs.config = {
         permittedInsecurePackages = [
           "olm-3.2.16"
