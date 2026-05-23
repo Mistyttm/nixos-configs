@@ -8,6 +8,8 @@
       imports = with self.nixosModules; [
         puppylaptopHardware
         puppylaptopHomeManager
+        audio
+        plymouth
         system-essentials
         auto-cpu-frequency
         misty

@@ -10,6 +10,9 @@
         puppypcHomeManager
         system-essentials
         misty
+        audio
+        plymouth
+        zram
         bluetooth
         docker
         firefox

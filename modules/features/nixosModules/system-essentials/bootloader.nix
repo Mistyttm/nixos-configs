@@ -3,7 +3,6 @@
   flake.nixosModules.bootloader =
     {
       config,
-      pkgs,
       lib,
       ...
     }:
@@ -24,17 +23,6 @@
         extraModprobeConfig = ''
           options binder_linux devices="binder,hwbinder,vndbinder"
         '';
-
-        plymouth = {
-          enable = true;
-          theme = "cuts";
-          themePackages = with pkgs; [
-            # By default we would install all themes
-            (adi1090x-plymouth-themes.override {
-              selected_themes = [ "cuts" ];
-            })
-          ];
-        };
 
         # Enable "Silent Boot"
         consoleLogLevel = 0;

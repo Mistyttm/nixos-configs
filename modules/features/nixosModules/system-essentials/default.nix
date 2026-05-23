@@ -7,7 +7,6 @@
         inputs.sops-nix.nixosModules.sops
         inputs.nix-topology.nixosModules.default
 
-        self.nixosModules.audio
         self.nixosModules.bootloader
         self.nixosModules.fonts
         self.nixosModules.gnupg
@@ -18,7 +17,6 @@
         self.nixosModules.sops
         self.nixosModules.systemd
         self.nixosModules.xdg
-        self.nixosModules.zram
 
         self.nixosModules.networkmanager
         self.nixosModules.resolvd
