@@ -18,14 +18,8 @@ let
 in
 
 {
-  flake.overlays.tdarr = final: _prev: {
-    tdarr = (tdarrFixPkgs final).tdarr;
-    tdarr-server = (tdarrFixPkgs final).tdarr-server;
-    tdarr-node = (tdarrFixPkgs final).tdarr-node;
-  };
-
   flake.nixosModules.tdarr =
-    { pkgs, lib, ... }:
+    { lib, ... }:
     let
       localRoot = "/mnt/localExpansion";
       nasRoot = "/mnt/media";
@@ -71,7 +65,7 @@ in
 
         server = {
           enable = true;
-          package = pkgs.tdarr-server;
+          package = tdarrFixPkgs.tdarr-server;
           serverIP = "0.0.0.0";
           serverPort = 8266;
           webUIPort = 8265;
@@ -81,7 +75,7 @@ in
         nodes = {
           internal = {
             enable = true;
-            package = pkgs.tdarr-node;
+            package = tdarrFixPkgs.tdarr-node;
             name = "InternalNode";
             serverURL = "http://127.0.0.1:8266";
             workers = {
