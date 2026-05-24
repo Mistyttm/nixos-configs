@@ -1,6 +1,29 @@
 { ... }:
 
+let
+  # NixOS/nixpkgs PR #523607 - tdarr: swap ffmpeg -> ffmpeg-full for hardware encoder support
+  # To get the sha256, run:
+  #   nix-prefetch-url --unpack https://github.com/Mistyttm/nixpkgs/archive/72fc7a8f3fdf561294ea7b1ace802484a24ced4b.tar.gz
+  tdarrFixPkgs =
+    final:
+    import
+      (builtins.fetchTarball {
+        url = "https://github.com/Mistyttm/nixpkgs/archive/72fc7a8f3fdf561294ea7b1ace802484a24ced4b.tar.gz";
+        hash = "";
+      })
+      {
+        system = final.stdenv.hostPlatform.system;
+        config = final.config;
+      };
+in
+
 {
+  flake.overlays.tdarr = final: _prev: {
+    tdarr = (tdarrFixPkgs final).tdarr;
+    tdarr-server = (tdarrFixPkgs final).tdarr-server;
+    tdarr-node = (tdarrFixPkgs final).tdarr-node;
+  };
+
   flake.nixosModules.tdarr =
     { pkgs, lib, ... }:
     let
@@ -48,9 +71,7 @@
 
         server = {
           enable = true;
-          package = pkgs.tdarr-server.override {
-            ffmpeg = pkgs.ffmpeg-full;
-          };
+          package = pkgs.tdarr-server;
           serverIP = "0.0.0.0";
           serverPort = 8266;
           webUIPort = 8265;
@@ -60,9 +81,7 @@
         nodes = {
           internal = {
             enable = true;
-            package = pkgs.tdarr-node.override {
-              ffmpeg = pkgs.ffmpeg-full;
-            };
+            package = pkgs.tdarr-node;
             name = "InternalNode";
             serverURL = "http://127.0.0.1:8266";
             workers = {
