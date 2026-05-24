@@ -1,25 +1,23 @@
 { ... }:
 
-let
-  # NixOS/nixpkgs PR #523607 - tdarr: swap ffmpeg -> ffmpeg-full for hardware encoder support
-  # To get the sha256, run:
-  #   nix-prefetch-url --unpack https://github.com/Mistyttm/nixpkgs/archive/72fc7a8f3fdf561294ea7b1ace802484a24ced4b.tar.gz
-  tdarrFixPkgs =
-    import
-      (builtins.fetchTarball {
-        url = "https://github.com/Mistyttm/nixpkgs/archive/72fc7a8f3fdf561294ea7b1ace802484a24ced4b.tar.gz";
-        sha256 = "sha256-gp0bBOVwZ5PstUrgw/D5dWhIUGXRXv9tb785upaXb7U=";
-      })
-      {
-        system = builtins.currentSystem;
-        config = { };
-      };
-in
-
 {
   flake.nixosModules.tdarr =
-    { lib, ... }:
+    { lib, pkgs, ... }:
     let
+      # NixOS/nixpkgs PR #523607 - tdarr: swap ffmpeg -> ffmpeg-full for hardware encoder support
+      # To get the sha256, run:
+      #   nix-prefetch-url --unpack https://github.com/Mistyttm/nixpkgs/archive/72fc7a8f3fdf561294ea7b1ace802484a24ced4b.tar.gz
+      tdarrFixPkgs =
+        import
+          (builtins.fetchTarball {
+            url = "https://github.com/Mistyttm/nixpkgs/archive/72fc7a8f3fdf561294ea7b1ace802484a24ced4b.tar.gz";
+            sha256 = "sha256-gp0bBOVwZ5PstUrgw/D5dWhIUGXRXv9tb785upaXb7U=";
+          })
+          {
+            system = pkgs.stdenv.hostPlatform.system;
+            config = pkgs.config;
+          };
+
       localRoot = "/mnt/localExpansion";
       nasRoot = "/mnt/media";
 
