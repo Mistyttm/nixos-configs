@@ -48,7 +48,9 @@
 
         server = {
           enable = true;
-          package = pkgs.tdarr-server;
+          package = pkgs.tdarr-server.override {
+            ffmpeg = pkgs.ffmpeg-full;
+          };
           serverIP = "0.0.0.0";
           serverPort = 8266;
           webUIPort = 8265;
@@ -58,7 +60,9 @@
         nodes = {
           internal = {
             enable = true;
-            package = pkgs.tdarr-node;
+            package = pkgs.tdarr-node.override {
+              ffmpeg = pkgs.ffmpeg-full;
+            };
             name = "InternalNode";
             serverURL = "http://127.0.0.1:8266";
             workers = {
