@@ -8,7 +8,7 @@ let
     import
       (builtins.fetchTarball {
         url = "https://github.com/Mistyttm/nixpkgs/archive/72fc7a8f3fdf561294ea7b1ace802484a24ced4b.tar.gz";
-        hash = "";
+        sha256 = "";
       })
       {
         system = builtins.currentSystem;
