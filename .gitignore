@@ -5,3 +5,5 @@
 
 # Nix build outputs (symlinks and directories)
 *result*
+
+tmp/
