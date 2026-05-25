@@ -52,6 +52,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
+
+    deadlock-mod-manager = {
+      url = "github:deadlock-mod-manager/deadlock-mod-manager";
+      inputs.nixpkgs.follows = "nixpkgs"; # optional, keeps nixpkgs consistent
+    };
   };
 
   nixConfig = {
