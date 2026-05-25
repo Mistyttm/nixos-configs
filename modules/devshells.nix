@@ -1,7 +1,11 @@
 { ... }:
 {
   perSystem =
-    { pkgs, ... }:
+    {
+      config,
+      pkgs,
+      ...
+    }:
     {
       devshells.default = {
         packages = [
@@ -9,7 +13,12 @@
           pkgs.nixfmt
           pkgs.deadnix
           pkgs.commitizen
-        ];
+        ]
+        ++ config.pre-commit.settings.enabledPackages;
+
+        devshell.startup.pre-commit = {
+          text = config.pre-commit.shellHook;
+        };
 
         commands = [
           {
