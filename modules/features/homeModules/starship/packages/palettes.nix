@@ -131,16 +131,16 @@ let
     };
 
     thedogpark = {
-      success = "green";
-      bold_success = "bold green";
-      warning = "yellow";
-      bold_warning = "bold yellow";
-      path = "cyan";
-      bold_path = "bold cyan";
-      error = "red";
-      bold_error = "bold red";
-      dimmed_success = "dimmed green";
-      text = "white";
+      success = "#a6e3a1";
+      bold_success = "#a6e3a1";
+      warning = "#f9e2af";
+      bold_warning = "#f9e2af";
+      path = "#89dceb";
+      bold_path = "#89dceb";
+      error = "#f38ba8";
+      bold_error = "#f38ba8";
+      dimmed_success = "#94e2d5";
+      text = "#cdd6f4";
     };
   };
 in
