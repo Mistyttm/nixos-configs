@@ -1,7 +1,7 @@
-{ inputs, ... }:
+{ ... }:
 {
   flake.nixosModules.cli-tools =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
       environment.systemPackages = with pkgs; [
         xdg-utils
@@ -17,15 +17,15 @@
         sops
         ookla-speedtest
         rar
-        quickemu
         cabextract
         nixfmt
-        bitwarden-cli
+        nixd
         nil
-        libaccounts-glib
         scrcpy
         file
         nixfmt
+        rsync
+        strace
       ];
     };
 }

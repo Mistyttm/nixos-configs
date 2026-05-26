@@ -31,10 +31,12 @@
           filelight
           # wallpaper-engine-plugin
         ]
-        ++ [
-          pkgs.darkly
-          pkgs.plasma-panel-colorizer
-          pkgs.klassy
-        ];
+        ++ (with pkgs; [
+          darkly
+          plasma-panel-colorizer
+          klassy
+          libaccounts-glib
+          bitwarden-cli
+        ]);
     };
 }

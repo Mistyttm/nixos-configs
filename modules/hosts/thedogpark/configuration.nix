@@ -14,7 +14,6 @@
         fonts
         cli-tools
         nix-ld
-        mullvad
         fail2ban
         matrix
         motd
@@ -47,8 +46,6 @@
         tmux
         nano
       ];
-
-      programs.java.enable = true;
 
       networking.firewall.allowedTCPPorts = [
         5173

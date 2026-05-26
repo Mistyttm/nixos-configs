@@ -105,5 +105,7 @@
       };
 
       programs.nix-index-database.comma.enable = true;
+
+      environment.defaultPackages = [ ];
     };
 }

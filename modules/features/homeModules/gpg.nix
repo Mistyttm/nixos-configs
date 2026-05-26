@@ -9,6 +9,11 @@
     }:
     let
       cfg = config.gpg;
+      cliHosts = [
+        "thekennel"
+        "thedogpark"
+      ];
+      isCliHost = builtins.elem config.networking.hostName cliHosts;
     in
     {
       options.gpg = {
@@ -35,7 +40,7 @@
 
         services.gpg-agent = {
           enable = true;
-          pinentry.package = pkgs.pinentry-qt; # or pinentry-gnome3, pinentry-curses, etc.
+          pinentry.package = if isCliHost then pkgs.pinentry-curses else pkgs.pinentry-qt; # or pinentry-gnome3, pinentry-curses, etc.
         };
       };
     };
