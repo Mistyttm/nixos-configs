@@ -61,11 +61,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1779755769,
-        "narHash": "sha256-xC6HBZTEXgegJ0HyGF7Xx0q3ASzk9u27QSMknu2cWtw=",
+        "lastModified": 1779842295,
+        "narHash": "sha256-aeA+XXnyUCrmU1XtZB3m5f4NFpr6v/F7vpMp5/hUsO8=",
         "owner": "deadlock-mod-manager",
         "repo": "deadlock-mod-manager",
-        "rev": "e18d5135249695d34bd018fa3368a81089ad0b1e",
+        "rev": "8a0ee75ba8a209cc24a558dc863f8a5094f2ef8d",
         "type": "github"
       },
       "original": {
@@ -367,11 +367,11 @@
     "lix": {
       "flake": false,
       "locked": {
-        "lastModified": 1779563694,
-        "narHash": "sha256-0GnNNiZPlEF2LhMlF1rT0EjJTr0RGa0qUIxMVxM4Dno=",
-        "rev": "b113be5f13b661d7165e2bdcb61a93f06d884b30",
+        "lastModified": 1779824407,
+        "narHash": "sha256-e+iGkdNKqP4Omm4rdiqdtNbAvBNhjYpx/G4ZDAvNlPk=",
+        "rev": "eef57410d7c08beaf76b5254a8ffaee528d81335",
         "type": "tarball",
-        "url": "https://git.lix.systems/api/v1/repos/lix-project/lix/archive/b113be5f13b661d7165e2bdcb61a93f06d884b30.tar.gz?rev=b113be5f13b661d7165e2bdcb61a93f06d884b30"
+        "url": "https://git.lix.systems/api/v1/repos/lix-project/lix/archive/eef57410d7c08beaf76b5254a8ffaee528d81335.tar.gz?rev=eef57410d7c08beaf76b5254a8ffaee528d81335"
       },
       "original": {
         "type": "tarball",
@@ -694,11 +694,11 @@
     },
     "nixpkgs_7": {
       "locked": {
-        "lastModified": 1778869304,
-        "narHash": "sha256-30sZNZoA1cqF5JNO9fVX+wgiQYjB7HJqqJ4ztCDeBZE=",
+        "lastModified": 1779536132,
+        "narHash": "sha256-q+fF42iv/geEbHfgSzy3tS0FF/EyD6XTZ98E6yxiBO8=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "d233902339c02a9c334e7e593de68855ad26c4cb",
+        "rev": "3d8f0f3f72a6cd4d93d0ad13203f2ea1cb7e1456",
         "type": "github"
       },
       "original": {
@@ -1005,11 +1005,11 @@
         "nixpkgs": "nixpkgs_7"
       },
       "locked": {
-        "lastModified": 1779698383,
-        "narHash": "sha256-8B0VM13icJClvwK6ILfXHm9c5DuVUb2OZjC2UouFAYA=",
+        "lastModified": 1779829084,
+        "narHash": "sha256-FRwuSwQtrXHlDbQYyWFpQKuESX/Iplf+dpMxaZbgFBk=",
         "owner": "BirdeeHub",
         "repo": "nix-wrapper-modules",
-        "rev": "0a1c7485f39141e461380239f804de2bd9f43322",
+        "rev": "8fa256a80f3dd799b3519eba1b4cfadfdb1eea15",
         "type": "github"
       },
       "original": {
