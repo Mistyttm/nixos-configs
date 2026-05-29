@@ -74,15 +74,41 @@ jobs:
       - name: Build Hydra job (${{ matrix.system }})
         run: |
           set -uo pipefail
-          nix build \
+
+          log_file=$(mktemp)
+          # shellcheck disable=SC2329
+          cleanup() {
+            status=$?
+            if [ "$status" -ne 0 ]; then
+              {
+                echo "### Build failed for ${{ matrix.system }}"
+                echo
+                echo '```'
+                cat "$log_file"
+                echo '```'
+              } >> "$GITHUB_STEP_SUMMARY"
+            fi
+          }
+          trap cleanup EXIT
+          exec 2> >(tee -a "$log_file" >&2)
+
+          BUILD_EXIT=0
+          if nix build \
             .#hydraJobs.nixos.${{ matrix.system }} \
             --keep-going \
             --no-link \
-            --json > build-result.json || BUILD_EXIT=$?
-          jq -r '.[].outputs[]' build-result.json > realised-paths.txt
-          echo "Realised outputs:"
-          cat realised-paths.txt
-          exit ${BUILD_EXIT:-0}
+            --json > build-result.json; then
+            if jq -r '.[].outputs[]' build-result.json > realised-paths.txt; then
+              echo "Realised outputs:"
+              cat realised-paths.txt
+            else
+              BUILD_EXIT=$?
+            fi
+          else
+            BUILD_EXIT=$?
+          fi
+
+          exit "$BUILD_EXIT"
 
       - name: Push build closures to Cachix
         if: always()
@@ -137,22 +163,46 @@ jobs:
         run: |
           set -uo pipefail
 
+          log_file=$(mktemp)
+          # shellcheck disable=SC2329
+          cleanup() {
+            status=$?
+            if [ "$status" -ne 0 ]; then
+              {
+                echo "### Build failed for puppypc"
+                echo
+                echo '```'
+                cat "$log_file"
+                echo '```'
+              } >> "$GITHUB_STEP_SUMMARY"
+            fi
+          }
+          trap cleanup EXIT
+          exec 2> >(tee -a "$log_file" >&2)
+
           echo "Disk space before build:"
           df -h
 
-          nix build \
+          BUILD_EXIT=0
+          if nix build \
             .#hydraJobs.nixos.puppypc \
             --keep-going \
             --no-link \
-            --json > build-result.json || BUILD_EXIT=$?
+            --json > build-result.json; then
+            if jq -r '.[].outputs[]' build-result.json > realised-paths.txt; then
+              echo "Realised outputs:"
+              cat realised-paths.txt
 
-          jq -r '.[].outputs[]' build-result.json > realised-paths.txt
-          echo "Realised outputs:"
-          cat realised-paths.txt
+              echo "Disk space after build:"
+              df -h
+            else
+              BUILD_EXIT=$?
+            fi
+          else
+            BUILD_EXIT=$?
+          fi
 
-          echo "Disk space after build:"
-          df -h
-          exit ${BUILD_EXIT:-0}
+          exit "$BUILD_EXIT"
 
       - name: Push build closures to Cachix
         if: always()
@@ -221,22 +271,46 @@ jobs:
         run: |
           set -uo pipefail
 
+          log_file=$(mktemp)
+          # shellcheck disable=SC2329
+          cleanup() {
+            status=$?
+            if [ "$status" -ne 0 ]; then
+              {
+                echo "### Build failed for puppylaptop"
+                echo
+                echo '```'
+                cat "$log_file"
+                echo '```'
+              } >> "$GITHUB_STEP_SUMMARY"
+            fi
+          }
+          trap cleanup EXIT
+          exec 2> >(tee -a "$log_file" >&2)
+
           echo "Disk space before build:"
           df -h
 
-          nix build \
+          BUILD_EXIT=0
+          if nix build \
             .#hydraJobs.nixos.puppylaptop \
             --keep-going \
             --no-link \
-            --json > build-result.json || BUILD_EXIT=$?
+            --json > build-result.json; then
+            if jq -r '.[].outputs[]' build-result.json > realised-paths.txt; then
+              echo "Realised outputs:"
+              cat realised-paths.txt
 
-          jq -r '.[].outputs[]' build-result.json > realised-paths.txt
-          echo "Realised outputs:"
-          cat realised-paths.txt
+              echo "Disk space after build:"
+              df -h
+            else
+              BUILD_EXIT=$?
+            fi
+          else
+            BUILD_EXIT=$?
+          fi
 
-          echo "Disk space after build:"
-          df -h
-          exit ${BUILD_EXIT:-0}
+          exit "$BUILD_EXIT"
 
       - name: Push build closures to Cachix
         if: always()
