@@ -4,6 +4,13 @@ docs_dir: docs
 theme:
   name: material
 
+markdown_extensions:
+  - attr_list
+
 nav:
   - Home: index.md
   - Flake: flake.md
+  - NVIDIA: nvidia.md
+  - WireGuard: wireguard.md
+  - nginx: nginx.md
+  - Jellystat: jellystat.md
