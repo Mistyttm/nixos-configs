@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ ... }:
 {
   flake.homeModules.gameModding =
     { pkgs, ... }:
@@ -12,7 +12,7 @@
           r2modman
         ]
         ++ [
-          inputs.deadlock-mod-manager.packages.${pkgs.stdenv.hostPlatform.system}.nightly
+          # inputs.deadlock-mod-manager.packages.${pkgs.stdenv.hostPlatform.system}.nightly
         ];
     };
 }
