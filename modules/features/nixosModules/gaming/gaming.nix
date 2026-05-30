@@ -1,8 +1,11 @@
-{ inputs, self, ... }:
+{ self, ... }:
 {
   flake.nixosModules.gaming =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
+      imports = [
+        self.nixosModules.sunshine
+      ];
 
       environment.systemPackages = with pkgs; [
         dolphin-emu
