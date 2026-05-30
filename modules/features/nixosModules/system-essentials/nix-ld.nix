@@ -1,7 +1,7 @@
-{ inputs, ... }:
+{ ... }:
 {
   flake.nixosModules.nix-ld =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
       programs.nix-ld = {
         enable = true;

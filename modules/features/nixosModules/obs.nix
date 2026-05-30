@@ -1,7 +1,7 @@
-{ inputs, ... }:
+{ ... }:
 {
   flake.nixosModules.obs =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
       environment.systemPackages = with pkgs; [
         davinci-resolve

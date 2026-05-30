@@ -1,7 +1,7 @@
-{ inputs, ... }:
+{ ... }:
 {
   flake.homeModules.gui-packages =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
       home.packages = with pkgs; [
         libsecret

@@ -1,10 +1,7 @@
-{ config, ... }:
-let
-  hostName = config.networking.hostName or "";
-in
+{ ... }:
 {
   flake.nixosModules.misty =
-    { lib, pkgs, ... }:
+    { pkgs, ... }:
     {
       users.users.misty = {
         isNormalUser = true;

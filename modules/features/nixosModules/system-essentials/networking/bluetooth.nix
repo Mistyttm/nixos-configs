@@ -1,7 +1,7 @@
-{ inputs, ... }:
+{ ... }:
 {
   flake.nixosModules.bluetooth =
-    { pkgs, lib, ... }:
+    { ... }:
     {
       hardware.bluetooth = {
         enable = true; # enables support for Bluetooth

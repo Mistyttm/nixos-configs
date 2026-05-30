@@ -1,10 +1,7 @@
-{ inputs, ... }:
+{ ... }:
 {
   flake.nixosModules.services =
     {
-      pkgs,
-      lib,
-      config,
       ...
     }:
     {

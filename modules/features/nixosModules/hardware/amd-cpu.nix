@@ -1,7 +1,7 @@
-{ inputs, ... }:
+{ ... }:
 {
   flake.nixosModules.amd-cpu =
-    { pkgs, lib, ... }:
+    { ... }:
     {
       # Disable power-profiles-daemon - it conflicts with cpuFreqGovernor and causes lag
       # by forcing "powersave" mode when KDE is set to "balanced"

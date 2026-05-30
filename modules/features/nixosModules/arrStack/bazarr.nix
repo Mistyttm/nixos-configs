@@ -1,7 +1,7 @@
-{ self, inputs, ... }:
+{ ... }:
 {
   flake.nixosModules.bazarr =
-    { pkgs, lib, ... }:
+    { ... }:
     {
       services.bazarr = {
         enable = true;

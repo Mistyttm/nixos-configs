@@ -1,9 +1,7 @@
-{ self, inputs, ... }:
+{ self, ... }:
 {
   flake.nixosModules.jellystat-service =
     {
-      lib,
-      pkgs,
       config,
       ...
     }:

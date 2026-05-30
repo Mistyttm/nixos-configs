@@ -1,7 +1,7 @@
-{ self, inputs, ... }:
+{ ... }:
 {
   flake.nixosModules.qbittorrent =
-    { pkgs, lib, ... }:
+    { ... }:
     let
       downloadPath = "/mnt/localExpansion/qbittorrent/downloads";
       tempPath = "/mnt/localExpansion/qbittorrent/incomplete";

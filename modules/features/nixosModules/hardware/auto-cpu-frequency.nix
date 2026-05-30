@@ -1,7 +1,7 @@
 { inputs, ... }:
 {
   flake.nixosModules.auto-cpu-frequency =
-    { pkgs, lib, ... }:
+    { ... }:
     {
       imports = [
         inputs.auto-cpufreq.nixosModules.default

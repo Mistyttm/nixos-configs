@@ -1,8 +1,8 @@
-{ inputs, ... }:
+{ ... }:
 
 {
   flake.nixosModules.sops =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
       environment.systemPackages = with pkgs; [
         sops

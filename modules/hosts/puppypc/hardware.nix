@@ -1,9 +1,8 @@
-{ self, inputs, ... }:
+{ ... }:
 {
 
   flake.nixosModules.puppypcHardware =
     {
-      pkgs,
       config,
       lib,
       modulesPath,

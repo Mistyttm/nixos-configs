@@ -1,7 +1,7 @@
-{ inputs, ... }:
+{ ... }:
 {
   flake.nixosModules.locale =
-    { pkgs, lib, ... }:
+    { ... }:
     {
       time.timeZone = "Australia/Brisbane";
 

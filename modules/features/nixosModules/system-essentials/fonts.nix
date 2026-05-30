@@ -1,8 +1,8 @@
-{ inputs, self, ... }:
+{ ... }:
 
 {
   flake.nixosModules.fonts =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
       fonts = {
         packages = with pkgs; [

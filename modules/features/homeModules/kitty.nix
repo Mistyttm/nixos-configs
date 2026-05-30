@@ -2,7 +2,7 @@
 
 {
   flake.homeModules.kitty =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
       programs.kitty = {
         enable = true;

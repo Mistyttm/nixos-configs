@@ -1,7 +1,7 @@
-{ inputs, self, ... }:
+{ ... }:
 {
   flake.nixosModules.sddm =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
       services.displayManager.sddm = {
         enable = true;

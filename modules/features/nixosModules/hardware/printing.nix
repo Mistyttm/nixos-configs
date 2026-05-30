@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ ... }:
 {
   flake.nixosModules.printing =
     { pkgs, lib, ... }:

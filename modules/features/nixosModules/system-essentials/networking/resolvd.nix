@@ -1,7 +1,7 @@
-{ inputs, ... }:
+{ ... }:
 {
   flake.nixosModules.resolvd =
-    { pkgs, lib, ... }:
+    { ... }:
     {
       services.resolved = {
         enable = true;

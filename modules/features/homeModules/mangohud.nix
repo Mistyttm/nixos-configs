@@ -1,7 +1,7 @@
-{ inputs, ... }:
+{ ... }:
 {
   flake.homeModules.mangohud =
-    { pkgs, lib, ... }:
+    { ... }:
     {
       programs.mangohud = {
         enable = true;

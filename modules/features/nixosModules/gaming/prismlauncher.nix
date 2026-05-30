@@ -1,7 +1,7 @@
-{ inputs, self, ... }:
+{ self, ... }:
 {
   flake.nixosModules.prismlauncher =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
 
       environment.systemPackages = [

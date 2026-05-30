@@ -1,7 +1,7 @@
-{ inputs, ... }:
+{ ... }:
 {
   flake.homeModules.eza =
-    { pkgs, lib, ... }:
+    { ... }:
     {
       programs.eza = {
         enable = true;

@@ -1,4 +1,4 @@
-{ inputs, self, ... }:
+{ inputs, ... }:
 let
   secretsDir = ../secrets;
   secretFiles = builtins.readDir secretsDir;

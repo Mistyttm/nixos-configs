@@ -1,7 +1,7 @@
-{ self, inputs, ... }:
+{ ... }:
 {
   flake.nixosModules.jellyfin-service =
-    { lib, pkgs, ... }:
+    { pkgs, ... }:
     {
       environment.systemPackages = with pkgs; [
         jellyfin

@@ -1,7 +1,7 @@
-{ self, inputs, ... }:
+{ ... }:
 {
   flake.nixosModules.prowlarr =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
       services.prowlarr = {
         enable = true;

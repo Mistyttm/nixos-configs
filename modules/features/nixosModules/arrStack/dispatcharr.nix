@@ -1,7 +1,7 @@
-{ self, inputs, ... }:
+{ ... }:
 {
   flake.nixosModules.dispatcharr =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
       environment.systemPackages = with pkgs; [
         nvidia-docker

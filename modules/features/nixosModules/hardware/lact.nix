@@ -1,7 +1,7 @@
-{ inputs, ... }:
+{ ... }:
 {
   flake.nixosModules.lact =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
       services.lact = {
         enable = true;

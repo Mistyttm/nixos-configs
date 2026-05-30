@@ -1,7 +1,7 @@
-{ inputs, ... }:
+{ ... }:
 {
   flake.nixosModules.zram =
-    { pkgs, lib, ... }:
+    { ... }:
     {
       zramSwap = {
         enable = true;

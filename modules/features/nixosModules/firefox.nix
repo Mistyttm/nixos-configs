@@ -1,7 +1,7 @@
-{ inputs, ... }:
+{ ... }:
 {
   flake.nixosModules.firefox =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
       programs.firefox = {
         enable = true;

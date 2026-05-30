@@ -1,7 +1,7 @@
-{ inputs, self, ... }:
+{ inputs, ... }:
 {
   flake.homeModules.fastfetch =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
       programs.fastfetch = {
         enable = true;
