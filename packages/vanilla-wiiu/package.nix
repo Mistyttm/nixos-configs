@@ -22,7 +22,6 @@
   libx11,
   autoAddDriverRunpath,
 }:
-
 let
   drc-hostap-src = fetchgit {
     url = "https://github.com/rolandoislas/drc-hostap.git";
@@ -30,7 +29,6 @@ let
     hash = "sha256-0LZLNhGF5OC0AkVRFyP+vtjPJ5VEeIJF9ZfBpoJZdH4=";
   };
 in
-
 stdenv.mkDerivation (finalAttrs: {
   pname = "vanilla-wiiu";
   version = "continuous";

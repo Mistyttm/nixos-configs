@@ -1,4 +1,8 @@
-{ inputs, palettes, ... }:
+{
+  inputs,
+  palettes,
+  ...
+}:
 {
   perSystem =
     { pkgs, ... }:

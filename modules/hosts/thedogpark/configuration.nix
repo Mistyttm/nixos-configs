@@ -1,6 +1,5 @@
 { self, ... }:
 {
-
   flake.nixosModules.thedogparkConfiguration =
     { pkgs, ... }:
     {
@@ -107,5 +106,4 @@
 
       system.stateVersion = "25.11";
     };
-
 }

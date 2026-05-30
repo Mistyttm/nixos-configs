@@ -1,8 +1,11 @@
 { self, ... }:
 {
-
   flake.nixosModules.thekennelConfiguration =
-    { config, pkgs, ... }:
+    {
+      config,
+      pkgs,
+      ...
+    }:
     {
       # import any other modules from here
       imports = with self.nixosModules; [
@@ -115,5 +118,4 @@
 
       system.stateVersion = "24.05";
     };
-
 }

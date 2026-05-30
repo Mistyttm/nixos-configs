@@ -5,10 +5,7 @@
 }:
 {
   flake.nixosModules.nixoptions =
-    {
-      config,
-      ...
-    }:
+    { config, ... }:
     {
       #! List of default nixosModule imports for all systems
       imports = [

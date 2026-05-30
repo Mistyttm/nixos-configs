@@ -1,7 +1,11 @@
 { self, ... }:
 {
   flake.nixosModules.matrix-synapse =
-    { config, pkgs, ... }:
+    {
+      config,
+      pkgs,
+      ...
+    }:
     {
       sops.secrets."registration_shared_secret" = {
         sopsFile = self.secrets.synapse;

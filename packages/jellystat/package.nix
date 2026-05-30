@@ -5,7 +5,6 @@
   makeWrapper,
   nodejs_22,
 }:
-
 buildNpmPackage (finalAttrs: {
   pname = "jellystat";
   version = "1.1.10";

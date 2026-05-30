@@ -1,5 +1,7 @@
-{ buildNpmPackage, src }:
-
+{
+  buildNpmPackage,
+  src,
+}:
 buildNpmPackage {
   pname = "langhire-frontend";
   version = "1.0.0";

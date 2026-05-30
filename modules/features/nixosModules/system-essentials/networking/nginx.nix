@@ -1,7 +1,11 @@
 { self, ... }:
 {
   flake.nixosModules.nginx =
-    { lib, config, ... }:
+    {
+      lib,
+      config,
+      ...
+    }:
     let
       hostName = config.networking.hostName or "";
 

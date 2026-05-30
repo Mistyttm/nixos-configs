@@ -1,6 +1,5 @@
 { self, ... }:
 {
-
   flake.nixosModules.puppypcConfiguration =
     { pkgs, ... }:
     {
@@ -101,5 +100,4 @@
         # ];
       };
     };
-
 }

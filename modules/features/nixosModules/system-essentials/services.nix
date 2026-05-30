@@ -1,9 +1,7 @@
 { ... }:
 {
   flake.nixosModules.services =
-    {
-      ...
-    }:
+    { ... }:
     {
       services = {
         ratbagd = {
@@ -30,7 +28,6 @@
           nssmdns4 = true;
           openFirewall = true;
         };
-
       };
     };
 }

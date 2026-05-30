@@ -3,7 +3,6 @@
   python3,
   fetchFromGitHub,
 }:
-
 python3.pkgs.buildPythonApplication (finalAttrs: {
   pname = "i-sponsor-block-tv";
   version = "2.8.1";

@@ -3,7 +3,6 @@
   flake.nixosModules.prismlauncher =
     { pkgs, ... }:
     {
-
       environment.systemPackages = [
         self.packages.${pkgs.stdenv.hostPlatform.system}.prismlauncher
       ];

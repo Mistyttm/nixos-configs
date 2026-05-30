@@ -1,5 +1,8 @@
-{ inputs, self, ... }:
-
+{
+  inputs,
+  self,
+  ...
+}:
 {
   flake.homeModules.kitty =
     { pkgs, ... }:

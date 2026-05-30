@@ -1,5 +1,4 @@
 { self, ... }:
-
 {
   flake.nixosModules.jellystat =
     {

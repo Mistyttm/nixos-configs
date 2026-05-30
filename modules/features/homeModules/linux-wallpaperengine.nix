@@ -1,7 +1,11 @@
 { ... }:
 {
   flake.homeModules.linux-wallpaperengine =
-    { pkgs, config, ... }:
+    {
+      pkgs,
+      config,
+      ...
+    }:
     {
       services.linux-wallpaperengine = {
         enable = true;

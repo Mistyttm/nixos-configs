@@ -4,7 +4,6 @@
   python313,
   python313Packages,
 }:
-
 let
   getPythonPackage = name: builtins.getAttr name python313Packages;
 
@@ -154,7 +153,6 @@ let
     ]
     ++ [ browserUse ]
   );
-
 in
 { src }:
 stdenv.mkDerivation {

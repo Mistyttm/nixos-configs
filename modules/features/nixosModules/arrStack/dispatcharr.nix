@@ -50,7 +50,6 @@
               "--network=bridge"
             ];
           };
-
         };
       };
 

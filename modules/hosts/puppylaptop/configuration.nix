@@ -1,6 +1,5 @@
 { self, ... }:
 {
-
   flake.nixosModules.puppylaptopConfiguration =
     { pkgs, ... }:
     {
@@ -66,5 +65,4 @@
 
       system.stateVersion = "25.05";
     };
-
 }

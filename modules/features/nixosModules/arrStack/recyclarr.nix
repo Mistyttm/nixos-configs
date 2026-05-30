@@ -1,13 +1,7 @@
-{
-  self,
-  ...
-}:
+{ self, ... }:
 {
   flake.nixosModules.recyclarr =
-    {
-      config,
-      ...
-    }:
+    { config, ... }:
     {
       sops.secrets."sonarr_api_key" = {
         sopsFile = self.secrets.media;
@@ -171,7 +165,6 @@
                   ];
                 }
               ];
-
             };
           };
           radarr = {
@@ -375,7 +368,6 @@
                   ];
                 }
               ];
-
             };
           };
         };

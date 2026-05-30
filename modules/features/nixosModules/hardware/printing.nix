@@ -1,7 +1,11 @@
 { ... }:
 {
   flake.nixosModules.printing =
-    { pkgs, lib, ... }:
+    {
+      pkgs,
+      lib,
+      ...
+    }:
     {
       hardware.sane = {
         enable = true;

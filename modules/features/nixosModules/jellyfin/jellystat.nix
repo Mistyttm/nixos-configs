@@ -1,10 +1,7 @@
 { self, ... }:
 {
   flake.nixosModules.jellystat-service =
-    {
-      config,
-      ...
-    }:
+    { config, ... }:
     {
       imports = [
         self.nixosModules.jellystat

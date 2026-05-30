@@ -1,10 +1,7 @@
 { self, ... }:
 {
   flake.nixosModules.sabnzbd =
-    {
-      config,
-      ...
-    }:
+    { config, ... }:
     {
       services.sabnzbd = {
         enable = true;

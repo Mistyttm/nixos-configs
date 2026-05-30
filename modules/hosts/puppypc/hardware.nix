@@ -1,6 +1,5 @@
 { ... }:
 {
-
   flake.nixosModules.puppypcHardware =
     {
       config,

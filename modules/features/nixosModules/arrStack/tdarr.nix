@@ -1,8 +1,11 @@
 { ... }:
-
 {
   flake.nixosModules.tdarr =
-    { lib, pkgs, ... }:
+    {
+      lib,
+      pkgs,
+      ...
+    }:
     let
       # NixOS/nixpkgs PR #523607 - tdarr: swap ffmpeg -> ffmpeg-full for hardware encoder support
       # To get the sha256, run:
@@ -17,7 +20,6 @@
       #       system = pkgs.stdenv.hostPlatform.system;
       #       config = pkgs.config;
       #     };
-
       localRoot = "/mnt/localExpansion";
       nasRoot = "/mnt/media";
 
@@ -28,9 +30,7 @@
         "${nasRoot}/Movies" # library
         "${nasRoot}/TV" # library
       ];
-
       # tdarrVersion = "2.74.01";
-
       # tdarrServerPackage = pkgs.tdarr-server.overrideAttrs (
       #   finalAttrs: _oldAttrs: {
       #     version = tdarrVersion;
@@ -41,7 +41,6 @@
       #     };
       #   }
       # );
-
       # tdarrNodePackage = pkgs.tdarr-node.overrideAttrs (
       #   finalAttrs: _oldAttrs: {
       #     version = tdarrVersion;

@@ -70,7 +70,6 @@
             # atomicspirit.nix-embedded-highlighter
           ];
           userSettings = {
-
             # REMOVE AI FEATURES
             # please for the love of god don't turn this on for awhile, this shit is rotting your brain.
             # Please learn how to use your brain properly again, you cannot rely on this piece of shit software

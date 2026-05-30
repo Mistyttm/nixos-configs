@@ -1,4 +1,8 @@
-{ inputs, withSystem, ... }:
+{
+  inputs,
+  withSystem,
+  ...
+}:
 {
   flake.overlays.default =
     _final: prev:

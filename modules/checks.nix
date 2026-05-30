@@ -1,10 +1,7 @@
 { ... }:
 {
   perSystem =
-    {
-      pkgs,
-      ...
-    }:
+    { pkgs, ... }:
     {
       formatter = pkgs.nixfmt;
 

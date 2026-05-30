@@ -1,4 +1,8 @@
-{ self, inputs, ... }:
+{
+  self,
+  inputs,
+  ...
+}:
 {
   flake.nixosConfigurations.thedogpark = inputs.nixpkgs.lib.nixosSystem {
     modules = [
