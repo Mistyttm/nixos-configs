@@ -82,6 +82,24 @@
       ];
 
       system.stateVersion = "24.05";
+
+      services.sunshineStreaming = {
+        enable = true;
+        user = "misty";
+        hostName = "puppypc";
+        openFirewall = true;
+        autoStart = true;
+        # Stream all displays (0). Individual monitors can be selected in Moonlight client.
+        outputName = 2;
+        # Add extra apps here if needed:
+        # extraApps = [
+        #   {
+        #     name = "Lutris";
+        #     detached = [ "${pkgs.lutris}/bin/lutris" ];
+        #     image-path = "lutris.png";
+        #   }
+        # ];
+      };
     };
 
 }
