@@ -43,6 +43,7 @@
 
       hardware.nvidia-custom = {
         enable = true;
+        modesetting = true;
         driverChannel = "beta";
         blacklistNova = true;
         extraGraphicsPackages = with pkgs; [
