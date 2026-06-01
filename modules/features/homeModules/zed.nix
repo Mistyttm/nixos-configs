@@ -131,7 +131,7 @@
             nil = {
               initialization_options = {
                 formatting = {
-                  command = [ "nixfmt" ];
+                  command = [ "alejandra" ];
                 };
               };
               settings = {
