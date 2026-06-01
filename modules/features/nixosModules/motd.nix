@@ -4,7 +4,6 @@
     { ... }:
     {
       environment.interactiveShellInit = ''
-        # Only run on first shell level (not subshells)
         [ "$SHLVL" -ne 1 ] && return || true
 
         RESET=$(printf '\033[0m')
@@ -62,7 +61,9 @@
         fi
 
         SVC_ACTIVE=$(systemctl list-units --type=service --state=active --no-legend 2>/dev/null | wc -l)
-        SVC_FAILED=$(systemctl --failed --no-legend 2>/dev/null | grep -c '●' || echo 0)
+        SVC_FAILED=$(systemctl --failed --no-legend 2>/dev/null | awk '{print $1}')
+        SVC_FAILED_COUNT=0
+        [ -n "$(echo "$SVC_FAILED" | tr -d '[:space:]')" ] && SVC_FAILED_COUNT=$(echo "$SVC_FAILED" | wc -l)
 
         IP=$(ip route get 1.1.1.1 2>/dev/null | awk '{for(i=1;i<=NF;i++) if ($i=="src") print $(i+1); exit}')
 
@@ -79,12 +80,17 @@
         if [ -n "$VAR_PCT" ]; then
           printf "  %s%-10s%s " "$BOLD" "Disk /var" "$RESET"; _bar "$VAR_PCT"; printf "  %s%s / %s%s\n" "$DIM" "$VAR_USED" "$VAR_TOTAL" "$RESET"
         fi
-        printf "  %s%-10s%s %s\n"              "$BOLD" "IP"        "$RESET" "$IP"
+        printf "  %s%-10s%s " "$BOLD" "IP"        "$RESET"; echo "$IP"
         printf "  %s%-10s%s %s%s active%s"     "$BOLD" "Services"  "$RESET" "$GREEN" "$SVC_ACTIVE" "$RESET"
-        if [ "$SVC_FAILED" -gt 0 ] 2>/dev/null; then
-          printf ", %s%s failed%s" "$RED" "$SVC_FAILED" "$RESET"
+        if [ "$SVC_FAILED_COUNT" -gt 0 ] 2>/dev/null; then
+          printf ", %s%s failed:%s\n" "$RED" "$SVC_FAILED_COUNT" "$RESET"
+          echo "$SVC_FAILED" | while IFS= read -r svc; do
+            [ -z "$svc" ] && continue
+            printf "  %s%-10s%s %s↳ %s%s\n" "$BOLD" "" "$RESET" "$RED" "$svc" "$RESET"
+          done
+        else
+          echo ""
         fi
-        echo ""
         echo ""
       '';
     };
