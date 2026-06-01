@@ -30,6 +30,7 @@
         obs
         gaming
         mullvad
+        appimage
       ];
 
       networking.hostName = "puppypc";
