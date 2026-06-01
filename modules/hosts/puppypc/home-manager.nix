@@ -14,6 +14,7 @@
           gpg
           xdg
           vscode
+          zed
           easyeffects
           direnv
           kdeconnect
