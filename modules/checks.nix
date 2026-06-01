@@ -7,12 +7,18 @@
 
       pre-commit = {
         settings.hooks = {
-          nixfmt = {
+          deadnix = {
             enable = true;
-            package = pkgs.nixfmt;
+            package = pkgs.deadnix;
+            settings = {
+              edit = true;
+            };
           };
-          deadnix.enable = true;
           commitizen.enable = true;
+          alejandra = {
+            enable = true;
+            package = pkgs.alejandra;
+          };
         };
       };
     };
