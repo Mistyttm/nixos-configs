@@ -15,11 +15,19 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  discover:
+  classify:
     runs-on: ubuntu-latest
     outputs:
-      free_packages_json: ${{ steps.discover.outputs.free_packages_json }}
-      unfree_packages_json: ${{ steps.discover.outputs.unfree_packages_json }}
+      free_packages_json: ${{ steps.classify.outputs.free_packages_json }}
+      unfree_packages_json: ${{ steps.classify.outputs.unfree_packages_json }}
+    env:
+      # ── Packages to update ──────────────────────────────────────────────────
+      # One package name per line. Free/unfree is detected automatically from
+      # each package's meta.license — no manual tagging needed.
+      PACKAGES: |
+        # example-package
+        # another-package
+      # ────────────────────────────────────────────────────────────────────────
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -35,15 +43,23 @@ jobs:
             substitute = true
             builders =
 
-      - name: Discover free and unfree packages
-        id: discover
+      - name: Classify packages as free or unfree
+        id: classify
         run: |
           set -euxo pipefail
+
+          # Strip blank lines and comments, build a Nix list literal
+          nix_list=$(echo "$PACKAGES" \
+            | grep -v '^\s*#' \
+            | grep -v '^\s*$' \
+            | awk '{printf "\"%s\" ", $0}' \
+            | sed 's/^/[ /; s/ *$/]/')
 
           classify_packages() {
             nix eval --json --apply "
               pkgSet:
               let
+                packages = ${nix_list};
                 isUnfreeLicense = lic:
                   if lic == null then false
                   else if builtins.isList lic then builtins.any isUnfreeLicense lic
@@ -55,7 +71,7 @@ jobs:
                   else false;
                 isUnfreePackage = pkg: isUnfreeLicense (pkg.meta.license or null);
               in
-                builtins.attrNames (builtins.filterAttrs (_: pkg: $1 pkg) pkgSet)
+                builtins.filter (name: $1 (pkgSet.\${name})) packages
             " .#packages.x86_64-linux
           }
 
@@ -63,14 +79,14 @@ jobs:
           echo "free_packages_json=$(classify_packages '(pkg: !(isUnfreePackage pkg))')" >> "$GITHUB_OUTPUT"
 
   update-free-package:
-    if: needs.discover.outputs.free_packages_json != '[]'
-    needs: discover
+    if: needs.classify.outputs.free_packages_json != '[]'
+    needs: classify
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       max-parallel: 1
       matrix:
-        package: ${{ fromJSON(needs.discover.outputs.free_packages_json) }}
+        package: ${{ fromJSON(needs.classify.outputs.free_packages_json) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -208,14 +224,14 @@ jobs:
             packages/${{ matrix.package }}
 
   update-unfree-package:
-    if: needs.discover.outputs.unfree_packages_json != '[]'
-    needs: discover
+    if: needs.classify.outputs.unfree_packages_json != '[]'
+    needs: classify
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       max-parallel: 1
       matrix:
-        package: ${{ fromJSON(needs.discover.outputs.unfree_packages_json) }}
+        package: ${{ fromJSON(needs.classify.outputs.unfree_packages_json) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
