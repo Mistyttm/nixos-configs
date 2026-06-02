@@ -130,8 +130,8 @@ jobs:
           package='${{ matrix.package }}'
           attr="packages.x86_64-linux.${package}"
 
-          nix run nixpkgs#nix-update -- --flake "$PWD#${attr}" --use-update-script \
-            || nix run nixpkgs#nix-update -- --flake "$PWD#${attr}"
+          nix run nixpkgs#nix-update -- --flake "$PWD" --attribute "${attr}" --use-update-script \
+            || nix run nixpkgs#nix-update -- --flake "$PWD" --attribute "${attr}"
 
           nix fmt
 
@@ -275,8 +275,8 @@ jobs:
           package='${{ matrix.package }}'
           attr="packages.x86_64-linux.${package}"
 
-          nix run nixpkgs#nix-update -- --flake "$PWD#${attr}" --use-update-script \
-            || nix run nixpkgs#nix-update -- --flake "$PWD#${attr}"
+          nix run nixpkgs#nix-update -- --flake "$PWD" --attribute "${attr}" --use-update-script \
+            || nix run nixpkgs#nix-update -- --flake "$PWD" --attribute "${attr}"
 
           nix fmt
 
