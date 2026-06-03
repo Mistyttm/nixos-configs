@@ -17,13 +17,13 @@
 }:
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "langhire";
-  version = "1.8.0";
+  version = "1.8.1";
 
   src = fetchFromGitHub {
     owner = "jaimaann";
     repo = "LangHire";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-aiIrjaiy7nRqN8XaEv4x3hrId7crqy9KpjB3KIC9UiQ=";
+    hash = "sha256-+z+lkxVb+0YxaaXiHlAqI/XXs6Vde4DM8uaQkvyOKUM=";
   };
 
   frontend = import ./frontend.nix {
