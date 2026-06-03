@@ -3,7 +3,7 @@ name: Update Local Packages
 on:
   schedule:
     # Run every 3 days at 03:00 UTC
-    - cron: '0 3 */3 * *'
+    - cron: "0 3 */3 * *"
   workflow_dispatch:
 
 permissions:
@@ -130,10 +130,10 @@ jobs:
           package='${{ matrix.package }}'
           attr="packages.x86_64-linux.${package}"
 
-          nix run nixpkgs#nix-update -- "$package" --flake \
-            || nix run nixpkgs#nix-update -- "$package" --flake --use-update-script
+          nix run nixpkgs#nix-update -- "$attr" --flake \
+            || nix run nixpkgs#nix-update -- --flake "$attr"
 
-          nix fmt
+          nix fmt -- "packages/${package}"
 
           if git diff --quiet -- "packages/${package}"; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -275,10 +275,10 @@ jobs:
           package='${{ matrix.package }}'
           attr="packages.x86_64-linux.${package}"
 
-          nix run nixpkgs#nix-update -- "$package" --flake \
-            || nix run nixpkgs#nix-update -- "$package" --flake --use-update-script
+          nix run nixpkgs#nix-update -- "$attr" --flake \
+            || nix run nixpkgs#nix-update -- --flake "$attr"
 
-          nix fmt
+          nix fmt -- "packages/${package}"
 
           if git diff --quiet -- "packages/${package}"; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
