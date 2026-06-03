@@ -22,22 +22,24 @@ python3.pkgs.buildPythonApplication (finalAttrs: {
     sed -i 's/==[0-9][0-9.]*//' requirements.txt
   '';
 
-  build-system = [
-    python3.pkgs.hatch-requirements-txt
-    python3.pkgs.hatchling
+  build-system = with python3.pkgs; [
+    hatch-requirements-txt
+    hatchling
   ];
 
-  dependencies = [
-    python3.pkgs.aiohttp
-    python3.pkgs.appdirs
-    python3.pkgs.async-cache
-    python3.pkgs.rich
-    python3.pkgs.rich-click
-    python3.pkgs.ssdp
-    python3.pkgs.textual
-    python3.pkgs.xmltodict
-    python3.pkgs.pyytlounge
-    python3.pkgs.textual-slider
+  dependencies = with python3.pkgs; [
+    aiohttp
+    appdirs
+    async-cache
+    rich
+    rich-click
+    ssdp
+    textual
+    xmltodict
+    pyytlounge
+    textual-slider
+    pychromecast
+    zeroconf
   ];
 
   pythonImportsCheck = [
@@ -56,7 +58,7 @@ python3.pkgs.buildPythonApplication (finalAttrs: {
     description = "SponsorBlock client for all YouTube TV clients";
     homepage = "https://github.com/dmunozv04/iSponsorBlockTV";
     license = lib.licenses.gpl3Only;
-    maintainers = with lib.maintainers; [ mistyttm ];
+    maintainers = with lib.maintainers; [mistyttm];
     mainProgram = "i-sponsor-block-tv";
   };
 })
