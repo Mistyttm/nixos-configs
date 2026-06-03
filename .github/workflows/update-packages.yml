@@ -89,7 +89,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      max-parallel: 1
       matrix:
         package: ${{ fromJSON(needs.classify.outputs.free_packages_json) }}
     steps:
@@ -234,7 +233,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      max-parallel: 1
       matrix:
         package: ${{ fromJSON(needs.classify.outputs.unfree_packages_json) }}
     steps:
