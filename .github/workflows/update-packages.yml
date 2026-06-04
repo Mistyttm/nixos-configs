@@ -129,8 +129,29 @@ jobs:
           package='${{ matrix.package }}'
           attr="packages.x86_64-linux.${package}"
 
-          nix run nixpkgs#nix-update -- "$attr" --flake \
-            || nix run nixpkgs#nix-update -- --flake "$attr"
+          if ! nix run nixpkgs#nix-update -- "$attr" --flake; then
+            update_script_json=$(nix eval --json ".#${attr}.passthru.updateScript")
+            mapfile -t update_script_command < <(
+              jq -r '
+                if type == "string" then
+                  .
+                elif type == "array" then
+                  .[]
+                elif type == "object" and has("command") then
+                  .command[]
+                else
+                  error("unsupported updateScript shape")
+                end
+              ' <<<"$update_script_json"
+            )
+
+            if [ "${#update_script_command[@]}" -eq 0 ]; then
+              echo "No executable update script found for $attr" >&2
+              exit 1
+            fi
+
+            UPDATE_NIX_ATTR_PATH="$attr" "${update_script_command[@]}"
+          fi
 
           nix fmt -- "packages/${package}"
 
@@ -273,8 +294,29 @@ jobs:
           package='${{ matrix.package }}'
           attr="packages.x86_64-linux.${package}"
 
-          nix run nixpkgs#nix-update -- "$attr" --flake \
-            || nix run nixpkgs#nix-update -- --flake "$attr"
+          if ! nix run nixpkgs#nix-update -- "$attr" --flake; then
+            update_script_json=$(nix eval --json ".#${attr}.passthru.updateScript")
+            mapfile -t update_script_command < <(
+              jq -r '
+                if type == "string" then
+                  .
+                elif type == "array" then
+                  .[]
+                elif type == "object" and has("command") then
+                  .command[]
+                else
+                  error("unsupported updateScript shape")
+                end
+              ' <<<"$update_script_json"
+            )
+
+            if [ "${#update_script_command[@]}" -eq 0 ]; then
+              echo "No executable update script found for $attr" >&2
+              exit 1
+            fi
+
+            UPDATE_NIX_ATTR_PATH="$attr" "${update_script_command[@]}"
+          fi
 
           nix fmt -- "packages/${package}"
 
