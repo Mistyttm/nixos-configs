@@ -58,7 +58,7 @@ python3.pkgs.buildPythonApplication (finalAttrs: {
     description = "SponsorBlock client for all YouTube TV clients";
     homepage = "https://github.com/dmunozv04/iSponsorBlockTV";
     license = lib.licenses.gpl3Only;
-    maintainers = with lib.maintainers; [mistyttm];
+    maintainers = with lib.maintainers; [ mistyttm ];
     mainProgram = "i-sponsor-block-tv";
   };
 })
