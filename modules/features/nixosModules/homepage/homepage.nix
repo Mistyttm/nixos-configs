@@ -134,6 +134,10 @@
             style = "row";
             columns = 3;
           };
+          "Matrix" = {
+            style = "row";
+            columns = 3;
+          };
         };
       };
 
@@ -506,6 +510,56 @@
                     }
                   ];
                 };
+              };
+            }
+          ];
+        }
+        {
+          "Matrix" = [
+            {
+              "Synapse" = {
+                icon = "matrix";
+                href = "https://mistyttm.dev";
+                description = "Matrix homeserver";
+                widget = {
+                  type = "prometheusmetric";
+                  url = "http://localhost:9090";
+                  metrics = [
+                    {
+                      label = "In-flight";
+                      query = "sum(synapse_http_server_in_flight_requests_count{job=\"thedogpark\"})";
+                      format = {type = "number";};
+                    }
+                    {
+                      label = "Federation TX";
+                      query = "rate(synapse_federation_client_sent_transactions_total{job=\"thedogpark\"}[5m])";
+                      format = {
+                        type = "number";
+                        options = {maximumFractionDigits = 2;};
+                        suffix = "/s";
+                      };
+                    }
+                    {
+                      label = "Events";
+                      query = "synapse_storage_events_persisted_events_total{job=\"thedogpark\"}";
+                      format = {type = "number";};
+                    }
+                  ];
+                };
+              };
+            }
+            {
+              "mautrix-discord" = {
+                icon = "discord";
+                href = "https://mistyttm.dev";
+                description = "Discord bridge";
+              };
+            }
+            {
+              "coturn" = {
+                icon = "coturn";
+                href = "https://mistyttm.dev";
+                description = "TURN server";
               };
             }
           ];
