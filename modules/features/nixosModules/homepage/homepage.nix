@@ -355,6 +355,14 @@
                         options = {maximumFractionDigits = 1;};
                       };
                     }
+                    {
+                      label = "Mem %";
+                      query = "100 - (node_memory_MemAvailable_bytes{job=\"thedogpark\"} / node_memory_MemTotal_bytes{job=\"thedogpark\"} * 100)";
+                      format = {
+                        type = "number";
+                        options = {maximumFractionDigits = 1;};
+                      };
+                    }
                   ];
                 };
               };
@@ -374,8 +382,13 @@
                       format = {type = "number";};
                     }
                     {
-                      label = "Handled";
-                      query = "nginx_connections_handled{job=\"thedogpark\"}";
+                      label = "Writing";
+                      query = "nginx_connections_writing{job=\"thedogpark\"}";
+                      format = {type = "number";};
+                    }
+                    {
+                      label = "Waiting";
+                      query = "nginx_connections_waiting{job=\"thedogpark\"}";
                       format = {type = "number";};
                     }
                   ];
@@ -396,6 +409,16 @@
                       query = "count(wireguard_sent_bytes_total{job=\"thedogpark\"})";
                       format = {type = "number";};
                     }
+                    {
+                      label = "Sent";
+                      query = "sum(wireguard_sent_bytes_total{job=\"thedogpark\"})";
+                      format = {type = "bytes";};
+                    }
+                    {
+                      label = "Received";
+                      query = "sum(wireguard_received_bytes_total{job=\"thedogpark\"})";
+                      format = {type = "bytes";};
+                    }
                   ];
                 };
               };
@@ -412,6 +435,14 @@
                     {
                       label = "CPU %";
                       query = "100 - (avg(rate(node_cpu_seconds_total{job=\"thekennel\",mode=\"idle\"}[5m])) * 100)";
+                      format = {
+                        type = "number";
+                        options = {maximumFractionDigits = 1;};
+                      };
+                    }
+                    {
+                      label = "Mem %";
+                      query = "100 - (node_memory_MemAvailable_bytes{job=\"thekennel\"} / node_memory_MemTotal_bytes{job=\"thekennel\"} * 100)";
                       format = {
                         type = "number";
                         options = {maximumFractionDigits = 1;};
@@ -436,8 +467,13 @@
                       format = {type = "number";};
                     }
                     {
-                      label = "Handled";
-                      query = "nginx_connections_handled{job=\"thekennel\"}";
+                      label = "Writing";
+                      query = "nginx_connections_writing{job=\"thekennel\"}";
+                      format = {type = "number";};
+                    }
+                    {
+                      label = "Waiting";
+                      query = "nginx_connections_waiting{job=\"thekennel\"}";
                       format = {type = "number";};
                     }
                   ];
@@ -457,6 +493,16 @@
                       label = "Peers";
                       query = "count(wireguard_sent_bytes_total{job=\"thekennel\"})";
                       format = {type = "number";};
+                    }
+                    {
+                      label = "Sent";
+                      query = "sum(wireguard_sent_bytes_total{job=\"thekennel\"})";
+                      format = {type = "bytes";};
+                    }
+                    {
+                      label = "Received";
+                      query = "sum(wireguard_received_bytes_total{job=\"thekennel\"})";
+                      format = {type = "bytes";};
                     }
                   ];
                 };
