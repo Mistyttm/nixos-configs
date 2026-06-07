@@ -379,7 +379,7 @@
                 widget = {
                   type = "prometheusmetric";
                   url = "http://localhost:9090";
-                  query = "wireguard_peers{job=\"thedogpark\"}";
+                  query = "count(wireguard_sent_bytes_total{job=\"thedogpark\"})";
                   label = "Peers";
                   format = {
                     type = "number";
@@ -428,7 +428,7 @@
                 widget = {
                   type = "prometheusmetric";
                   url = "http://localhost:9090";
-                  query = "wireguard_peers{job=\"thekennel\"}";
+                  query = "count(wireguard_sent_bytes_total{job=\"thekennel\"})";
                   label = "Peers";
                   format = {
                     type = "number";
