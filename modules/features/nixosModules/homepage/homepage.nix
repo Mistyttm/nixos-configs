@@ -346,12 +346,16 @@
                 widget = {
                   type = "prometheusmetric";
                   url = "http://localhost:9090";
-                  query = "100 - (avg by (instance) (rate(node_cpu_seconds_total{job=\"thedogpark\",mode=\"idle\"}[5m])) * 100)";
-                  label = "CPU %";
-                  format = {
-                    type = "number";
-                    options = {maximumFractionDigits = 1;};
-                  };
+                  metrics = [
+                    {
+                      label = "CPU %";
+                      query = "100 - (avg(rate(node_cpu_seconds_total{job=\"thedogpark\",mode=\"idle\"}[5m])) * 100)";
+                      format = {
+                        type = "number";
+                        options = {maximumFractionDigits = 1;};
+                      };
+                    }
+                  ];
                 };
               };
             }
@@ -363,11 +367,18 @@
                 widget = {
                   type = "prometheusmetric";
                   url = "http://localhost:9090";
-                  query = "nginx_connections_active{job=\"thedogpark\"}";
-                  label = "Active Connections";
-                  format = {
-                    type = "number";
-                  };
+                  metrics = [
+                    {
+                      label = "Active";
+                      query = "nginx_connections_active{job=\"thedogpark\"}";
+                      format = {type = "number";};
+                    }
+                    {
+                      label = "Handled";
+                      query = "nginx_connections_handled{job=\"thedogpark\"}";
+                      format = {type = "number";};
+                    }
+                  ];
                 };
               };
             }
@@ -379,11 +390,13 @@
                 widget = {
                   type = "prometheusmetric";
                   url = "http://localhost:9090";
-                  query = "count(wireguard_sent_bytes_total{job=\"thedogpark\"})";
-                  label = "Peers";
-                  format = {
-                    type = "number";
-                  };
+                  metrics = [
+                    {
+                      label = "Peers";
+                      query = "count(wireguard_sent_bytes_total{job=\"thedogpark\"})";
+                      format = {type = "number";};
+                    }
+                  ];
                 };
               };
             }
@@ -395,12 +408,16 @@
                 widget = {
                   type = "prometheusmetric";
                   url = "http://localhost:9090";
-                  query = "100 - (avg by (instance) (rate(node_cpu_seconds_total{job=\"thekennel\",mode=\"idle\"}[5m])) * 100)";
-                  label = "CPU %";
-                  format = {
-                    type = "number";
-                    options = {maximumFractionDigits = 1;};
-                  };
+                  metrics = [
+                    {
+                      label = "CPU %";
+                      query = "100 - (avg(rate(node_cpu_seconds_total{job=\"thekennel\",mode=\"idle\"}[5m])) * 100)";
+                      format = {
+                        type = "number";
+                        options = {maximumFractionDigits = 1;};
+                      };
+                    }
+                  ];
                 };
               };
             }
@@ -412,11 +429,18 @@
                 widget = {
                   type = "prometheusmetric";
                   url = "http://localhost:9090";
-                  query = "nginx_connections_active{job=\"thekennel\"}";
-                  label = "Active Connections";
-                  format = {
-                    type = "number";
-                  };
+                  metrics = [
+                    {
+                      label = "Active";
+                      query = "nginx_connections_active{job=\"thekennel\"}";
+                      format = {type = "number";};
+                    }
+                    {
+                      label = "Handled";
+                      query = "nginx_connections_handled{job=\"thekennel\"}";
+                      format = {type = "number";};
+                    }
+                  ];
                 };
               };
             }
@@ -428,11 +452,13 @@
                 widget = {
                   type = "prometheusmetric";
                   url = "http://localhost:9090";
-                  query = "count(wireguard_sent_bytes_total{job=\"thekennel\"})";
-                  label = "Peers";
-                  format = {
-                    type = "number";
-                  };
+                  metrics = [
+                    {
+                      label = "Peers";
+                      query = "count(wireguard_sent_bytes_total{job=\"thekennel\"})";
+                      format = {type = "number";};
+                    }
+                  ];
                 };
               };
             }
