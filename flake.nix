@@ -57,6 +57,11 @@
       url = "github:deadlock-mod-manager/deadlock-mod-manager";
       inputs.nixpkgs.follows = "nixpkgs"; # optional, keeps nixpkgs consistent
     };
+
+    millennium = {
+      url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
+      # inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   nixConfig = {
@@ -77,23 +82,22 @@
     ];
   };
 
-  outputs =
-    inputs:
-    let
-      modules = inputs.import-tree ./modules;
-    in
-    inputs.flake-parts.lib.mkFlake { inherit inputs; } (
+  outputs = inputs: let
+    modules = inputs.import-tree ./modules;
+  in
+    inputs.flake-parts.lib.mkFlake {inherit inputs;} (
       modules
       // {
-        imports = [
-          inputs.home-manager.flakeModules.home-manager
-          inputs.git-hooks-nix.flakeModule
-          inputs.mkdocs-flake.flakeModule
-          inputs.devshell.flakeModule
-          inputs.nix-topology.flakeModule
-          inputs.pkgs-by-name-for-flake-parts.flakeModule
-        ]
-        ++ (modules.imports or [ ]);
+        imports =
+          [
+            inputs.home-manager.flakeModules.home-manager
+            inputs.git-hooks-nix.flakeModule
+            inputs.mkdocs-flake.flakeModule
+            inputs.devshell.flakeModule
+            inputs.nix-topology.flakeModule
+            inputs.pkgs-by-name-for-flake-parts.flakeModule
+          ]
+          ++ (modules.imports or []);
       }
     );
 }
