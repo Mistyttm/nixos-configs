@@ -57,6 +57,7 @@
               "10.0.0.1:9100" # node
               "10.0.0.1:9113" # nginx
               "10.0.0.1:9586" # wireguard
+              "10.0.0.1:9148" # synapse
             ];
             labels = {host = "thedogpark";};
           }

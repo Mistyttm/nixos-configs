@@ -32,7 +32,7 @@
       services.nginx.statusPage = true;
 
       # only reachable over WireGuard, but open the ports on that interface
-      networking.firewall.interfaces."wg0".allowedTCPPorts = [9100 9113 9586];
+      networking.firewall.interfaces."wg0".allowedTCPPorts = [9100 9113 9586 9148];
     };
   };
 
