@@ -1,5 +1,7 @@
-{...}: {
+{inputs, ...}: {
   flake.nixosModules.steam = {pkgs, ...}: {
+    nixpkgs.overlays = [inputs.millennium.overlays.default];
+
     programs.steam = {
       enable = true;
       remotePlay.openFirewall = true;
@@ -14,7 +16,7 @@
         proton-cachyos
         proton-ge-rtsp
       ];
-      package = pkgs.steam.override {
+      package = pkgs.millennium-steam.override {
         extraEnv = {
           OBS_VKCAPTURE = true;
         };
