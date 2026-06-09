@@ -97,7 +97,7 @@
           }
           {
             port = 9148;
-            bind_addresses = ["127.0.0.1"];
+            bind_addresses = ["127.0.0.1" "10.100.0.1"];
             type = "metrics";
             tls = false;
             resources = [];
