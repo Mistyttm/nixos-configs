@@ -1,39 +1,25 @@
 {...}: {
-  flake.nixosModules.prometheus-exporter = {
-    config,
-    lib,
-    ...
-  }: {
-    options.monitoring.wireguardIP = lib.mkOption {
-      type = lib.types.str;
-      description = "WireGuard interface IP to bind exporters to";
-    };
-
-    config = {
-      services.prometheus.exporters = {
-        node = {
-          enable = true;
-          port = 9100;
-          listenAddress = config.monitoring.wireguardIP;
-          enabledCollectors = ["systemd"];
-        };
-        nginx = {
-          enable = true;
-          port = 9113;
-          listenAddress = config.monitoring.wireguardIP;
-        };
-        wireguard = {
-          enable = true;
-          port = 9586;
-          listenAddress = config.monitoring.wireguardIP;
-        };
+  flake.nixosModules.prometheus-exporter = {...}: {
+    services.prometheus.exporters = {
+      node = {
+        enable = true;
+        port = 9100;
+        enabledCollectors = ["systemd"];
       };
-
-      services.nginx.statusPage = true;
-
-      # only reachable over WireGuard, but open the ports on that interface
-      networking.firewall.interfaces."wg0".allowedTCPPorts = [9100 9113 9586 9148];
+      nginx = {
+        enable = true;
+        port = 9113;
+      };
+      wireguard = {
+        enable = true;
+        port = 9586;
+      };
     };
+
+    services.nginx.statusPage = true;
+
+    # only reachable over WireGuard, but open the ports on that interface
+    networking.firewall.interfaces."wg0".allowedTCPPorts = [9100 9113 9586 9148];
   };
 
   flake.nixosModules.prometheus-server = {

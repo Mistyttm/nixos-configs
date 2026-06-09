@@ -30,9 +30,6 @@
         enable = true;
       };
     };
-
-    monitoring.wireguardIP = "10.0.0.1";
-
     nixpkgs.config.cudaSupport = true;
 
     environment.systemPackages = with pkgs; [
