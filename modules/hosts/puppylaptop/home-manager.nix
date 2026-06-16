@@ -1,49 +1,44 @@
-{ self, ... }:
-{
-  flake.nixosModules.puppylaptopHomeManager =
-    { config, ... }:
-    {
-      imports = [
-        self.nixosModules.homeManager
+{self, ...}: {
+  flake.nixosModules.puppylaptopHomeManager = {config, ...}: {
+    imports = [
+      self.nixosModules.homeManager
+    ];
+
+    home-manager.users.misty = {
+      imports = with self.homeModules; [
+        misty
+        git
+        gpg
+        xdg
+        vscode
+        easyeffects
+        direnv
+        gui-packages
+        mangohud
+        eza
+        bat
+        fastfetch
+        ripgrep
+        starship
+        zsh
+        kitty
+        direnv
+        gameModding
+        linux-wallpaperengine
       ];
 
-      home-manager.users.misty = {
-        imports = with self.homeModules; [
-          misty
-          git
-          gpg
-          xdg
-          vscode
-          easyeffects
-          direnv
-          kdeconnect
-          gui-packages
-          mangohud
-          eza
-          bat
-          fastfetch
-          ripgrep
-          starship
-          zsh
-          kitty
-          direnv
-          kdeconnect
-          gameModding
-          linux-wallpaperengine
-        ];
+      gpg = {
+        enable = true;
+        publicKeySource = ./PuppyLaptop.asc;
+      };
 
-        gpg = {
+      programs.puppy = {
+        starship.hostname = config.networking.hostName;
+        git = {
           enable = true;
-          publicKeySource = ./PuppyLaptop.asc;
-        };
-
-        programs.puppy = {
-          starship.hostname = config.networking.hostName;
-          git = {
-            enable = true;
-            signingKey = "05E283AA410E1548";
-          };
+          signingKey = "05E283AA410E1548";
         };
       };
     };
+  };
 }

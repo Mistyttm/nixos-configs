@@ -1,42 +1,41 @@
-{ ... }:
-{
-  flake.nixosModules.plasma =
-    { pkgs, ... }:
-    {
-      services.desktopManager.plasma6.enable = true;
+{self, ...}: {
+  flake.nixosModules.plasma = {pkgs, ...}: {
+    imports = [
+      self.nixosModules.kdeconnect
+    ];
+    services.desktopManager.plasma6.enable = true;
 
-      # printing
-      services.printing.enable = true;
+    # printing
+    services.printing.enable = true;
 
-      environment.plasma6.excludePackages = with pkgs.kdePackages; [
-        konsole
-        kwin-x11
-      ];
+    environment.plasma6.excludePackages = with pkgs.kdePackages; [
+      konsole
+      kwin-x11
+    ];
 
-      environment.systemPackages =
-        with pkgs.kdePackages;
-        [
-          plasma-browser-integration
-          kio
-          kio-fuse
-          kio-extras
-          kio-gdrive
-          kaccounts-integration
-          kaccounts-providers
-          signond
-          accounts-qt
-          signon-kwallet-extension
-          kalk
-          skanpage
-          filelight
-          # wallpaper-engine-plugin
-        ]
-        ++ (with pkgs; [
-          darkly
-          plasma-panel-colorizer
-          klassy
-          libaccounts-glib
-          bitwarden-cli
-        ]);
-    };
+    environment.systemPackages = with pkgs.kdePackages;
+      [
+        plasma-browser-integration
+        kio
+        kio-fuse
+        kio-extras
+        kio-gdrive
+        kaccounts-integration
+        kaccounts-providers
+        signond
+        accounts-qt
+        signon-kwallet-extension
+        kalk
+        skanpage
+        filelight
+        # wallpaper-engine-plugin
+      ]
+      ++ (with pkgs; [
+        darkly
+        plasma-panel-colorizer
+        klassy
+        libaccounts-glib
+        bitwarden-cli
+      ]);
+  };
 }
