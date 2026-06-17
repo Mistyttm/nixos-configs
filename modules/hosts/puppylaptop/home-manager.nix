@@ -14,7 +14,6 @@
         easyeffects
         direnv
         gui-packages
-        mangohud
         eza
         bat
         fastfetch
@@ -23,8 +22,6 @@
         zsh
         kitty
         direnv
-        gameModding
-        linux-wallpaperengine
       ];
 
       gpg = {
