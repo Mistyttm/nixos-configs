@@ -84,7 +84,7 @@ in
     meta = {
       description = "";
       homepage = "https://github.com/vanilla-wiiu/vanilla";
-      changelog = "https://github.com/vanilla-wiiu/vanilla/releases/tag/${finalAttrs.src.tag}";
+      changelog = "https://github.com/vanilla-wiiu/vanilla/releases/tag/${finalAttrs.src.rev}";
       license = lib.licenses.gpl2Only;
       maintainers = with lib.maintainers; [mistyttm];
       mainProgram = "vanilla-wiiu";
