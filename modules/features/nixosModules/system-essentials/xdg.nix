@@ -1,11 +1,8 @@
-{ ... }:
-{
-  flake.nixosModules.xdg =
-    { ... }:
-    {
-      xdg.portal = {
-        enable = true;
-        xdgOpenUsePortal = true;
-      };
+{...}: {
+  flake.nixosModules.xdg = {...}: {
+    xdg.portal = {
+      enable = true;
+      xdgOpenUsePortal = true;
     };
+  };
 }
