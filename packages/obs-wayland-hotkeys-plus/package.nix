@@ -42,6 +42,6 @@ stdenv.mkDerivation (finalAttrs: {
     homepage = "https://github.com/codycwiseman/wayland-hotkeys-plus";
     license = licenses.gpl2Plus;
     platforms = platforms.linux;
-    maintainers = [];
+    maintainers = [ ];
   };
 })
