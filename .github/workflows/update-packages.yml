@@ -32,6 +32,7 @@ jobs:
         proton-cachyos
         proton-ge-rtsp
         vanilla-wiiu
+        obs-waylan-hotkeys-plus
       # ────────────────────────────────────────────────────────────────────────
     steps:
       - name: Checkout repository
@@ -125,17 +126,17 @@ jobs:
         id: update_package
         run: |
           set -euo pipefail
-      
+
           package='${{ matrix.package }}'
           attr="packages.x86_64-linux.${package}"
-      
+
           nix run nixpkgs#nix-update -- \
             "$attr" \
             --flake \
             --use-update-script
-      
+
           nix fmt -- "packages/${package}"
-      
+
           if git diff --quiet -- "packages/${package}"; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
@@ -271,17 +272,17 @@ jobs:
         id: update_package
         run: |
           set -euo pipefail
-      
+
           package='${{ matrix.package }}'
           attr="packages.x86_64-linux.${package}"
-      
+
           nix run nixpkgs#nix-update -- \
             "$attr" \
             --flake \
             --use-update-script
-      
+
           nix fmt -- "packages/${package}"
-      
+
           if git diff --quiet -- "packages/${package}"; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
