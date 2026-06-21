@@ -32,7 +32,7 @@ jobs:
         proton-cachyos
         proton-ge-rtsp
         vanilla-wiiu
-        obs-waylan-hotkeys-plus
+        obs-wayland-hotkeys-plus
       # ────────────────────────────────────────────────────────────────────────
     steps:
       - name: Checkout repository
