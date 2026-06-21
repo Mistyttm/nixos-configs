@@ -16,6 +16,6 @@ latest_date="$(
   | cut -dT -f1
 )"
 
-update-source-version vanilla-wiiu \
+update-source-version .#vanilla-wiiu \
   "continuous-${latest_date}" \
   --rev="$latest_rev"
