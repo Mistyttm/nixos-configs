@@ -7,18 +7,18 @@
 }:
 buildNpmPackage (finalAttrs: {
   pname = "jellystat";
-  version = "1.1.10";
+  version = "1.1.11";
 
   src = fetchFromGitHub {
     owner = "CyferShepard";
     repo = "Jellystat";
     tag = finalAttrs.version;
-    hash = "sha256-eMDnQJLGEUlOZupUODXvNQ/TtQyQ7salqeZatR6ieRQ=";
+    hash = "sha256-HuLSXhj90fPfxv5qyCVCY67w07WwTBGp220iG9dGZyk=";
   };
 
   npmDepsFetcherVersion = 2;
 
-  npmDepsHash = "sha256-JjNYysGfeRD2riQddxqsYPlrg43nC7Vv0B1gi4vX6FE=";
+  npmDepsHash = "sha256-yfcrBLbD11x3Siqv670jw8A3K11DrwnBj0VSC64JBP0=";
 
   makeCacheWritable = true;
 
