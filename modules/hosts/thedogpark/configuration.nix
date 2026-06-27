@@ -20,6 +20,7 @@
 
     boot = {
       kernelPackages = pkgs.linuxPackages_zen;
+      loader.kernelFile = "vmlinuz";
     };
 
     doggate = {
