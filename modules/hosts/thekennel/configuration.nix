@@ -32,11 +32,9 @@
 
     hardware.nvidia-custom = {
       enable = true;
-      driverChannel = "stable";
+      driverChannel = "bleeding_edge";
       blacklistNova = true;
-      extraGraphicsPackages = with pkgs; [
-        nvidia-vaapi-driver
-      ];
+      nvidiaContainerToolkit = true;
     };
 
     doggate = {
