@@ -19,8 +19,7 @@
     networking.hostName = "thedogpark";
 
     boot = {
-      kernelPackages = pkgs.linuxPackages_zen;
-      loader.kernelFile = "vmlinuz";
+      kernelPackages = pkgs.linuxPackages_latest;
     };
 
     doggate = {
