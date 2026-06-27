@@ -43,6 +43,7 @@
       modesetting = true;
       driverChannel = "bleeding_edge";
       blacklistNova = true;
+      nvidiaContainerToolkit = true;
     };
 
     doggate.wireguard = {

@@ -133,7 +133,10 @@
         branch = cfg.driverChannel;
       };
 
+      # Docker support for NVIDIA Container Toolkit
+
       hardware.nvidia-container-toolkit.enable = cfg.nvidiaContainerToolkit;
+      virtualisation.docker.daemon.settings.features.cdi = cfg.nvidiaContainerToolkit;
     };
   };
 }
