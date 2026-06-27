@@ -204,6 +204,9 @@
     options.doggate.nginx.enable = lib.mkEnableOption "Unified, host-profile-driven nginx configuration";
 
     config = lib.mkIf (cfg.enable && profile != null) {
+      systemd.services.nginx.after = ["wireguard-wg0.service" "network-online.target"];
+      systemd.services.nginx.wants = ["wireguard-wg0.service"];
+
       services.nginx = {
         enable = true;
         # recommendedProxySettings = true;
