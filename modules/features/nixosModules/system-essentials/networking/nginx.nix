@@ -28,6 +28,10 @@
               proxyWebsockets = true;
               extraConfig = ''
                 proxy_buffering off;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $http_x_real_ip;
+                proxy_set_header X-Forwarded-For $http_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
               '';
             };
           };
