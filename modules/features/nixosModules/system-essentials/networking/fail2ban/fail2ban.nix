@@ -19,14 +19,16 @@
       '')
       knownJails;
   in {
-    sops.secrets."fail2ban-relay-token" = {
-      sopsFile = self.secrets.fail2ban;
-      owner = "root";
-      group = "root";
-      mode = "0400";
-    };
-
     config = lib.mkMerge [
+      {
+        sops.secrets."fail2ban-relay-token" = {
+          sopsFile = self.secrets.fail2ban;
+          owner = "root";
+          group = "root";
+          mode = "0400";
+        };
+      }
+
       (lib.mkIf (hostName == "thedogpark") {
         networking.firewall.extraCommands = ''
           ${jailChainCommands}
