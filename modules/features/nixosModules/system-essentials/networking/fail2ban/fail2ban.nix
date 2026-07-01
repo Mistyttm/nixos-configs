@@ -27,6 +27,13 @@
           group = "root";
           mode = "0400";
         };
+
+        services.fail2ban = {
+          enable = true;
+          bantime-increment.enable = true;
+        };
+
+        networking.firewall.extraCommands = jailChainCommands;
       }
 
       (lib.mkIf (hostName == "thedogpark") {
@@ -49,14 +56,11 @@
           serviceConfig = {
             ExecStart = "${pkgs.python3}/bin/python3 ${relayScript}";
             Restart = "always";
-
-            # Dedicated, non-root user with only the capability it needs.
             User = "fail2ban-relay";
             DynamicUser = true;
             AmbientCapabilities = ["CAP_NET_ADMIN"];
             CapabilityBoundingSet = ["CAP_NET_ADMIN"];
             NoNewPrivileges = true;
-
             ProtectSystem = "strict";
             ProtectHome = true;
             PrivateTmp = true;
@@ -66,9 +70,6 @@
 
       (lib.mkIf (hostName == "thekennel") {
         services.fail2ban = {
-          enable = true;
-          bantime-increment.enable = true;
-
           jails.jellyfin.settings = {
             enabled = true;
             filter = "jellyfin";
@@ -89,12 +90,16 @@
 
         environment.etc."fail2ban/action.d/proxy-http-relay.conf".text = ''
           [Definition]
-          actionban = ${pkgs.curl}/bin/curl -sf -X POST http://10.100.0.1:9898/ban \
+          actionban = iptables -N f2b-<name> 2>/dev/null || true
+                      iptables -C INPUT -j f2b-<name> 2>/dev/null || iptables -I INPUT -j f2b-<name>
+                      iptables -C f2b-<name> -s <ip> -j DROP 2>/dev/null || iptables -I f2b-<name> 1 -s <ip> -j DROP
+                      ${pkgs.curl}/bin/curl -sf -X POST http://10.100.0.1:9898/ban \
                         -H "Authorization: Bearer $(cat ${config.sops.secrets."fail2ban-relay-token".path})" \
                         -H "Content-Type: application/json" \
                         -d '{"jail": "<name>", "ip": "<ip>"}'
 
-          actionunban = ${pkgs.curl}/bin/curl -sf -X POST http://10.100.0.1:9898/unban \
+          actionunban = iptables -D f2b-<name> -s <ip> -j DROP
+                        ${pkgs.curl}/bin/curl -sf -X POST http://10.100.0.1:9898/unban \
                         -H "Authorization: Bearer $(cat ${config.sops.secrets."fail2ban-relay-token".path})" \
                         -H "Content-Type: application/json" \
                         -d '{"jail": "<name>", "ip": "<ip>"}'
