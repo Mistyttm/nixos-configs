@@ -23,8 +23,8 @@
       {
         sops.secrets."fail2ban-relay-token" = {
           sopsFile = self.secrets.fail2ban;
-          owner = "root";
-          group = "root";
+          owner = "fail2ban-relay";
+          group = "fail2ban-relay";
           mode = "0400";
         };
 
@@ -57,7 +57,7 @@
             ExecStart = "${pkgs.python3}/bin/python3 ${relayScript}";
             Restart = "always";
             User = "fail2ban-relay";
-            DynamicUser = true;
+            Group = "fail2ban-relay";
             AmbientCapabilities = ["CAP_NET_ADMIN"];
             CapabilityBoundingSet = ["CAP_NET_ADMIN"];
             NoNewPrivileges = true;
