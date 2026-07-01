@@ -209,7 +209,7 @@
 
     config = lib.mkIf (cfg.enable && profile != null) {
       systemd.services.nginx.after = ["wireguard-wg0.service" "network-online.target"];
-      systemd.services.nginx.wants = ["wireguard-wg0.service"];
+      systemd.services.nginx.wants = ["wireguard-wg0.service" "network-online.target"];
 
       services.nginx = {
         enable = true;
