@@ -92,7 +92,8 @@
           monado-vulkan-layers
           vulkan-hdr-layer-kwin6
         ]
-        ++ cfg.extraGraphicsPackages;
+        ++ cfg.extraGraphicsPackages
+        ++ mkIf cfg.nvidiaContainerToolkit [pkgs.nvidia-docker];
 
       environment.systemPackages = with pkgs; [
         opencomposite
@@ -134,9 +135,24 @@
       };
 
       # Docker support for NVIDIA Container Toolkit
-
       hardware.nvidia-container-toolkit.enable = cfg.nvidiaContainerToolkit;
-      virtualisation.docker.daemon.settings.features.cdi = cfg.nvidiaContainerToolkit;
+
+      virtualisation.docker.daemon.settings = lib.mkIf cfg.nvidiaContainerToolkit {
+        features = {
+          cdi = true;
+        };
+
+        cdi-spec-dirs = [
+          "/var/run/cdi"
+          "/etc/cdi"
+        ];
+
+        runtimes = {
+          nvidia = {
+            path = "${pkgs.nvidia-container-toolkit}/bin/nvidia-container-runtime";
+          };
+        };
+      };
     };
   };
 }

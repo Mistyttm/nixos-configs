@@ -1,9 +1,5 @@
 {...}: {
   flake.nixosModules.docker = {pkgs, ...}: {
-    environment.systemPackages = with pkgs; [
-      nvidia-docker
-    ];
-
     virtualisation = {
       docker = {
         enable = true;
@@ -16,21 +12,6 @@
           enable = true;
           dates = "weekly";
           flags = ["--all"];
-        };
-
-        # Configure NVIDIA runtime for GPU access in containers
-        daemon.settings = {
-          runtimes = {
-            nvidia = {
-              path = "${pkgs.nvidia-container-toolkit}/bin/nvidia-container-runtime";
-            };
-          };
-
-          # Configure CDI spec directories
-          cdi-spec-dirs = [
-            "/var/run/cdi"
-            "/etc/cdi"
-          ];
         };
       };
       libvirtd = {
