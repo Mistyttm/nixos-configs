@@ -8,7 +8,7 @@ import re
 import subprocess
 import sys
 
-TOKEN = open(os.environ["TOKEN_FILE"]).read().strip()
+TOKEN = open(os.path.join(os.environ["CREDENTIALS_DIRECTORY"], "token")).read().strip()
 ALLOWED_PEER = os.environ.get("ALLOWED_PEER", "10.100.0.2")
 
 JAIL_NAME_RE = re.compile(r"^[a-zA-Z0-9_-]{1,32}$")
