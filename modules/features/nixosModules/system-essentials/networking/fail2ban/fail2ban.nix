@@ -6,8 +6,18 @@
     ...
   }: let
     hostName = config.networking.hostName or "";
-
     relayScript = pkgs.writeText "fail2ban-relay.py" (builtins.readFile ./fail2ban-relay.py);
+
+    # Known jails get their chains created declaratively, once, at firewall
+    # build time -- the relay only ever inserts/deletes rules inside them.
+    knownJails = ["jellyfin"];
+
+    jailChainCommands =
+      lib.concatMapStringsSep "\n" (name: ''
+        iptables -N f2b-${name} 2>/dev/null || true
+        iptables -C INPUT -j f2b-${name} 2>/dev/null || iptables -I INPUT -j f2b-${name}
+      '')
+      knownJails;
   in {
     sops.secrets."fail2ban-relay-token" = {
       sopsFile = self.secrets.fail2ban;
@@ -18,6 +28,11 @@
 
     config = lib.mkMerge [
       (lib.mkIf (hostName == "thedogpark") {
+        networking.firewall.extraCommands = ''
+          ${jailChainCommands}
+          iptables -I nixos-fw 1 -i wg0 -p tcp --dport 9898 ! -s 10.100.0.2 -j DROP
+        '';
+
         systemd.services.fail2ban-relay = {
           description = "fail2ban ban relay (wg0-only)";
           after = ["wireguard-wg0.service"];
@@ -27,13 +42,19 @@
             TOKEN_FILE = config.sops.secrets."fail2ban-relay-token".path;
             BIND_ADDR = "10.100.0.1";
             BIND_PORT = "9898";
+            ALLOWED_PEER = "10.100.0.2";
           };
           serviceConfig = {
             ExecStart = "${pkgs.python3}/bin/python3 ${relayScript}";
             Restart = "always";
-            DynamicUser = false; # needs root for iptables
+
+            # Dedicated, non-root user with only the capability it needs.
+            User = "fail2ban-relay";
+            DynamicUser = true;
             AmbientCapabilities = ["CAP_NET_ADMIN"];
+            CapabilityBoundingSet = ["CAP_NET_ADMIN"];
             NoNewPrivileges = true;
+
             ProtectSystem = "strict";
             ProtectHome = true;
             PrivateTmp = true;
