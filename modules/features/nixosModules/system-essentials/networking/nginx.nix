@@ -32,6 +32,21 @@
                 proxy_set_header X-Real-IP $http_x_real_ip;
                 proxy_set_header X-Forwarded-For $http_x_forwarded_for;
                 proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+                proxy_set_header X-Forwarded-Protocol $http_x_forwarded_proto;
+                proxy_set_header X-Forwarded-Host $http_x_forwarded_host;
+              '';
+            };
+
+            locations."/socket" = {
+              proxyPass = "http://127.0.0.1:8096";
+              proxyWebsockets = true;
+              extraConfig = ''
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $http_x_real_ip;
+                proxy_set_header X-Forwarded-For $http_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+                proxy_set_header X-Forwarded-Protocol $http_x_forwarded_proto;
+                proxy_set_header X-Forwarded-Host $http_x_forwarded_host;
               '';
             };
           };
@@ -184,16 +199,28 @@
                 proxy_set_header X-Real-IP $remote_addr;
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header X-Forwarded-Proto $scheme;
-
+                proxy_set_header X-Forwarded-Host $http_host;
                 proxy_buffering off;
                 proxy_set_header Range $http_range;
                 proxy_set_header If-Range $http_if_range;
-
                 add_header X-Frame-Options "SAMEORIGIN" always;
                 add_header X-Content-Type-Options "nosniff" always;
                 add_header X-XSS-Protection "1; mode=block" always;
+                add_header Permissions-Policy "...";
+                add_header Content-Security-Policy "...";
+                client_max_body_size 20M;
+              '';
+            };
 
-                client_max_body_size 0;
+            locations."/socket" = {
+              proxyPass = "http://10.100.0.2:8097";
+              proxyWebsockets = true;
+              extraConfig = ''
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_set_header X-Forwarded-Host $http_host;
               '';
             };
           };
