@@ -93,7 +93,7 @@
           vulkan-hdr-layer-kwin6
         ]
         ++ cfg.extraGraphicsPackages
-        ++ lib.mkIf cfg.nvidiaContainerToolkit [pkgs.nvidia-docker];
+        ++ lib.optionals cfg.nvidiaContainerToolkit [pkgs.nvidia-docker];
 
       environment.systemPackages = with pkgs; [
         opencomposite
