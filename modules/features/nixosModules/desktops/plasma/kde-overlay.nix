@@ -19,8 +19,7 @@
               ( IFS=:
                 for DIR in $XDG_DATA_DIRS; do
                   if [[ -d "$DIR" ]]; then
-                    cp -r $DIR/. $out/share/
-                    chmod -R u+w $out/share
+                    ${prev.lib.getExe prev.lndir} -silent "$DIR" $out # https://github.com/NixOS/nixpkgs/issues/126590#issuecomment-3741634437
                   fi
                 done
               )
