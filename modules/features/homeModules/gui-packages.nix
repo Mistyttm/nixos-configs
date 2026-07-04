@@ -3,7 +3,6 @@
     home.packages = with pkgs; [
       libsecret
       slack
-      zoom-us
       obsidian
       vlc
       thunderbird-esr

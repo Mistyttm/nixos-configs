@@ -8,6 +8,8 @@
     # printing
     services.printing.enable = true;
 
+    programs.zoom-us.enable = true;
+
     environment.plasma6.excludePackages = with pkgs.kdePackages; [
       konsole
       kwin-x11
