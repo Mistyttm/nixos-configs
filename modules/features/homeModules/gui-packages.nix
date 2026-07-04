@@ -13,9 +13,7 @@
       teams-for-linux
       python3
       nil
-      (vesktop.override {
-        pnpm_10_29_2 = pkgs.pnpm_10;
-      })
+      vesktop
       heroic
       gimp
       blender
