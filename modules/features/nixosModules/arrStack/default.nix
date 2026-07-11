@@ -1,5 +1,4 @@
-{ self, ... }:
-{
+{self, ...}: {
   flake.nixosModules.arrStack = {
     imports = [
       self.nixosModules.bazarr

@@ -1,14 +1,11 @@
-{ ... }:
-{
-  flake.nixosModules.sunshine =
-    {
-      lib,
-      config,
-      pkgs,
-      ...
-    }:
-    with lib;
-    let
+{...}: {
+  flake.nixosModules.sunshine = {
+    lib,
+    config,
+    pkgs,
+    ...
+  }:
+    with lib; let
       cfg = config.services.sunshineStreaming;
 
       # Helper utility for launching Steam games from Sunshine. This works around
@@ -45,8 +42,7 @@
           pkgs.procps
         ];
       };
-    in
-    {
+    in {
       options.services.sunshineStreaming = {
         enable = mkEnableOption "Enable Sunshine streaming with Steam workaround";
 
@@ -76,13 +72,13 @@
 
         extraApps = mkOption {
           type = types.listOf types.attrs;
-          default = [ ];
+          default = [];
           description = "Additional applications to add to Sunshine";
         };
 
         extraSettings = mkOption {
           type = types.attrs;
-          default = { };
+          default = {};
           description = "Additional settings for Sunshine";
         };
 
@@ -100,40 +96,42 @@
           capSysAdmin = true; # Required for Wayland
           openFirewall = cfg.openFirewall;
 
-          settings = {
-            sunshine_name = cfg.hostName;
-            output_name = cfg.outputName;
-            key_rightalt_to_key_win = "enabled";
-          }
-          // cfg.extraSettings;
+          settings =
+            {
+              sunshine_name = cfg.hostName;
+              output_name = cfg.outputName;
+              key_rightalt_to_key_win = "enabled";
+            }
+            // cfg.extraSettings;
 
           applications = {
             env = {
               PATH = "$(PATH):$(HOME)/.local/bin";
             };
-            apps = [
-              {
-                name = "Desktop";
-                image-path = "desktop.png";
-              }
-              {
-                name = "Steam Big Picture";
-                # Use cmd instead of detached so Sunshine tracks the process
-                cmd = "${lib.getExe steam-launch-and-wait} steam://open/bigpicture";
-                # Close Big Picture when the stream ends
-                undo = "${lib.getExe steam-run-url} steam://close/bigpicture";
-                image-path = "steam.png";
-              }
-              {
-                name = "Steam Deck UI";
-                # Use cmd instead of detached so Sunshine tracks the process
-                cmd = "${lib.getExe steam-launch-and-wait} steam://open/gamepadui";
-                # Close gamepad UI when the stream ends
-                undo = "${lib.getExe steam-run-url} steam://close/gamepadui";
-                image-path = "steam.png";
-              }
-            ]
-            ++ cfg.extraApps;
+            apps =
+              [
+                {
+                  name = "Desktop";
+                  image-path = "desktop.png";
+                }
+                {
+                  name = "Steam Big Picture";
+                  # Use cmd instead of detached so Sunshine tracks the process
+                  cmd = "${lib.getExe steam-launch-and-wait} steam://open/bigpicture";
+                  # Close Big Picture when the stream ends
+                  undo = "${lib.getExe steam-run-url} steam://close/bigpicture";
+                  image-path = "steam.png";
+                }
+                {
+                  name = "Steam Deck UI";
+                  # Use cmd instead of detached so Sunshine tracks the process
+                  cmd = "${lib.getExe steam-launch-and-wait} steam://open/gamepadui";
+                  # Close gamepad UI when the stream ends
+                  undo = "${lib.getExe steam-run-url} steam://close/gamepadui";
+                  image-path = "steam.png";
+                }
+              ]
+              ++ cfg.extraApps;
           };
         };
 
@@ -152,17 +150,17 @@
           systemd.user.services.steam-run-url-service = {
             Unit = {
               Description = "Listen and start Steam games by URL";
-              PartOf = [ "default.target" ];
-              Wants = [ "default.target" ];
-              After = [ "default.target" ];
+              PartOf = ["default.target"];
+              Wants = ["default.target"];
+              After = ["default.target"];
             };
             Install = {
-              WantedBy = [ "default.target" ];
+              WantedBy = ["default.target"];
             };
             Service = {
               Restart = "on-failure";
               ExecStart = toString (
-                pkgs.writers.writePython3 "steam-run-url-service" { } ''
+                pkgs.writers.writePython3 "steam-run-url-service" {} ''
                   import os
                   from pathlib import Path
                   import subprocess

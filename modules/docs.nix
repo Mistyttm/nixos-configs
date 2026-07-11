@@ -1,8 +1,5 @@
-{ ... }:
-{
-  perSystem =
-    { ... }:
-    {
-      documentation.mkdocs-root = ../.;
-    };
+{...}: {
+  perSystem = {...}: {
+    documentation.mkdocs-root = ../.;
+  };
 }

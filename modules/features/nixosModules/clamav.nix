@@ -1,33 +1,30 @@
-{ ... }:
-{
-  flake.nixosModules.clamav =
-    { pkgs, ... }:
-    {
-      environment.systemPackages = with pkgs; [
-        clamav
-        clamtk
-      ];
+{...}: {
+  flake.nixosModules.clamav = {pkgs, ...}: {
+    environment.systemPackages = with pkgs; [
+      clamav
+      clamtk
+    ];
 
-      services.clamav = {
+    services.clamav = {
+      enable = true;
+      daemon = {
         enable = true;
-        daemon = {
-          enable = true;
-          config = {
-            "LocalSocket" = "/var/run/clamav/clamd.sock";
-            "TCPSocket" = 3310;
-          };
+        config = {
+          "LocalSocket" = "/var/run/clamav/clamd.sock";
+          "TCPSocket" = 3310;
         };
-        scanner = {
-          enable = true;
-        };
-        updater = {
-          enable = true;
-          config = {
-            "DatabaseDirectory" = "/var/lib/clamav";
-            "LocalSocket" = "/var/run/clamav/clamd.sock";
-            "TCPSocket" = 3310;
-          };
+      };
+      scanner = {
+        enable = true;
+      };
+      updater = {
+        enable = true;
+        config = {
+          "DatabaseDirectory" = "/var/lib/clamav";
+          "LocalSocket" = "/var/run/clamav/clamd.sock";
+          "TCPSocket" = 3310;
         };
       };
     };
+  };
 }

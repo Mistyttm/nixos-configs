@@ -1,11 +1,8 @@
-{ ... }:
-{
-  flake.nixosModules.flaresolverr =
-    { ... }:
-    {
-      services.flaresolverr = {
-        enable = true;
-        openFirewall = true;
-      };
+{...}: {
+  flake.nixosModules.flaresolverr = {...}: {
+    services.flaresolverr = {
+      enable = true;
+      openFirewall = true;
     };
+  };
 }

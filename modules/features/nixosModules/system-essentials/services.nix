@@ -1,33 +1,30 @@
-{ ... }:
-{
-  flake.nixosModules.services =
-    { ... }:
-    {
-      services = {
-        ratbagd = {
-          enable = true;
-        };
+{...}: {
+  flake.nixosModules.services = {...}: {
+    services = {
+      ratbagd = {
+        enable = true;
+      };
 
-        gnome = {
-          gnome-keyring = {
-            enable = true;
-          };
-        };
-
-        earlyoom = {
+      gnome = {
+        gnome-keyring = {
           enable = true;
-          enableNotifications = true;
-        };
-
-        pcscd = {
-          enable = true;
-        };
-
-        avahi = {
-          enable = true;
-          nssmdns4 = true;
-          openFirewall = true;
         };
       };
+
+      earlyoom = {
+        enable = true;
+        enableNotifications = true;
+      };
+
+      pcscd = {
+        enable = true;
+      };
+
+      avahi = {
+        enable = true;
+        nssmdns4 = true;
+        openFirewall = true;
+      };
     };
+  };
 }

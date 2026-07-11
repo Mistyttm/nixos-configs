@@ -4,27 +4,22 @@
 #   nix build .#checks.x86_64-linux.dispatcharr
 #   # or interactively:
 #   nix build .#checks.x86_64-linux.dispatcharr.driverInteractive && ./result/bin/nixos-test-driver
-{
-  pkgs ? import <nixpkgs> { },
-}:
-let
-  dispatcharr-frontend = pkgs.callPackage ../packages/dispatcharr-frontend.nix { };
-  dispatcharr = pkgs.callPackage ../packages/dispatcharr/package.nix { };
+{pkgs ? import <nixpkgs> {}}: let
+  dispatcharr-frontend = pkgs.callPackage ../packages/dispatcharr-frontend.nix {};
+  dispatcharr = pkgs.callPackage ../packages/dispatcharr/package.nix {};
 in
-pkgs.testers.nixosTest {
-  name = "dispatcharr";
+  pkgs.testers.nixosTest {
+    name = "dispatcharr";
 
-  meta.maintainers = [ ];
+    meta.maintainers = [];
 
-  nodes.machine =
-    { ... }:
-    {
+    nodes.machine = {...}: {
       imports = [
         ../modules/nixos/dispatcharr.nix
       ];
 
       nixpkgs.overlays = [
-        (_: _: { inherit dispatcharr dispatcharr-frontend; })
+        (_: _: {inherit dispatcharr dispatcharr-frontend;})
       ];
 
       services.nginx.recommendedProxySettings = true;
@@ -50,53 +45,53 @@ pkgs.testers.nixosTest {
       };
     };
 
-  testScript = ''
-    machine.start()
+    testScript = ''
+      machine.start()
 
-    # Wait for backing services
-    machine.wait_for_unit("postgresql.service")
-    machine.wait_for_unit("redis-dispatcharr.service")
+      # Wait for backing services
+      machine.wait_for_unit("postgresql.service")
+      machine.wait_for_unit("redis-dispatcharr.service")
 
-    # Wait for migrations to complete
-    machine.wait_for_unit("dispatcharr-migrate.service", timeout=120)
+      # Wait for migrations to complete
+      machine.wait_for_unit("dispatcharr-migrate.service", timeout=120)
 
-    # Wait for the four application services
-    machine.wait_for_unit("dispatcharr.service", timeout=60)
-    machine.wait_for_unit("dispatcharr-daphne.service", timeout=30)
-    machine.wait_for_unit("dispatcharr-celery.service", timeout=30)
-    machine.wait_for_unit("dispatcharr-celerybeat.service", timeout=30)
+      # Wait for the four application services
+      machine.wait_for_unit("dispatcharr.service", timeout=60)
+      machine.wait_for_unit("dispatcharr-daphne.service", timeout=30)
+      machine.wait_for_unit("dispatcharr-celery.service", timeout=30)
+      machine.wait_for_unit("dispatcharr-celerybeat.service", timeout=30)
 
-    # Wait for nginx
-    machine.wait_for_unit("nginx.service", timeout=30)
+      # Wait for nginx
+      machine.wait_for_unit("nginx.service", timeout=30)
 
-    # Give gunicorn a moment to bind
-    machine.sleep(5)
+      # Give gunicorn a moment to bind
+      machine.sleep(5)
 
-    # Verify the web UI is reachable via nginx
-    machine.wait_until_succeeds(
-        "curl -sf -o /dev/null -w '%{http_code}' http://localhost:9191/ | command grep -E '200|302'",
-        timeout=60,
-    )
+      # Verify the web UI is reachable via nginx
+      machine.wait_until_succeeds(
+          "curl -sf -o /dev/null -w '%{http_code}' http://localhost:9191/ | command grep -E '200|302'",
+          timeout=60,
+      )
 
-    # Verify WebSocket endpoint via nginx
-    machine.wait_until_succeeds(
-        "curl -sf -o /dev/null -w '%{http_code}' http://localhost:9191/ws/ | command grep -E '101|200|400|426'",
-        timeout=30,
-    )
+      # Verify WebSocket endpoint via nginx
+      machine.wait_until_succeeds(
+          "curl -sf -o /dev/null -w '%{http_code}' http://localhost:9191/ws/ | command grep -E '101|200|400|426'",
+          timeout=30,
+      )
 
-    # Verify data directories were created
-    machine.succeed("test -d /var/lib/dispatcharr")
-    machine.succeed("test -d /var/lib/dispatcharr/logos")
-    machine.succeed("test -d /var/lib/dispatcharr/plugins")
+      # Verify data directories were created
+      machine.succeed("test -d /var/lib/dispatcharr")
+      machine.succeed("test -d /var/lib/dispatcharr/logos")
+      machine.succeed("test -d /var/lib/dispatcharr/plugins")
 
-    # Verify the dispatcharr user exists
-    machine.succeed("id dispatcharr")
+      # Verify the dispatcharr user exists
+      machine.succeed("id dispatcharr")
 
-    # Verify the gunicorn socket exists
-    machine.succeed("test -S /run/dispatcharr/dispatcharr.sock")
+      # Verify the gunicorn socket exists
+      machine.succeed("test -S /run/dispatcharr/dispatcharr.sock")
 
-    # Verify the web UI and websocket firewall ports are open
-    machine.succeed("ss -tlnp | command grep 9191")
-    machine.succeed("ss -tlnp | command grep 8001")
-  '';
-}
+      # Verify the web UI and websocket firewall ports are open
+      machine.succeed("ss -tlnp | command grep 9191")
+      machine.succeed("ss -tlnp | command grep 8001")
+    '';
+  }

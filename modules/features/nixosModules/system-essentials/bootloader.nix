@@ -1,65 +1,61 @@
-{ ... }:
-{
-  flake.nixosModules.bootloader =
-    {
-      config,
-      lib,
-      ...
-    }:
-    {
-      boot = {
-        initrd = {
-          systemd = {
-            enable = true;
-          };
-        };
-
-        kernel = {
-          sysctl = {
-            "net.ipv4.ip_forward" = 1;
-          };
-        };
-
-        extraModprobeConfig = ''
-          options binder_linux devices="binder,hwbinder,vndbinder"
-        '';
-
-        # Enable "Silent Boot"
-        consoleLogLevel = 0;
-        initrd.verbose = false;
-        kernelParams = [
-          "quiet"
-          "splash"
-          "boot.shell_on_fail"
-          "loglevel=3"
-          "rd.systemd.show_status=false"
-          "rd.udev.log_level=3"
-          "udev.log_priority=3"
-        ];
-        kernelModules = [
-          "ntsync"
-          "binder_linux"
-          "ashmem_linux"
-        ];
-
-        loader = {
-          efi = {
-            canTouchEfiVariables = true;
-          };
-          grub =
-            if config.networking.hostName == "thedogpark" then
-              {
-                enable = true;
-                device = "/dev/vda";
-              }
-            else
-              {
-                enable = true;
-                efiSupport = true;
-                devices = [ "nodev" ];
-              };
-          timeout = lib.mkDefault 5;
+{...}: {
+  flake.nixosModules.bootloader = {
+    config,
+    lib,
+    ...
+  }: {
+    boot = {
+      initrd = {
+        systemd = {
+          enable = true;
         };
       };
+
+      kernel = {
+        sysctl = {
+          "net.ipv4.ip_forward" = 1;
+        };
+      };
+
+      extraModprobeConfig = ''
+        options binder_linux devices="binder,hwbinder,vndbinder"
+      '';
+
+      # Enable "Silent Boot"
+      consoleLogLevel = 0;
+      initrd.verbose = false;
+      kernelParams = [
+        "quiet"
+        "splash"
+        "boot.shell_on_fail"
+        "loglevel=3"
+        "rd.systemd.show_status=false"
+        "rd.udev.log_level=3"
+        "udev.log_priority=3"
+      ];
+      kernelModules = [
+        "ntsync"
+        "binder_linux"
+        "ashmem_linux"
+      ];
+
+      loader = {
+        efi = {
+          canTouchEfiVariables = true;
+        };
+        grub =
+          if config.networking.hostName == "thedogpark"
+          then {
+            enable = true;
+            device = "/dev/vda";
+          }
+          else {
+            enable = true;
+            efiSupport = true;
+            devices = ["nodev"];
+          };
+        timeout = lib.mkDefault 5;
+      };
     };
+  };
 }

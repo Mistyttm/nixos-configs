@@ -1,12 +1,9 @@
-{ ... }:
-{
-  flake.nixosModules.zram =
-    { ... }:
-    {
-      zramSwap = {
-        enable = true;
-        memoryPercent = 32;
-        algorithm = "zstd";
-      };
+{...}: {
+  flake.nixosModules.zram = {...}: {
+    zramSwap = {
+      enable = true;
+      memoryPercent = 32;
+      algorithm = "zstd";
     };
+  };
 }

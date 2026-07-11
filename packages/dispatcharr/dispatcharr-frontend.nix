@@ -22,7 +22,7 @@ buildNpmPackage (finalAttrs: {
   forceGitDeps = true;
 
   NODE_OPTIONS = "--max-old-space-size=4096";
-  npmFlags = [ "--legacy-peer-deps" ];
+  npmFlags = ["--legacy-peer-deps"];
 
   installPhase = ''
     runHook preInstall
@@ -35,7 +35,7 @@ buildNpmPackage (finalAttrs: {
     description = "Frontend for Dispatcharr IPTV stream management service";
     homepage = "https://github.com/Dispatcharr/Dispatcharr";
     license = lib.licenses.cc-by-nc-sa-40;
-    maintainers = [ ];
+    maintainers = [];
     platforms = lib.platforms.linux;
   };
 })

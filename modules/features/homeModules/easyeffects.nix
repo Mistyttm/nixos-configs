@@ -1,10 +1,7 @@
-{ ... }:
-{
-  flake.homeModules.easyeffects =
-    { ... }:
-    {
-      services.easyeffects = {
-        enable = true;
-      };
+{...}: {
+  flake.homeModules.easyeffects = {...}: {
+    services.easyeffects = {
+      enable = true;
     };
+  };
 }

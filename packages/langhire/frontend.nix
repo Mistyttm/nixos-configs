@@ -11,7 +11,7 @@ buildNpmPackage {
   npmDepsFetcherVersion = 2;
   makeCacheWritable = true;
   npmDepsHash = "sha256-X/07JR9dOz221GSEGhqCodazH6F6GFiY0FOfi2iOyxA=";
-  npmFlags = [ "--legacy-peer-deps" ];
+  npmFlags = ["--legacy-peer-deps"];
   npmBuildScript = "build";
 
   installPhase = ''

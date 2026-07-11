@@ -1,5 +1,4 @@
-{ self, ... }:
-{
+{self, ...}: {
   flake.nixosModules.downloaders = {
     imports = [
       self.nixosModules.qbittorrent

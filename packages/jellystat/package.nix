@@ -24,8 +24,8 @@ buildNpmPackage (finalAttrs: {
 
   nodejs = nodejs_22;
 
-  npmPackFlags = [ "--ignore-scripts" ];
-  npmFlags = [ "--legacy-peer-deps" ];
+  npmPackFlags = ["--ignore-scripts"];
+  npmFlags = ["--legacy-peer-deps"];
 
   env.NODE_OPTIONS = "--openssl-legacy-provider";
 
@@ -34,7 +34,7 @@ buildNpmPackage (finalAttrs: {
       --replace-fail "const PORT = 3000;" "const PORT = Number(process.env.JS_PORT || 3000);"
   '';
 
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [makeWrapper];
 
   installPhase = ''
     runHook preInstall
@@ -53,7 +53,7 @@ buildNpmPackage (finalAttrs: {
     description = "Jellystat is a free and open source Statistics App for Jellyfin";
     homepage = "https://github.com/CyferShepard/Jellystat";
     license = lib.licenses.mit;
-    maintainers = [ lib.maintainers.mistyttm ];
+    maintainers = [lib.maintainers.mistyttm];
     mainProgram = "jellystat";
     platforms = lib.platforms.linux;
   };

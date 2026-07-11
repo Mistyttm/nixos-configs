@@ -1,21 +1,18 @@
-{ ... }:
-{
-  flake.nixosModules.radarr =
-    { pkgs, ... }:
-    {
-      services.radarr = {
-        enable = true;
-        package = pkgs.radarr;
-        openFirewall = true;
-        user = "radarr";
-        group = "media";
-        dataDir = "/var/lib/radarr";
-        settings = {
-          update = {
-            automatically = true;
-          };
+{...}: {
+  flake.nixosModules.radarr = {pkgs, ...}: {
+    services.radarr = {
+      enable = true;
+      package = pkgs.radarr;
+      openFirewall = true;
+      user = "radarr";
+      group = "media";
+      dataDir = "/var/lib/radarr";
+      settings = {
+        update = {
+          automatically = true;
         };
       };
-      users.users.radarr.extraGroups = [ "media" ];
     };
+    users.users.radarr.extraGroups = ["media"];
+  };
 }

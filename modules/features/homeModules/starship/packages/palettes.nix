@@ -1,5 +1,4 @@
-{ ... }:
-let
+{...}: let
   palettes = {
     catppuccin_mocha = {
       rosewater = "#f5e0dc";
@@ -143,7 +142,6 @@ let
       text = "#cdd6f4";
     };
   };
-in
-{
+in {
   _module.args.palettes = palettes;
 }

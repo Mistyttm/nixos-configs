@@ -40,7 +40,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
         python313Packages
         ;
     })
-      { src = finalAttrs.src; };
+    {src = finalAttrs.src;};
 
   backendSidecarName = "langhire-backend-${stdenv.hostPlatform.config}";
 
