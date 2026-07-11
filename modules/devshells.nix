@@ -1,32 +1,29 @@
-{ ... }:
-{
-  perSystem =
-    {
-      config,
-      pkgs,
-      ...
-    }:
-    {
-      devshells.default = {
-        packages = [
+{...}: {
+  perSystem = {
+    config,
+    pkgs,
+    ...
+  }: {
+    devshells.default = {
+      packages =
+        [
           pkgs.just
           pkgs.nixfmt
           pkgs.deadnix
-          pkgs.commitizen
         ]
         ++ config.pre-commit.settings.enabledPackages;
 
-        devshell.startup.pre-commit = {
-          text = config.pre-commit.shellHook;
-        };
-
-        commands = [
-          {
-            help = "Format Nix files";
-            name = "fmt";
-            command = "nix fmt";
-          }
-        ];
+      devshell.startup.pre-commit = {
+        text = config.pre-commit.shellHook;
       };
+
+      commands = [
+        {
+          help = "Format Nix files";
+          name = "fmt";
+          command = "nix fmt";
+        }
+      ];
     };
+  };
 }
