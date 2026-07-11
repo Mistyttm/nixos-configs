@@ -61,11 +61,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1783752546,
-        "narHash": "sha256-G13ae0OhGBhGRJm0H23G2mYTa3ZHWisKbn3eNFJITZg=",
+        "lastModified": 1783775022,
+        "narHash": "sha256-O1LjBZCZVU40/w0168gnKm+oGysQbuHL5oQ6YUJIBqU=",
         "owner": "deadlock-mod-manager",
         "repo": "deadlock-mod-manager",
-        "rev": "90bbe405875a8abdd5ca4ec2fc200d315f2711a1",
+        "rev": "dc34f9528113a49f0ac711851ab15f21e10a45a4",
         "type": "github"
       },
       "original": {
@@ -345,11 +345,11 @@
     "lix": {
       "flake": false,
       "locked": {
-        "lastModified": 1783706786,
-        "narHash": "sha256-3PcSdgUV8yjx5WyOkyR8QnbVmkAd3/4TrWx87aqeNWk=",
-        "rev": "3b286bbd624f1b3209f6d5366845564fac20b86a",
+        "lastModified": 1783771909,
+        "narHash": "sha256-p/1HJ6m+9ul0Y5euze6Lh06cztt9OlgcovKYUhy/II4=",
+        "rev": "8294860ccf52bec355072ad489af608ef25a7331",
         "type": "tarball",
-        "url": "https://git.lix.systems/api/v1/repos/lix-project/lix/archive/3b286bbd624f1b3209f6d5366845564fac20b86a.tar.gz?rev=3b286bbd624f1b3209f6d5366845564fac20b86a"
+        "url": "https://git.lix.systems/api/v1/repos/lix-project/lix/archive/8294860ccf52bec355072ad489af608ef25a7331.tar.gz?rev=8294860ccf52bec355072ad489af608ef25a7331"
       },
       "original": {
         "type": "tarball",
