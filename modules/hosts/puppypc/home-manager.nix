@@ -26,6 +26,7 @@
         gameModding
         mangohud
         linux-wallpaperengine
+        protonmail
       ];
 
       gpg = {

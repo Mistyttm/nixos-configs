@@ -22,6 +22,7 @@
         zsh
         kitty
         direnv
+        protonmail
       ];
 
       gpg = {
