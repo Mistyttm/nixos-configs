@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      id-token: write
     outputs:
       changed: ${{ steps.check_changes.outputs.changed }}
     steps:
@@ -33,6 +34,9 @@ jobs:
             cores = 0
             substitute = true
             builders =
+
+      - name: Enable Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v14
 
       - name: Update flake inputs
         run: |

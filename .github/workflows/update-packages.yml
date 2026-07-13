@@ -9,6 +9,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  id-token: write
 
 concurrency:
   group: update-local-packages
@@ -48,6 +49,9 @@ jobs:
             cores = 0
             substitute = true
             builders =
+
+      - name: Enable Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v14
 
       - name: Classify packages as free or unfree
         id: classify
@@ -114,6 +118,9 @@ jobs:
             cores = 0
             substitute = true
             builders =
+
+      - name: Enable Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v14
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
@@ -260,6 +267,9 @@ jobs:
             cores = 0
             substitute = true
             builders =
+
+      - name: Enable Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v14
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15

@@ -18,6 +18,9 @@ jobs:
   build:
     name: Build ISO (${{ matrix.arch }})
     runs-on: ${{ matrix.runner }}
+    permissions:
+      contents: write
+      id-token: write
     strategy:
       fail-fast: false
       matrix:
@@ -45,9 +48,7 @@ jobs:
             builders =
 
       - name: Set up Nix binary cache (Cachix or substituters)
-        uses: DeterminateSystems/magic-nix-cache-action@v8
-        # Speeds up repeated builds by caching store paths in GitHub Actions cache.
-        # Remove if you have a dedicated Cachix/Attic cache instead.
+        uses: DeterminateSystems/magic-nix-cache-action@v14
 
       - name: Maximize disk space for Nix
         uses: wimpysworld/nothing-but-nix@main
