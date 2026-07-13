@@ -9,11 +9,19 @@ on:
       - flake.lock
   workflow_dispatch:
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   eval:
     name: Evaluate Hydra jobset
     runs-on: ubuntu-latest
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    if: >-
+      ${{
+        github.event_name != 'workflow_run' ||
+        github.event.workflow_run.conclusion == 'success'
+      }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -28,28 +36,32 @@ jobs:
             cores = 0
             substitute = true
             builders =
+
+      - name: Enable Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v14
 
       - name: Evaluate flake jobset
         run: |
           set -euo pipefail
           nix eval .#hydraJobs --json > /dev/null
 
-  build-small-systems:
-    name: Build and cache small systems
+  build-systems:
+    name: Build and cache ${{ matrix.system }}
     needs: eval
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        system:
-          - thedogpark
-          - thekennel
+        include:
+          - system: thedogpark
+            hatchet-protocol: cleave
+          - system: thekennel
+            hatchet-protocol: cleave
+          - system: puppylaptop
+            hatchet-protocol: rampage
+          - system: puppypc
+            hatchet-protocol: rampage
     steps:
-      - name: Maximize disk space for Nix
-        uses: wimpysworld/nothing-but-nix@main
-        with:
-          hatchet-protocol: 'cleave'
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -63,6 +75,9 @@ jobs:
             cores = 0
             substitute = true
             builders =
+
+      - name: Enable Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v14
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
@@ -71,9 +86,14 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           skipPush: true
 
+      - name: Maximize disk space for ${{ matrix.system }}
+        uses: wimpysworld/nothing-but-nix@main
+        with:
+          hatchet-protocol: ${{ matrix.hatchet-protocol }}
+
       - name: Build Hydra job (${{ matrix.system }})
         run: |
-          set -uo pipefail
+          set -euo pipefail
 
           log_file=$(mktemp)
           # shellcheck disable=SC2329
@@ -92,13 +112,15 @@ jobs:
           trap cleanup EXIT
           exec 2> >(tee -a "$log_file" >&2)
 
+          build_target='.#hydraJobs.nixos.${{ matrix.system }}'
           BUILD_EXIT=0
           if nix build \
-            .#hydraJobs.nixos.${{ matrix.system }} \
+            "$build_target" \
             --keep-going \
             --no-link \
             --json > build-result.json; then
-            if jq -r '.[].outputs[]' build-result.json > realised-paths.txt; then
+              if jq -r '.[].outputs[]' build-result.json \
+                > realised-paths.txt; then
               echo "Realised outputs:"
               cat realised-paths.txt
             else
@@ -116,228 +138,12 @@ jobs:
           set -euo pipefail
           while read -r path; do
             nix-store --query --requisites "$path"
-          done < realised-paths.txt \
-            | sort -u \
-            | cachix push opinionatedcache
+          done < realised-paths.txt |
+            sort -u |
+            cachix push opinionatedcache
 
       - name: Garbage collect
         if: always()
         run: |
           nix-collect-garbage -d
-          df -h
-
-  build-puppypc:
-    name: Build and cache puppypc
-    needs: eval
-    runs-on: ubuntu-latest
-    steps:
-      - name: Maximize disk space for Nix
-        uses: wimpysworld/nothing-but-nix@main
-        with:
-          hatchet-protocol: 'rampage'
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install Lix
-        uses: samueldr/lix-gha-installer-action@v2026-02-22
-        with:
-          extra_nix_config: |
-            experimental-features = nix-command flakes
-            accept-flake-config = true
-            max-jobs = auto
-            cores = 0
-            min-free = 1073741824
-            max-free = 3221225472
-            substitute = true
-            builders =
-
-      - name: Setup Cachix
-        uses: cachix/cachix-action@v15
-        with:
-          name: opinionatedcache
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          skipPush: true
-
-      - name: Build Hydra job (puppypc)
-        run: |
-          set -uo pipefail
-
-          log_file=$(mktemp)
-          # shellcheck disable=SC2329
-          cleanup() {
-            status=$?
-            if [ "$status" -ne 0 ]; then
-              {
-                echo "### Build failed for puppypc"
-                echo
-                echo '```'
-                cat "$log_file"
-                echo '```'
-              } >> "$GITHUB_STEP_SUMMARY"
-            fi
-          }
-          trap cleanup EXIT
-          exec 2> >(tee -a "$log_file" >&2)
-
-          echo "Disk space before build:"
-          df -h
-
-          BUILD_EXIT=0
-          if nix build \
-            .#hydraJobs.nixos.puppypc \
-            --keep-going \
-            --no-link \
-            --json > build-result.json; then
-            if jq -r '.[].outputs[]' build-result.json > realised-paths.txt; then
-              echo "Realised outputs:"
-              cat realised-paths.txt
-
-              echo "Disk space after build:"
-              df -h
-            else
-              BUILD_EXIT=$?
-            fi
-          else
-            BUILD_EXIT=$?
-          fi
-
-          exit "$BUILD_EXIT"
-
-      - name: Push build closures to Cachix
-        if: always()
-        run: |
-          set -euo pipefail
-
-          # Push in batches to avoid memory issues
-          while read -r path; do
-            nix-store --query --requisites "$path"
-          done < realised-paths.txt \
-            | sort -u \
-            | split -l 50 - batch-
-
-          for batch in batch-*; do
-            echo "Pushing batch: $batch"
-            cat "$batch" | cachix push opinionatedcache
-            rm "$batch"
-
-            # Periodic GC during push
-            nix-collect-garbage -d
-            echo "Disk space after batch:"
-            df -h
-          done
-
-      - name: Final garbage collect
-        if: always()
-        run: |
-          nix-collect-garbage -d
-          echo "Final disk space:"
-          df -h
-
-  build-laptop:
-    name: Build and cache puppylaptop
-    needs: eval
-    runs-on: ubuntu-latest
-    steps:
-      - name: Maximize disk space for Nix
-        uses: wimpysworld/nothing-but-nix@main
-        with:
-          hatchet-protocol: 'rampage'
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install Lix
-        uses: samueldr/lix-gha-installer-action@v2026-02-22
-        with:
-          extra_nix_config: |
-            experimental-features = nix-command flakes
-            accept-flake-config = true
-            max-jobs = auto
-            cores = 0
-            min-free = 1073741824
-            max-free = 3221225472
-            substitute = true
-            builders =
-
-      - name: Setup Cachix
-        uses: cachix/cachix-action@v15
-        with:
-          name: opinionatedcache
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          skipPush: true
-
-      - name: Build Hydra job (puppylaptop)
-        run: |
-          set -uo pipefail
-
-          log_file=$(mktemp)
-          # shellcheck disable=SC2329
-          cleanup() {
-            status=$?
-            if [ "$status" -ne 0 ]; then
-              {
-                echo "### Build failed for puppylaptop"
-                echo
-                echo '```'
-                cat "$log_file"
-                echo '```'
-              } >> "$GITHUB_STEP_SUMMARY"
-            fi
-          }
-          trap cleanup EXIT
-          exec 2> >(tee -a "$log_file" >&2)
-
-          echo "Disk space before build:"
-          df -h
-
-          BUILD_EXIT=0
-          if nix build \
-            .#hydraJobs.nixos.puppylaptop \
-            --keep-going \
-            --no-link \
-            --json > build-result.json; then
-            if jq -r '.[].outputs[]' build-result.json > realised-paths.txt; then
-              echo "Realised outputs:"
-              cat realised-paths.txt
-
-              echo "Disk space after build:"
-              df -h
-            else
-              BUILD_EXIT=$?
-            fi
-          else
-            BUILD_EXIT=$?
-          fi
-
-          exit "$BUILD_EXIT"
-
-      - name: Push build closures to Cachix
-        if: always()
-        run: |
-          set -euo pipefail
-
-          # Push in batches to avoid memory issues
-          while read -r path; do
-            nix-store --query --requisites "$path"
-          done < realised-paths.txt \
-            | sort -u \
-            | split -l 50 - batch-
-
-          for batch in batch-*; do
-            echo "Pushing batch: $batch"
-            cat "$batch" | cachix push opinionatedcache
-            rm "$batch"
-
-            # Periodic GC during push
-            nix-collect-garbage -d
-            echo "Disk space after batch:"
-            df -h
-          done
-
-      - name: Final garbage collect
-        if: always()
-        run: |
-          nix-collect-garbage -d
-          echo "Final disk space:"
           df -h
