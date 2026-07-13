@@ -515,11 +515,11 @@
         "systems": "systems_5"
       },
       "locked": {
-        "lastModified": 1783827446,
-        "narHash": "sha256-F4ezAeh0W20dHTrXekOvJ/S2gRXGVZrFwKjAp3vwQu8=",
+        "lastModified": 1783913998,
+        "narHash": "sha256-xsQ182gNV+REDHgqRxJlQq51w+/oW7LP/2FKd3AOKpE=",
         "owner": "Infinidoge",
         "repo": "nix-minecraft",
-        "rev": "68f0b46d34625e4a745dc400e9ea30aaeec910c3",
+        "rev": "8a67d3e5556645c073b4a2d1f49d631a564c5ac6",
         "type": "github"
       },
       "original": {
@@ -554,11 +554,11 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1783826883,
-        "narHash": "sha256-I2CTStJ2N/FCFKhTOnX3VmVPdKc+I1+SpXYY5dcN9CI=",
+        "lastModified": 1783913559,
+        "narHash": "sha256-nYh59O7gepb+fk/nv0bKM7JaCRNqsDwoLUlEf6mqsE4=",
         "owner": "nix-community",
         "repo": "nix-vscode-extensions",
-        "rev": "2b6ad58e598c40e718a3faf4196411a37db80f97",
+        "rev": "e69ba8306153ba2617a109994c66870505201c5b",
         "type": "github"
       },
       "original": {
