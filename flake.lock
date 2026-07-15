@@ -61,11 +61,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1783775022,
-        "narHash": "sha256-O1LjBZCZVU40/w0168gnKm+oGysQbuHL5oQ6YUJIBqU=",
+        "lastModified": 1784094248,
+        "narHash": "sha256-vQ9e81h5u9MR5hS04Sp3M/bz1+GV/+tPFOZFBuJlQfw=",
         "owner": "deadlock-mod-manager",
         "repo": "deadlock-mod-manager",
-        "rev": "dc34f9528113a49f0ac711851ab15f21e10a45a4",
+        "rev": "05088caea13a156901ad5f0e11c0e39a56a54a9f",
         "type": "github"
       },
       "original": {
@@ -345,11 +345,11 @@
     "lix": {
       "flake": false,
       "locked": {
-        "lastModified": 1784051227,
-        "narHash": "sha256-9MQjWDHVDaUclpEtB5zg0hw70HCWOkdhEjvhk0F8948=",
-        "rev": "e6ddca402b822489a3c855ad386499efbf5c555a",
+        "lastModified": 1784060231,
+        "narHash": "sha256-Ax+ETbOHatrUnnQqLEwFMAlb+MwJrIjN88c5gTSDRc8=",
+        "rev": "f51148a75bd991fcf9545bb11a0626879795537c",
         "type": "tarball",
-        "url": "https://git.lix.systems/api/v1/repos/lix-project/lix/archive/e6ddca402b822489a3c855ad386499efbf5c555a.tar.gz?rev=e6ddca402b822489a3c855ad386499efbf5c555a"
+        "url": "https://git.lix.systems/api/v1/repos/lix-project/lix/archive/f51148a75bd991fcf9545bb11a0626879795537c.tar.gz?rev=f51148a75bd991fcf9545bb11a0626879795537c"
       },
       "original": {
         "type": "tarball",
@@ -515,11 +515,11 @@
         "systems": "systems_5"
       },
       "locked": {
-        "lastModified": 1783980112,
-        "narHash": "sha256-U8BMh76cqU8sdntzFZLEaSoGNJSxPqx9X9C111FEES8=",
+        "lastModified": 1784085260,
+        "narHash": "sha256-mjbmVWnAQ9tplJp48amDOT9lABRYb0HsOF12QfOevlA=",
         "owner": "Infinidoge",
         "repo": "nix-minecraft",
-        "rev": "bc2892356196d638d503d8cae8111dfd0247c729",
+        "rev": "24aad4148c0caa90f9a7b364a71f3c8403347b3c",
         "type": "github"
       },
       "original": {
@@ -554,11 +554,11 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1783997659,
-        "narHash": "sha256-JbjWx3EfJxRBUhMlgwOi4hblgC9bUyJYR8beF2lfZtQ=",
+        "lastModified": 1784083941,
+        "narHash": "sha256-0WFSuVE2sd1shdXvFsHMtPNupldvwaCq7/6PSqrz8UE=",
         "owner": "nix-community",
         "repo": "nix-vscode-extensions",
-        "rev": "e58f630efacbb99d2d2b60b83da8f57ba2a773f5",
+        "rev": "29b1ca67d8c24b6294f879b91adcda74a0e3548b",
         "type": "github"
       },
       "original": {
