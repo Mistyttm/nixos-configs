@@ -98,6 +98,15 @@
                 ];
               }
               {
+                trash_ids = ["15a05bc7c1a36e2b57fd628f8977e2fc"]; # AV1
+                assign_scores_to = [
+                  {
+                    name = "WEB-1080p";
+                    score = 1000;
+                  }
+                ];
+              }
+              {
                 # Remux tier release groups — highest quality Bluray rips
                 trash_ids = [
                   "9965a052eb87b0d10313b1cea89eb451" # Remux Tier 01
@@ -315,6 +324,15 @@
                 ];
               }
               {
+                trash_ids = ["cae4ca30163749b891686f95532519bd"]; # AV1
+                assign_scores_to = [
+                  {
+                    name = "WEB-1080p";
+                    score = 1000;
+                  }
+                ];
+              }
+              {
                 trash_ids = [
                   "e23edd2482476e595fb990b12e7c609c" # DV HDR10
                   "58d6a88f13e2db7f5059a41047876f00" # DV
@@ -328,7 +346,7 @@
                 assign_scores_to = [
                   {
                     name = "WEB-1080p";
-                    score = 50;
+                    score = -50;
                   }
                 ];
               }
