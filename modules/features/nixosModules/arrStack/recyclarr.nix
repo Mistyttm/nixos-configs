@@ -241,7 +241,6 @@
                 trash_ids = [
                   "ed38b889b31be83fda192888e2286d83" # BR-DISK
                   "90cedc1fea7ea5d11298bebd3d1d3223" # EVO (no WEBDL)
-                  "ae9b7c9ebde1f3bd336a8cbd1ec4c5e5" # No-RlsGroup
                   "b8cd450cbfa689c0259a01d9e29ba3d6" # 3D
                   "90a6f9a284dff5103f6346090e6280c8" # LQ
                   "e204b80c87be9497a8a6eaff48f72905" # LQ (Release Title)
