@@ -38,15 +38,15 @@
                 quality_sort = "top";
                 qualities = [
                   # 2160p disc sources
-                  {name = "Bluray-2160p Remux";}
-                  {name = "Bluray-2160p";}
-                  {
-                    name = "WEB 2160p";
-                    qualities = [
-                      "WEBDL-2160p"
-                      "WEBRip-2160p"
-                    ];
-                  }
+                  # {name = "Bluray-2160p Remux";}
+                  # {name = "Bluray-2160p";}
+                  # {
+                  #   name = "WEB 2160p";
+                  #   qualities = [
+                  #     "WEBDL-2160p"
+                  #     "WEBRip-2160p"
+                  #   ];
+                  # }
                   # 1080p disc sources (Sonarr calls its remux "Bluray-1080p Remux")
                   {name = "Bluray-1080p Remux";}
                   {name = "Bluray-1080p";}
@@ -185,23 +185,23 @@
                 upgrade = {
                   allowed = true;
                   # Remux-2160p is the ceiling — lossless 4K disc copy
-                  until_quality = "Remux-2160p";
+                  until_quality = "Remux-1080p";
                   until_score = 10000;
                 };
                 min_format_score = 0;
                 quality_sort = "top";
                 qualities = [
                   # 4K disc sources (best possible quality)
-                  {name = "Remux-2160p";}
-                  {name = "Bluray-2160p";}
-                  # 4K streaming
-                  {
-                    name = "WEB 2160p";
-                    qualities = [
-                      "WEBDL-2160p"
-                      "WEBRip-2160p"
-                    ];
-                  }
+                  # {name = "Remux-2160p";}
+                  # {name = "Bluray-2160p";}
+                  # # 4K streaming
+                  # {
+                  #   name = "WEB 2160p";
+                  #   qualities = [
+                  #     "WEBDL-2160p"
+                  #     "WEBRip-2160p"
+                  #   ];
+                  # }
                   # 1080p disc sources
                   {name = "Remux-1080p";}
                   {name = "Bluray-1080p";}
