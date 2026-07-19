@@ -16,6 +16,10 @@
     systemd.services.shelfmark.serviceConfig = {
       SupplementaryGroups = ["media"];
       PrivateUsers = lib.mkForce false;
+      ReadWritePaths = [
+        "/mnt/media/Books"
+        "/mnt/localExpansion/books"
+      ];
     };
   };
 }
