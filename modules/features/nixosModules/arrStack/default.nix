@@ -8,6 +8,7 @@
       self.nixosModules.radarr
       self.nixosModules.recyclarr
       self.nixosModules.seerr
+      self.nixosModules.shelfmark
       self.nixosModules.sonarr
       self.nixosModules.tdarr
     ];
