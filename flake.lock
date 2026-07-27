@@ -851,6 +851,7 @@
         "nixpkgs": "nixpkgs_6",
         "pkgs-by-name-for-flake-parts": "pkgs-by-name-for-flake-parts",
         "sops-nix": "sops-nix",
+        "vpn-confinement": "vpn-confinement",
         "wrapper-modules": "wrapper-modules"
       }
     },
@@ -1030,6 +1031,21 @@
       "original": {
         "owner": "pyproject-nix",
         "repo": "uv2nix",
+        "type": "github"
+      }
+    },
+    "vpn-confinement": {
+      "locked": {
+        "lastModified": 1784582736,
+        "narHash": "sha256-a3V/LkUvwbN30QlCwPjNQq88TGOXiqXAzcYTSWgYIp4=",
+        "owner": "Maroka-chan",
+        "repo": "VPN-Confinement",
+        "rev": "bd17046da0262f3a93524845982825fa2ed23f40",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Maroka-chan",
+        "repo": "VPN-Confinement",
         "type": "github"
       }
     },

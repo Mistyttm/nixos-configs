@@ -22,6 +22,7 @@
       arrStack
       downloaders
       prometheus-server
+      vpn-confinement
     ];
 
     networking.hostName = "thekennel";
