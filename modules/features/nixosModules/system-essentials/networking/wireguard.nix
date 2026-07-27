@@ -13,6 +13,7 @@
       allowedIPs = ["10.100.0.0/24"];
       persistentKeepalive = 25;
       dynamicEndpointRefreshSeconds = 30;
+      dynamicEndpointRefreshRestartSeconds = 5;
     };
 
     profiles = {
