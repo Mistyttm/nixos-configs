@@ -52,8 +52,10 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           skipPush: true
 
-      - name: Install nix-fast-build
-        run: nix profile install github:Mic92/nix-fast-build
+      - name: Install nix-fast-build + Lix-compatible nix-eval-jobs
+        run: |
+          nix profile install github:Mic92/nix-fast-build
+          nix profile install git+https://git.lix.systems/lix-project/nix-eval-jobs
 
       - name: Build Hydra jobs
         env:
@@ -62,4 +64,5 @@ jobs:
           nix-fast-build \
             --flake .#hydraJobs \
             --skip-cached \
-            --cachix-cache opinionatedcache
+            --cachix-cache opinionatedcache \
+            --nix-eval-jobs "$(command -v nix-eval-jobs)"
