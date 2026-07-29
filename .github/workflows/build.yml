@@ -26,6 +26,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Maximize disk space
+        uses: wimpysworld/nothing-but-nix@main
+        with:
+          hatchet-protocol: rampage
+
       - name: Install Lix
         uses: samueldr/lix-gha-installer-action@v2026-02-22
         with:
@@ -46,11 +51,6 @@ jobs:
           name: opinionatedcache
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           skipPush: true
-
-      - name: Maximize disk space
-        uses: wimpysworld/nothing-but-nix@main
-        with:
-          hatchet-protocol: rampage
 
       - name: Install nix-fast-build
         run: nix profile install github:Mic92/nix-fast-build
