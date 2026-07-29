@@ -14,8 +14,8 @@ permissions:
   id-token: write
 
 jobs:
-  eval:
-    name: Evaluate Hydra jobset
+  build:
+    name: Build Hydra jobset
     runs-on: ubuntu-latest
     if: >-
       ${{
@@ -40,51 +40,6 @@ jobs:
       - name: Enable Magic Nix Cache
         uses: DeterminateSystems/magic-nix-cache-action@v14
 
-      - name: Evaluate flake jobset
-        run: |
-          set -euo pipefail
-          nix eval .#hydraJobs --json > /dev/null
-
-  build-systems:
-    name: Build and cache ${{ matrix.system }}
-    needs: eval
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      max-parallel: 1
-      matrix:
-        include:
-          - system: thedogpark
-            hatchet-protocol: cleave
-          - system: thekennel
-            hatchet-protocol: cleave
-          - system: puppylaptop
-            hatchet-protocol: rampage
-          - system: puppypc
-            hatchet-protocol: rampage
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Maximize disk space for ${{ matrix.system }}
-        uses: wimpysworld/nothing-but-nix@main
-        with:
-          hatchet-protocol: ${{ matrix.hatchet-protocol }}
-
-      - name: Install Lix
-        uses: samueldr/lix-gha-installer-action@v2026-02-22
-        with:
-          extra_nix_config: |
-            experimental-features = nix-command flakes
-            accept-flake-config = true
-            max-jobs = auto
-            cores = 0
-            substitute = true
-            builders =
-
-      - name: Enable Magic Nix Cache
-        uses: DeterminateSystems/magic-nix-cache-action@v14
-
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
         with:
@@ -92,59 +47,19 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
           skipPush: true
 
-      - name: Build Hydra job (${{ matrix.system }})
+      - name: Maximize disk space
+        uses: wimpysworld/nothing-but-nix@main
+        with:
+          hatchet-protocol: rampage
+
+      - name: Install nix-fast-build
+        run: nix profile install github:Mic92/nix-fast-build
+
+      - name: Build Hydra jobs
+        env:
+          CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
         run: |
-          set -euo pipefail
-
-          log_file=$(mktemp)
-          # shellcheck disable=SC2329
-          cleanup() {
-            status=$?
-            if [ "$status" -ne 0 ]; then
-              {
-                echo "### Build failed for ${{ matrix.system }}"
-                echo
-                echo '```'
-                cat "$log_file"
-                echo '```'
-              } >> "$GITHUB_STEP_SUMMARY"
-            fi
-          }
-          trap cleanup EXIT
-          exec 2> >(tee -a "$log_file" >&2)
-
-          build_target='.#hydraJobs.nixos.${{ matrix.system }}'
-          BUILD_EXIT=0
-          if nix build \
-            "$build_target" \
-            --keep-going \
-            --no-link \
-            --json > build-result.json; then
-              if jq -r '.[].outputs[]' build-result.json \
-                > realised-paths.txt; then
-              echo "Realised outputs:"
-              cat realised-paths.txt
-            else
-              BUILD_EXIT=$?
-            fi
-          else
-            BUILD_EXIT=$?
-          fi
-
-          exit "$BUILD_EXIT"
-
-      - name: Push build closures to Cachix
-        if: always()
-        run: |
-          set -euo pipefail
-          while read -r path; do
-            nix-store --query --requisites "$path"
-          done < realised-paths.txt |
-            sort -u |
-            cachix push opinionatedcache
-
-      - name: Garbage collect
-        if: always()
-        run: |
-          nix-collect-garbage -d
-          df -h
+          nix-fast-build \
+            --flake .#hydraJobs \
+            --skip-cached \
+            --cachix-cache opinionatedcache
