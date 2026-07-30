@@ -30,11 +30,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     lix = {
-      url = "https://git.lix.systems/lix-project/lix/archive/main.tar.gz";
+      url = "git+https://git.lix.systems/lix-project/lix.git";
       flake = false;
     };
     lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
+      url = "git+https://git.lix.systems/lix-project/nixos-module.git";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.lix.follows = "lix";
     };
