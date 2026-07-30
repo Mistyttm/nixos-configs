@@ -66,3 +66,4 @@ jobs:
             --cachix-cache opinionatedcache \
             --skip-cached \
             --stream-json-lines \
+            --option allow-import-from-derivation false \
