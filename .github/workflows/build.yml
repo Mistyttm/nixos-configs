@@ -16,7 +16,7 @@ permissions:
 jobs:
   build:
     name: Build Hydra jobset
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     if: >-
       ${{
         github.event_name != 'workflow_run' ||
@@ -38,9 +38,7 @@ jobs:
             experimental-features = nix-command flakes
             accept-flake-config = true
             max-jobs = auto
-            cores = 0
             substitute = true
-            builders =
 
       - name: Enable Magic Nix Cache
         uses: DeterminateSystems/magic-nix-cache-action@v14
