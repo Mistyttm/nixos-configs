@@ -64,3 +64,5 @@ jobs:
             --flake .#hydraJobs \
             --skip-cached \
             --cachix-cache opinionatedcache \
+            --skip-cached \
+            --stream-json-lines \
