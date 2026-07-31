@@ -16,7 +16,7 @@ permissions:
 jobs:
   build:
     name: Build Hydra jobset
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     if: >-
       ${{
         github.event_name != 'workflow_run' ||
@@ -62,6 +62,8 @@ jobs:
             --flake .#hydraJobs \
             --skip-cached \
             --cachix-cache opinionatedcache \
-            --skip-cached \
-            --stream-json-lines \
-            --debug \
+            --eval-workers 2 \
+            --eval-max-memory-size 2048 \
+            -j 2 \
+            --stall-timeout 120 \
+            --debug
