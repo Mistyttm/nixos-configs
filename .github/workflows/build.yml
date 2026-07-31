@@ -15,8 +15,14 @@ permissions:
 
 jobs:
   build:
-    name: Build Hydra jobset
+    name: Build ${{ matrix.system }}
     runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      # max-parallel: 1
+      matrix:
+        system: [thekennel, thedogpark, puppylaptop, puppypc]
     if: >-
       ${{
         github.event_name != 'workflow_run' ||
@@ -42,6 +48,8 @@ jobs:
 
       - name: Enable Magic Nix Cache
         uses: DeterminateSystems/magic-nix-cache-action@v14
+        with:
+          use-flakehub: false
 
       - name: Setup Cachix
         uses: cachix/cachix-action@v15
@@ -54,16 +62,15 @@ jobs:
         run: |
           nix profile install github:Mic92/nix-fast-build
 
-      - name: Build Hydra jobs
+      - name: Build Hydra jobs (${{ matrix.system }})
         env:
           CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
         run: |
           nix-fast-build \
-            --flake .#hydraJobs \
+            --flake ".#hydraJobs.nixos.${{ matrix.system }}" \
             --skip-cached \
             --cachix-cache opinionatedcache \
             --eval-workers 2 \
             --eval-max-memory-size 2048 \
             -j 2 \
             --stall-timeout 120 \
-            --debug
