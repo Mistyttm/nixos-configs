@@ -45,10 +45,7 @@
         };
       };
     };
-
-    # Manually open the port as `openFirewall` might default to the `torrentingPort` or standard 8080
-    networking.firewall.allowedTCPPorts = [8081];
-
+    
     systemd.services.qbittorrent.serviceConfig.UMask = "002";
   };
 }

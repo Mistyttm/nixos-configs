@@ -22,7 +22,8 @@
       wireguardConfigFile = config.sops.secrets.protonvpn-wg-conf.path;
       # LAN allowed to reach the confined services' WebUIs
       accessibleFrom = [
-        "10.0.0.0/24"
+"192.168.0.0/24"
+
         "10.100.0.0/24"
       ];
 
