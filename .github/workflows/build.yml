@@ -20,7 +20,6 @@ jobs:
     timeout-minutes: 120
     strategy:
       fail-fast: false
-      # max-parallel: 1
       matrix:
         system: [thekennel, thedogpark, puppylaptop, puppypc]
     if: >-
@@ -70,7 +69,8 @@ jobs:
             --flake ".#hydraJobs.nixos.${{ matrix.system }}" \
             --skip-cached \
             --cachix-cache opinionatedcache \
-            --eval-workers 2 \
+            --eval-workers 4 \
             --eval-max-memory-size 2048 \
-            -j 2 \
+            -j 4 \
             --stall-timeout 120 \
+            --debug
