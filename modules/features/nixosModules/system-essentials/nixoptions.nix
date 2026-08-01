@@ -3,11 +3,14 @@
   self,
   ...
 }: {
-  flake.nixosModules.nixoptions = {config, ...}: {
+  flake.nixosModules.nixoptions = {
+    config,
+    pkgs,
+    ...
+  }: {
     #! List of default nixosModule imports for all systems
     imports = [
       inputs.nix-index-database.nixosModules.default
-      inputs.lix-module.nixosModules.lixFromNixpkgs
     ];
 
     sops.secrets."github_token" = {
@@ -37,6 +40,7 @@
     };
 
     nix = {
+      package = pkgs.lixPackageSets.stable.lix;
       settings = {
         cores = 2;
         auto-optimise-store = true;
@@ -78,6 +82,15 @@
         self.overlays.default
         inputs.nix-vscode-extensions.overlays.default
         self.overlays.kde-plasma-workspace-xdg-fix
+        (_final: prev: {
+          inherit
+            (prev.lixPackageSets.stable)
+            nixpkgs-review
+            nix-eval-jobs
+            nix-fast-build
+            colmena
+            ;
+        })
       ];
       config = {
         permittedInsecurePackages = [
