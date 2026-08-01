@@ -78,8 +78,13 @@ jobs:
         run: |
           echo "matrix=$(nix eval \
             --json \
-            .#nixosConfigurations \
-            --apply builtins.attrNames)" >> "$GITHUB_OUTPUT"
+            .#hydraJobs.nixos \
+            --apply '
+              attrs:
+                builtins.filter
+                  (name: !(builtins.match "^thepetshop.*" name !=null))
+                  (builtins.attrNames attrs)
+              ')" >> "$GITHUB_OUTPUT"
 
       - name: Show discovered systems
         run: |
