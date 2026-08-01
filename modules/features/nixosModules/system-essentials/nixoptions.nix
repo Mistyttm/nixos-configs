@@ -42,6 +42,7 @@
     nix = {
       package = pkgs.lixPackageSets.stable.lix;
       settings = {
+        use-xdg-base-directories = true;
         cores = 2;
         auto-optimise-store = true;
         experimental-features = [

@@ -9,6 +9,7 @@
         misty
         git
         gpg
+        xdg
         eza
         bat
         fastfetch
