@@ -26,5 +26,7 @@
         openFirewall = true;
       };
     };
+
+    environment.pathsToLink = ["/share/zsh"];
   };
 }
