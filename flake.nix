@@ -64,6 +64,8 @@
     };
 
     vpn-confinement.url = "github:Maroka-chan/VPN-Confinement";
+
+    direnv-instant.url = "github:Mic92/direnv-instant";
   };
 
   nixConfig = {

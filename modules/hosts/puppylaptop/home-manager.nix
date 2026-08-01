@@ -12,7 +12,6 @@
         xdg
         vscode
         easyeffects
-        direnv
         gui-packages
         eza
         bat

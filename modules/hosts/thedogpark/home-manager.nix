@@ -10,7 +10,6 @@
         git
         gpg
         xdg
-        direnv
         eza
         bat
         fastfetch

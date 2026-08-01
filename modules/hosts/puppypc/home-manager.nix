@@ -13,7 +13,6 @@
         vscode
         zed
         easyeffects
-        direnv
         gui-packages
         eza
         bat
