@@ -47,11 +47,47 @@ jobs:
             accept-flake-config = true
 
       - name: Evaluate Hydra jobs
+        id: eval
+        shell: bash
         run: |
-          nix eval \
-            .#hydraJobs \
-            --apply builtins.deepSeq \
-            >/dev/null
+          set -o pipefail
+
+          mkdir -p eval-results
+
+          nix-eval-jobs \
+            --flake .#hydraJobs \
+            --workers 2 \
+            --max-memory-size 2048 \
+            > eval-results/results.jsonl || true
+
+          errors=$(jq -s '
+            map(select(has("error")))
+          ' eval-results/results.jsonl)
+
+          if [ "$(echo "$errors" | jq length)" -gt 0 ]; then
+            {
+              echo "## ❌ Nix Evaluation Failed"
+              echo
+              echo "The following Hydra jobs failed evaluation:"
+              echo
+
+              echo "$errors" | jq -r '
+                .[] |
+                "### \(.attr // \"unknown\")\n\n```\n\(.error)\n```\n"
+              '
+            } >> "$GITHUB_STEP_SUMMARY"
+
+            echo "$errors" | jq -r '
+              .[] |
+              "::error title=Nix evaluation failed (\(.attr // \"unknown\"))::\(.error | gsub("\n"; " "))"
+            '
+
+            exit 1
+          fi
+
+          echo "## ✅ Nix Evaluation Passed" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "All Hydra jobs evaluated successfully." >> "$GITHUB_STEP_SUMMARY"
 
   discover:
     name: Discover Systems
@@ -134,9 +170,60 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Build ${{ matrix.system }}
+        id: build
+        shell: bash
         run: |
+          set -o pipefail
+
+          mkdir -p build-results
+
           nix build \
-            .#hydraJobs.nixos.${{ matrix.system }} \
-            --print-build-logs \
+            .#nixosConfigurations.${{ matrix.system }}.config.system.build.toplevel \
             --keep-going \
-            -L
+            --log-format internal-json \
+            2>&1 | tee build-results/build.jsonl
+
+          exit ${PIPESTATUS[0]}
+
+      - name: Summarise build failure
+        if: failure() && steps.build.outcome == 'failure'
+        shell: bash
+        run: |
+          {
+            echo "## ❌ Build failed: ${{ matrix.system }}"
+            echo
+            echo "### Errors"
+            echo
+            echo '```text'
+
+            jq -r '
+              select(.level == "error")
+              |
+              if (.msg | type) == "string"
+              then .msg
+              else (.msg.text // tostring)
+              end
+            ' build-results/build.jsonl \
+            || echo "Unable to parse build errors"
+
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          jq -r '
+            select(.level == "error")
+            |
+            if (.msg | type) == "string"
+            then .msg
+            else (.msg.text // tostring)
+            end
+          ' build-results/build.jsonl \
+          | while IFS= read -r error; do
+              echo "::error title=Nix build failure::$error"
+            done
+
+      - name: Upload build logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nix-build-log-${{ matrix.system }}
+          path: build-results/build.jsonl
