@@ -9,7 +9,6 @@
         misty
         git
         gpg
-        xdg
         vscode
         easyeffects
         gui-packages

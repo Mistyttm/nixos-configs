@@ -9,7 +9,6 @@
         misty
         git
         gpg
-        xdg
         vscode
         zed
         easyeffects
