@@ -1,12 +1,18 @@
 name: Build and Cache NixOS Systems
+
 on:
   workflow_run:
-    workflows: ["Update Flake Inputs"]
-    types: [completed]
-    branches: [main]
+    workflows:
+      - Update Flake Inputs
+    types:
+      - completed
+    branches:
+      - main
+
   pull_request:
     paths:
       - flake.lock
+
   workflow_dispatch:
 
 permissions:
@@ -14,19 +20,86 @@ permissions:
   id-token: write
 
 jobs:
-  build:
-    name: Build ${{ matrix.system }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 120
-    strategy:
-      fail-fast: false
-      matrix:
-        system: [thekennel, thedogpark, puppylaptop, puppypc]
+  evaluate:
+    name: Evaluate Flake
     if: >-
       ${{
         github.event_name != 'workflow_run' ||
         github.event.workflow_run.conclusion == 'success'
       }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Maximize disk space
+        uses: wimpysworld/nothing-but-nix@main
+        with:
+          hatchet-protocol: rampage
+
+      - name: Install Lix
+        uses: samueldr/lix-gha-installer-action@latest
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+
+      - name: Evaluate Hydra jobs
+        run: |
+          nix eval \
+            .#hydraJobs \
+            --apply builtins.deepSeq \
+            >/dev/null
+
+  discover:
+    name: Discover Systems
+    needs: evaluate
+
+    runs-on: ubuntu-latest
+
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Lix
+        uses: samueldr/lix-gha-installer-action@latest
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+
+      - id: matrix
+        name: Discover NixOS systems
+        run: |
+          echo "matrix=$(nix eval \
+            --json \
+            .#nixosConfigurations \
+            --apply builtins.attrNames)" >> "$GITHUB_OUTPUT"
+
+      - name: Show discovered systems
+        run: |
+          echo '${{ steps.matrix.outputs.matrix }}'
+
+  build:
+    name: Build ${{ matrix.system }}
+
+    needs:
+      - evaluate
+      - discover
+
+    strategy:
+      fail-fast: false
+      matrix:
+        system: ${{ fromJson(needs.discover.outputs.matrix) }}
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -43,7 +116,6 @@ jobs:
             experimental-features = nix-command flakes
             accept-flake-config = true
             max-jobs = auto
-            substitute = true
 
       - name: Enable Magic Nix Cache
         uses: DeterminateSystems/magic-nix-cache-action@v14
@@ -51,26 +123,15 @@ jobs:
           use-flakehub: false
 
       - name: Setup Cachix
-        uses: cachix/cachix-action@v15
+        uses: cachix/cachix-action@v17
         with:
           name: opinionatedcache
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          skipPush: true
 
-      - name: Install nix-fast-build
+      - name: Build ${{ matrix.system }}
         run: |
-          nix profile install github:Mic92/nix-fast-build
-
-      - name: Build Hydra jobs (${{ matrix.system }})
-        env:
-          CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
-        run: |
-          nix-fast-build \
-            --flake ".#hydraJobs.nixos.${{ matrix.system }}" \
-            --skip-cached \
-            --cachix-cache opinionatedcache \
-            --eval-workers 4 \
-            --eval-max-memory-size 2048 \
-            -j 4 \
-            --stall-timeout 120 \
-            --debug
+          nix build \
+            .#hydraJobs.nixos.${{ matrix.system }} \
+            --print-build-logs \
+            --keep-going \
+            -L
