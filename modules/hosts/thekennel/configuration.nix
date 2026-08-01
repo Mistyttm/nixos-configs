@@ -15,7 +15,6 @@
       cli-tools
       nix-ld
       nvidia
-      mullvad
       jellyfin
       homepage
       fail2ban

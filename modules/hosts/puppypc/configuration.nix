@@ -26,7 +26,6 @@
       amd-cpu
       obs
       gaming
-      mullvad
       appimage
     ];
 

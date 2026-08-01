@@ -21,7 +21,6 @@
       cli-tools
       nix-ld
       nvidia
-      mullvad
     ];
 
     networking.hostName = "puppylaptop";
