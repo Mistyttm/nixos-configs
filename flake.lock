@@ -29,11 +29,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1785468749,
-        "narHash": "sha256-5UV3EW7TaKoH5EPLTUCsJPZBJLrLZjDOuwxv/srD/fc=",
+        "lastModified": 1785589558,
+        "narHash": "sha256-U2WgezmQeRNoO+Omg3GqB3HCK2pRUlOWvZFK3j4hQFk=",
         "owner": "deadlock-mod-manager",
         "repo": "deadlock-mod-manager",
-        "rev": "3a2a62881ce59a4d046d6329e18a56029c5160eb",
+        "rev": "b8af051c38dab8e06b4f653174027511008f468d",
         "type": "github"
       },
       "original": {
@@ -452,11 +452,11 @@
         "systems": "systems_4"
       },
       "locked": {
-        "lastModified": 1785468996,
-        "narHash": "sha256-P+mDIKc9z3pPzgZsfo99LBITFf4T/VIXOUJptbcSghs=",
+        "lastModified": 1785555369,
+        "narHash": "sha256-KUHFKv51VoV1wpyIreeusIkFsgycjeuRA9vDsBmCUu0=",
         "owner": "Infinidoge",
         "repo": "nix-minecraft",
-        "rev": "940bd02d2c0c7d05a8abdd1244962a65e27eb724",
+        "rev": "76a82a08c36423e5ff627c62f55797de52c3061b",
         "type": "github"
       },
       "original": {
@@ -491,11 +491,11 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1785468833,
-        "narHash": "sha256-e5ACzQu7wKCje0ziNMm+xSyIaZWfMB2W573p6dgStHA=",
+        "lastModified": 1785555171,
+        "narHash": "sha256-MLBtKBAbLXB81qm5UZq7w0IFnP/fh6QWhfU55dA8uFo=",
         "owner": "nix-community",
         "repo": "nix-vscode-extensions",
-        "rev": "b9452374ccfd2b13c946198f932814e79f28e2bc",
+        "rev": "730fe1d38d63878df9cf6b46b36308d197a9334e",
         "type": "github"
       },
       "original": {
