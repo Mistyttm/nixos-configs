@@ -1,4 +1,4 @@
-{...}: {
+{inputs, ...}: {
   flake.homeModules.direnv = {...}: {
     imports = [
       inputs.direnv-instant.homeModules.direnv-instant
