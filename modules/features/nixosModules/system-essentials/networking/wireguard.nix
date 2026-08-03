@@ -21,7 +21,6 @@
       # Template profile for puppypc.
       puppypc = {
         allowedUDPPorts = [];
-        trustedInterfaces = ["wg0"];
         interfaces.wg0 = {
           ips = ["10.100.0.4/24"];
           privateKeyFile = config.sops.secrets."puppypc_key".path;
@@ -35,7 +34,6 @@
       # Template profile for puppylaptop.
       puppylaptop = {
         allowedUDPPorts = [];
-        trustedInterfaces = ["wg0"];
         interfaces.wg0 = {
           ips = ["10.100.0.3/24"];
           privateKeyFile = config.sops.secrets."laptop_key".path;
@@ -49,7 +47,6 @@
       # Template profile for thedogpark.
       thedogpark = {
         allowedUDPPorts = [51820];
-        trustedInterfaces = ["wg0"];
         interfaces.wg0 = {
           ips = ["10.100.0.1/24"];
           listenPort = 51820;
@@ -66,13 +63,13 @@
               # puppypc - home desktop
               name = "puppypc";
               publicKey = "3P03yC/x9XLleiWhb3KgiiF9Jei69eMOVOzaqczW5QQ=";
-              allowedIPs = ["10.100.0.3/32"];
+              allowedIPs = ["10.100.0.4/32"];
             }
             {
               # pupppylaptop - laptop
               name = "puppylaptop";
               publicKey = "YLEqUsdRe8LCXOHK6/8ct3ncSaaCqAoQLjiWWeGVl2s=";
-              allowedIPs = ["10.100.0.4/32"];
+              allowedIPs = ["10.100.0.3/32"];
             }
           ];
         };
@@ -80,7 +77,6 @@
 
       thekennel = {
         allowedUDPPorts = [];
-        trustedInterfaces = ["wg0"];
         interfaces.wg0 = {
           ips = ["10.100.0.2/24"];
           privateKeyFile = config.sops.secrets."thekennel_key".path;
@@ -165,8 +161,9 @@
       };
 
       networking.firewall.allowedUDPPorts = (profile.allowedUDPPorts or []) ++ cfg.extraAllowedUDPPorts;
+      networking.firewall.checkReversePath = lib.mkDefault "loose";
 
-      networking.firewall.trustedInterfaces = profile.trustedInterfaces or [];
+      networking.firewall.trustedInterfaces = ["wg0"];
     };
   };
 }
