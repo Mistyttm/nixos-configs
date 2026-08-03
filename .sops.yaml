@@ -1,8 +1,8 @@
 keys:
   - &admin_misty age1ztwty6h4qefyzdqkqy6sre4lqan3zxa8mk90dzrc8lkm8f5439ts3dksmq
-  - &server_mistyttmdev age1vmeythszeduft4ma5h3hfvtp30rz2v70tja8amfchs50rhuwf9jsljkf5d
+  - &server_mistyttmdev age15qjgy98838e727ajh8v8h0enn340lzxyx4r0vas73e2ujjxkvsmqvtyw9u
   - &server_kennel age19ysep57z02y3hhf6c75cvz7njd66p2cqt85g4xqxzmgvk5slmsxq04jyp7
-  - &laptop age15qjgy98838e727ajh8v8h0enn340lzxyx4r0vas73e2ujjxkvsmqvtyw9u
+  - &laptop age1rtqyx0569wsyyq2885f5c5ywnkfj36dwcz5usxep7zx8tkfcussqey3ndc
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
     key_groups:
