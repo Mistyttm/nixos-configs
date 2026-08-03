@@ -61,6 +61,9 @@ The module currently defines profiles for `puppypc`, `puppylaptop`,
 : Hub profile. Listens on port `51820`, trusts `wg0`, and peers the other hosts
   onto `10.100.0.0/24`.
 
+All profiles trust `wg0`, so traffic initiated from any host over the tunnel is
+allowed back in by the local firewall.
+
 `thekennel`
 : Client profile for the home server. Uses `wg0`, a `10.100.0.2/24` address,
   and the shared `thedogpark` peer.

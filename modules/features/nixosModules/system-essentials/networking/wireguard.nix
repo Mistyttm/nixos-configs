@@ -8,6 +8,7 @@
     hostName = config.networking.hostName or "";
 
     thedogpark = {
+      name = "thedogpark";
       publicKey = "azW44KgfL9wjmY/XMlO8vhKUuJVomRB5U6PtGYJYlg8=";
       endpoint = "mistyttm.dev:51820";
       allowedIPs = ["10.100.0.0/24"];
@@ -20,6 +21,7 @@
       # Template profile for puppypc.
       puppypc = {
         allowedUDPPorts = [];
+        trustedInterfaces = ["wg0"];
         interfaces.wg0 = {
           ips = ["10.100.0.4/24"];
           privateKeyFile = config.sops.secrets."puppypc_key".path;
@@ -33,6 +35,7 @@
       # Template profile for puppylaptop.
       puppylaptop = {
         allowedUDPPorts = [];
+        trustedInterfaces = ["wg0"];
         interfaces.wg0 = {
           ips = ["10.100.0.3/24"];
           privateKeyFile = config.sops.secrets."laptop_key".path;
@@ -55,16 +58,19 @@
           peers = [
             {
               # thekennel - home server
+              name = "thekennel";
               publicKey = "PV35fOdFKVsftJ7lh+xVTYxDY9fw4mgN9hwlrDOnzlk=";
               allowedIPs = ["10.100.0.2/32"];
             }
             {
               # puppypc - home desktop
+              name = "puppypc";
               publicKey = "3P03yC/x9XLleiWhb3KgiiF9Jei69eMOVOzaqczW5QQ=";
               allowedIPs = ["10.100.0.3/32"];
             }
             {
               # pupppylaptop - laptop
+              name = "puppylaptop";
               publicKey = "YLEqUsdRe8LCXOHK6/8ct3ncSaaCqAoQLjiWWeGVl2s=";
               allowedIPs = ["10.100.0.4/32"];
             }
@@ -74,6 +80,7 @@
 
       thekennel = {
         allowedUDPPorts = [];
+        trustedInterfaces = ["wg0"];
         interfaces.wg0 = {
           ips = ["10.100.0.2/24"];
           privateKeyFile = config.sops.secrets."thekennel_key".path;
