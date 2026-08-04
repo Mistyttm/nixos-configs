@@ -52,7 +52,7 @@
         config.sops.templates."synapse-shared-secret-auth.yaml".path
       ];
       plugins = [
-        config.services.matrix-synapse.package.plugins.matrix-synapse-plugins.matrix-synapse-shared-secret-auth
+        config.services.matrix-synapse.package.plugins.matrix-synapse-shared-secret-auth
       ];
       settings = {
         enable_registration = false;

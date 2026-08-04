@@ -1,6 +1,6 @@
 {self, ...}: {
   flake.nixosModules.mautrix-discord = {config, ...}: let
-    synapsePort = config.services.matrix-synapse.settings.listeners.port;
+    synapsePort = 8008;
   in {
     sops.secrets."shared_secret_auth_config" = {
       sopsFile = self.secrets.synapse;
