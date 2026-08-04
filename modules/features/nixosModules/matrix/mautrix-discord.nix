@@ -37,7 +37,7 @@
             "mistyttm.dev" = "$MAUTRIX_DISCORD_BRIDGE_LOGIN_SHARED_SECRET"; # from environmentFile, see below
           };
           direct_media = {
-            enabled = true;
+            enabled = false;
             server_name = "discord-media.mistyttm.dev";
           };
           permissions = {
