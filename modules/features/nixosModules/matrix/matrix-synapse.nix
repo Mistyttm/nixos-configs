@@ -19,11 +19,6 @@
       owner = "matrix-synapse";
       group = "matrix-synapse";
     };
-    sops.secrets."shared_secret_auth_config" = {
-      sopsFile = self.secrets.synapse;
-      owner = "matrix-synapse";
-      group = "matrix-synapse";
-    };
     sops.templates."synapse-shared-secret-auth.yaml" = {
       owner = "matrix-synapse";
       group = "matrix-synapse";

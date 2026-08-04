@@ -1,13 +1,7 @@
-{self, ...}: {
+{...}: {
   flake.nixosModules.mautrix-discord = {config, ...}: let
     synapsePort = 8008;
   in {
-    sops.secrets."shared_secret_auth_config" = {
-      sopsFile = self.secrets.synapse;
-      owner = "mautrix-discord";
-      group = "mautrix-discord";
-    };
-
     sops.templates."mautrix-discord-env" = {
       content = ''
         MAUTRIX_DISCORD_BRIDGE_LOGIN_SHARED_SECRET=${config.sops.placeholder."shared_secret_auth_config"}
