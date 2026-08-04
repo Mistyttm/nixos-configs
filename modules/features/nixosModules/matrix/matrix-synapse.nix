@@ -23,7 +23,7 @@
       owner = "matrix-synapse";
       group = "matrix-synapse";
       content = ''
-        password_providers:
+        modules:
           - module: "shared_secret_authenticator.SharedSecretAuthProvider"
             config:
               shared_secret: "${config.sops.placeholder."shared_secret_auth_config"}"
@@ -47,7 +47,7 @@
         config.sops.templates."synapse-shared-secret-auth.yaml".path
       ];
       plugins = [
-        config.services.matrix-synapse.package.plugins.matrix-synapse-shared-secret-auth
+        pkgs.matrix-synapse-plugins.matrix-synapse-shared-secret-auth
       ];
       settings = {
         enable_registration = false;
