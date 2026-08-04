@@ -19,6 +19,21 @@
       owner = "matrix-synapse";
       group = "matrix-synapse";
     };
+    sops.secrets."shared_secret_auth_config" = {
+      sopsFile = self.secrets.synapse;
+      owner = "matrix-synapse";
+      group = "matrix-synapse";
+    };
+    sops.templates."synapse-shared-secret-auth.yaml" = {
+      owner = "matrix-synapse";
+      group = "matrix-synapse";
+      content = ''
+        password_providers:
+          - module: "shared_secret_authenticator.SharedSecretAuthProvider"
+            config:
+              shared_secret: "${config.sops.placeholder."shared_secret_auth_config"}"
+      '';
+    };
 
     services.matrix-synapse = {
       enable = true;
@@ -34,6 +49,10 @@
       ];
       extraConfigFiles = [
         config.sops.secrets."smtp_pass".path
+        config.sops.templates."synapse-shared-secret-auth.yaml".path
+      ];
+      plugins = [
+        config.services.matrix-synapse.package.plugins.matrix-synapse-plugins.matrix-synapse-shared-secret-auth
       ];
       settings = {
         enable_registration = false;
