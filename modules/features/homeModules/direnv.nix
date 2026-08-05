@@ -14,6 +14,7 @@
       enable = true;
       enableBashIntegration = true;
       enableZshIntegration = true;
+      enableKittyIntegration = true;
 
       settings = {
         use_cache = true;
