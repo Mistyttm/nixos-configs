@@ -12,6 +12,8 @@
 
     programs.direnv-instant = {
       enable = true;
+      enableBashIntegration = true;
+      enableZshIntegration = true;
 
       settings = {
         use_cache = true;
