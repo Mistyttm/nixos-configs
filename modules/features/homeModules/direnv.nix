@@ -19,8 +19,7 @@
       settings = {
         use_cache = true;
 
-        # Wait a little longer before opening a split
-        mux_delay = 8;
+        mux_delay = 4;
 
         # Handy if something gets stuck
         debug_log = "/tmp/direnv-instant.log";
