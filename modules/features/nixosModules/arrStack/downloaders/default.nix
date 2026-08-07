@@ -3,6 +3,7 @@
     imports = [
       self.nixosModules.qbittorrent
       self.nixosModules.sabnzbd
+      self.nixosModules.qui
     ];
   };
 }
