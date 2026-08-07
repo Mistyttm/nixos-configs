@@ -81,6 +81,7 @@
       overlays = [
         inputs.nix-cachyos-kernel.overlays.pinned
         self.overlays.default
+        self.overlays.nixpkgs-pr-549747
         inputs.nix-vscode-extensions.overlays.default
         self.overlays.kde-plasma-workspace-xdg-fix
         (_final: prev: {
