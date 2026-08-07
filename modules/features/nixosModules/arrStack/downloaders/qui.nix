@@ -12,6 +12,7 @@
       openFirewall = true;
       secretFile = config.sops.secrets."qui_session_key".path;
       settings = {
+        host = "0.0.0.0";
         port = 7476;
         metricsEnabled = true;
       };
