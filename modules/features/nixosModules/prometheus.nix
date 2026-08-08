@@ -65,6 +65,7 @@
                     "localhost:9100"
                     "localhost:9113"
                     "localhost:9586"
+                    "localhost:9074"
                   ];
                 }
               ];

@@ -105,7 +105,7 @@
       environmentFiles = [config.sops.templates."homepage-env".path];
 
       # Allow access from LAN and WireGuard
-      allowedHosts = "192.168.0.171,10.100.0.2,localhost,127.0.0.1,thekennel";
+      allowedHosts = "10.100.0.2,10.100.0.2,localhost,127.0.0.1,thekennel";
 
       settings = {
         title = "The Kennel";
@@ -184,7 +184,7 @@
             {
               "Jellyfin" = {
                 icon = "jellyfin";
-                href = "http://192.168.0.171:8096";
+                href = "http://10.100.0.2:8096";
                 description = "Media server";
                 widget = {
                   type = "jellyfin";
@@ -197,11 +197,11 @@
             {
               "Jellystat" = {
                 icon = "jellystat";
-                href = "http://192.168.0.171:3005";
+                href = "http://10.100.0.2:3005";
                 description = "Jellyfin statistics";
                 widget = {
                   type = "jellystat";
-                  url = "http://192.168.0.171:3005";
+                  url = "http://10.100.0.2:3005";
                   key = "{{HOMEPAGE_VAR_JELLYSTAT_API_KEY}}";
                   days = 30;
                 };
@@ -210,7 +210,7 @@
             {
               "Seerr" = {
                 icon = "seerr";
-                href = "http://192.168.0.171:5055";
+                href = "http://10.100.0.2:5055";
                 description = "Media requests";
                 widget = {
                   type = "seerr";
@@ -222,7 +222,7 @@
             {
               "Tdarr" = {
                 icon = "tdarr";
-                href = "http://192.168.0.171:8265";
+                href = "http://10.100.0.2:8265";
                 description = "Media transcoding";
                 widget = {
                   type = "tdarr";
@@ -237,7 +237,7 @@
             {
               "SABnzbd" = {
                 icon = "sabnzbd";
-                href = "http://192.168.0.171:8085";
+                href = "http://10.100.0.2:8085";
                 description = "Usenet downloader";
                 widget = {
                   type = "sabnzbd";
@@ -246,24 +246,63 @@
                 };
               };
             }
+            # {
+            #   "qBittorrent" = {
+            #     icon = "qbittorrent";
+            #     href = "http://10.100.0.2:8080";
+            #     description = "Torrent client";
+            #     widget = {
+            #       type = "qbittorrent";
+            #       # qbittorrent vpn loopback
+            #       url = "http://127.0.0.1:8080";
+            #       username = "admin";
+            #       password = "{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}";
+            #     };
+            #   };
+            # }
             {
-              "qBittorrent" = {
+              "QUI" = {
                 icon = "qbittorrent";
-                href = "http://192.168.0.171:8080";
-                description = "Torrent client";
+                href = "http://10.100.0.2:7476";
+                description = "qBittorrent web UI";
                 widget = {
-                  type = "qbittorrent";
-                  # qbittorrent vpn loopback
-                  url = "http://192.168.15.1:8080";
-                  username = "admin";
-                  password = "{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}";
+                  type = "prometheusmetric";
+                  url = "http://localhost:9090";
+                  metrics = [
+                    {
+                      label = "Seeding";
+                      query = "sum(qbittorrent_torrents_seeding{job=\"thekennel\"})";
+                      format = {type = "number";};
+                    }
+                    {
+                      label = "Downloading";
+                      query = "sum(qbittorrent_torrents_downloading{job=\"thekennel\"})";
+                      format = {type = "number";};
+                    }
+                    {
+                      label = "DL Speed";
+                      query = "sum(rate(qbittorrent_session_download_bytes{job=\"thekennel\"}[5m]))";
+                      format = {
+                        type = "bytes";
+                        suffix = "/s";
+                      };
+                    }
+                    {
+                      label = "UL Speed";
+                      query = "sum(rate(qbittorrent_session_upload_bytes{job=\"thekennel\"}[5m]))";
+                      format = {
+                        type = "bytes";
+                        suffix = "/s";
+                      };
+                    }
+                  ];
                 };
               };
             }
             {
               "Bazarr" = {
                 icon = "bazarr";
-                href = "http://192.168.0.171:6767";
+                href = "http://10.100.0.2:6767";
                 description = "Subtitle management";
                 widget = {
                   type = "bazarr";
@@ -279,7 +318,7 @@
             {
               "Sonarr" = {
                 icon = "sonarr";
-                href = "http://192.168.0.171:8989";
+                href = "http://10.100.0.2:8989";
                 description = "TV series management";
                 widget = {
                   type = "sonarr";
@@ -291,7 +330,7 @@
             {
               "Radarr" = {
                 icon = "radarr";
-                href = "http://192.168.0.171:7878";
+                href = "http://10.100.0.2:7878";
                 description = "Movie management";
                 widget = {
                   type = "radarr";
@@ -303,7 +342,7 @@
             {
               "Prowlarr" = {
                 icon = "prowlarr";
-                href = "http://192.168.0.171:9696";
+                href = "http://10.100.0.2:9696";
                 description = "Indexer management";
                 widget = {
                   type = "prowlarr";
@@ -315,7 +354,7 @@
             {
               "Dispatcharr" = {
                 icon = "dispatcharr";
-                href = "http://192.168.0.171:9191";
+                href = "http://10.100.0.2:9191";
                 description = "IPTV stream management";
                 widget = {
                   type = "dispatcharr";
@@ -431,7 +470,7 @@
             {
               "thekennel" = {
                 icon = "linux";
-                href = "http://192.168.0.171";
+                href = "http://10.100.0.2";
                 description = "Home server";
                 widget = {
                   type = "prometheusmetric";
@@ -460,7 +499,7 @@
             {
               "thekennel nginx" = {
                 icon = "nginx";
-                href = "http://192.168.0.171";
+                href = "http://10.100.0.2";
                 description = "Home server reverse proxy";
                 widget = {
                   type = "prometheusmetric";
@@ -488,7 +527,7 @@
             {
               "thekennel WireGuard" = {
                 icon = "wireguard";
-                href = "http://192.168.0.171";
+                href = "http://10.100.0.2";
                 description = "Home server VPN";
                 widget = {
                   type = "prometheusmetric";
