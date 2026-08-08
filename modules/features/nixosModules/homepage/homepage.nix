@@ -105,7 +105,7 @@
       environmentFiles = [config.sops.templates."homepage-env".path];
 
       # Allow access from LAN and WireGuard
-      allowedHosts = "10.100.0.2,10.100.0.2,localhost,127.0.0.1,thekennel";
+      allowedHosts = "192.168.0.171,10.100.0.2,localhost,127.0.0.1,thekennel";
 
       settings = {
         title = "The Kennel";
