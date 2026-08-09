@@ -159,7 +159,7 @@
 
         # Keep local uploads longer than remote media cache.
         media_retention = {
-          remote_media_lifetime = "60d";
+          remote_media_lifetime = "10d";
           local_media_lifetime = "365d";
         };
 
