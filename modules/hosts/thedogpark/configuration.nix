@@ -78,12 +78,6 @@
 
     programs.nh.flake = "/home/misty/nixos-configs";
 
-    nixpkgs.config = {
-      permittedInsecurePackages = [
-        "olm-3.2.16"
-      ];
-    };
-
     systemd.services.mistyttmpersonalsite = {
       description = "Build and run Vite for the MistyTTM Personal Site in production mode";
       after = ["network.target"];

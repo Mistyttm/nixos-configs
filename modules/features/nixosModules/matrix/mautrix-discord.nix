@@ -70,5 +70,9 @@
         };
       };
     };
+
+    nixconfig.insecurePackages = [
+      "olm-3.2.16"
+    ];
   };
 }
