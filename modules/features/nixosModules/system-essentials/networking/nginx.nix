@@ -74,7 +74,7 @@
             ];
 
             locations."/" = {
-              proxyPass = "http://127.0.0.1:8082";
+              proxyPass = "http://127.0.0.1:3000";
               proxyWebsockets = true;
             };
           };
