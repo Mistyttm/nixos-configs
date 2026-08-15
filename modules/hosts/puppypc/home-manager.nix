@@ -26,6 +26,7 @@
         mangohud
         linux-wallpaperengine
         protonmail
+        plasma
       ];
 
       gpg = {
