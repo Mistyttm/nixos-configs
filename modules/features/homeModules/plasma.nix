@@ -12,7 +12,7 @@
         width = 332;
         max_notifications = 5;
         right_margin = 18;
-        bottom_margin = 58;
+        bottom_margin = 508;
         gap = 12;
       };
     };
