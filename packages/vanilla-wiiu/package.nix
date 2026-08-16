@@ -36,7 +36,7 @@ in
     src = fetchFromGitHub {
       owner = "vanilla-wiiu";
       repo = "vanilla";
-      rev = "91ab3a0ccd1741f89d49b696e1da61ee0775f919";
+      rev = "HEAD";
       hash = "sha256-dThwQNNtP5V7PctSH0i7zgks73F15YHLEEWGg5BWrJI=";
       fetchSubmodules = true;
     };
