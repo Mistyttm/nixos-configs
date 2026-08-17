@@ -263,6 +263,8 @@
               nil.formatting.command = ["nixfmt"];
             };
           };
+
+          dotnetAcquisitionExtension.sharedExistingDotnetPath = "${pkgs.dotnet-sdk}/bin/dotnet";
         };
         keybindings = [
           {
