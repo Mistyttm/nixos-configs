@@ -6,6 +6,7 @@
       openFirewall = true;
       loadModels = [
         "qwen3:14b"
+        "kimi-k2.6"
       ];
     };
   };
