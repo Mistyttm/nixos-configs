@@ -27,7 +27,7 @@
       obs
       gaming
       appimage
-      ollama
+      # ollama
     ];
 
     networking.hostName = "puppypc";
@@ -41,7 +41,7 @@
     hardware.nvidia-custom = {
       enable = true;
       modesetting = true;
-      driverChannel = "bleeding_edge";
+      driverChannel = "stable";
       blacklistNova = true;
       nvidiaContainerToolkit = true;
     };
