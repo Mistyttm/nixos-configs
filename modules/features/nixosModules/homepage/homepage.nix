@@ -371,56 +371,55 @@
               };
             }
             {
-              "Cleanuparr" =
-                {
-                  icon = "cleanuparr.png";
-                  href = "http://10.100.0.2:11011";
-                  description = "Media cleanup automation";
-                  widget = {
-                    type = "customapi";
-                    url = "http://127.0.0.1:11011/api/v2/stats";
-                    refreshInterval = 10000;
-                    method = "GET";
-                    headers = {
-                      "X-Api-Key" = "{{HOMEPAGE_VAR_CLEANUPARR_API_KEY}}";
-                    };
-                    mappings = [
-                      {
-                        field = "events.total";
-                        label = "EVENTS (7D)";
-                        format = "number";
-                      }
-                      {
-                        field = "strikes.total";
-                        label = "STRIKES";
-                        format = "number";
-                      }
-                      {
-                        field = "removals.total";
-                        label = "REMOVED";
-                        format = "number";
-                      }
-                      {
-                        field = "cleaned.total";
-                        label = "CLEANED";
-                        format = "number";
-                      }
-                    ];
+              "Cleanuparr" = {
+                icon = "cleanuparr.png";
+                href = "http://10.100.0.2:11011";
+                description = "Media cleanup automation";
+                widget = {
+                  type = "customapi";
+                  url = "http://127.0.0.1:11011/api/v2/stats";
+                  refreshInterval = 10000;
+                  method = "GET";
+                  headers = {
+                    "X-Api-Key" = "{{HOMEPAGE_VAR_CLEANUPARR_API_KEY}}";
                   };
-                }
-                {
-                  "QNAP" = {
-                    icon = "qnap";
-                    href = "http://192.168.0.170:8080";
-                    description = "NAS storage";
-                    widget = {
-                      type = "qnap";
-                      url = "http://192.168.0.170:8080";
-                      username = "{{HOMEPAGE_VAR_QNAP_USERNAME}}";
-                      password = "{{HOMEPAGE_VAR_QNAP_PASSWORD}}";
-                    };
-                  };
+                  mappings = [
+                    {
+                      field = "events.total";
+                      label = "EVENTS (7D)";
+                      format = "number";
+                    }
+                    {
+                      field = "strikes.total";
+                      label = "STRIKES";
+                      format = "number";
+                    }
+                    {
+                      field = "removals.total";
+                      label = "REMOVED";
+                      format = "number";
+                    }
+                    {
+                      field = "cleaned.total";
+                      label = "CLEANED";
+                      format = "number";
+                    }
+                  ];
                 };
+              };
+            }
+            {
+              "QNAP" = {
+                icon = "qnap";
+                href = "http://192.168.0.170:8080";
+                description = "NAS storage";
+                widget = {
+                  type = "qnap";
+                  url = "http://192.168.0.170:8080";
+                  username = "{{HOMEPAGE_VAR_QNAP_USERNAME}}";
+                  password = "{{HOMEPAGE_VAR_QNAP_PASSWORD}}";
+                };
+              };
             }
           ];
         }
