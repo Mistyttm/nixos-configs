@@ -2,6 +2,7 @@
   flake.nixosModules.arrStack = {
     imports = [
       self.nixosModules.bazarr
+      self.nixosModules.cleanuparr
       self.nixosModules.dispatcharr
       self.nixosModules.flaresolverr
       self.nixosModules.prowlarr
