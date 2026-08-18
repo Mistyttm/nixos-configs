@@ -47,6 +47,10 @@
       sopsFile = self.secrets.media;
     };
 
+    sops.secrets."cleanuparr/api_key" = {
+      sopsFile = self.secrets.media;
+    };
+
     sops.secrets."qnap/username" = {
       sopsFile = self.secrets.media;
     };
@@ -71,6 +75,7 @@
         HOMEPAGE_VAR_DISPATCHARR_USERNAME=${config.sops.placeholder."dispatcharr/username"}
         HOMEPAGE_VAR_DISPATCHARR_PASSWORD=${config.sops.placeholder."dispatcharr/password"}
         HOMEPAGE_VAR_JELLYSTAT_API_KEY=${config.sops.placeholder."jellystat/api_key"}
+        HOMEPAGE_VAR_CLEANUPARR_API_KEY=${config.sops.placeholder."cleanuparr/api_key"}
         HOMEPAGE_VAR_QNAP_USERNAME=${config.sops.placeholder."qnap/username"}
         HOMEPAGE_VAR_QNAP_PASSWORD=${config.sops.placeholder."qnap/password"}
       '';
@@ -375,6 +380,39 @@
                   url = "http://192.168.0.170:8080";
                   username = "{{HOMEPAGE_VAR_QNAP_USERNAME}}";
                   password = "{{HOMEPAGE_VAR_QNAP_PASSWORD}}";
+                };
+              };
+            }
+            {
+              "Cleanuparr" = {
+                icon = "cleanuparr.png";
+                href = "http://10.100.0.2:11011";
+                description = "Media cleanup automation";
+                widget = {
+                  type = "customapi";
+                  url = "http://127.0.0.1:11011/api/stats";
+                  refreshInterval = 10000;
+                  method = "GET";
+                  headers = {
+                    "X-Api-Key" = "{{HOMEPAGE_VAR_CLEANUPARR_API_KEY}}";
+                  };
+                  mappings = [
+                    {
+                      field = "jobs.byType.MalwareBlocker.totalRuns";
+                      label = "MALWARE BLOCKER";
+                      format = "number";
+                    }
+                    {
+                      field = "jobs.byType.QueueCleaner.totalRuns";
+                      label = "QUEUE CLEANER";
+                      format = "number";
+                    }
+                    {
+                      field = "jobs.byType.Seeker.totalRuns";
+                      label = "SEEKER";
+                      format = "number";
+                    }
+                  ];
                 };
               };
             }
