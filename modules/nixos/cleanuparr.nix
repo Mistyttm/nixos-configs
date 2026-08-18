@@ -139,8 +139,13 @@
               database and role both named
               {option}`services.cleanuparr.settings.database.database`
               / `.user`, and connects over the local Unix socket using
-              peer authentication — so no password, secret, or
-              `pg_hba` entry is needed at all.
+              peer authentication — so no real password, secret, or
+              `pg_hba` entry is needed. Cleanuparr's own connection-string
+              builder still requires *some* non-empty `POSTGRES_PASS` to
+              be present (it only checks presence, not correctness), so
+              the module supplies a fixed placeholder value in this mode;
+              Postgres ignores it entirely under peer auth, so it is not
+              treated as a secret.
               {option}`services.cleanuparr.settings.database.host` and
               `.passwordFile` are ignored in this mode and must be left
               unset.
@@ -353,6 +358,14 @@
               POSTGRES_HOST = pgHost;
               POSTGRES_USER = pg.user;
               POSTGRES_DB = pg.database;
+            }
+            // lib.optionalAttrs pg.createLocally {
+              # Cleanuparr's connection-string builder requires this env
+              # var to be present regardless of auth method — it only
+              # checks for a non-empty value, never validates it. Under
+              # peer auth the Postgres server ignores the password
+              # entirely, so this placeholder is not a secret.
+              POSTGRES_PASS = "unused-peer-auth";
             }
             // lib.optionalAttrs (!pg.createLocally && pg.port != null) {
               POSTGRES_PORT = toString pg.port;
