@@ -133,7 +133,7 @@
           };
           "Management" = {
             style = "row";
-            columns = 5;
+            columns = 3;
           };
           "Infrastructure" = {
             style = "row";
