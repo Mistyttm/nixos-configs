@@ -7,7 +7,9 @@
   }: let
     cfg = config.services.cleanuparr;
 
-    # Mirrors Cleanuparr.Shared.Helpers.BasePathValidator: must start with '/', contain no dots or double slashes, no trailing slash, and only letters/numbers/hyphens/underscores per path segment.
+    # Mirrors Cleanuparr.Shared.Helpers.BasePathValidator: must start with
+    # '/', contain no dots or double slashes, no trailing slash, and only
+    # letters/numbers/hyphens/underscores per path segment.
     basePathValid = p: p == null || builtins.match "/[a-zA-Z0-9_-]+(/[a-zA-Z0-9_-]+)*" p != null;
   in {
     options.services.cleanuparr = {
@@ -120,11 +122,32 @@
               Which database backend Cleanuparr uses, passed as
               `DATABASE_PROVIDER`. `sqlite` needs no further
               configuration and stores its database file under
-              {option}`services.cleanuparr.dataDir`. `postgres` requires
-              {option}`services.cleanuparr.settings.database.host`,
-              `.user`, and `.database` to be set, and
-              {option}`services.cleanuparr.settings.database.passwordFile`
-              to point at a file containing the password.
+              {option}`services.cleanuparr.dataDir`. `postgres` by
+              default provisions and connects to a local instance
+              automatically — see
+              {option}`services.cleanuparr.settings.database.createLocally`.
+            '';
+          };
+
+          createLocally = lib.mkOption {
+            type = lib.types.bool;
+            default = true;
+            description = ''
+              Only used when `provider` is `postgres`. If `true` (the
+              default), this module fully provisions Postgres for you:
+              it enables {option}`services.postgresql`, creates a
+              database and role both named
+              {option}`services.cleanuparr.settings.database.database`
+              / `.user`, and connects over the local Unix socket using
+              peer authentication — so no password, secret, or
+              `pg_hba` entry is needed at all.
+              {option}`services.cleanuparr.settings.database.host` and
+              `.passwordFile` are ignored in this mode and must be left
+              unset.
+
+              Set to `false` to connect to an external or already-managed
+              Postgres instance instead, in which case `host` and
+              `passwordFile` become required.
             '';
           };
 
@@ -134,7 +157,9 @@
             example = "localhost";
             description = ''
               Postgres host, passed as `POSTGRES_HOST`. Required when
-              `provider` is `postgres`.
+              `provider` is `postgres` and `createLocally` is `false`;
+              must be left unset (`null`) when `createLocally` is `true`,
+              since the module computes the local socket path itself.
             '';
           };
 
@@ -144,26 +169,33 @@
             example = 5432;
             description = ''
               Postgres port, passed as `POSTGRES_PORT`. Optional — when
-              unset, Npgsql's own default (5432) is used.
+              unset, Npgsql's own default (5432) is used. Not applicable
+              when `createLocally` is `true` (Unix socket connections
+              don't use a port).
             '';
           };
 
           user = lib.mkOption {
-            type = lib.types.nullOr lib.types.str;
-            default = null;
+            type = lib.types.str;
+            default = "cleanuparr";
             description = ''
-              Postgres username, passed as `POSTGRES_USER`. Required
-              when `provider` is `postgres`.
+              Postgres username, passed as `POSTGRES_USER`. When
+              `createLocally` is `true`, this is also the name of the
+              role the module creates — keep it equal to
+              {option}`services.cleanuparr.user` (both default to
+              `cleanuparr`) since peer authentication matches the OS
+              user running the service against this role name.
             '';
           };
 
           database = lib.mkOption {
-            type = lib.types.nullOr lib.types.str;
-            default = null;
+            type = lib.types.str;
+            default = "cleanuparr";
             example = "cleanuparr";
             description = ''
-              Postgres database name, passed as `POSTGRES_DB`. Required
-              when `provider` is `postgres`.
+              Postgres database name, passed as `POSTGRES_DB`. When
+              `createLocally` is `true`, this is also the name of the
+              database the module creates.
             '';
           };
 
@@ -176,7 +208,9 @@
               via `LoadCredential` and exported to the process as
               `POSTGRES_PASS`, so the password itself never enters the
               Nix store and never appears in `systemctl show`/the unit
-              file. Required when `provider` is `postgres`.
+              file. Required when `provider` is `postgres` and
+              `createLocally` is `false`; must be left unset when
+              `createLocally` is `true` (peer auth needs no password).
             '';
           };
 
@@ -226,22 +260,29 @@
     };
 
     config = lib.mkIf cfg.enable {
-      assertions = [
+      assertions = let
+        pg = cfg.settings.database;
+        isPg = pg.provider == "postgres";
+      in [
         {
-          assertion = cfg.settings.database.provider == "postgres" -> cfg.settings.database.host != null;
-          message = "services.cleanuparr.settings.database.host must be set when provider is \"postgres\".";
+          assertion = isPg && !pg.createLocally -> pg.host != null;
+          message = "services.cleanuparr.settings.database.host must be set when provider is \"postgres\" and createLocally is false.";
         }
         {
-          assertion = cfg.settings.database.provider == "postgres" -> cfg.settings.database.user != null;
-          message = "services.cleanuparr.settings.database.user must be set when provider is \"postgres\".";
+          assertion = isPg && !pg.createLocally -> pg.passwordFile != null;
+          message = "services.cleanuparr.settings.database.passwordFile must be set when provider is \"postgres\" and createLocally is false.";
         }
         {
-          assertion = cfg.settings.database.provider == "postgres" -> cfg.settings.database.database != null;
-          message = "services.cleanuparr.settings.database.database must be set when provider is \"postgres\".";
+          assertion = isPg && pg.createLocally -> pg.host == null;
+          message = "services.cleanuparr.settings.database.host is ignored (and must be unset) when createLocally is true.";
         }
         {
-          assertion = cfg.settings.database.provider == "postgres" -> cfg.settings.database.passwordFile != null;
-          message = "services.cleanuparr.settings.database.passwordFile must be set when provider is \"postgres\".";
+          assertion = isPg && pg.createLocally -> pg.passwordFile == null;
+          message = "services.cleanuparr.settings.database.passwordFile is ignored (and must be unset) when createLocally is true — peer auth needs no password.";
+        }
+        {
+          assertion = isPg && pg.createLocally -> pg.user == cfg.user;
+          message = "services.cleanuparr.settings.database.user must match services.cleanuparr.user when createLocally is true, since peer authentication matches on OS username.";
         }
       ];
 
@@ -259,14 +300,39 @@
 
       networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [cfg.settings.port];
 
-      # Owns dataDir/logsDir regardless of whether they're left at their defaults or pointed somewhere custom by the user.
+      # Fully self-provisioned local Postgres: role + database matching
+      # `settings.database.user`/`.database`, connected to over the Unix
+      # socket via peer auth (NixOS's default `local all all peer` rule
+      # already covers this — no extra pg_hba entry needed).
+      services.postgresql = lib.mkIf (cfg.settings.database.provider == "postgres" && cfg.settings.database.createLocally) {
+        enable = lib.mkDefault true;
+        ensureDatabases = [cfg.settings.database.database];
+        ensureUsers = [
+          {
+            name = cfg.settings.database.user;
+            ensureDBOwnership = true;
+          }
+        ];
+      };
+
+      # Owns dataDir/logsDir regardless of whether they're left at their
+      # defaults or pointed somewhere custom by the user.
       systemd.tmpfiles.rules =
         ["d ${cfg.dataDir} 0750 ${cfg.user} ${cfg.group} - -"]
         ++ lib.optional (cfg.logsDir != null) "d ${cfg.logsDir} 0750 ${cfg.user} ${cfg.group} - -";
 
-      systemd.services.cleanuparr = {
+      systemd.services.cleanuparr = let
+        pg = cfg.settings.database;
+        isPg = pg.provider == "postgres";
+        # Npgsql treats a Host starting with '/' as a Unix socket
+        # directory; NixOS's postgresql module defaults to /run/postgresql.
+        pgHost =
+          if pg.createLocally
+          then "/run/postgresql"
+          else pg.host;
+      in {
         description = "Cleanuparr";
-        after = ["network.target"] ++ lib.optional (cfg.settings.database.provider == "postgres") "postgresql.service";
+        after = ["network.target"] ++ lib.optional (isPg && pg.createLocally) "postgresql.service";
         wantedBy = ["multi-user.target"];
 
         environment =
@@ -274,7 +340,7 @@
             PORT = toString cfg.settings.port;
             BIND_ADDRESS = cfg.settings.bindAddress;
             CLEANUPARR_CONFIG_PATH = cfg.dataDir;
-            DATABASE_PROVIDER = cfg.settings.database.provider;
+            DATABASE_PROVIDER = pg.provider;
           }
           // lib.optionalAttrs (cfg.settings.basePath != null) {
             BASE_PATH = cfg.settings.basePath;
@@ -282,17 +348,17 @@
           // lib.optionalAttrs (cfg.logsDir != null) {
             CLEANUPARR_LOGS_PATH = cfg.logsDir;
           }
-          // lib.optionalAttrs (cfg.settings.database.provider == "postgres") (
+          // lib.optionalAttrs isPg (
             {
-              POSTGRES_HOST = cfg.settings.database.host;
-              POSTGRES_USER = cfg.settings.database.user;
-              POSTGRES_DB = cfg.settings.database.database;
+              POSTGRES_HOST = pgHost;
+              POSTGRES_USER = pg.user;
+              POSTGRES_DB = pg.database;
             }
-            // lib.optionalAttrs (cfg.settings.database.port != null) {
-              POSTGRES_PORT = toString cfg.settings.database.port;
+            // lib.optionalAttrs (!pg.createLocally && pg.port != null) {
+              POSTGRES_PORT = toString pg.port;
             }
-            // lib.optionalAttrs (cfg.settings.database.extraParams != null) {
-              POSTGRES_EXTRA_PARAMS = cfg.settings.database.extraParams;
+            // lib.optionalAttrs (pg.extraParams != null) {
+              POSTGRES_EXTRA_PARAMS = pg.extraParams;
             }
           )
           // cfg.extraEnvironment;
