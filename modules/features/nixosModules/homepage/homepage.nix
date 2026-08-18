@@ -390,7 +390,7 @@
                 description = "Media cleanup automation";
                 widget = {
                   type = "customapi";
-                  url = "http://127.0.0.1:11011/api/stats";
+                  url = "http://127.0.0.1:11011/api/v2/stats";
                   refreshInterval = 10000;
                   method = "GET";
                   headers = {
