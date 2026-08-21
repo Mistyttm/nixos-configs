@@ -265,6 +265,7 @@
           };
 
           dotnetAcquisitionExtension.sharedExistingDotnetPath = "${pkgs.dotnet-sdk}/bin/dotnet";
+          workbench.experimental.modernUI = false;
         };
         keybindings = [
           {
