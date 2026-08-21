@@ -157,11 +157,6 @@
         ];
       };
 
-      systemd.services.wireguard-wg0 = {
-        after = ["network-online.target"];
-        wants = ["network-online.target"];
-      };
-
       networking.firewall.allowedUDPPorts = (profile.allowedUDPPorts or []) ++ cfg.extraAllowedUDPPorts;
       networking.firewall.checkReversePath = lib.mkDefault "loose";
 
