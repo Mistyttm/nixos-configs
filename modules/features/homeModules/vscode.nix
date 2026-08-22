@@ -2,7 +2,9 @@
   flake.homeModules.vscode = {pkgs, ...}: {
     programs.vscode = {
       enable = true;
-      package = pkgs.vscode;
+      package = pkgs.vscode.fhsWithPackages (_ps: [
+        pkgs.dotnet-sdk
+      ]);
       profiles.default = {
         enableUpdateCheck = false;
         enableExtensionUpdateCheck = true;
