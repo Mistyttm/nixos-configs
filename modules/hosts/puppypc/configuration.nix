@@ -27,7 +27,7 @@
       obs
       gaming
       appimage
-      # ollama
+      ollama
     ];
 
     networking.hostName = "puppypc";
