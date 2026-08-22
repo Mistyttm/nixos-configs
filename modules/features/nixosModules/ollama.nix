@@ -9,7 +9,7 @@
         "qwen3-coder:30b"
       ];
       environmentVariables = {
-        OLLAMA_KEEP_ALIVE = "3m";
+        OLLAMA_KEEP_ALIVE = "30m";
         OLLAMA_MAX_LOADED_MODELS = "1";
 
         OLLAMA_FLASH_ATTENTION = "1";
