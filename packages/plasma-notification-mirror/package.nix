@@ -11,13 +11,13 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "plasma-notification-mirror";
-  version = "0.1.0";
+  version = "0.2.0";
 
   src = fetchFromGitHub {
     owner = "MysteriousAeon";
     repo = "plasma-notification-mirror";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-G34jARlWMSnxkLfIMWLJGzS9K9O9c88c5OM54muUjQY=";
+    hash = "sha256-K4ONjir2a+PYTcw13qEuKKey1UMlMiSgawskptJs30w=";
   };
 
   nativeBuildInputs = [

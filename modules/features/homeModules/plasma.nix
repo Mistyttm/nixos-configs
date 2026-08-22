@@ -11,8 +11,9 @@
         lifetime_ms = 5000;
         width = 332;
         max_notifications = 5;
+        position = "top-right";
         right_margin = 18;
-        bottom_margin = 508;
+        top_margin = 58;
         gap = 12;
       };
     };

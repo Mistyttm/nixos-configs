@@ -26,8 +26,7 @@
         mangohud
         linux-wallpaperengine
         protonmail
-        # enable if https://github.com/MysteriousAeon/plasma-notification-mirror/issues/1 gets resolved
-        # plasma
+        plasma
       ];
 
       gpg = {
