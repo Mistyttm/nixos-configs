@@ -157,7 +157,7 @@
 
             locations."/".proxyPass = "http://localhost:8080/";
 
-            locations."~ ^(/_matrix|/_synapse/client)" = {
+            locations."~ ^(/_matrix|/_synapse/(client|admin))" = {
               proxyPass = "http://localhost:8008";
               extraConfig = ''
                 proxy_set_header X-Forwarded-For $remote_addr;
