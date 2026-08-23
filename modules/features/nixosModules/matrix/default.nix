@@ -5,7 +5,7 @@
       self.nixosModules.mautrix-discord
       self.nixosModules.coturn
       self.nixosModules.matrix-state-compressor
-      self.nixosModules.ketsea
+      self.nixosModules.ketesa
     ];
     sops.secrets."shared_secret_auth_config" = {
       sopsFile = self.secrets.synapse;
