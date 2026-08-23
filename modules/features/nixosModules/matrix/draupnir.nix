@@ -8,7 +8,8 @@
       enable = true;
 
       settings = {
-        homeserverUrl = "https://mistyttm.dev";
+        homeserverUrl = "http://localhost:8008";
+        rawHomeserverUrl = "https://mistyttm.dev";
         managementRoom = "#admin:mistyttm.dev";
       };
 
