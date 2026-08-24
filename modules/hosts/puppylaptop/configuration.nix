@@ -21,6 +21,7 @@
       cli-tools
       nix-ld
       nvidia
+      openconnect
     ];
 
     networking.hostName = "puppylaptop";
