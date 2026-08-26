@@ -21,6 +21,7 @@
       arrStack
       downloaders
       prometheus-server
+      matrix-alertmanager-bot
       # vpn-confinement
     ];
 

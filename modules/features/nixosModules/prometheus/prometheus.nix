@@ -1,5 +1,8 @@
-{...}: {
+{self, ...}: {
   flake.nixosModules.prometheus-exporter = {...}: {
+    imports = [
+      self.nixosModules.prometheus-alerting
+    ];
     services.prometheus.exporters = {
       node = {
         enable = true;
