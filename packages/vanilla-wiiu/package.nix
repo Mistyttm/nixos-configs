@@ -29,15 +29,15 @@
 in
   stdenv.mkDerivation (finalAttrs: {
     pname = "vanilla-wiiu";
-    version = "continuous-2026-06-05";
+    version = "continuous-2026-08-26";
     __structuredAttrs = true;
     strictDeps = true;
 
     src = fetchFromGitHub {
       owner = "vanilla-wiiu";
       repo = "vanilla";
-      rev = "HEAD";
-      hash = "sha256-dThwQNNtP5V7PctSH0i7zgks73F15YHLEEWGg5BWrJI=";
+      rev = "ec0783f945e5b4933734c516953404fd7c48bad5";
+      hash = "";
       fetchSubmodules = true;
     };
 
@@ -79,7 +79,7 @@ in
       "-DCMAKE_BUILD_TYPE=Release"
     ];
 
-    passthru.updateScript = ./update.sh;
+    passthru.updateScript = [./update.sh "master"];
 
     meta = {
       description = "";

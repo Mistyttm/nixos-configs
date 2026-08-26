@@ -1,41 +1,33 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -i bash -p curl jq nix-update
+#!nix-shell -i bash -p curl jq common-updater-scripts git
 
 set -euo pipefail
 
-dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-pkg="$dir/package.nix"
+branch="${1:?usage: update-continuous-branch.sh <branch-name>}"
 
-latest_rev="$(
-  curl -fsSL \
-    https://api.github.com/repos/vanilla-wiiu/vanilla/releases/tags/continuous \
-  | jq -r '.target_commitish'
-)"
+attr_path="${UPDATE_NIX_ATTR_PATH:?UPDATE_NIX_ATTR_PATH not set — this script must be run via nix-update or nixpkgs's update.py, not called directly}"
+pname="${UPDATE_NIX_PNAME:-$(nix eval --raw ".#${attr_path}.pname")}"
 
-latest_date="$(
-  curl -fsSL \
-    "https://api.github.com/repos/vanilla-wiiu/vanilla/commits/${latest_rev}" \
-  | jq -r '.commit.committer.date' \
-  | cut -dT -f1
-)"
-
-new_version="continuous-${latest_date}"
-old_version="${UPDATE_NIX_OLD_VERSION:-$(grep -m1 'version = ' "$pkg" | sed 's/.*"\(.*\)".*/\1/')}"
-
-if [ "$new_version" = "$old_version" ]; then
-  echo "Package is already up to date: ${new_version}"
-  exit 0
+# fetchFromGitHub exposes passthru.gitRepoUrl on its result for exactly
+# this purpose. Fall back to meta.homepage for fetchers that don't set it
+# (e.g. a plain fetchgit src with an explicit url already).
+git_url=$(nix eval --raw ".#${attr_path}.src.gitRepoUrl" 2>/dev/null || true)
+if [ -z "$git_url" ]; then
+  git_url="$(nix eval --raw ".#${attr_path}.meta.homepage").git"
 fi
 
-# Update src rev via sed (only touches vanilla's rev, not drc-hostap's different hash)
-old_src_rev="$(grep 'rev = ' "$pkg" | sed -n '2p' | sed 's/.*"\(.*\)".*/\1/')"
-sed -i "s/rev = \"${old_src_rev}\"/rev = \"${latest_rev}\"/" "$pkg"
+rev=$(git ls-remote "$git_url" "refs/heads/${branch}" | cut -f1)
+if [ -z "$rev" ]; then
+  echo "error: couldn't resolve branch '${branch}' on ${git_url}" >&2
+  exit 1
+fi
 
-# nix-update handles version + hash:
-# - sets version = "${new_version}"
-# - re-evaluates the package (now sees updated rev from sed above)
-# - derives the correct tarball URL from fetchFromGitHub's owner/repo/rev
-# - downloads, computes hash, updates src.hash
-nix-update "${UPDATE_NIX_ATTR_PATH:-packages.x86_64-linux.vanilla-wiiu}" \
-  --flake \
-  --version "${new_version}"
+new_version="continuous-$(date -u +%Y-%m-%d)"
+
+# --source-key=src scopes the edit to the top-level `src = fetchFromGitHub
+# { ... }` attribute, leaving any other fetchgit/fetchFromGitHub calls in
+# the same file (e.g. vendored dependency sources) untouched.
+update-source-version "$pname" "$new_version" \
+  --rev="$rev" \
+  --source-key=src \
+  --ignore-same-version
