@@ -33,7 +33,7 @@
                 url = "http://127.0.0.1:${toString config.services.matrix-alertmanager.port}/alerts";
                 http_config.basic_auth = {
                   username = "alertmanager";
-                  password_file = config.sops.secrets."matrix-alertmanager-secret-alertmanager-copy".path;
+                  password_file = config.sops.secrets."matrix-alertmanager-secret".path;
                 };
               }
             ];
