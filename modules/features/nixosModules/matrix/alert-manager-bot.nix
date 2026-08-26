@@ -2,9 +2,11 @@
   flake.nixosModules.matrix-alertmanager-bot = {config, ...}: {
     sops.secrets."matrix-alertmanager-token" = {
       sopsFile = self.secrets.matrix-alertmanager;
+      key = "token";
     };
     sops.secrets."matrix-alertmanager-secret" = {
       sopsFile = self.secrets.matrix-alertmanager;
+      key = "secret";
     };
 
     services.matrix-alertmanager = {
