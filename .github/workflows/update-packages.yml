@@ -26,10 +26,10 @@ jobs:
       # One package name per line. Free/unfree is detected automatically from
       # each package's meta.license — no manual tagging needed.
       PACKAGES: |
+        cleanuparr
         dispatcharr
         i-sponsor-block-tv
         jellystat
-        langhire
         proton-cachyos
         proton-ge-rtsp
         vanilla-wiiu
