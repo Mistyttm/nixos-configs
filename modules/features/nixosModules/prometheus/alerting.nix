@@ -1,6 +1,6 @@
 {self, ...}: {
   flake.nixosModules.prometheus-alerting = {config, ...}: {
-    sops.secrets."matrix-alertmanager-secret-alertmanager-copy" = {
+    sops.secrets."matrix-alertmanager-secret" = {
       sopsFile = self.secrets.matrix-alertmanager;
       key = "secret";
       # services.prometheus.alertmanager runs under DynamicUser=true, and

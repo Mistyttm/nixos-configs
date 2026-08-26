@@ -17,7 +17,7 @@
 
     services.matrix-notify = {
       enable = true;
-      roomId = "alerts:mistyttm.dev"; # same room, or a separate one for noisier stuff
+      roomId = "!alerts:mistyttm.dev"; # same room, or a separate one for noisier stuff
       watchedUnits = [
         "matrix-synapse.service"
         "postgresql.service"
