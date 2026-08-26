@@ -5,7 +5,11 @@ set -euo pipefail
 
 branch="${1:?usage: update-continuous-branch.sh <branch-name>}"
 
-attr_path="${UPDATE_NIX_ATTR_PATH:?UPDATE_NIX_ATTR_PATH not set — this script must be run via nix-update or nixpkgs's update.py, not called directly}"
+if [ -z "${UPDATE_NIX_ATTR_PATH:-}" ]; then
+  echo "error: UPDATE_NIX_ATTR_PATH not set — run via nix-update or nixpkgs update.py, not called directly" >&2
+  exit 1
+fi
+attr_path="$UPDATE_NIX_ATTR_PATH"
 pname="${UPDATE_NIX_PNAME:-$(nix eval --raw ".#${attr_path}.pname")}"
 
 # fetchFromGitHub exposes passthru.gitRepoUrl on its result for exactly
