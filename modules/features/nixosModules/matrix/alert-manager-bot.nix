@@ -22,7 +22,7 @@
       matrixRooms = [
         {
           receivers = ["infra-alerts"];
-          roomId = "alerts:mistyttm.dev";
+          roomId = "!alerts:mistyttm.dev";
         }
       ];
     };
