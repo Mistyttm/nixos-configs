@@ -1,10 +1,10 @@
 {
   proton-ge-bin,
   fetchzip,
-  steamDisplayName ? "CachyOS-Proton",
 }:
-(proton-ge-bin.override { inherit steamDisplayName; }).overrideAttrs (
+proton-ge-bin.overrideAttrs (
   finalAttrs: previousAttrs: {
+    steamDisplayName = "CachyOS-Proton";
     pname = "proton-cachyos";
     version = "11.0-20260703";
 
@@ -14,12 +14,14 @@
     };
 
     preFixup = ''
-      sed -i 's/"display_name"[[:space:]]*"[^"]*"/"display_name"\t\t"${steamDisplayName}"/' \
+      sed -i 's/"display_name"[[:space:]]*"[^"]*"/"display_name"\t\t"${finalAttrs.steamDisplayName}"/' \
         "$steamcompattool/compatibilitytool.vdf"
     '';
 
-    passthru = (previousAttrs.passthru or { }) // {
-      updateScript = ./update.sh;
-    };
+    passthru =
+      (previousAttrs.passthru or {})
+      // {
+        updateScript = ./update.sh;
+      };
   }
 )

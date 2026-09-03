@@ -1,10 +1,10 @@
 {
   proton-ge-bin,
   fetchzip,
-  steamDisplayName ? "RTSP-GE-Proton",
 }:
-(proton-ge-bin.override { inherit steamDisplayName; }).overrideAttrs (
+proton-ge-bin.overrideAttrs (
   finalAttrs: previousAttrs: {
+    steamDisplayName = "RTSP-GE-Proton";
     pname = "proton-ge-rtsp";
     version = "proton-rtsp-11.0-20260609-3";
 
@@ -13,8 +13,10 @@
       hash = "sha256-Toj9kApuJmmZahBjNWJjE/YfiWEXGi2Oq8PYm3Ub+nI=";
     };
 
-    passthru = (previousAttrs.passthru or { }) // {
-      updateScript = ./update.sh;
-    };
+    passthru =
+      (previousAttrs.passthru or {})
+      // {
+        updateScript = ./update.sh;
+      };
   }
 )
