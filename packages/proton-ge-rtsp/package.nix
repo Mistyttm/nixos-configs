@@ -13,6 +13,11 @@ proton-ge-bin.overrideAttrs (
       hash = "sha256-Toj9kApuJmmZahBjNWJjE/YfiWEXGi2Oq8PYm3Ub+nI=";
     };
 
+    preFixup = ''
+      sed -i 's/"display_name"[[:space:]]*"[^"]*"/"display_name"\t\t"${finalAttrs.steamDisplayName}"/' \
+        "$steamcompattool/compatibilitytool.vdf"
+    '';
+
     passthru =
       (previousAttrs.passthru or {})
       // {
