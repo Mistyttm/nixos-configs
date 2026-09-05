@@ -1,4 +1,4 @@
-{self, ...}: {
+{...}: {
   flake.nixosModules.jellystat = {
     lib,
     config,
@@ -72,8 +72,8 @@
 
       package = lib.mkOption {
         type = lib.types.package;
-        default = self.packages.${pkgs.stdenv.hostPlatform.system}.jellystat;
-        defaultText = lib.literalExpression "self.packages.${pkgs.stdenv.hostPlatform.system}.jellystat";
+        default = pkgs.jellystat;
+        defaultText = lib.literalExpression "pkgs.jellystat";
         description = "Jellystat package to run.";
       };
 
