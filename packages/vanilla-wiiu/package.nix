@@ -17,27 +17,30 @@
   libtiff,
   polkit,
   libxml2,
-  fetchgit,
   libx11,
   autoAddDriverRunpath,
+  unstableGitUpdater,
 }: let
-  drc-hostap-src = fetchgit {
-    url = "https://github.com/rolandoislas/drc-hostap.git";
-    rev = "418e5e206786de2482864a0ec3a59742a33b6623"; # find the commit from the CMakeLists.txt
-    hash = "sha256-0LZLNhGF5OC0AkVRFyP+vtjPJ5VEeIJF9ZfBpoJZdH4=";
+  drc-hostap-src = fetchFromGitHub {
+    owner = "vanilla-wiiu";
+    repo = "drc-hostap";
+    rev = "257096accc39f9c2750a7718ff5751108d15f668";
+    hash = "sha256-W6oSFMym9vOK6Q7EQA0yyGuCqJmSNKD0Ff21lLSWkAg=";
   };
 in
-  stdenv.mkDerivation (finalAttrs: {
+  stdenv.mkDerivation (_finalAttrs: {
     pname = "vanilla-wiiu";
-    version = "continuous-2026-08-26";
+    version = "0-unstable-2026-08-26";
     __structuredAttrs = true;
     strictDeps = true;
+
+    outputs = ["out" "dev"];
 
     src = fetchFromGitHub {
       owner = "vanilla-wiiu";
       repo = "vanilla";
       rev = "ec0783f945e5b4933734c516953404fd7c48bad5";
-      hash = "";
+      hash = "sha256-JBFvtTIwIQq8TQmIiOvxhR3+urLOet6F2W6FoisCOHw=";
       fetchSubmodules = true;
     };
 
@@ -79,12 +82,28 @@ in
       "-DCMAKE_BUILD_TYPE=Release"
     ];
 
-    passthru.updateScript = [./update.sh "master"];
+    postInstall = ''
+      # namespace to match pname.
+      mv "$out/bin/vanilla" "$out/bin/vanilla-wiiu"
+      mv "$out/bin/vanilla-pipe" "$out/bin/vanilla-wiiu-pipe"
+      substituteInPlace "$out/share/applications/com.mattkc.vanilla.desktop" \
+        --replace-fail "Exec=vanilla" "Exec=vanilla-wiiu"
+
+      # include/vanilla.h + lib/libvanilla.a are dev artifacts for embedding
+      # libvanilla, not needed by the GUI app itself at runtime.
+      moveToOutput include "$dev"
+      moveToOutput lib "$dev"
+    '';
+
+    passthru.updateScript = unstableGitUpdater {
+      branch = "master";
+      hardcodeZeroVersion = true;
+    };
 
     meta = {
       description = "";
       homepage = "https://github.com/vanilla-wiiu/vanilla";
-      changelog = "https://github.com/vanilla-wiiu/vanilla/releases/tag/${finalAttrs.src.rev}";
+      changelog = "https://github.com/vanilla-wiiu/vanilla/releases/tag/continuous";
       license = lib.licenses.gpl2Only;
       maintainers = with lib.maintainers; [mistyttm];
       mainProgram = "vanilla-wiiu";
