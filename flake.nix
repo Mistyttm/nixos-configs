@@ -20,7 +20,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
+    wrapper-modules.url = "github:nix-community/nix-wrapper-modules";
 
     sops-nix.url = "github:Mic92/sops-nix";
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
