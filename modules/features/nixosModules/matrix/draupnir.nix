@@ -10,7 +10,7 @@
 
     services.draupnir = {
       enable = true;
-      package = pkgs.draupnir.override {nodejs_24 = pkgs.nodejs_22;};
+      package = pkgs.draupnir;
       settings = {
         homeserverUrl = "http://localhost:8008";
         rawHomeserverUrl = "https://mistyttm.dev";
