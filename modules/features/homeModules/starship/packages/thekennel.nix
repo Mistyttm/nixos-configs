@@ -4,7 +4,7 @@
   ...
 }: {
   perSystem = {pkgs, ...}: {
-    packages.thekennelStarship = inputs.wrapper-modules.wrappers.starship.wrap {
+    packages.thekennelStarship = inputs.omniflake.flakes."github:nix-community/nix-wrapper-modules".wrappers.starship.wrap {
       inherit pkgs;
       package = pkgs.starship;
       settings = {

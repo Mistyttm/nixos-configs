@@ -5,8 +5,8 @@
 }: {
   flake.nixosModules.system-essentials = {...}: {
     imports = [
-      inputs.sops-nix.nixosModules.sops
-      inputs.nix-topology.nixosModules.default
+      inputs.omniflake.flakes.sops-nix.nixosModules.sops
+      inputs.omniflake.flakes.nix-topology.nixosModules.default
 
       self.nixosModules.bootloader
       self.nixosModules.fonts

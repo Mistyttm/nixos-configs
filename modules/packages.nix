@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  imports = [inputs.pkgs-by-name-for-flake-parts.flakeModule];
+  imports = [inputs.omniflake.flakes.pkgs-by-name-for-flake-parts.flakeModule];
 
   flake.overlays.default = final: _prev: let
     pkgsDir = ../packages;

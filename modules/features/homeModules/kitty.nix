@@ -11,7 +11,7 @@
   };
 
   perSystem = {pkgs, ...}: {
-    packages.kitty = inputs.wrapper-modules.wrappers.kitty.wrap {
+    packages.kitty = inputs.omniflake.flakes."github:nix-community/nix-wrapper-modules".wrappers.kitty.wrap {
       inherit pkgs;
       package = pkgs.kitty;
 

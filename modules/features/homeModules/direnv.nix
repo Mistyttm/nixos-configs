@@ -1,7 +1,7 @@
 {inputs, ...}: {
   flake.homeModules.direnv = {...}: {
     imports = [
-      inputs.direnv-instant.homeModules.direnv-instant
+      inputs.omniflake.flakes.direnv-instant.homeModules.direnv-instant
     ];
 
     programs.direnv = {

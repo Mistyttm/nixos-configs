@@ -1,7 +1,7 @@
 {inputs, ...}: {
   flake.nixosModules.auto-cpu-frequency = {...}: {
     imports = [
-      inputs.auto-cpufreq.nixosModules.default
+      inputs.omniflake.flakes.auto-cpufreq.nixosModules.default
     ];
     programs.auto-cpufreq = {
       enable = false;

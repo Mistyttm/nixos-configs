@@ -4,7 +4,7 @@
   ...
 }: {
   perSystem = {pkgs, ...}: {
-    packages.puppypcStarship = inputs.wrapper-modules.wrappers.starship.wrap {
+    packages.puppypcStarship = inputs.omniflake.flakes."github:nix-community/nix-wrapper-modules".wrappers.starship.wrap {
       inherit pkgs;
       package = pkgs.starship;
       settings = {

@@ -3,7 +3,7 @@
     fetchurl = pkgs.fetchurl;
   in {
     imports = [
-      inputs.nix-minecraft.nixosModules.minecraft-servers
+      inputs.omniflake.flakes.nix-minecraft.nixosModules.minecraft-servers
     ];
 
     services.minecraft-servers = {

@@ -10,7 +10,7 @@
     ...
   }: {
     imports = [
-      inputs.nix-index-database.nixosModules.default
+      inputs.omniflake.flakes.nix-index-database.nixosModules.default
     ];
 
     options = {
@@ -88,9 +88,9 @@
 
       nixpkgs = {
         overlays = [
-          inputs.nix-cachyos-kernel.overlays.pinned
+          inputs.omniflake.flakes.nix-cachyos-kernel.overlays.pinned
           self.overlays.default
-          inputs.nix-vscode-extensions.overlays.default
+          inputs.omniflake.flakes.nix-vscode-extensions.overlays.default
           self.overlays.kde-plasma-workspace-xdg-fix
           (_final: prev: {
             inherit

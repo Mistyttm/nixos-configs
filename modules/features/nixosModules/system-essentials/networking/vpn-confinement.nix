@@ -60,7 +60,7 @@
     };
 
     imports = [
-      inputs.vpn-confinement.nixosModules.default
+      inputs.omniflake.flakes.vpn-confinement.nixosModules.default
     ];
 
     vpnNamespaces.wg0 = {

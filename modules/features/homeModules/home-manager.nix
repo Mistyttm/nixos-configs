@@ -1,7 +1,7 @@
 {inputs, ...}: {
   flake.nixosModules.homeManager = {...}: {
     imports = [
-      inputs.home-manager.nixosModules.home-manager
+      inputs.omniflake.flakes.home-manager.nixosModules.home-manager
     ];
 
     home-manager = {
@@ -9,7 +9,7 @@
       useUserPackages = true;
       backupFileExtension = "backup";
       sharedModules = [
-        inputs.sops-nix.homeManagerModules.sops
+        inputs.omniflake.flakes.sops-nix.homeManagerModules.sops
         {home.stateVersion = "26.11";}
       ];
     };

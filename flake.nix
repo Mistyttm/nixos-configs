@@ -2,47 +2,10 @@
   inputs = {
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
 
-    home-manager = {
-      url = "github:nix-community/home-manager";
+    omniflake = {
+      url = "github:fzakaria/omniflake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    mkdocs-flake = {
-      url = "github:applicative-systems/mkdocs-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    flake-parts.url = "github:hercules-ci/flake-parts";
-    import-tree.url = "github:denful/import-tree";
-
-    nix-topology = {
-      url = "github:oddlama/nix-topology";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    wrapper-modules.url = "github:nix-community/nix-wrapper-modules";
-
-    sops-nix.url = "github:Mic92/sops-nix";
-    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
-    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-    nix-index-database = {
-      url = "github:nix-community/nix-index-database";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    auto-cpufreq = {
-      url = "github:AdnanHodzic/auto-cpufreq";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    devshell = {
-      url = "github:numtide/devshell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
-    git-hooks-nix = {
-      url = "github:cachix/git-hooks.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
 
     deadlock-mod-manager = {
       url = "github:deadlock-mod-manager/deadlock-mod-manager";
@@ -51,12 +14,8 @@
 
     millennium = {
       url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
-      # inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    vpn-confinement.url = "github:Maroka-chan/VPN-Confinement";
-
-    direnv-instant.url = "github:Mic92/direnv-instant";
   };
 
   nixConfig = {
@@ -78,18 +37,19 @@
   };
 
   outputs = inputs: let
-    modules = inputs.import-tree ./modules;
+    of = inputs.omniflake.flakes;
+    modules = of.import-tree ./modules;
   in
-    inputs.flake-parts.lib.mkFlake {inherit inputs;} {
+    of.flake-parts.lib.mkFlake {inherit inputs;} {
       imports =
         [
           modules
-          inputs.home-manager.flakeModules.home-manager
-          inputs.git-hooks-nix.flakeModule
-          inputs.mkdocs-flake.flakeModule
-          inputs.devshell.flakeModule
-          inputs.nix-topology.flakeModule
-          inputs.pkgs-by-name-for-flake-parts.flakeModule
+          of.home-manager.flakeModules.home-manager
+          of.git-hooks-nix.flakeModule
+          of.mkdocs-flake.flakeModule
+          of.devshell.flakeModule
+          of.nix-topology.flakeModule
+          of.pkgs-by-name-for-flake-parts.flakeModule
         ]
         ++ (modules.imports or []);
     };

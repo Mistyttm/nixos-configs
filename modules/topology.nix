@@ -2,7 +2,7 @@
   perSystem = {system, ...}: {
     topology.pkgs = import inputs.nixpkgs {
       inherit system;
-      overlays = [inputs.nix-topology.overlays.default];
+      overlays = [inputs.omniflake.flakes.nix-topology.overlays.default];
     };
 
     topology.modules = [
