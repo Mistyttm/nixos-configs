@@ -15,7 +15,6 @@
       vesktop
       heroic
       gimp
-      blender
       qbittorrent
     ];
   };
