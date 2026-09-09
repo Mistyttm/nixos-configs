@@ -196,6 +196,9 @@
                   url = "http://127.0.0.1:8096";
                   key = "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}";
                   enableBlocks = true;
+                  version = 2;
+                  showEpisodeNumber = true;
+                  enableUser = true;
                 };
               };
             }
