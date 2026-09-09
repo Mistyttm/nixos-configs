@@ -144,6 +144,22 @@
         "url": "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst"
       }
     },
+    "nixpkgs-jellyfin-pr": {
+      "locked": {
+        "lastModified": 1788897453,
+        "narHash": "sha256-LrfwcVlfL67TlCFTIly8vg3M+bUhk6fUQIajd+W32XA=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "b4bb64d174c233331ee3343e06835271c7b1abc8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "pull/561130/head",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-lib": {
       "locked": {
         "lastModified": 1785031560,
@@ -188,6 +204,7 @@
         "deadlock-mod-manager": "deadlock-mod-manager",
         "millennium": "millennium",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-jellyfin-pr": "nixpkgs-jellyfin-pr",
         "omniflake": "omniflake"
       }
     },
