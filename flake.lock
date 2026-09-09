@@ -37,6 +37,21 @@
         "type": "github"
       }
     },
+    "flake-file": {
+      "locked": {
+        "lastModified": 1788209062,
+        "narHash": "sha256-j4yjVCCguq6s/SIZ2eh2Ll5Z9cJh7VOkIIFNo2PXRd0=",
+        "owner": "vic",
+        "repo": "flake-file",
+        "rev": "c460df7fe65ac759989daad04f303fb427406e56",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vic",
+        "repo": "flake-file",
+        "type": "github"
+      }
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
@@ -144,22 +159,6 @@
         "url": "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst"
       }
     },
-    "nixpkgs-jellyfin-pr": {
-      "locked": {
-        "lastModified": 1788897453,
-        "narHash": "sha256-LrfwcVlfL67TlCFTIly8vg3M+bUhk6fUQIajd+W32XA=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "b4bb64d174c233331ee3343e06835271c7b1abc8",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "pull/561130/head",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs-lib": {
       "locked": {
         "lastModified": 1785031560,
@@ -202,9 +201,9 @@
     "root": {
       "inputs": {
         "deadlock-mod-manager": "deadlock-mod-manager",
+        "flake-file": "flake-file",
         "millennium": "millennium",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-jellyfin-pr": "nixpkgs-jellyfin-pr",
         "omniflake": "omniflake"
       }
     },

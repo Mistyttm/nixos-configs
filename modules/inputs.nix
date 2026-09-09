@@ -1,9 +1,20 @@
-# DO-NOT-EDIT. This file was auto-generated using github:vic/flake-file.
-# Use `nix run .#write-flake` to regenerate it.
 {
-  outputs = inputs: import ./outputs.nix inputs;
+  inputs,
+  lib,
+  ...
+}: {
+  flake-file.inputs = {
+    nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
 
-  nixConfig = {
+    omniflake = {
+      url = "github:fzakaria/omniflake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    flake-file.url = lib.mkDefault "github:vic/flake-file";
+  };
+
+  flake-file.nixConfig = {
     extra-substituters = [
       "https://nix-community.cachix.org"
       "https://opinionatedcache.cachix.org"
@@ -21,20 +32,5 @@
     ];
   };
 
-  inputs = {
-    deadlock-mod-manager = {
-      url = "github:deadlock-mod-manager/deadlock-mod-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    flake-file.url = "github:vic/flake-file";
-    millennium = {
-      url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
-    omniflake = {
-      url = "github:fzakaria/omniflake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-  };
+  imports = [inputs.flake-file.flakeModules.default];
 }
