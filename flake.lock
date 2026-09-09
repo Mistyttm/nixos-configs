@@ -201,11 +201,11 @@
         "systems": "systems_3"
       },
       "locked": {
-        "lastModified": 1788882976,
-        "narHash": "sha256-7pNFu3G7LJgODaqoVYVbaIlBkBU6on5UOFflrtAxz3c=",
+        "lastModified": 1788963091,
+        "narHash": "sha256-Wf7Dv59IPTpgVYmsSz54K5zTj2A9ULPFvhQYdQ4rttM=",
         "owner": "fzakaria",
         "repo": "omniflake",
-        "rev": "ed6ac538e44d7fc5adfd923b9d55d53253121aa7",
+        "rev": "caae7377742e887ef935a5ada9ec3190c9d2cfe3",
         "type": "github"
       },
       "original": {
