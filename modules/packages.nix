@@ -1,11 +1,11 @@
 {inputs, ...}: {
   imports = [inputs.omniflake.flakes.pkgs-by-name-for-flake-parts.flakeModule];
 
-  flake.overlays.default = final: _prev: let
+  flake.overlays.default = _final: prev: let
     pkgsDir = ../packages;
   in
     builtins.mapAttrs
-    (name: _: final.callPackage (pkgsDir + "/${name}/package.nix") {})
+    (name: _: prev.callPackage (pkgsDir + "/${name}/package.nix") {})
     (builtins.readDir pkgsDir);
 
   perSystem = {system, ...}: {

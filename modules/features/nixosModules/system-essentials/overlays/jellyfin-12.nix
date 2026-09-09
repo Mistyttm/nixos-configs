@@ -2,7 +2,8 @@
   flake-file.inputs.nixpkgs-jellyfin-pr.url = "github:NixOS/nixpkgs/pull/561130/head";
 
   flake.overlays.jellyfin-12-pr = _final: prev: let
-    noOverride = prev.lib.versionAtLeast prev.jellyfin.version "12.0";
+    nixpkgsJellyfinVersion = builtins.head (builtins.match ".*version = \"([^\"]+)\";.*" (builtins.readFile "${inputs.nixpkgs}/pkgs/by-name/je/jellyfin/package.nix"));
+    noOverride = prev.lib.versionAtLeast nixpkgsJellyfinVersion "12.0";
   in
     prev.lib.warnIf noOverride
     ''

@@ -156,12 +156,16 @@ Hosts currently defined: `puppypc` (main desktop), `puppylaptop` /
 `mistylappytappy` (gaming laptop), `thedogpark` (Sydney VPS), `thekennel`
 (home server/media stack), `thepetshop`.
 
-Note: this repo does **not** use `vic/flake-file` (the optional
-canonical-Dendritic tool that lets each module contribute its own flake
-`inputs`). All flake inputs are declared by hand in the single
-`inputs = { ... }` block in `flake.nix`. When a change needs a new
-flake input, add it there directly — don't introduce `flake-file.inputs.*`
-scattered across `modules/` unless explicitly asked to adopt it.
+Note: this repo uses `vic/flake-file` to generate `flake.nix` from module
+options. `flake.nix` is a **generated file** — don't hand-edit it. Flake
+inputs are declared via `flake-file.inputs.*` in `modules/inputs.nix` (and
+may be split across other modules where it makes sense, e.g. an
+overlay module declaring the PR-specific input it consumes). After
+changing declared inputs, run `nix run .#write-flake` to regenerate
+`flake.nix`, then `nix flake lock`. `outputs.nix` (repo root, NOT under
+`modules/`) holds the hand-written `flake-parts`/`omniflake` wiring;
+`flake-file.outputs` is left at its default (`inputs: import ./outputs.nix
+inputs`).
 
 ## Module conventions
 
