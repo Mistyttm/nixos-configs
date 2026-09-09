@@ -92,6 +92,7 @@
           self.overlays.default
           inputs.omniflake.flakes.nix-vscode-extensions.overlays.default
           self.overlays.kde-plasma-workspace-xdg-fix
+          self.overlays.jellyfin-12-pr
           (_final: prev: {
             inherit
               (prev.lixPackageSets.stable)
