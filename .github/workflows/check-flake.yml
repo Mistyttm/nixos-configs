@@ -1,0 +1,32 @@
+name: "Check flake.nix Sync"
+
+on:
+  pull_request:
+    paths:
+      - "modules/**.nix"
+      - "outputs.nix"
+      - "flake.nix"
+  workflow_dispatch:
+
+jobs:
+  check-flake-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Lix
+        uses: samueldr/lix-gha-installer-action@latest
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+
+      - name: Regenerate flake.nix and diff
+        run: |
+          nix run .#write-flake
+          if ! git diff --quiet -- flake.nix; then
+            echo "::error::flake.nix is out of sync with modules/inputs.nix (or outputs.nix). Run 'nix run .#write-flake' locally and commit the result."
+            git diff -- flake.nix
+            exit 1
+          fi

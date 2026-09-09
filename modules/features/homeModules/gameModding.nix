@@ -1,4 +1,9 @@
 {inputs, ...}: {
+  flake-file.inputs.deadlock-mod-manager = {
+    url = "github:deadlock-mod-manager/deadlock-mod-manager";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   flake.homeModules.gameModding = {pkgs, ...}: {
     home.packages = with pkgs;
       [
