@@ -59,10 +59,6 @@
       texliveFull
     ];
 
-    environment.shellAliases = {
-      rebuild = "NH_SHOW_ACTIVATION_LOGS=1 nh os switch . -H puppypc";
-    };
-
     programs.nh.flake = "/home/misty/Documents/nixos-configs-main";
 
     environment.sessionVariables = {
