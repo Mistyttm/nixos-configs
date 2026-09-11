@@ -28,6 +28,7 @@
       gaming
       appimage
       ollama
+      jovian
     ];
 
     networking.hostName = "puppypc";

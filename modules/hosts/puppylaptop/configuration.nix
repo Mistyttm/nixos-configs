@@ -22,6 +22,7 @@
       nix-ld
       nvidia
       openconnect
+      jovian
     ];
 
     networking.hostName = "puppylaptop";
