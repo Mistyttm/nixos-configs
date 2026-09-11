@@ -18,6 +18,7 @@
       self.nixosModules.sops
       self.nixosModules.systemd
       self.nixosModules.xdg
+      self.nixosModules.fwupd
 
       self.nixosModules.networkmanager
       self.nixosModules.resolvd
