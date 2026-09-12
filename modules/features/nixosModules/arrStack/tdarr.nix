@@ -60,8 +60,8 @@
       "d ${localRoot}/tdarr 0755 tdarr media -"
     ];
 
-    systemd.services."tdarr-node-internal" = lib.mkMerge {
-      environment = lib.mkMerge {
+    systemd.services."tdarr-node-internal" = {
+      environment = {
         TDARR_ENGINE = "rust";
       };
       serviceConfig = lib.mkMerge [
@@ -73,8 +73,8 @@
       ];
     };
 
-    systemd.services."tdarr-server" = lib.mkMerge {
-      environment = lib.mkMerge {
+    systemd.services."tdarr-server" = {
+      environment = {
         TDARR_ENGINE = "rust";
       };
       serviceConfig = lib.mkMerge [
