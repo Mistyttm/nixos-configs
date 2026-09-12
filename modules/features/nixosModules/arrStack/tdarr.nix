@@ -60,20 +60,30 @@
       "d ${localRoot}/tdarr 0755 tdarr media -"
     ];
 
-    systemd.services."tdarr-node-internal".serviceConfig = lib.mkMerge [
-      {
-        ReadWritePaths = libraries;
-        MemoryAccounting = true;
-        MemoryMax = "4G";
-      }
-    ];
+    systemd.services."tdarr-node-internal" = lib.mkMerge {
+      environment = lib.mkMerge {
+        TDARR_ENGINE = "rust";
+      };
+      serviceConfig = lib.mkMerge [
+        {
+          ReadWritePaths = libraries;
+          MemoryAccounting = true;
+          MemoryMax = "4G";
+        }
+      ];
+    };
 
-    systemd.services."tdarr-server".serviceConfig = lib.mkMerge [
-      {
-        ReadWritePaths = libraries;
-        MemoryAccounting = true;
-        MemoryMax = "4G";
-      }
-    ];
+    systemd.services."tdarr-server" = lib.mkMerge {
+      environment = lib.mkMerge {
+        TDARR_ENGINE = "rust";
+      };
+      serviceConfig = lib.mkMerge [
+        {
+          ReadWritePaths = libraries;
+          MemoryAccounting = true;
+          MemoryMax = "4G";
+        }
+      ];
+    };
   };
 }
