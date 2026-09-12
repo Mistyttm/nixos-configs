@@ -9,11 +9,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1788898395,
-        "narHash": "sha256-2U4nCdjI5Hnxv5k/fVUBImOgYg844DX/3baCagwYENE=",
+        "lastModified": 1789206074,
+        "narHash": "sha256-MnshU9pBlLwyKDhPt8pgYeHb9XiJS4YfN9EqTC6jvds=",
         "owner": "deadlock-mod-manager",
         "repo": "deadlock-mod-manager",
-        "rev": "dddc2baa7b32c0c354460f5b230313104d903c05",
+        "rev": "e7bd2a1e21d3fd2992536c9800b322e9f54f4aff",
         "type": "github"
       },
       "original": {
@@ -201,11 +201,11 @@
         "systems": "systems_3"
       },
       "locked": {
-        "lastModified": 1789129220,
-        "narHash": "sha256-h9XMwBcAY9c1uMYqCxZ2uuNSSZLDpytdxsOBMrTFSaE=",
+        "lastModified": 1789213125,
+        "narHash": "sha256-4JlFD9jkJFfj+U8m0kLTTQt7JV/kWWU8ZJvRJucVUz0=",
         "owner": "fzakaria",
         "repo": "omniflake",
-        "rev": "1163c2a9be618eede181e60ce59f7c0bc780c2eb",
+        "rev": "14d79685c7717ed5d752f753bd6a882459d22111",
         "type": "github"
       },
       "original": {
