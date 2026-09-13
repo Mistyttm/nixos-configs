@@ -115,11 +115,11 @@
       },
       "locked": {
         "dir": "packages/nix",
-        "lastModified": 1789165954,
-        "narHash": "sha256-PBo8Zm930l/ousmuDNiJE/M379/p5eOudScsdLwGGCw=",
+        "lastModified": 1789240145,
+        "narHash": "sha256-tD3yDzNttIg7dRWJujSDrRgXKWDQFL+e79nkAKDqgs4=",
         "owner": "SteamClientHomebrew",
         "repo": "Millennium",
-        "rev": "e9f2c607c730d37a5284bf247c01b559f2a4e304",
+        "rev": "0a543b6fe26c3e6b0387d9721782796bb597a3d4",
         "type": "github"
       },
       "original": {
@@ -148,11 +148,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1789006805,
-        "narHash": "sha256-q+GdZ3yq4Y2LXHRK0vKTM32Hwy7RCgUgy+hjwZLI5pY=",
-        "rev": "8ce4ef6cb6f871616146b9fe26d2a5ae594e94fe",
+        "lastModified": 1789149629,
+        "narHash": "sha256-eQUZVehWLDBbpBR2rq6DnuRee1ULT6Y675RhsYDSjYI=",
+        "rev": "eaad089433ca2bb662274377d33df3d0e51ef28b",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1070770.8ce4ef6cb6f8/nixexprs.tar.zst?lastModified=1789006805&rev=8ce4ef6cb6f871616146b9fe26d2a5ae594e94fe"
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1072397.eaad089433ca/nixexprs.tar.zst?lastModified=1789149629&rev=eaad089433ca2bb662274377d33df3d0e51ef28b"
       },
       "original": {
         "type": "tarball",
