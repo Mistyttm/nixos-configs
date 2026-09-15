@@ -1,0 +1,37 @@
+diff --git a/src/WallpaperEngine/Application/ApplicationContext.cpp b/src/WallpaperEngine/Application/ApplicationContext.cpp
+index 510ec95..c02d63a 100644
+--- a/src/WallpaperEngine/Application/ApplicationContext.cpp
++++ b/src/WallpaperEngine/Application/ApplicationContext.cpp
+@@ -47,6 +47,32 @@ std::filesystem::path ApplicationContext::resolvePlaylistItemPath (const std::st
+ 
+     std::filesystem::path path = std::filesystem::path (cleaned).lexically_normal ();
+ 
++    if (!std::filesystem::exists (path)) {
++	// Assuming the stripped drive letter maps to filesystem root only holds for
++	// the conventional Wine "Z:" mapping. Proton can instead map a library's
++	// drive letter straight to that Steam library's root, one level short of
++	// "/" — in which case retry relative to the well-known Steam locations
++	// before giving up.
++	if (const char* home = std::getenv ("HOME")) {
++	    static constexpr const char* steamRoots[] = {
++		".steam/steam",
++		".local/share/Steam",
++		".var/app/com.valvesoftware.Steam/.local/share/Steam",
++		"snap/steam/common/.local/share/Steam",
++	    };
++
++	    for (const char* root : steamRoots) {
++		auto candidate
++		    = (std::filesystem::path (home) / root / cleaned.substr (1)).lexically_normal ();
++
++		if (std::filesystem::exists (candidate)) {
++		    path = candidate;
++		    break;
++		}
++	    }
++	}
++    }
++
+     if (std::filesystem::is_regular_file (path)) {
+ 	path = path.parent_path ();
+     }

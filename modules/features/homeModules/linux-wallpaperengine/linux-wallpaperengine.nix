@@ -3,27 +3,37 @@
     pkgs,
     config,
     ...
-  }: {
+  }: let
+    # Name of the playlist as created in the Wallpaper Engine app.
+    # Rotation interval and random/sequential order are configured there.
+    playlist = ["--playlist" "misty-rotation"];
+  in {
     services.linux-wallpaperengine = {
       enable = true;
+      package = pkgs.linux-wallpaperengine.overrideAttrs (_final: prev: {
+        patches = (prev.patches or []) ++ [./linux-wallpaperengine-playlist-path.patch];
+      });
       assetsPath = "${config.xdg.dataHome}/Steam/steamapps/common/wallpaper_engine/assets";
       wallpapers = [
         {
           monitor = "DP-2";
           wallpaperId = "3328281976";
+          extraOptions = playlist;
         }
         {
           monitor = "DP-1";
           wallpaperId = "3215623224";
+          extraOptions = playlist;
         }
         {
           monitor = "DP-5";
           wallpaperId = "3328281976";
-          extraOptions = ["--silent"];
+          extraOptions = playlist ++ ["--silent"];
         }
         {
           monitor = "DP-4";
           wallpaperId = "3215623224";
+          extraOptions = playlist;
         }
       ];
     };
