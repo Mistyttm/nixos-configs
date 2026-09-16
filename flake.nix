@@ -26,7 +26,7 @@
       url = "github:deadlock-mod-manager/deadlock-mod-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    flake-file.url = "github:vic/flake-file";
+    flake-file.url = "github:denful/flake-file";
     millennium = {
       url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
       inputs.nixpkgs.follows = "nixpkgs";

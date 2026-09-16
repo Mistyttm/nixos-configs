@@ -11,7 +11,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    flake-file.url = lib.mkDefault "github:vic/flake-file";
+    flake-file.url = lib.mkDefault "github:denful/flake-file";
   };
 
   flake-file.nixConfig = {
