@@ -11,7 +11,7 @@
     services.linux-wallpaperengine = {
       enable = true;
       package = pkgs.linux-wallpaperengine.overrideAttrs (_final: prev: {
-        patches = (prev.patches or []) ++ [./linux-wallpaperengine-playlist-path.patch ./linux-wallpaperengine-albumart-listener-leak.patch];
+        patches = (prev.patches or []) ++ [./linux-wallpaperengine-playlist-path.patch ./linux-wallpaperengine-albumart-listener-leak.patch ./linux-wallpaperengine-mov-editlist.patch];
       });
       assetsPath = "${config.xdg.dataHome}/Steam/steamapps/common/wallpaper_engine/assets";
       wallpapers = [

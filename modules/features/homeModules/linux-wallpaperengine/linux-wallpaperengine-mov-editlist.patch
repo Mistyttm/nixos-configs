@@ -1,0 +1,17 @@
+diff --git a/src/WallpaperEngine/VideoPlayback/MPV/GLPlayer.cpp b/src/WallpaperEngine/VideoPlayback/MPV/GLPlayer.cpp
+index 39f1ff8..7986ef8 100644
+--- a/src/WallpaperEngine/VideoPlayback/MPV/GLPlayer.cpp
++++ b/src/WallpaperEngine/VideoPlayback/MPV/GLPlayer.cpp
+@@ -222,6 +222,12 @@ void GLPlayer::init () {
+     mpv_set_option_string (this->m_handle, "vo", "libmpv");
+     mpv_set_option_string (this->m_handle, "profile", "fast");
+     mpv_set_option_string (this->m_handle, "untimed", this->m_untimed ? "yes" : "no");
++    // some encoders (e.g. Clipchamp) write mov/mp4 edit lists that don't line up with the
++    // file's actual keyframes, which makes ffmpeg's mov demuxer refuse to find a start
++    // frame at all ("Missing key frame while searching for timestamp") and drop video
++    // entirely. Ignoring the edit list falls back to decoding from the first real
++    // keyframe instead of trusting the (broken) edit; a no-op for well-formed files.
++    mpv_set_option_string (this->m_handle, "demuxer-lavf-o", "ignore_editlist=1");
+ 
+     if (mpv_initialize (this->m_handle) < 0) {
+ 	sLog.exception ("Could not initialize mpv context");
