@@ -74,6 +74,21 @@
       5173
     ];
 
+    networking.networkmanager.ensureProfiles.profiles."Wi-Fi 1C5B58 5G" = {
+      connection = {
+        id = "Wi-Fi 1C5B58 5G";
+        type = "wifi";
+      };
+      ipv4 = {
+        dns = "1.1.1.1;8.8.8.8;";
+        ignore-auto-dns = true;
+      };
+      ipv6 = {
+        dns = "2606:4700:4700::1111;2606:4700:4700::1001;";
+        ignore-auto-dns = true;
+      };
+    };
+
     system.stateVersion = "24.05";
 
     services.sunshineStreaming = {
