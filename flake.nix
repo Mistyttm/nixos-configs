@@ -33,7 +33,6 @@
     };
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
-    nixpkgs-jellyfin-pr.url = "github:NixOS/nixpkgs/pull/561130/head";
     omniflake = {
       url = "github:fzakaria/omniflake";
       inputs.nixpkgs.follows = "nixpkgs";
