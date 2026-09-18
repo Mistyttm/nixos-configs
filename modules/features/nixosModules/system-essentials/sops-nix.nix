@@ -13,10 +13,6 @@
       sops
     ];
 
-    home-manager.sharedModules = [
-      inputs.sops-nix.homeManagerModules.sops
-    ];
-
     sops.age.keyFile = "/var/lib/sops-nix/key.txt";
   };
 }
