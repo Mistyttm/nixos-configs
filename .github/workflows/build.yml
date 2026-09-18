@@ -196,27 +196,29 @@ jobs:
             echo
             echo '```text'
 
-            jq -r '
-              select(.level == "error")
+            sed -n 's/^@nix //p' build-results/build.jsonl \
+            | jq -R -r '
+              fromjson? | select(.level == "error")
               |
               if (.msg | type) == "string"
               then .msg
               else (.msg.text // tostring)
               end
-            ' build-results/build.jsonl \
+            ' \
             || echo "Unable to parse build errors"
 
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
-          jq -r '
-            select(.level == "error")
+          sed -n 's/^@nix //p' build-results/build.jsonl \
+          | jq -R -r '
+            fromjson? | select(.level == "error")
             |
             if (.msg | type) == "string"
             then .msg
             else (.msg.text // tostring)
             end
-          ' build-results/build.jsonl \
+          ' \
           | while IFS= read -r error; do
               echo "::error title=Nix build failure::$error"
             done
