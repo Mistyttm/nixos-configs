@@ -271,11 +271,11 @@
         "systems": "systems_3"
       },
       "locked": {
-        "lastModified": 1789733596,
-        "narHash": "sha256-ZtO2ru3ojpT7R1icBGyMiyM9UTR3AeTFG+Jo1wNBZtw=",
+        "lastModified": 1789825751,
+        "narHash": "sha256-4inROAOB/X5RIy+c9TtD2Nh3aMo2Nhvi7HxE2gG4+hI=",
         "owner": "fzakaria",
         "repo": "omniflake",
-        "rev": "efaad002849ab98fbbc651d4554dc0c37e50958b",
+        "rev": "3f491debab28b0aa9a6edd7b927bfcebaa7fe0e9",
         "type": "github"
       },
       "original": {
@@ -323,11 +323,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789691124,
-        "narHash": "sha256-k+I+R6uwHX3VcJ7326qLV6vCahZUgsVl+i8sSU/Stxk=",
+        "lastModified": 1789815532,
+        "narHash": "sha256-/Ql9UE21iDwOU/JdPV20yZtaMpGf+iD2EhIA1aAi540=",
         "owner": "Mic92",
         "repo": "sops-nix",
-        "rev": "1e73e8f7176d65e1b55e324de099bbfff4b2c574",
+        "rev": "166fc0d3f4fcd0dfc9af102ba8e85fa5dd04e5f7",
         "type": "github"
       },
       "original": {
