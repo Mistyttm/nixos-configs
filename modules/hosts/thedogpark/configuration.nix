@@ -6,8 +6,6 @@
       thedogparkHomeManager
       system-essentials
       misty
-      docker
-      fonts
       cli-tools
       nix-ld
       fail2ban
