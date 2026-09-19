@@ -102,6 +102,7 @@
               colmena
               ;
           })
+          self.overlays.nodejs
         ];
         config = {
           permittedInsecurePackages = config.nixconfig.insecurePackages;
