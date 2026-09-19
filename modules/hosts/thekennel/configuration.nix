@@ -10,8 +10,6 @@
       thekennelHomeManager
       system-essentials
       misty
-      docker
-      fonts
       cli-tools
       nix-ld
       nvidia
