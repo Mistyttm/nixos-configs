@@ -27,10 +27,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     flake-file.url = "github:denful/flake-file";
-    millennium = {
-      url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    millennium.url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
     omniflake = {
