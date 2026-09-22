@@ -93,6 +93,7 @@
           self.overlays.default
           inputs.omniflake.flakes.nix-vscode-extensions.overlays.default
           self.overlays.kde-plasma-workspace-xdg-fix
+          inputs.grimoire.overlays.default
           (_final: prev: {
             inherit
               (prev.lixPackageSets.stable)

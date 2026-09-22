@@ -22,11 +22,11 @@
   };
 
   inputs = {
-    deadlock-mod-manager = {
-      url = "github:deadlock-mod-manager/deadlock-mod-manager";
+    flake-file.url = "github:denful/flake-file";
+    grimoire = {
+      url = "github:Slush97/grimoire";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    flake-file.url = "github:denful/flake-file";
     millennium.url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";

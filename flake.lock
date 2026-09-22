@@ -1,27 +1,5 @@
 {
   "nodes": {
-    "deadlock-mod-manager": {
-      "inputs": {
-        "flake-utils": "flake-utils",
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "rust-overlay": "rust-overlay"
-      },
-      "locked": {
-        "lastModified": 1790026037,
-        "narHash": "sha256-O8MKAM80OPm9YEQW2NMMgTuvy0u3w5k03Q94gRi7JVA=",
-        "owner": "deadlock-mod-manager",
-        "repo": "deadlock-mod-manager",
-        "rev": "7960090f4d5fe329aa24c126776dfb3b9064a219",
-        "type": "github"
-      },
-      "original": {
-        "owner": "deadlock-mod-manager",
-        "repo": "deadlock-mod-manager",
-        "type": "github"
-      }
-    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -122,21 +100,41 @@
         "type": "github"
       }
     },
-    "flake-utils_2": {
+    "grimoire": {
       "inputs": {
-        "systems": "systems_2"
+        "grimoire-social": "grimoire-social",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "vpkmerge": "vpkmerge"
       },
       "locked": {
-        "lastModified": 1731533236,
-        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "lastModified": 1788206489,
+        "narHash": "sha256-2n7OqDMMuQVPybb38hOaUBpKNVOutyWui5VP4W+OY5g=",
+        "owner": "Slush97",
+        "repo": "grimoire",
+        "rev": "c70c89b394394ef24c7763c485e1fa291c0979fe",
         "type": "github"
       },
       "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
+        "owner": "Slush97",
+        "repo": "grimoire",
+        "type": "github"
+      }
+    },
+    "grimoire-social": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1785648456,
+        "narHash": "sha256-AR2rTNDuge19t+VAqL/I6dmB8f5niIqINmNnRL70k94=",
+        "owner": "Slush97",
+        "repo": "grimoire-social",
+        "rev": "e97a59d7cd55fc1ae1e11a56ca2fde5305de9c4f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Slush97",
+        "repo": "grimoire-social",
         "type": "github"
       }
     },
@@ -278,11 +276,11 @@
       "inputs": {
         "flake-compat": "flake-compat_2",
         "flake-parts": "flake-parts_2",
-        "flake-utils": "flake-utils_2",
+        "flake-utils": "flake-utils",
         "nixpkgs": [
           "nixpkgs"
         ],
-        "systems": "systems_3"
+        "systems": "systems_2"
       },
       "locked": {
         "lastModified": 1789998271,
@@ -300,34 +298,13 @@
     },
     "root": {
       "inputs": {
-        "deadlock-mod-manager": "deadlock-mod-manager",
         "flake-file": "flake-file",
+        "grimoire": "grimoire",
         "millennium": "millennium",
         "nix-cachyos-kernel": "nix-cachyos-kernel",
         "nixpkgs": "nixpkgs_3",
         "omniflake": "omniflake",
         "sops-nix": "sops-nix"
-      }
-    },
-    "rust-overlay": {
-      "inputs": {
-        "nixpkgs": [
-          "deadlock-mod-manager",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1783747106,
-        "narHash": "sha256-KlepQu/O5m11lAjcJ4ER5bc6bIzyX2UMPDARzMzQfIw=",
-        "owner": "oxalica",
-        "repo": "rust-overlay",
-        "rev": "e598b37857b895b81020a65a802ef55f5bbed72f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "oxalica",
-        "repo": "rust-overlay",
-        "type": "github"
       }
     },
     "sops-nix": {
@@ -380,18 +357,20 @@
         "type": "github"
       }
     },
-    "systems_3": {
+    "vpkmerge": {
+      "flake": false,
       "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "lastModified": 1783195121,
+        "narHash": "sha256-DjGEiL6Zfm1chawjeT23KXKvmncCjDssFzguPmHNWUw=",
+        "owner": "Slush97",
+        "repo": "vpkmerge",
+        "rev": "f716f7a95aa64cb8534b18c6edc81f29a849db9a",
         "type": "github"
       },
       "original": {
-        "owner": "nix-systems",
-        "repo": "default",
+        "owner": "Slush97",
+        "ref": "v0.19.0",
+        "repo": "vpkmerge",
         "type": "github"
       }
     }
