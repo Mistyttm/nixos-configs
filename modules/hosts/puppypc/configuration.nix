@@ -108,5 +108,9 @@
       #   }
       # ];
     };
+
+    nixconfig.insecurePackages = [
+      "electron-40.10.5"
+    ];
   };
 }
