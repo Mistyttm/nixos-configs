@@ -126,12 +126,127 @@ jobs:
         run: |
           echo '${{ steps.matrix.outputs.matrix }}'
 
+  # Stage 1: build every derivation that more than one system needs, exactly
+  # once, and push it to Cachix. Without this, each matrix job starts with an
+  # empty store and decides what to build up front, so shared derivations
+  # (custom packages, kernels, etc.) get built once per system in parallel.
+  build-shared:
+    name: Build shared derivations
+
+    needs:
+      - evaluate
+      - discover
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    env:
+      SYSTEMS: ${{ needs.discover.outputs.matrix }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Maximize disk space
+        uses: wimpysworld/nothing-but-nix@main
+        with:
+          hatchet-protocol: rampage
+
+      - name: Install Lix
+        uses: samueldr/lix-gha-installer-action@latest
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
+            max-jobs = auto
+
+      - name: Enable Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v14
+        with:
+          use-flakehub: false
+
+      - name: Setup Cachix
+        uses: cachix/cachix-action@v17
+        with:
+          name: opinionatedcache
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: Plan shared derivations
+        id: plan
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p plan/systems
+
+          # .drv paths Nix would actually build for one system, i.e. the ones
+          # no configured substituter (incl. Cachix) can provide.
+          missing_drvs() {
+            nix build --dry-run \
+              ".#nixosConfigurations.$1.config.system.build.toplevel" 2>&1 \
+            | awk '
+                /will be built:$/ { p = 1; next }
+                /^[^ ]/           { p = 0 }
+                p && /\.drv$/     { sub(/^ +/, ""); print }
+              ' \
+            | sort -u
+          }
+
+          for system in $(jq -r '.[]' <<< "$SYSTEMS"); do
+            missing_drvs "$system" > "plan/systems/$system.txt"
+            echo "$system: $(wc -l < "plan/systems/$system.txt") derivations to build"
+          done
+
+          # Needed by 2+ systems == would be built 2+ times without this job.
+          # This set is closed under dependencies, so realising it never
+          # pulls in a system-specific derivation.
+          cat plan/systems/*.txt | sort | uniq -d > plan/shared.txt
+
+          per_system_total=$(cat plan/systems/*.txt | wc -l)
+          unique_total=$(cat plan/systems/*.txt | sort -u | wc -l)
+          shared=$(wc -l < plan/shared.txt)
+
+          echo "shared=$shared" >> "$GITHUB_OUTPUT"
+
+          {
+            echo "## Build plan"
+            echo
+            echo "| System | Derivations to build |"
+            echo "|---|---|"
+            for f in plan/systems/*.txt; do
+              echo "| $(basename "$f" .txt) | $(wc -l < "$f") |"
+            done
+            echo
+            echo "- Shared by 2+ systems (built here, once): **$shared**"
+            echo "- Duplicate builds avoided: **$((per_system_total - unique_total))**"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Build shared derivations
+        if: steps.plan.outputs.shared != '0'
+        shell: bash
+        run: |
+          set -o pipefail
+
+          # The .drv files are already in the store from the dry runs above.
+          xargs -a plan/shared.txt nix-store --realise --keep-going
+
+  # Stage 2: per-system builds. Everything shared is now in Cachix, so each
+  # job only builds what is unique to its own system.
   build:
     name: Build ${{ matrix.system }}
 
     needs:
       - evaluate
       - discover
+      - build-shared
+
+    # Still run if build-shared failed, so every system reports its own result.
+    if: >-
+      ${{
+        !cancelled() &&
+        needs.evaluate.result == 'success' &&
+        needs.discover.result == 'success'
+      }}
 
     strategy:
       fail-fast: false
