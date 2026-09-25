@@ -222,16 +222,80 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Build shared derivations
+        id: build
         if: steps.plan.outputs.shared != '0'
         shell: bash
         run: |
           set -o pipefail
 
+          mkdir -p build-results
+
           # The .drv files are already in the store from the dry runs above.
-          xargs -a plan/shared.txt nix-store --realise --keep-going
+          # `nix build` (not `nix-store --realise`) so we get the same
+          # structured internal-json log the per-system build step parses.
+          mapfile -t drvs < plan/shared.txt
+          nix build \
+            "${drvs[@]}" \
+            --no-link \
+            --keep-going \
+            --log-format internal-json \
+            2>&1 | tee build-results/build-shared.jsonl
+
+          exit ${PIPESTATUS[0]}
+
+      - name: Summarise shared build failure
+        if: failure() && steps.build.outcome == 'failure'
+        shell: bash
+        run: |
+          {
+            echo "## ❌ Shared derivation build failed"
+            echo
+            echo "### Errors"
+            echo
+            echo '```text'
+
+            sed -n 's/^@nix //p' build-results/build-shared.jsonl \
+            | jq -R -r '
+              fromjson? | select(.action == "msg" and .level == 0)
+              |
+              if (.msg | type) == "string"
+              then .msg
+              else (.msg.text // tostring)
+              end
+            ' \
+            | sed -E 's/\x1b\[[0-9;]*m//g' \
+            || echo "Unable to parse build errors"
+
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          sed -n 's/^@nix //p' build-results/build-shared.jsonl \
+          | jq -R -r '
+            fromjson? | select(.action == "msg" and .level == 0)
+            |
+            if (.msg | type) == "string"
+            then .msg
+            else (.msg.text // tostring)
+            end
+          ' \
+          | sed -E 's/\x1b\[[0-9;]*m//g' \
+          | while IFS= read -r error; do
+              echo "::error title=Shared derivation build failure::$error"
+            done
+
+      - name: Upload shared build logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nix-build-log-shared
+          path: build-results/build-shared.jsonl
 
   # Stage 2: per-system builds. Everything shared is now in Cachix, so each
-  # job only builds what is unique to its own system.
+  # job only builds what is unique to its own system. This stage does not
+  # run at all if build-shared failed: a failed shared build means the
+  # store is in an unknown state and the per-system jobs would likely just
+  # rebuild (and re-fail on) the same derivations anyway, burning 4x the
+  # runner time to tell you what stage 1 already told you.
   build:
     name: Build ${{ matrix.system }}
 
@@ -240,12 +304,12 @@ jobs:
       - discover
       - build-shared
 
-    # Still run if build-shared failed, so every system reports its own result.
     if: >-
       ${{
         !cancelled() &&
         needs.evaluate.result == 'success' &&
-        needs.discover.result == 'success'
+        needs.discover.result == 'success' &&
+        needs.build-shared.result == 'success'
       }}
 
     strategy:
