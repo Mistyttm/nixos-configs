@@ -118,7 +118,7 @@ jobs:
             --apply '
               attrs:
                 builtins.filter
-                  (name: !(builtins.match "^thepetshop.*" name !=null))
+                  (name: !(builtins.match "^thepetshop.*" name != null))
                   (builtins.attrNames attrs)
               ')" >> "$GITHUB_OUTPUT"
 
