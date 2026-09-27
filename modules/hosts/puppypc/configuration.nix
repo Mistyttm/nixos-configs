@@ -29,7 +29,7 @@
       appimage
       ollama
       jovian
-      puppypc-nat
+      # puppypc-nat
     ];
 
     networking.hostName = "puppypc";
