@@ -109,7 +109,7 @@
               group = "nginx";
               dnsProvider = "porkbun";
             };
-            "seer.mistyttm.dev" = {
+            "seerr.mistyttm.dev" = {
               group = "nginx";
               dnsProvider = "porkbun";
             };
@@ -232,8 +232,8 @@
               '';
             };
           };
-          "seer.mistyttm.dev" = {
-            useACMEHost = "seer.mistyttm.dev";
+          "seerr.mistyttm.dev" = {
+            useACMEHost = "seerr.mistyttm.dev";
             forceSSL = true;
 
             locations."/" = {
