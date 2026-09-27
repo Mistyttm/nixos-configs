@@ -23,6 +23,7 @@
       nvidia
       openconnect
       jovian
+      skwd
     ];
 
     networking.hostName = "puppylaptop";

@@ -30,6 +30,7 @@
       ollama
       jovian
       # puppypc-nat
+      skwd
     ];
 
     networking.hostName = "puppypc";

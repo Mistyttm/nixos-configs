@@ -24,7 +24,7 @@
         direnv
         gameModding
         mangohud
-        linux-wallpaperengine
+        # linux-wallpaperengine
         protonmail
         plasma
       ];
