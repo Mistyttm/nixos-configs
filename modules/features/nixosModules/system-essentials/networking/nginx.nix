@@ -223,6 +223,22 @@
                 proxy_set_header X-Forwarded-Host $http_host;
               '';
             };
+
+            locations."/seer".extraConfig = ''
+              return 301 /seer/;
+            '';
+
+            locations."/seer/" = {
+              proxyPass = "http://10.100.0.2:5055/";
+              proxyWebsockets = true;
+              extraConfig = ''
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_set_header X-Forwarded-Host $http_host;
+              '';
+            };
           };
         };
       };
