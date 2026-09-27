@@ -109,6 +109,10 @@
               group = "nginx";
               dnsProvider = "porkbun";
             };
+            "seer.mistyttm.dev" = {
+              group = "nginx";
+              dnsProvider = "porkbun";
+            };
           };
         };
 
@@ -227,41 +231,21 @@
                 proxy_set_header X-Forwarded-Host $http_host;
               '';
             };
+          };
+          "seer.mistyttm.dev" = {
+            useACMEHost = "seer.mistyttm.dev";
+            forceSSL = true;
 
-            locations."^~ /seer" = {
-              proxyPass = "http://10.100.0.2:5055"; # NO trailing slash — rewrite below handles it
+            locations."/" = {
+              proxyPass = "http://10.100.0.2:5055";
+              proxyWebsockets = true;
               extraConfig = ''
-                set $app 'seer';
-                rewrite ^/seer/?(.*)$ /$1 break;
-
-                proxy_redirect ^ /$app;
-                proxy_redirect /setup /$app/setup;
-                proxy_redirect /login /$app/login;
-
-                proxy_set_header Accept-Encoding "";
-                sub_filter_once off;
-                sub_filter_types *;
-                sub_filter 'href="/"' 'href="/$app"';
-                sub_filter 'href="/login"' 'href="/$app/login"';
-                sub_filter 'href:"/"' 'href:"/$app"';
-                sub_filter '\/_next' '\/$app\/_next';
-                sub_filter '/_next' '/$app/_next';
-                sub_filter '/api/v1' '/$app/api/v1';
-                sub_filter '/login/plex/loading' '/$app/login/plex/loading';
-                sub_filter '/images/' '/$app/images/';
-                sub_filter '/imageproxy/' '/$app/imageproxy/';
-                sub_filter '/avatarproxy/' '/$app/avatarproxy/';
-                sub_filter '/android-' '/$app/android-';
-                sub_filter '/apple-' '/$app/apple-';
-                sub_filter '/favicon' '/$app/favicon';
-                sub_filter '/logo_' '/$app/logo_';
-                sub_filter '/site.webmanifest' '/$app/site.webmanifest';
-
                 proxy_set_header Host $host;
                 proxy_set_header X-Real-IP $remote_addr;
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header X-Forwarded-Proto $scheme;
                 proxy_set_header X-Forwarded-Host $http_host;
+                proxy_buffering off;
               '';
             };
           };
