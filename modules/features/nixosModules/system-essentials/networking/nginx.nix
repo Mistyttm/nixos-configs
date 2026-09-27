@@ -191,9 +191,12 @@
             useACMEHost = "jellyfin.mistyttm.dev";
             forceSSL = true;
 
+            locations."= /" = {
+              return = "302 $scheme://$host/web/";
+            };
+
             locations."/" = {
               proxyPass = "http://10.100.0.2:8097";
-              return = "302 $scheme://$host/web/";
               proxyWebsockets = true;
               extraConfig = ''
                 proxy_set_header Host $host;
