@@ -29,6 +29,7 @@
       appimage
       ollama
       jovian
+      protonDrive
       # puppypc-nat
       skwd
     ];
@@ -52,6 +53,8 @@
     doggate.wireguard = {
       enable = true;
     };
+
+    doggate.protonDrive.totp = true;
 
     nixpkgs.config.cudaSupport = true;
 

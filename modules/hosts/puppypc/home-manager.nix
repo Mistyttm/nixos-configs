@@ -26,6 +26,7 @@
         mangohud
         # linux-wallpaperengine
         protonmail
+        protonDrive
         plasma
       ];
 
@@ -35,6 +36,15 @@
       };
 
       programs.puppy = {
+        protonDrive = {
+          enable = true;
+          usernameFile = config.sops.secrets.protondrive_username.path;
+          passwordFile = config.sops.secrets.protondrive_password.path;
+          otpSecretKeyFile =
+            if config.doggate.protonDrive.totp
+            then config.sops.secrets.protondrive_otp_secret_key.path
+            else null;
+        };
         starship.hostname = config.networking.hostName;
         git = {
           enable = true;
