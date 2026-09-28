@@ -22,7 +22,7 @@
       downloaders
       prometheus-server
       matrix-alertmanager-bot
-      # vpn-confinement
+      vpn-confinement
     ];
 
     networking.hostName = "thekennel";
