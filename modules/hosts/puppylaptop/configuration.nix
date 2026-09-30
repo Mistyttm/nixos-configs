@@ -53,6 +53,7 @@
     environment.systemPackages = with pkgs; [
       touchegg
       texliveFull
+      protonvpn-gui
     ];
 
     environment.sessionVariables = {
