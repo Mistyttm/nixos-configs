@@ -62,7 +62,7 @@
       piper
       gamescope
       texliveFull
-      protonvpn-gui
+      proton-vpn
     ];
 
     programs.nh.flake = "/home/misty/Documents/nixos-configs-main";
