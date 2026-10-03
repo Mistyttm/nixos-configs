@@ -326,7 +326,7 @@ jobs:
         system: ${{ fromJson(needs.discover.outputs.matrix) }}
 
     runs-on: ubuntu-latest
-    timeout-minutes: 240
+    timeout-minutes: 360
 
     steps:
       - name: Checkout repository
@@ -374,7 +374,7 @@ jobs:
           exit ${PIPESTATUS[0]}
 
       - name: Summarise build failure
-        if: failure() && steps.build.outcome == 'failure'
+        if: (failure() || cancelled()) && steps.build.outcome != 'success'
         shell: bash
         run: |
           {
@@ -414,7 +414,7 @@ jobs:
             done
 
       - name: Upload build logs
-        if: failure()
+        if: failure() || cancelled()
         uses: actions/upload-artifact@v4
         with:
           name: nix-build-log-${{ matrix.system }}
