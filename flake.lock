@@ -109,11 +109,11 @@
         "vpkmerge": "vpkmerge"
       },
       "locked": {
-        "lastModified": 1790994675,
-        "narHash": "sha256-wA5xNzELl0hpEGOeWtLuF7DqxyeUIy6fw7U4mvIf6r4=",
+        "lastModified": 1791005380,
+        "narHash": "sha256-tY2IvlUzpVegDg+DBPCNkbramrg3Y7HHkQ85nNYdsAg=",
         "owner": "Slush97",
         "repo": "grimoire",
-        "rev": "5e2f7531f9b2b586d9eaea1b186e6c030689fbfc",
+        "rev": "de1e4a51bfc5e7bebbc6e7afc584c8f6061add4a",
         "type": "github"
       },
       "original": {
@@ -283,11 +283,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1790948124,
-        "narHash": "sha256-8M0WoALDkMAVOjW4t/IWfA1E03nDxztG1D/aYOM++eA=",
+        "lastModified": 1791030495,
+        "narHash": "sha256-Ae/H+SQkE6FmNR1rZ/AQ1kDH/XFTi+Wn+vaOwygWswE=",
         "owner": "fzakaria",
         "repo": "omniflake",
-        "rev": "bcaab0df48e9fb53bf9b9e5d98dd236c51d810e2",
+        "rev": "632ace31da775b297bb688b1e83cf9297c2c9962",
         "type": "github"
       },
       "original": {
