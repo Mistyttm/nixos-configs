@@ -180,27 +180,27 @@ jobs:
 
           mkdir -p plan/systems
 
-          # .drv paths Nix would actually build for one system, i.e. the ones
-          # no configured substituter (incl. Cachix) can provide.
-          missing_drvs() {
-            nix build --dry-run \
-              ".#nixosConfigurations.$1.config.system.build.toplevel" 2>&1 \
-            | awk '
-                /will be built:$/ { p = 1; next }
-                /^[^ ]/           { p = 0 }
-                p && /\.drv$/     { sub(/^ +/, ""); print }
-              ' \
+          # Full derivation closure for one system's toplevel.
+          # This is independent of substituter availability and gives us every
+          # derivation required to realise the system.
+          closure_drvs() {
+            local system="$1"
+            local toplevel_drv
+
+            toplevel_drv="$(nix eval --raw \
+              ".#nixosConfigurations.${system}.config.system.build.toplevel.drvPath")"
+
+            nix-store --query --requisites "$toplevel_drv" \
+            | awk '/\.drv$/ { print }' \
             | sort -u
           }
 
           for system in $(jq -r '.[]' <<< "$SYSTEMS"); do
-            missing_drvs "$system" > "plan/systems/$system.txt"
-            echo "$system: $(wc -l < "plan/systems/$system.txt") derivations to build"
+            closure_drvs "$system" > "plan/systems/$system.txt"
+            echo "$system: $(wc -l < "plan/systems/$system.txt") derivations in closure"
           done
 
-          # Needed by 2+ systems == would be built 2+ times without this job.
-          # This set is closed under dependencies, so realising it never
-          # pulls in a system-specific derivation.
+          # Needed by 2+ systems == shared derivation work across hosts.
           cat plan/systems/*.txt | sort | uniq -d > plan/shared.txt
 
           per_system_total=$(cat plan/systems/*.txt | wc -l)
@@ -212,14 +212,14 @@ jobs:
           {
             echo "## Build plan"
             echo
-            echo "| System | Derivations to build |"
+            echo "| System | Derivations in closure |"
             echo "|---|---|"
             for f in plan/systems/*.txt; do
               echo "| $(basename "$f" .txt) | $(wc -l < "$f") |"
             done
             echo
-            echo "- Shared by 2+ systems (built here, once): **$shared**"
-            echo "- Duplicate builds avoided: **$((per_system_total - unique_total))**"
+            echo "- Shared by 2+ systems: **$shared**"
+            echo "- Cross-system duplicate derivation references: **$((per_system_total - unique_total))**"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Build shared derivations
@@ -227,22 +227,35 @@ jobs:
         if: steps.plan.outputs.shared != '0'
         shell: bash
         run: |
-          set -o pipefail
+          set -euo pipefail
 
           mkdir -p build-results
 
-          # The .drv files are already in the store from the dry runs above.
-          # `nix build` (not `nix-store --realise`) so we get the same
-          # structured internal-json log the per-system build step parses.
+          # Build in chunks to avoid command-line length limits on large shared
+          # closure sets.
           mapfile -t drvs < plan/shared.txt
-          nix build \
-            "${drvs[@]}" \
-            --no-link \
-            --keep-going \
-            --log-format internal-json \
-            2>&1 | { grep --line-buffered '"action":"msg"' || true; } > build-results/build-shared.jsonl
+          : > build-results/build-shared.jsonl
 
-          exit ${PIPESTATUS[0]}
+          chunk_size=256
+          status=0
+
+          for ((i = 0; i < ${#drvs[@]}; i += chunk_size)); do
+            chunk=( "${drvs[@]:i:chunk_size}" )
+
+            nix build \
+              "${chunk[@]}" \
+              --no-link \
+              --keep-going \
+              --log-format internal-json \
+              2>&1 | { grep --line-buffered '"action":"msg"' || true; } >> build-results/build-shared.jsonl
+
+            cmd_status=${PIPESTATUS[0]}
+            if [ "$cmd_status" -ne 0 ]; then
+              status="$cmd_status"
+            fi
+          done
+
+          exit "$status"
 
       - name: Summarise shared build failure
         if: failure() && steps.build.outcome == 'failure'
