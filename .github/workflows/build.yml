@@ -227,29 +227,51 @@ jobs:
         if: steps.plan.outputs.shared != '0'
         shell: bash
         run: |
-          set -euo pipefail
+          # No -e: we want every chunk attempted and the real exit status kept.
+          set -uo pipefail
 
           mkdir -p build-results
-
-          # Build in chunks to avoid command-line length limits on large shared
-          # closure sets.
           mapfile -t drvs < plan/shared.txt
-          : > build-results/build-shared.jsonl
+          : > build-results/dryrun.log
+          : > build-results/build-shared.log
 
           chunk_size=256
-          status=0
 
+          # Dry run: which shared derivations genuinely need building here
+          # (the rest are already valid or substitutable).
+          echo "::group::Dry run"
+          for ((i = 0; i < ${#drvs[@]}; i += chunk_size)); do
+            chunk=( "${drvs[@]:i:chunk_size}" )
+            nix-store --realise --dry-run "${chunk[@]}" 2>&1 \
+              | tee -a build-results/dryrun.log
+          done
+          echo "::endgroup::"
+
+          awk '
+            /will be built:$/ { f = 1; next }
+            /^[^ ]/           { f = 0 }
+            f && /\.drv$/     { gsub(/^ +/, ""); print }
+          ' build-results/dryrun.log | sort -u > build-results/to-build.txt
+
+          echo "Derivations to build: $(wc -l < build-results/to-build.txt)"
+
+          {
+            echo "- Shared derivations that actually needed building: **$(wc -l < build-results/to-build.txt)**"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          # Real build. nix-store --realise takes .drv paths directly, with no
+          # installable parsing, and streams its output to the Actions log.
+          status=0
           for ((i = 0; i < ${#drvs[@]}; i += chunk_size)); do
             chunk=( "${drvs[@]:i:chunk_size}" )
 
-            nix build \
-              "${chunk[@]}" \
-              --no-link \
+            nix-store --realise \
               --keep-going \
-              --log-format internal-json \
-              2>&1 | { grep --line-buffered '"action":"msg"' || true; } >> build-results/build-shared.jsonl
-
+              --max-jobs 2 \
+              "${chunk[@]}" \
+              2>&1 | tee -a build-results/build-shared.log
             cmd_status=${PIPESTATUS[0]}
+
             if [ "$cmd_status" -ne 0 ]; then
               status="$cmd_status"
             fi
@@ -257,52 +279,63 @@ jobs:
 
           exit "$status"
 
+      # Push explicitly rather than relying only on the cachix-action post step,
+      # so the cache is populated before stage 2 starts. Only the outputs of
+      # derivations that were actually built here are pushed.
+      - name: Push built shared derivations to Cachix
+        if: ${{ !cancelled() && steps.plan.outputs.shared != '0' }}
+        shell: bash
+        env:
+          CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
+        run: |
+          set -uo pipefail
+
+          if [ ! -s build-results/to-build.txt ]; then
+            echo "Nothing was built locally; nothing to push."
+            exit 0
+          fi
+
+          xargs -a build-results/to-build.txt -n 256 nix-store --query --outputs \
+            | while IFS= read -r path; do
+                [ -e "$path" ] && echo "$path"
+              done \
+            | sort -u > build-results/push-paths.txt
+
+          echo "Pushing $(wc -l < build-results/push-paths.txt) store paths"
+          cachix push opinionatedcache < build-results/push-paths.txt
+
       - name: Summarise shared build failure
         if: failure() && steps.build.outcome == 'failure'
         shell: bash
         run: |
+          errors="$(grep -E '^error:|builder for .* failed|cannot build|dependency .* failed' \
+            build-results/build-shared.log | sort -u | head -n 50 || true)"
+
           {
             echo "## ❌ Shared derivation build failed"
             echo
             echo "### Errors"
             echo
             echo '```text'
-
-            sed -n 's/^@nix //p' build-results/build-shared.jsonl \
-            | jq -R -r '
-              fromjson? | select(.action == "msg" and .level == 0)
-              |
-              if (.msg | type) == "string"
-              then .msg
-              else (.msg.text // tostring)
-              end
-            ' \
-            | sed -E 's/\x1b\[[0-9;]*m//g' \
-            || echo "Unable to parse build errors"
-
+            echo "${errors:-Unable to parse build errors}"
+            echo
+            echo "--- last 100 log lines ---"
+            tail -n 100 build-results/build-shared.log || true
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
-          sed -n 's/^@nix //p' build-results/build-shared.jsonl \
-          | jq -R -r '
-            fromjson? | select(.action == "msg" and .level == 0)
-            |
-            if (.msg | type) == "string"
-            then .msg
-            else (.msg.text // tostring)
-            end
-          ' \
-          | sed -E 's/\x1b\[[0-9;]*m//g' \
-          | while IFS= read -r error; do
-              echo "::error title=Shared derivation build failure::$error"
-            done
+          echo "$errors" | while IFS= read -r error; do
+            [ -n "$error" ] && echo "::error title=Shared derivation build failure::$error"
+          done
 
       - name: Upload shared build logs
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: nix-build-log-shared
-          path: build-results/build-shared.jsonl
+          path: |
+            build-results/build-shared.log
+            build-results/dryrun.log
 
       - name: Disk usage
         if: always()
