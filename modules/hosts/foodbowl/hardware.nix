@@ -6,7 +6,7 @@
   }: {
     imports = [
       (modulesPath + "/installer/scan/not-detected.nix")
-      inputs.omniflake.flakes.nix-index-database.nixosModules.raspberry-pi-4
+      inputs.omniflake.flakes.nixos-hardware.nixosModules.raspberry-pi-4
     ];
 
     fileSystems."/" = {
