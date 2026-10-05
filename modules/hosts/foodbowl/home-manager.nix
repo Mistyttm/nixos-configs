@@ -1,5 +1,5 @@
 {self, ...}: {
-  flake.nixosModules.foodbowlHomeManager = {...}: {
+  flake.nixosModules.foodbowlHomeManager = {lib, ...}: {
     imports = [
       self.nixosModules.homeManager
     ];
@@ -23,6 +23,8 @@
         enable = true;
         # publicKeySource = ./PuppyPC.asc;
       };
+
+      programs.direnv-instant.enable = lib.mkForce false;
 
       programs.puppy = {
         # starship.hostname = config.networking.hostName;

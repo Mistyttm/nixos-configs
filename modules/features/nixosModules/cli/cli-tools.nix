@@ -17,7 +17,6 @@
       age
       sops
       ookla-speedtest
-      rar
       cabextract
       nixfmt
       nixd
