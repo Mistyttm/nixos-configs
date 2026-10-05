@@ -21,6 +21,7 @@
       arrStack
       downloaders
       prometheus-server
+      loki-server
       matrix-alertmanager-bot
       vpn-confinement
     ];
@@ -59,6 +60,16 @@
               "10.100.0.1:9148" # synapse
             ];
             labels = {host = "thedogpark";};
+          }
+        ];
+      }
+      {
+        # Raspberry Pi 4 over WireGuard; reports down until it joins wg0.
+        job_name = "foodbowl";
+        static_configs = [
+          {
+            targets = ["10.100.0.6:9100"]; # node
+            labels = {host = "foodbowl";};
           }
         ];
       }
