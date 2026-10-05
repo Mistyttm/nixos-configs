@@ -225,27 +225,25 @@ jobs:
       - name: Build shared derivations
         id: build
         if: steps.plan.outputs.shared != '0'
+        # Stay under the 360 minute job limit so the later steps (push, logs)
+        # still get to run. Cachix pushes finished paths as they complete, so
+        # a re-run resumes where this one stopped.
+        timeout-minutes: 320
         shell: bash
         run: |
-          # No -e: we want every chunk attempted and the real exit status kept.
+          # GitHub starts `shell: bash` with -e. Turn it off so a failed build
+          # does not abort the script before its exit status is handled.
+          set +e
           set -uo pipefail
 
           mkdir -p build-results
-          mapfile -t drvs < plan/shared.txt
           : > build-results/dryrun.log
           : > build-results/build-shared.log
 
-          chunk_size=256
-
-          # Dry run: which shared derivations genuinely need building here
-          # (the rest are already valid or substitutable).
-          echo "::group::Dry run"
-          for ((i = 0; i < ${#drvs[@]}; i += chunk_size)); do
-            chunk=( "${drvs[@]:i:chunk_size}" )
-            nix-store --realise --dry-run "${chunk[@]}" 2>&1 \
-              | tee -a build-results/dryrun.log
-          done
-          echo "::endgroup::"
+          # Dry run. The output stays out of the Actions log: it lists every
+          # substitutable path (tens of thousands of lines).
+          xargs -a plan/shared.txt -n 2000 \
+            nix-store --realise --dry-run >> build-results/dryrun.log 2>&1
 
           awk '
             /will be built:$/ { f = 1; next }
@@ -253,41 +251,46 @@ jobs:
             f && /\.drv$/     { gsub(/^ +/, ""); print }
           ' build-results/dryrun.log | sort -u > build-results/to-build.txt
 
-          echo "Derivations to build: $(wc -l < build-results/to-build.txt)"
+          to_build=$(wc -l < build-results/to-build.txt)
+          echo "Derivations that need building: $to_build"
+          echo "- Shared derivations that actually needed building: **$to_build**" >> "$GITHUB_STEP_SUMMARY"
 
-          {
-            echo "- Shared derivations that actually needed building: **$(wc -l < build-results/to-build.txt)**"
-          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$to_build" -eq 0 ]; then
+            echo "Nothing to build."
+            exit 0
+          fi
 
-          # Real build. nix-store --realise takes .drv paths directly, with no
-          # installable parsing, and streams its output to the Actions log.
-          status=0
-          for ((i = 0; i < ${#drvs[@]}; i += chunk_size)); do
-            chunk=( "${drvs[@]:i:chunk_size}" )
+          echo "::group::Derivations to build"
+          cat build-results/to-build.txt
+          echo "::endgroup::"
 
-            nix-store --realise \
-              --keep-going \
-              --max-jobs 2 \
-              "${chunk[@]}" \
-              2>&1 | tee -a build-results/build-shared.log
-            cmd_status=${PIPESTATUS[0]}
+          # Realise ONLY the derivations that need building, in one invocation
+          # so nix schedules them properly. Realising the whole shared closure
+          # also downloaded the output of every substitutable derivation
+          # (~17k paths, over 100 GiB) and filled /nix before the builds were
+          # done. Nix fetches just the build inputs it needs for these.
+          mapfile -t todo < build-results/to-build.txt
 
-            if [ "$cmd_status" -ne 0 ]; then
-              status="$cmd_status"
-            fi
-          done
+          nix-store --realise \
+            --keep-going \
+            --max-jobs 2 \
+            --no-build-output \
+            --option log-lines 80 \
+            "${todo[@]}" \
+            2>&1 | tee -a build-results/build-shared.log
 
-          exit "$status"
+          exit "${PIPESTATUS[0]}"
 
-      # Push explicitly rather than relying only on the cachix-action post step,
-      # so the cache is populated before stage 2 starts. Only the outputs of
-      # derivations that were actually built here are pushed.
+      # The cachix daemon already pushes each path as it is built; this is a
+      # second, explicit push of what was built here so the cache is complete
+      # before stage 2 starts.
       - name: Push built shared derivations to Cachix
         if: ${{ !cancelled() && steps.plan.outputs.shared != '0' }}
         shell: bash
         env:
           CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
         run: |
+          set +e
           set -uo pipefail
 
           if [ ! -s build-results/to-build.txt ]; then
@@ -295,20 +298,26 @@ jobs:
             exit 0
           fi
 
-          xargs -a build-results/to-build.txt -n 256 nix-store --query --outputs \
+          # Outputs of derivations whose build failed do not exist; skip them.
+          # (`[ -e ] && echo` as the last command of the loop would return 1
+          # and fail the whole step, so use an if.)
+          xargs -a build-results/to-build.txt -n 256 nix-store --query --outputs 2>/dev/null \
             | while IFS= read -r path; do
-                [ -e "$path" ] && echo "$path"
+                if [ -e "$path" ]; then echo "$path"; fi
               done \
             | sort -u > build-results/push-paths.txt
 
-          echo "Pushing $(wc -l < build-results/push-paths.txt) store paths"
-          cachix push opinionatedcache < build-results/push-paths.txt
+          count=$(wc -l < build-results/push-paths.txt)
+          echo "Pushing $count store paths"
+          if [ "$count" -gt 0 ]; then
+            cachix push opinionatedcache < build-results/push-paths.txt
+          fi
 
       - name: Summarise shared build failure
         if: failure() && steps.build.outcome == 'failure'
         shell: bash
         run: |
-          errors="$(grep -E '^error:|builder for .* failed|cannot build|dependency .* failed' \
+          errors="$(grep -aE '^error:|builder for .* failed|cannot build|dependency .* failed' \
             build-results/build-shared.log | sort -u | head -n 50 || true)"
 
           {
@@ -320,7 +329,7 @@ jobs:
             echo "${errors:-Unable to parse build errors}"
             echo
             echo "--- last 100 log lines ---"
-            tail -n 100 build-results/build-shared.log || true
+            tail -n 100 build-results/build-shared.log | tr -d '\000' || true
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
