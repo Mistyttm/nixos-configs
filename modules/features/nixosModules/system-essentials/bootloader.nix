@@ -49,6 +49,10 @@
             enable = true;
             device = "/dev/vda";
           }
+          else if config.networking.hostName == "foodbowl"
+          then {
+            enable = false;
+          }
           else {
             enable = true;
             efiSupport = true;

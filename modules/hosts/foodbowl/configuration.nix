@@ -21,6 +21,11 @@ in {
     networking.hostName = "foodbowl";
 
     boot.zfs.forceImportRoot = false;
+    boot.loader = {
+      grub.enable = lib.mkForce false;
+      generic-extlinux-compatible.enable = true;
+      efi.canTouchEfiVariables = lib.mkForce false;
+    };
 
     # The SD card is too small for logs: keep the journal in RAM only.
     services.journald.settings.Journal = {
