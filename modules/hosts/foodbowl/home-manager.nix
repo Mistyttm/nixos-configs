@@ -14,7 +14,7 @@
         bat
         fastfetch
         ripgrep
-        starship
+        # starship
         zsh
         direnv
       ];
