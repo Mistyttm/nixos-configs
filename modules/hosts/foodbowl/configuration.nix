@@ -28,6 +28,8 @@
     # doggate.adguardhome.adminPasswordHash = "$2y$10$...";
 
     doggate = {
+      # Required: foodbowl's LAN address (give it a DHCP reservation).
+      # adguardhome.bindAddress = "192.168.0.x";
       wireguard.enable = true;
       logShipping.files = [
         {

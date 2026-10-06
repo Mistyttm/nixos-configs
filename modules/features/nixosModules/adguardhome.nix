@@ -5,7 +5,6 @@
     ...
   }: let
     cfg = config.doggate.adguardhome;
-    webEnabled = cfg.adminPasswordHash != null;
   in {
     options.doggate.adguardhome = {
       adminUser = lib.mkOption {
@@ -44,12 +43,10 @@
         # With mutableSettings the declared settings below are merged over the
         # on-disk config at every start, so UI changes to other keys persist.
         mutableSettings = true;
-        host =
-          if webEnabled
-          then "0.0.0.0"
-          else "127.0.0.1";
+        host = "0.0.0.0";
+
         port = 3000;
-        openFirewall = webEnabled;
+        openFirewall = true;
 
         settings = {
           dns = {
@@ -91,7 +88,7 @@
             interval = "24h";
           };
 
-          users = lib.optionals webEnabled [
+          users = [
             {
               name = cfg.adminUser;
               password = cfg.adminPasswordHash;
@@ -111,6 +108,12 @@
         group = "adguardhome";
       };
       users.groups.adguardhome = {};
+
+      # The bind address comes from DHCP, so wait until the network is up.
+      systemd.services.adguardhome.after = ["network-online.target"];
+      systemd.services.adguardhome.wants = ["network-online.target"];
+
+      services.resolved.settings.Resolve.DNSStubListener = lib.mkForce "no";
 
       systemd.services.adguardhome.serviceConfig = {
         DynamicUser = lib.mkForce false;
