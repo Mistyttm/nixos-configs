@@ -23,13 +23,10 @@
       RuntimeMaxUse = "50M";
     };
 
-    # AdGuard Home's web UI is localhost-only (ssh -L 3000:localhost:3000) until
-    # a bcrypt hash is set, e.g.:
-    # doggate.adguardhome.adminPasswordHash = "$2y$10$...";
-
     doggate = {
-      # Required: foodbowl's LAN address (give it a DHCP reservation).
-      # adguardhome.bindAddress = "192.168.0.x";
+      adguardhome = {
+        adminPasswordHash = "$2y$10$gDYaIJi.m/WFFhBi6GeVh.YcpPx6QRSX3f6lAeZQOkEnZr7o9LQoC%";
+      };
       wireguard.enable = true;
       logShipping.files = [
         {
