@@ -9,7 +9,7 @@
       misty
       cli-tools
       nix-ld
-      foodbowlOnline
+      log-shipper
     ];
 
     networking.hostName = "foodbowl";
@@ -26,6 +26,16 @@
     # AdGuard Home's web UI is localhost-only (ssh -L 3000:localhost:3000) until
     # a bcrypt hash is set, e.g.:
     # doggate.adguardhome.adminPasswordHash = "$2y$10$...";
+
+    doggate = {
+      wireguard.enable = true;
+      logShipping.files = [
+        {
+          path = "/var/lib/AdGuardHome/data/querylog.json";
+          job = "adguard-querylog";
+        }
+      ];
+    };
 
     # SSH on boot, password login.
     services.openssh = {
