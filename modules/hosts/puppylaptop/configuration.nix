@@ -32,6 +32,7 @@
       kernelPackages = pkgs.linuxPackages_zen;
       supportedFilesystems = ["ntfs"];
       kernelModules = ["ntsync"];
+      binfmt.emulatedSystems = ["aarch64-linux"];
     };
 
     hardware.nvidia-custom = {
