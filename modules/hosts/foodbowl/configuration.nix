@@ -25,7 +25,7 @@ in {
     networking.hostName = "foodbowl";
 
     boot.zfs.forceImportRoot = false;
-    boot.kernelPackage = pkgs.linuxPackages;
+    boot.kernelPackages = pkgs.linuxPackages;
 
     # The SD card is too small for logs: keep the journal in RAM only.
     services.journald.settings.Journal = {
