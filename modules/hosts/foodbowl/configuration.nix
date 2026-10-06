@@ -4,7 +4,11 @@
   # ships logs to thekennel.
   online = false;
 in {
-  flake.nixosModules.foodbowlConfiguration = {lib, ...}: {
+  flake.nixosModules.foodbowlConfiguration = {
+    lib,
+    pkgs,
+    ...
+  }: {
     imports = with self.nixosModules;
       [
         foodbowlHardware
@@ -21,6 +25,7 @@ in {
     networking.hostName = "foodbowl";
 
     boot.zfs.forceImportRoot = false;
+    boot.kernelPackage = pkgs.linuxPackages;
 
     # The SD card is too small for logs: keep the journal in RAM only.
     services.journald.settings.Journal = {
