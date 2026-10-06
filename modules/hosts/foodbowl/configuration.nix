@@ -1,31 +1,21 @@
-{self, ...}: let
-  # Stage 2: set to true once `foodbowl_key` is in secrets/wireguard.yaml and
-  # foodbowl's age key is a recipient of that file. Brings up WireGuard and
-  # ships logs to thekennel.
-  online = false;
-in {
-  flake.nixosModules.foodbowlConfiguration = {
-    lib,
-    pkgs,
-    ...
-  }: {
-    imports = with self.nixosModules;
-      [
-        foodbowlHardware
-        foodbowlHomeManager
-        adguardhome
-        node-exporter
-        system-essentials
-        misty
-        cli-tools
-        nix-ld
-      ]
-      ++ lib.optional online self.nixosModules.foodbowlOnline;
+{self, ...}: {
+  flake.nixosModules.foodbowlConfiguration = {pkgs, ...}: {
+    imports = with self.nixosModules; [
+      foodbowlHardware
+      foodbowlHomeManager
+      adguardhome
+      node-exporter
+      system-essentials
+      misty
+      cli-tools
+      nix-ld
+      foodbowlOnline
+    ];
 
     networking.hostName = "foodbowl";
 
     boot.zfs.forceImportRoot = false;
-    boot.kernelPackages = pkgs.linuxPackages;
+    boot.kernelPackages = pkgs.linuxPackages_latest;
 
     # The SD card is too small for logs: keep the journal in RAM only.
     services.journald.settings.Journal = {
