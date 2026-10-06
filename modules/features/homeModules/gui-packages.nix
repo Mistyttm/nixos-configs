@@ -5,7 +5,7 @@
       slack
       obsidian
       vlc
-      thunderbird-esr
+      thunderbird-bin
       libreoffice-qt
       zenity
       libnotify
