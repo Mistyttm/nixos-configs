@@ -19,7 +19,6 @@
 
     # Public key of foodbowl's WireGuard keypair (`wg genkey | tee key | wg pubkey`).
     # While null, thedogpark does not list foodbowl as a peer.
-    foodbowlPublicKey = null;
 
     profiles = {
       # Template profile for puppypc.
@@ -56,34 +55,33 @@
           listenPort = 51820;
           privateKeyFile = config.sops.secrets."dogpark_key".path;
 
-          peers =
-            [
-              {
-                name = "thekennel";
-                publicKey = "PV35fOdFKVsftJ7lh+xVTYxDY9fw4mgN9hwlrDOnzlk=";
-                allowedIPs = ["10.100.0.2/32"];
-              }
-              {
-                name = "puppypc";
-                publicKey = "3P03yC/x9XLleiWhb3KgiiF9Jei69eMOVOzaqczW5QQ=";
-                allowedIPs = ["10.100.0.4/32"];
-              }
-              {
-                name = "puppylaptop";
-                publicKey = "YLEqUsdRe8LCXOHK6/8ct3ncSaaCqAoQLjiWWeGVl2s=";
-                allowedIPs = ["10.100.0.3/32"];
-              }
-              {
-                name = "puppyphone";
-                publicKey = "EGyYm8V/RvQD5FFEXCKpBDAP7Pg5sehfHSdJmqeXIGk=";
-                allowedIPs = ["10.100.0.5/32"];
-              }
-            ]
-            ++ lib.optional (foodbowlPublicKey != null) {
+          peers = [
+            {
+              name = "thekennel";
+              publicKey = "PV35fOdFKVsftJ7lh+xVTYxDY9fw4mgN9hwlrDOnzlk=";
+              allowedIPs = ["10.100.0.2/32"];
+            }
+            {
+              name = "puppypc";
+              publicKey = "3P03yC/x9XLleiWhb3KgiiF9Jei69eMOVOzaqczW5QQ=";
+              allowedIPs = ["10.100.0.4/32"];
+            }
+            {
+              name = "puppylaptop";
+              publicKey = "YLEqUsdRe8LCXOHK6/8ct3ncSaaCqAoQLjiWWeGVl2s=";
+              allowedIPs = ["10.100.0.3/32"];
+            }
+            {
+              name = "puppyphone";
+              publicKey = "EGyYm8V/RvQD5FFEXCKpBDAP7Pg5sehfHSdJmqeXIGk=";
+              allowedIPs = ["10.100.0.5/32"];
+            }
+            {
               name = "foodbowl";
-              publicKey = foodbowlPublicKey;
+              publicKey = "/nUdeg664YeQQ8KDMJ7dz1XNnsmW1OUD6kWW/HShr14=";
               allowedIPs = ["10.100.0.6/32"];
-            };
+            }
+          ];
         };
       };
 
