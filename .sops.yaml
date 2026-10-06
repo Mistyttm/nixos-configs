@@ -3,6 +3,7 @@ keys:
   - &server_mistyttmdev age15qjgy98838e727ajh8v8h0enn340lzxyx4r0vas73e2ujjxkvsmqvtyw9u
   - &server_kennel age19ysep57z02y3hhf6c75cvz7njd66p2cqt85g4xqxzmgvk5slmsxq04jyp7
   - &laptop age1rtqyx0569wsyyq2885f5c5ywnkfj36dwcz5usxep7zx8tkfcussqey3ndc
+  - &foodbowl age19wp6q87wu0f7mj544eas3ujgjfej0fvn9kutx4x9gpgwswcw85dspd9z29
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
     key_groups:
@@ -11,3 +12,4 @@ creation_rules:
       - *server_mistyttmdev
       - *server_kennel
       - *laptop
+      - *foodbowl
