@@ -609,7 +609,7 @@
                 };
               };
               "AdGuard Home" = {
-                icon = "adguard";
+                icon = "adguard-home";
                 href = "http://10.100.0.6:3000";
                 description = "Adguard Home on the foodbowl pi";
                 widget = {
