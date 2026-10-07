@@ -608,6 +608,8 @@
                   ];
                 };
               };
+            }
+            {
               "AdGuard Home" = {
                 icon = "adguard-home";
                 href = "http://10.100.0.6:3000";
