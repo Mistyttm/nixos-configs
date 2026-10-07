@@ -59,6 +59,15 @@
       sopsFile = self.secrets.media;
     };
 
+    sops.secrets."adguard_username" = {
+      key = "username";
+      sopsFile = self.secrets.adguard;
+    };
+    sops.secrets."adguard_password" = {
+      key = "password";
+      sopsFile = self.secrets.adguard;
+    };
+
     sops.templates."homepage-env" = {
       owner = "root";
       group = "root";
@@ -78,6 +87,8 @@
         HOMEPAGE_VAR_CLEANUPARR_API_KEY=${config.sops.placeholder."cleanuparr/api_key"}
         HOMEPAGE_VAR_QNAP_USERNAME=${config.sops.placeholder."qnap/username"}
         HOMEPAGE_VAR_QNAP_PASSWORD=${config.sops.placeholder."qnap/password"}
+        HOMEPAGE_VAR_ADGUARD_USERNAME=${config.sops.placeholder."adguard_username"}
+        HOMEPAGE_VAR_ADGUARD_PASSWORD=${config.sops.placeholder."adguard_password"}
       '';
     };
 
@@ -595,6 +606,17 @@
                       format = {type = "bytes";};
                     }
                   ];
+                };
+              };
+              "AdGuard Home" = {
+                icon = "adguard";
+                href = "http://10.100.0.6:3000";
+                description = "Adguard Home on the foodbowl pi";
+                widget = {
+                  type = "adguard";
+                  url = "http://10.100.0.6:3000";
+                  username = "{{HOMEPAGE_VAR_ADGUARD_USERNAME}}";
+                  password = "{{HOMEPAGE_VAR_ADGUARD_PASSWORD}}";
                 };
               };
             }
