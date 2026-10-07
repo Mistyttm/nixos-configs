@@ -96,7 +96,12 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      matrix: ${{ steps.matrix.outputs.matrix }}
+      # One entry per system: {system, arch, runner}. Drives the stage 2 matrix.
+      include: ${{ steps.matrix.outputs.include }}
+      # One entry per architecture that has 2+ systems: {arch, runner, systems}.
+      # Drives the stage 1 (shared derivations) matrix.
+      shared_groups: ${{ steps.matrix.outputs.shared_groups }}
+      has_shared: ${{ steps.matrix.outputs.has_shared }}
 
     steps:
       - name: Checkout repository
@@ -111,47 +116,97 @@ jobs:
 
       - id: matrix
         name: Discover NixOS systems
+        shell: bash
         run: |
-          echo "matrix=$(nix eval \
-            --json \
-            .#hydraJobs.nixos \
-            --apply '
-              attrs:
-                builtins.filter
-                  (name: !(builtins.match "^thepetshop.*" name != null))
-                  (builtins.attrNames attrs)
-              ')" >> "$GITHUB_OUTPUT"
+          set -euo pipefail
+
+          # Ask Nix which platform each system's toplevel is built on, so a new
+          # host of a supported architecture needs no workflow change.
+          systems=$(nix eval --json .#hydraJobs.nixos --apply '
+            attrs:
+              builtins.map
+                (name: { inherit name; arch = attrs.${name}.system; })
+                (builtins.filter
+                  (name: builtins.match "^thepetshop.*" name == null)
+                  (builtins.attrNames attrs))
+          ')
+
+          # Pick a native runner per architecture. An architecture with no
+          # runner fails here, loudly, instead of building on the wrong machine.
+          include=$(jq -c '
+            map({
+              system: .name,
+              arch: .arch,
+              runner: (
+                if .arch == "x86_64-linux" then "ubuntu-latest"
+                elif .arch == "aarch64-linux" then "ubuntu-24.04-arm"
+                else error("no runner configured for \(.arch) (\(.name))")
+                end
+              )
+            })
+          ' <<< "$systems")
+
+          # Shared derivations can only be shared between systems of the same
+          # architecture, so plan per architecture and skip any architecture
+          # with a single system (nothing to share).
+          shared_groups=$(jq -c '
+            group_by(.arch)
+            | map({arch: .[0].arch, runner: .[0].runner, systems: map(.system)})
+            | map(select(.systems | length > 1))
+          ' <<< "$include")
+
+          {
+            echo "include=$include"
+            echo "shared_groups=$shared_groups"
+            echo "has_shared=$(jq 'length > 0' <<< "$shared_groups")"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Show discovered systems
         run: |
-          echo '${{ steps.matrix.outputs.matrix }}'
+          echo '${{ steps.matrix.outputs.include }}' | jq .
 
   # Stage 1: build every derivation that more than one system needs, exactly
   # once, and push it to Cachix. Without this, each matrix job starts with an
   # empty store and decides what to build up front, so shared derivations
   # (custom packages, kernels, etc.) get built once per system in parallel.
+  # Runs once per architecture that has 2+ systems, each on a native runner.
   build-shared:
-    name: Build shared derivations
+    name: Build shared derivations (${{ matrix.group.arch }})
 
     needs:
       - evaluate
       - discover
 
-    runs-on: ubuntu-latest
+    if: ${{ needs.discover.outputs.has_shared == 'true' }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        group: ${{ fromJson(needs.discover.outputs.shared_groups) }}
+
+    runs-on: ${{ matrix.group.runner }}
     timeout-minutes: 360
 
     env:
-      SYSTEMS: ${{ needs.discover.outputs.matrix }}
+      SYSTEMS: ${{ toJSON(matrix.group.systems) }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Maximize disk space
+        if: ${{ matrix.group.arch == 'x86_64-linux' }}
         uses: wimpysworld/nothing-but-nix@main
         with:
           hatchet-protocol: rampage
           root-safe-haven: '8192'
+
+      # 'carve' is the protocol build-isos.yml already uses on the arm runner.
+      - name: Maximize disk space (arm)
+        if: ${{ matrix.group.arch != 'x86_64-linux' }}
+        uses: wimpysworld/nothing-but-nix@main
+        with:
+          hatchet-protocol: carve
 
       - name: Install Lix
         uses: samueldr/lix-gha-installer-action@latest
@@ -341,7 +396,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: nix-build-log-shared
+          name: nix-build-log-shared-${{ matrix.group.arch }}
           path: |
             build-results/build-shared.log
             build-results/dryrun.log
@@ -353,14 +408,14 @@ jobs:
           df -h / /nix /mnt || true
           du -sh /tmp build-results 2>/dev/null || true
 
-  # Stage 2: per-system builds. Everything shared is now in Cachix, so each
-  # job only builds what is unique to its own system. This stage does not
-  # run at all if build-shared failed: a failed shared build means the
+  # Stage 2: per-system builds, each on a native runner for its architecture.
+  # Everything shared is now in Cachix, so each job only builds what is unique
+  # to its own system. This stage does not run at all if build-shared failed: a failed shared build means the
   # store is in an unknown state and the per-system jobs would likely just
   # rebuild (and re-fail on) the same derivations anyway, burning 4x the
   # runner time to tell you what stage 1 already told you.
   build:
-    name: Build ${{ matrix.system }}
+    name: Build ${{ matrix.system }} (${{ matrix.arch }})
 
     needs:
       - evaluate
@@ -372,15 +427,18 @@ jobs:
         !cancelled() &&
         needs.evaluate.result == 'success' &&
         needs.discover.result == 'success' &&
-        needs.build-shared.result == 'success'
+        (
+          needs.build-shared.result == 'success' ||
+          needs.build-shared.result == 'skipped'
+        )
       }}
 
     strategy:
       fail-fast: false
       matrix:
-        system: ${{ fromJson(needs.discover.outputs.matrix) }}
+        include: ${{ fromJson(needs.discover.outputs.include) }}
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.runner }}
     timeout-minutes: 360
 
     steps:
@@ -388,10 +446,18 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Maximize disk space
+        if: ${{ matrix.arch == 'x86_64-linux' }}
         uses: wimpysworld/nothing-but-nix@main
         with:
           hatchet-protocol: rampage
           root-safe-haven: '8192'
+
+      # 'carve' is the protocol build-isos.yml already uses on the arm runner.
+      - name: Maximize disk space (arm)
+        if: ${{ matrix.arch != 'x86_64-linux' }}
+        uses: wimpysworld/nothing-but-nix@main
+        with:
+          hatchet-protocol: carve
 
       - name: Install Lix
         uses: samueldr/lix-gha-installer-action@latest
