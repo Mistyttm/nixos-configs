@@ -31,7 +31,6 @@ jobs:
         i-sponsor-block-tv
         proton-cachyos
         proton-ge-rtsp
-        vanilla-wiiu
         obs-wayland-hotkeys-plus
       # ────────────────────────────────────────────────────────────────────────
     steps:
