@@ -1,6 +1,6 @@
 # nginx {#module-doggate-nginx}
 
-Source: modules/features/nixosModules/system-essentials/networking/nginx.nix
+Source: modules/features/system-essentials/networking/nginx.nix
 
 This module provides a host-profile driven nginx configuration under
 `doggate.nginx`. The selected profile defines firewall ports, virtual hosts,

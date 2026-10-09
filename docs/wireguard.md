@@ -1,6 +1,6 @@
 # WireGuard {#module-doggate-wireguard}
 
-Source: modules/features/nixosModules/system-essentials/networking/wireguard.nix
+Source: modules/features/system-essentials/networking/wireguard.nix
 
 This module provides a host-profile driven WireGuard setup under
 `doggate.wireguard`. It selects a profile from the current hostname unless a

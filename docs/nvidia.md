@@ -1,6 +1,6 @@
 # NVIDIA {#module-hardware-nvidia-custom}
 
-Source: modules/features/nixosModules/hardware/nvidia.nix
+Source: modules/features/hardware/nvidia.nix
 
 This custom module wraps the standard NixOS NVIDIA stack into a single
 `hardware.nvidia-custom` option set. It is intended for systems that need the

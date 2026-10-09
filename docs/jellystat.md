@@ -1,6 +1,6 @@
 # Jellystat {#module-services-jellystat}
 
-Source: modules/features/nixosModules/jellystat.nix
+Source: modules/features/jellystat.nix
 
 Jellystat is a statistics application for Jellyfin. This module packages it as
 `services.jellystat`, stages the application into a persistent data directory,
