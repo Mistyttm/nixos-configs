@@ -131,12 +131,13 @@ modules/
   hydra.nix                    # CI/hydra jobset aggregating all nixosConfigurations
   nixos/                       # standalone custom NixOS service modules
                                 # (services.jellystat, services.cleanuparr, etc.)
-  features/
-    nixosModules/               # reusable NixOS feature modules (flake.nixosModules.*)
-      system-essentials/        # base system: bootloader, locale, sops, networking/*
-      desktops/, gaming/, hardware/, docker/, arrStack/, ...
-    homeModules/                 # reusable home-manager modules (flake.homeModules.*)
-      users/misty.nix, git.nix, zsh.nix, starship/, ...
+  features/                     # one flat feature set: reusable NixOS modules
+                                 # (flake.nixosModules.*) and home-manager modules
+                                 # (flake.homeModules.*), side by side. A file may
+                                 # register either or both for the same aspect.
+    system-essentials/          # base system: bootloader, locale, sops, networking/*
+    desktops/, gaming/, hardware/, docker/, arrStack/, ...
+    users/misty.nix, git.nix, zsh.nix, starship/, ...
   hosts/
     <hostname>/
       default.nix               # registers flake.nixosConfigurations.<hostname>
