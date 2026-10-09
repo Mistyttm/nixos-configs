@@ -45,7 +45,7 @@
         };
       };
     };
-    
+
     systemd.services.qbittorrent.serviceConfig.UMask = "002";
   };
 }
