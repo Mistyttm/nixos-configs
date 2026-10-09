@@ -109,11 +109,11 @@
         "vpkmerge": "vpkmerge"
       },
       "locked": {
-        "lastModified": 1791497733,
-        "narHash": "sha256-aOEh3wL/k9AaltDXy5VhGTnKWmg/Yy3El07XeeS7sYw=",
+        "lastModified": 1791566567,
+        "narHash": "sha256-XVpAW+EeHITBCwKlChpg2OF/4Hl5ialUYdDqyn5pwO4=",
         "owner": "Slush97",
         "repo": "grimoire",
-        "rev": "986489e3405acef9f2e44af52766120583e1f285",
+        "rev": "cc31495cf1ff8e75a404ba6c68a9f568d3479f08",
         "type": "github"
       },
       "original": {
@@ -297,11 +297,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1791470008,
-        "narHash": "sha256-NcLXDoEHxK5sEfH5ZYEiPsEpqoULg7Q5UZYBI4/hjyU=",
+        "lastModified": 1791555385,
+        "narHash": "sha256-q3RirSIt3yb0oJkRHSxVleVNBKwX/2KKa/fcTmD4BN8=",
         "owner": "fzakaria",
         "repo": "omniflake",
-        "rev": "e4736d8792f8d2dc1bebe1d78e4c94b1f7de9d4d",
+        "rev": "0df32730d11da56e6f121b4bc68c41249fc2ba5e",
         "type": "github"
       },
       "original": {
@@ -374,16 +374,16 @@
     "vpkmerge": {
       "flake": false,
       "locked": {
-        "lastModified": 1791342180,
-        "narHash": "sha256-psqA9exe88RibdvvASIxKUFWlBNd10ElQ+jiS6sUBvA=",
+        "lastModified": 1791527573,
+        "narHash": "sha256-Df1nNxqh2rX6Xn4uVjrXEEhP60bfEGd9XLRmi4Aqwl0=",
         "owner": "Slush97",
         "repo": "vpkmerge",
-        "rev": "1660b9ff7e64f674087350c77c2087a97842cf5e",
+        "rev": "beb03ebfc9842929905d631b86f09a67eecb87dd",
         "type": "github"
       },
       "original": {
         "owner": "Slush97",
-        "ref": "v0.20.1",
+        "ref": "v0.21.0",
         "repo": "vpkmerge",
         "type": "github"
       }
