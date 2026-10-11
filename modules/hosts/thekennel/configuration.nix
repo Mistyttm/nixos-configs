@@ -129,7 +129,6 @@
         "x-systemd.automount"
         "x-systemd.after=network-online.target"
         "x-systemd.requires=network-online.target"
-        "x-systemd.requires=sops-nix.service"
         "x-systemd.mount-timeout=30s"
         "nofail"
       ];
