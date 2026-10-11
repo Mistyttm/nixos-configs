@@ -74,6 +74,7 @@
     };
 
     systemd.services."tdarr-server" = {
+      unitConfig.RequiresMountsFor = ["/mnt/media"];
       environment = {
         TDARR_ENGINE = "rust";
       };

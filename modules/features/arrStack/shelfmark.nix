@@ -13,13 +13,16 @@
         FLASK_HOST = "0.0.0.0";
       };
     };
-    systemd.services.shelfmark.serviceConfig = {
-      SupplementaryGroups = ["media"];
-      PrivateUsers = lib.mkForce false;
-      ReadWritePaths = [
-        "/mnt/media/Books"
-        "/mnt/localExpansion/books"
-      ];
+    systemd.services.shelfmark = {
+      unitConfig.RequiresMountsFor = ["/mnt/media"];
+      serviceConfig = {
+        SupplementaryGroups = ["media"];
+        PrivateUsers = lib.mkForce false;
+        ReadWritePaths = [
+          "/mnt/media/Books"
+          "/mnt/localExpansion/books"
+        ];
+      };
     };
   };
 }
