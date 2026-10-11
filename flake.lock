@@ -109,11 +109,11 @@
         "vpkmerge": "vpkmerge"
       },
       "locked": {
-        "lastModified": 1791604812,
-        "narHash": "sha256-AVWya1kFRGSgzMzC25GOjT6G/jrGOfla2w33JtGRjPE=",
+        "lastModified": 1791683320,
+        "narHash": "sha256-bXOwGg5gaZOsYP04FwTKsldxtjd+rpSuKyVmvT3txs4=",
         "owner": "Slush97",
         "repo": "grimoire",
-        "rev": "dc8538cef2af5b3315c3e36f2a29a6125d413430",
+        "rev": "f3b5d89c5b19b551f920056a6b3b0ca9e1c95554",
         "type": "github"
       },
       "original": {
@@ -275,11 +275,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1791456040,
-        "narHash": "sha256-gRZ/s8WQJ2CsXdhcDVQH34qxuL0MuMCOs3aBiK1Prsw=",
-        "rev": "e7439b6b14ad3cc35d05608ebca9bce01a25f5f8",
+        "lastModified": 1791594108,
+        "narHash": "sha256-V0WmebqwEeAVZMqxfv7Dq7hpKkPPM19W50xQf3D1Kf4=",
+        "rev": "6510408d147d8c5e6d76043e899e9251756f6a75",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1087755.e7439b6b14ad/nixexprs.tar.zst?lastModified=1791456040&rev=e7439b6b14ad3cc35d05608ebca9bce01a25f5f8"
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1089111.6510408d147d/nixexprs.tar.zst?lastModified=1791594108&rev=6510408d147d8c5e6d76043e899e9251756f6a75"
       },
       "original": {
         "type": "tarball",
