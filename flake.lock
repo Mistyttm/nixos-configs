@@ -33,11 +33,11 @@
     },
     "flake-file": {
       "locked": {
-        "lastModified": 1791696462,
-        "narHash": "sha256-Iu862mflVRLHE3ivJD1ah5j/pprVyxnXMMUPMR9C1Wg=",
+        "lastModified": 1791837232,
+        "narHash": "sha256-LSNAmhQcTLdAJmWXKBEQ0vXLJSK7PCN4flh0uuYGaYs=",
         "owner": "denful",
         "repo": "flake-file",
-        "rev": "4ccd0b92aee0943b94324ec4c39949df1769f123",
+        "rev": "97c8f802b7c12628d9a84c846fdbf8c25fdb8d08",
         "type": "github"
       },
       "original": {
@@ -109,11 +109,11 @@
         "vpkmerge": "vpkmerge"
       },
       "locked": {
-        "lastModified": 1791752053,
-        "narHash": "sha256-836iYECPu+D8i180pgyTZGMQF42pnQJWZRRo4ZpfbVU=",
+        "lastModified": 1791791941,
+        "narHash": "sha256-4JVjR8XCgdvDjjOSFqYE/KHoku8ekto89ZUWzX7j/08=",
         "owner": "Slush97",
         "repo": "grimoire",
-        "rev": "4c6e92aeb5096f4ebe4f26a7f25646fa07505853",
+        "rev": "42c729ec2df78cff5eb8d1095b6efc113cbb699d",
         "type": "github"
       },
       "original": {
@@ -275,11 +275,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1791594108,
-        "narHash": "sha256-V0WmebqwEeAVZMqxfv7Dq7hpKkPPM19W50xQf3D1Kf4=",
-        "rev": "6510408d147d8c5e6d76043e899e9251756f6a75",
+        "lastModified": 1791734076,
+        "narHash": "sha256-0dNcyVeoD61zhucIpt5BAQ+ytd6JzF641Z+A9bgltLo=",
+        "rev": "7fd4004d0511991fff3a0524856a9be09e28c5f0",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1089111.6510408d147d/nixexprs.tar.zst?lastModified=1791594108&rev=6510408d147d8c5e6d76043e899e9251756f6a75"
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1090327.7fd4004d0511/nixexprs.tar.zst?lastModified=1791734076&rev=7fd4004d0511991fff3a0524856a9be09e28c5f0"
       },
       "original": {
         "type": "tarball",
@@ -297,11 +297,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1791726185,
-        "narHash": "sha256-zNVtkIcBtdwhtyVieidrJA0EXBGccSlHsV40+7txcTw=",
+        "lastModified": 1791822402,
+        "narHash": "sha256-vtmbrUSkDfB45Nv1X0nln+z61x6qxN13ZVz8B8jmOwA=",
         "owner": "fzakaria",
         "repo": "omniflake",
-        "rev": "6d0c32f78b381720c6500f5c3bf7bfe9b4efc957",
+        "rev": "f1dd10ccd07f2deb5dfdddf2686870cac19d3b42",
         "type": "github"
       },
       "original": {
