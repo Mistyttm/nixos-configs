@@ -45,10 +45,12 @@
         mutableSettings = true;
         host = "0.0.0.0";
 
-        port = 3000;
         openFirewall = true;
 
         settings = {
+          http = {
+            address = "${config.services.adguardhome.host}:3000";
+          };
           dns = {
             bind_hosts = ["0.0.0.0"];
             port = 53;
