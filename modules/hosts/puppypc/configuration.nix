@@ -40,6 +40,7 @@
       kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
       supportedFilesystems = ["ntfs"];
       kernelModules = ["ntsync"];
+      binfmt.emulatedSystems = ["aarch64-linux"];
     };
 
     hardware.nvidia-custom = {
