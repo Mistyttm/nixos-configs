@@ -33,11 +33,11 @@
     },
     "flake-file": {
       "locked": {
-        "lastModified": 1791921652,
-        "narHash": "sha256-IunIcPxJCww7NqKxRMANF7G9lOWdrCX03upD5LWVMTI=",
+        "lastModified": 1791955343,
+        "narHash": "sha256-yquDmN2vKAtSfwJLXcEwpq9z+4txQLtlPd+Hmxss+nM=",
         "owner": "denful",
         "repo": "flake-file",
-        "rev": "9da57b7af20b60011178b70ff660fddae69506db",
+        "rev": "1281456a5218ac60ada6fcb40a8f894684940199",
         "type": "github"
       },
       "original": {
@@ -146,11 +146,11 @@
       },
       "locked": {
         "dir": "packages/nix",
-        "lastModified": 1791947703,
-        "narHash": "sha256-AbNQpbWo+oEXRyEuRZVMUAN/mx81cBxnIaFy20mnPvo=",
+        "lastModified": 1791991619,
+        "narHash": "sha256-JquPo1pb8gQTazVr5UBEOsWhoV9YR4/yOVtMyR4lQXM=",
         "owner": "SteamClientHomebrew",
         "repo": "Millennium",
-        "rev": "c7f5a1fbf92f3d862e850cfa7a529f676fbe311d",
+        "rev": "4ecc644bf728090215294ceeb2c7cc5e22abac66",
         "type": "github"
       },
       "original": {
@@ -297,11 +297,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1791904161,
-        "narHash": "sha256-/SVQsE0pC1dciOLSA+kZZOb6JijktxY22OfCYc5PL8w=",
+        "lastModified": 1791982215,
+        "narHash": "sha256-cGbkgmszCS4MetUNSiVKI2YTSDmY4NwX1uFmLYqaNvI=",
         "owner": "fzakaria",
         "repo": "omniflake",
-        "rev": "cc69fa552b6a738f3e41c4c7c224a28d22ab334a",
+        "rev": "bbf0438442047c2ee05adc26e163402d52a16049",
         "type": "github"
       },
       "original": {
