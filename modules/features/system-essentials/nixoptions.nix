@@ -12,7 +12,7 @@
   }: {
     imports = [
       inputs.omniflake.flakes.nix-index-database.nixosModules.default
-      self.nixosModules.laminix
+      # self.nixosModules.laminix
     ];
 
     options = {

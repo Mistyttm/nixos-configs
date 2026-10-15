@@ -8,8 +8,24 @@
       enable = true;
       plasma = "full";
       packages = [
+        # KDE extras outside the Plasma set
         "kdePackages.kdeconnect-kde"
-        "obs-studio"
+        "kdePackages.filelight"
+        "kdePackages.kalk"
+
+        # environment.systemPackages
+        "dolphin-emu"
+        "piper"
+        "prismlauncher"
+        "proton-vpn"
+        "protonplus"
+
+        # home.packages
+        "gimp"
+        "qbittorrent"
+        "satisfactorymodmanager"
+        "vlc"
+        "zenity"
       ];
     };
   };
