@@ -1,0 +1,13 @@
+# commitizen config, read by the `commitizen` pre-commit hook (modules/checks.nix).
+# See COMMITTING.md for the commit format.
+[tool.commitizen]
+name = "cz_customize"
+
+[tool.commitizen.customize]
+# Conventional Commits, with two relaxations over commitizen's default pattern:
+#   - scope may list several comma-separated scopes: feat(nix, actions): ...
+#   - the body may follow the subject on the next line (no blank line required)
+schema_pattern = '(?s)(build|bump|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\([\w./-]+(,\s*[\w./-]+)*\))?!?: [^\r\n]+(\r?\n.*)?$'
+schema = "<type>(<scope>[, <scope>...])[!]: <description>\n\n[body]\n\n[footer(s)]"
+example = "feat(nix, actions): add flake check workflow\n\nRuns nix flake check on every push."
+message_template = "{{change_type}}{% if scope %}({{scope}}){% endif %}: {{message}}"
