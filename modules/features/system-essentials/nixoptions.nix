@@ -51,7 +51,7 @@
       };
 
       nix = {
-        package = pkgs.lixPackageSets.stable.lix;
+        package = pkgs.lixPackageSets.lix_2_96.lix;
         settings = {
           use-xdg-base-directories = true;
           cores = 2;
@@ -97,7 +97,7 @@
           inputs.grimoire.overlays.default
           (_final: prev: {
             inherit
-              (prev.lixPackageSets.stable)
+              (prev.lixPackageSets.lix_2_96)
               nixpkgs-review
               nix-eval-jobs
               nix-fast-build
