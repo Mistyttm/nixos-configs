@@ -109,11 +109,11 @@
         "vpkmerge": "vpkmerge"
       },
       "locked": {
-        "lastModified": 1791791941,
-        "narHash": "sha256-4JVjR8XCgdvDjjOSFqYE/KHoku8ekto89ZUWzX7j/08=",
+        "lastModified": 1792137659,
+        "narHash": "sha256-bbkKYCyAOLNzsATEZ2BIdLM8q5eAxOyf9OJGC9iVjFA=",
         "owner": "Slush97",
         "repo": "grimoire",
-        "rev": "42c729ec2df78cff5eb8d1095b6efc113cbb699d",
+        "rev": "9ac7582deb8dd3cca6a2c0737396db29f189251b",
         "type": "github"
       },
       "original": {
@@ -125,11 +125,11 @@
     "grimoire-social": {
       "flake": false,
       "locked": {
-        "lastModified": 1785648456,
-        "narHash": "sha256-AR2rTNDuge19t+VAqL/I6dmB8f5niIqINmNnRL70k94=",
+        "lastModified": 1790726909,
+        "narHash": "sha256-D69CEBrGshmGTyoYA8d0CYTdTtmY0xIrpFHDnI2vNdY=",
         "owner": "Slush97",
         "repo": "grimoire-social",
-        "rev": "e97a59d7cd55fc1ae1e11a56ca2fde5305de9c4f",
+        "rev": "b5811d361450ebe8d863276392ad387a31d8295b",
         "type": "github"
       },
       "original": {
@@ -297,11 +297,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1792101971,
-        "narHash": "sha256-ZTlQT0qrvpFprhMiFrrxh0mPLMiVK8rthuUtnm1UwQg=",
+        "lastModified": 1792153126,
+        "narHash": "sha256-km3sNE6ZNlPor62qR7WP+djNaigQbR0wdkz3GF01h9w=",
         "owner": "fzakaria",
         "repo": "omniflake",
-        "rev": "c75c0d1c75c546794e102c6e609ddacf37883cbf",
+        "rev": "254990a26bb0abbfc689080d262d2e21ee4e241e",
         "type": "github"
       },
       "original": {
