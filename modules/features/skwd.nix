@@ -8,6 +8,10 @@
     skwd = inputs.omniflake.flakes.skwd-wall;
     skwd-wall = skwd.packages.${pkgs.stdenv.hostPlatform.system}.default;
     skwd-paper-plasma = skwd.packages.${pkgs.stdenv.hostPlatform.system}.skwd-paper-plasma;
+    # skwd-walld only looks for qdbus6/qdbus-qt6, but nixpkgs' Qt6 qttools ships it as plain qdbus.
+    qdbus6 = pkgs.writeShellScriptBin "qdbus6" ''
+      exec ${pkgs.kdePackages.qttools}/bin/qdbus "$@"
+    '';
   in {
     imports = [
       skwd.nixosModules.default
@@ -27,5 +31,14 @@
         skwd-paper-plasma
       ];
     };
+
+    # Tools skwd-walld spawns by name that aren't in a user service's default PATH:
+    # dbus-monitor for the Plasma Activity watcher, setsid + sh for detached hooks.
+    systemd.user.services.skwd-walld.path = [
+      qdbus6
+      pkgs.dbus
+      pkgs.util-linux
+      pkgs.bash
+    ];
   };
 }
