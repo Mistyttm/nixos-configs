@@ -3,7 +3,6 @@
   self,
   ...
 }: {
-  flake-file.inputs.nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
   flake.nixosModules.nixoptions = {
     config,
     pkgs,
@@ -90,7 +89,6 @@
 
       nixpkgs = {
         overlays = [
-          inputs.nix-cachyos-kernel.overlays.pinned
           self.overlays.default
           inputs.omniflake.flakes.nix-vscode-extensions.overlays.default
           self.overlays.kde-plasma-workspace-xdg-fix

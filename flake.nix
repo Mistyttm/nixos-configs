@@ -22,13 +22,13 @@
   };
 
   inputs = {
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     flake-file.url = "github:denful/flake-file";
     grimoire = {
       url = "github:Slush97/grimoire";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     millennium.url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
-    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
     omniflake = {
       url = "github:fzakaria/omniflake";

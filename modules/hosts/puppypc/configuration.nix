@@ -29,6 +29,7 @@
       appimage
       ollama
       jovian
+      chaotic
       protonDrive
       # puppypc-nat
       skwd
@@ -37,7 +38,7 @@
     networking.hostName = "puppypc";
 
     boot = {
-      kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
+      kernelPackages = pkgs.linuxPackages_cachyos-lto-znver4;
       supportedFilesystems = ["ntfs"];
       kernelModules = ["ntsync"];
       binfmt.emulatedSystems = ["aarch64-linux"];
