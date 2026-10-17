@@ -109,11 +109,11 @@
         "vpkmerge": "vpkmerge"
       },
       "locked": {
-        "lastModified": 1792137659,
-        "narHash": "sha256-bbkKYCyAOLNzsATEZ2BIdLM8q5eAxOyf9OJGC9iVjFA=",
+        "lastModified": 1792202400,
+        "narHash": "sha256-YIsDccqWeHKipckUiE0lFnC8X6AuJDRxeeN+e3wfbig=",
         "owner": "Slush97",
         "repo": "grimoire",
-        "rev": "9ac7582deb8dd3cca6a2c0737396db29f189251b",
+        "rev": "829ed5bd1d73a1edaba9e1d4f0bb3524d1431db2",
         "type": "github"
       },
       "original": {
@@ -374,16 +374,16 @@
     "vpkmerge": {
       "flake": false,
       "locked": {
-        "lastModified": 1791603794,
-        "narHash": "sha256-RmU2EWMDE0VmzInkTzjvkRpvEktLBDyKD47JMENOlYY=",
+        "lastModified": 1792199608,
+        "narHash": "sha256-apnIyLMAZdTIrEkknJ1S386qg/dI+Gekiqg+DQQgT4U=",
         "owner": "Slush97",
         "repo": "vpkmerge",
-        "rev": "b05118fc17b61f718d041cd546e03512c1a9f65d",
+        "rev": "34ae9139f1028ee5144218e8b0e08bfb13f696cf",
         "type": "github"
       },
       "original": {
         "owner": "Slush97",
-        "ref": "v0.21.1",
+        "ref": "v0.22.1",
         "repo": "vpkmerge",
         "type": "github"
       }
