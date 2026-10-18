@@ -5,6 +5,33 @@ keys:
   - &laptop age1rtqyx0569wsyyq2885f5c5ywnkfj36dwcz5usxep7zx8tkfcussqey3ndc
   - &foodbowl age19wp6q87wu0f7mj544eas3ujgjfej0fvn9kutx4x9gpgwswcw85dspd9z29
 creation_rules:
+  # Per-host SSH private keys for misty: each file is readable only by
+  # the admin key and that one host. Must stay above the catch-all rule
+  # (sops uses the first matching rule).
+  - path_regex: secrets/ssh-puppypc\.yaml$
+    key_groups:
+    - age:
+      - *admin_misty
+  - path_regex: secrets/ssh-thedogpark\.yaml$
+    key_groups:
+    - age:
+      - *admin_misty
+      - *server_mistyttmdev
+  - path_regex: secrets/ssh-thekennel\.yaml$
+    key_groups:
+    - age:
+      - *admin_misty
+      - *server_kennel
+  - path_regex: secrets/ssh-puppylaptop\.yaml$
+    key_groups:
+    - age:
+      - *admin_misty
+      - *laptop
+  - path_regex: secrets/ssh-foodbowl\.yaml$
+    key_groups:
+    - age:
+      - *admin_misty
+      - *foodbowl
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
     key_groups:
     - age:
