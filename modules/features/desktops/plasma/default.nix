@@ -14,7 +14,6 @@
 
     environment.plasma6.excludePackages = with pkgs.kdePackages; [
       konsole
-      kwin-x11
     ];
 
     environment.systemPackages = with pkgs.kdePackages;
