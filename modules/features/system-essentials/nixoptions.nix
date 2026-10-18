@@ -52,7 +52,8 @@
       sops.templates."nix-access-tokens" = {
         path = "/etc/nix/access-tokens.conf";
         owner = "root";
-        mode = "0600";
+        group = "wheel";
+        mode = "0440";
         content = ''
           access-tokens = github.com=${config.sops.placeholder.github_token}
         '';
