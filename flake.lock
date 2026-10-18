@@ -110,11 +110,11 @@
         "vpkmerge": "vpkmerge"
       },
       "locked": {
-        "lastModified": 1792225083,
-        "narHash": "sha256-ePxN+q8/STC75ujOX+d8gswY2oMwmqFg3kqaDeR5VRA=",
+        "lastModified": 1792280782,
+        "narHash": "sha256-f5L5F3UgvYNZNi93WZ9bdtIrwaikkmwGDM/IJKp1X/A=",
         "owner": "Slush97",
         "repo": "grimoire",
-        "rev": "897100a11dafc0af97631b5637873b4b0614475c",
+        "rev": "9866f63c885f92a80b62653cac7d54069d6a9e26",
         "type": "github"
       },
       "original": {
@@ -258,11 +258,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1791956154,
-        "narHash": "sha256-gJX2+xcImvxBCI3bp7zXKLUX2AwsdTxMgJ1UX/5Hm/o=",
-        "rev": "55bfb4d7437bd4e09ab7cba58a43bd68eb310044",
+        "lastModified": 1792094642,
+        "narHash": "sha256-LPFRbrCWWyNsdQLO3SX1B/5UMkFK0hfe7bZR6lENvpc=",
+        "rev": "fe13242281a67641c0102cdb1087f0ebe586c7df",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1092090.55bfb4d7437b/nixexprs.tar.zst?lastModified=1791956154&rev=55bfb4d7437bd4e09ab7cba58a43bd68eb310044"
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1093333.fe13242281a6/nixexprs.tar.zst?lastModified=1792094642&rev=fe13242281a67641c0102cdb1087f0ebe586c7df"
       },
       "original": {
         "type": "tarball",
@@ -280,11 +280,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1792236939,
-        "narHash": "sha256-OgkCYcFLjoR1mUUsWK1N91Y7Z8MK/6mEnscTFAZFDIg=",
+        "lastModified": 1792273633,
+        "narHash": "sha256-hhv5HMNBFYSbPYqVvxJd+PSIXBpvMssbdou0EW/wYWk=",
         "owner": "fzakaria",
         "repo": "omniflake",
-        "rev": "57aa9041b6dd9f2a2f9c16ce2f7effafd230314b",
+        "rev": "21b2ca223226edba9b7ba83fb8d120b4a6f2fa44",
         "type": "github"
       },
       "original": {
