@@ -1,25 +1,5 @@
 {
   "nodes": {
-    "auto-cpufreq": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1792080051,
-        "narHash": "sha256-MZF0JP9EG1kg3AMqEZwvBPd2fCJbH33tkeStuEcYIL0=",
-        "ref": "refs/heads/master",
-        "rev": "aa2c5ad2d1798da1c65f81cb0eb95ea933a074c6",
-        "revCount": 613,
-        "type": "git",
-        "url": "https://github.com/AdnanHodzic/auto-cpufreq"
-      },
-      "original": {
-        "type": "git",
-        "url": "https://github.com/AdnanHodzic/auto-cpufreq"
-      }
-    },
     "chaotic": {
       "inputs": {
         "flake-schemas": "flake-schemas",
@@ -757,7 +737,6 @@
     },
     "root": {
       "inputs": {
-        "auto-cpufreq": "auto-cpufreq",
         "chaotic": "chaotic",
         "devshell": "devshell",
         "direnv-instant": "direnv-instant",

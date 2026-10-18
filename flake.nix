@@ -22,10 +22,6 @@
   };
 
   inputs = {
-    auto-cpufreq = {
-      url = "git+https://github.com/AdnanHodzic/auto-cpufreq";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     devshell = {
       url = "github:numtide/devshell";
