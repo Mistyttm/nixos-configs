@@ -43,13 +43,12 @@
         # With mutableSettings the declared settings below are merged over the
         # on-disk config at every start, so UI changes to other keys persist.
         mutableSettings = true;
-        host = "0.0.0.0";
 
         openFirewall = true;
 
         settings = {
           http = {
-            address = "${config.services.adguardhome.host}:3000";
+            address = "0.0.0.0:3000";
           };
           dns = {
             bind_hosts = ["0.0.0.0"];
