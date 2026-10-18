@@ -194,11 +194,11 @@
         "vpkmerge": "vpkmerge"
       },
       "locked": {
-        "lastModified": 1792280782,
-        "narHash": "sha256-f5L5F3UgvYNZNi93WZ9bdtIrwaikkmwGDM/IJKp1X/A=",
+        "lastModified": 1792295315,
+        "narHash": "sha256-0bNR0U/T0tqYaEQ8jPx1jXjvs40fCpokK2ioFn8z/+s=",
         "owner": "Slush97",
         "repo": "grimoire",
-        "rev": "9866f63c885f92a80b62653cac7d54069d6a9e26",
+        "rev": "03ac7621b1aa58684df6d4cdfdf0beddf37d03b3",
         "type": "github"
       },
       "original": {
@@ -437,11 +437,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791711434,
-        "narHash": "sha256-LpIhxnuO0tYeZ4k7BbNMxsPs2zJpB4hWXO1jdhUuE7Q=",
+        "lastModified": 1792309949,
+        "narHash": "sha256-2DAEMk8YkV8OF6N2uw9jQ016cYoNkcgnq50AShwWxNw=",
         "owner": "nix-community",
         "repo": "nix-index-database",
-        "rev": "9a2dd40780eeab8543aa97c59c26f11267025616",
+        "rev": "1b4d1758fa6053c5d6284254a793134fa602fbff",
         "type": "github"
       },
       "original": {
@@ -917,16 +917,16 @@
     "vpkmerge": {
       "flake": false,
       "locked": {
-        "lastModified": 1792199608,
-        "narHash": "sha256-apnIyLMAZdTIrEkknJ1S386qg/dI+Gekiqg+DQQgT4U=",
+        "lastModified": 1792294765,
+        "narHash": "sha256-U+5RwdWv7CkmMHb5/kLbLfbqljFHFMQqJTsd4M3SJBI=",
         "owner": "Slush97",
         "repo": "vpkmerge",
-        "rev": "34ae9139f1028ee5144218e8b0e08bfb13f696cf",
+        "rev": "89e591edc4d823876f7e0103d5cec162e8ed15dd",
         "type": "github"
       },
       "original": {
         "owner": "Slush97",
-        "ref": "v0.22.1",
+        "ref": "v0.23.1",
         "repo": "vpkmerge",
         "type": "github"
       }
