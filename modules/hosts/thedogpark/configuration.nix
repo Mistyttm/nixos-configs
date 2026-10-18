@@ -27,6 +27,7 @@
       wireguard = {
         enable = true;
       };
+      ssh.hardened = true;
     };
     nixpkgs.config.cudaSupport = true;
 
