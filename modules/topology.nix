@@ -1,8 +1,14 @@
 {inputs, ...}: {
+  flake-file.inputs.nix-topology = {
+    url = "github:oddlama/nix-topology";
+    inputs.nixpkgs.follows = "nixpkgs";
+    inputs.flake-parts.follows = "flake-parts";
+  };
+
   perSystem = {system, ...}: {
     topology.pkgs = import inputs.nixpkgs {
       inherit system;
-      overlays = [inputs.omniflake.flakes.nix-topology.overlays.default];
+      overlays = [inputs.nix-topology.overlays.default];
     };
 
     topology.modules = [

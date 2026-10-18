@@ -1,11 +1,13 @@
 {inputs, ...}: {
+  flake-file.inputs.skwd-wall.url = "github:liixini/skwd-wall";
+
   flake.nixosModules.skwd = {
     config,
     lib,
     pkgs,
     ...
   }: let
-    skwd = inputs.omniflake.flakes.skwd-wall;
+    skwd = inputs.skwd-wall;
     skwd-wall = skwd.packages.${pkgs.stdenv.hostPlatform.system}.default;
     skwd-paper-plasma = skwd.packages.${pkgs.stdenv.hostPlatform.system}.skwd-paper-plasma;
     # skwd-walld only looks for qdbus6/qdbus-qt6, but nixpkgs' Qt6 qttools ships it as plain qdbus.

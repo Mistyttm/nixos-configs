@@ -6,12 +6,16 @@
   flake-file.inputs = {
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
 
-    omniflake = {
-      url = "github:fzakaria/omniflake";
+    flake-file.url = lib.mkDefault "github:denful/flake-file";
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+    import-tree.url = "github:denful/import-tree";
+    nix-wrapper-modules = {
+      url = "github:nix-community/nix-wrapper-modules";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    flake-file.url = lib.mkDefault "github:denful/flake-file";
   };
 
   flake-file.nixConfig = {

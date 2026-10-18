@@ -3,6 +3,8 @@
   self,
   ...
 }: {
+  flake-file.inputs.vpn-confinement.url = "github:Maroka-chan/VPN-Confinement";
+
   flake.nixosModules.vpn-confinement = {
     config,
     lib,
@@ -60,7 +62,7 @@
     };
 
     imports = [
-      inputs.omniflake.flakes.vpn-confinement.nixosModules.default
+      inputs.vpn-confinement.nixosModules.default
     ];
 
     vpnNamespaces.wg0 = {

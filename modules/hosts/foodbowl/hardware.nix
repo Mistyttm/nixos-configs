@@ -1,4 +1,9 @@
 {inputs, ...}: {
+  flake-file.inputs.nixos-hardware = {
+    url = "github:NixOS/nixos-hardware";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   flake.nixosModules.foodbowlHardware = {
     lib,
     modulesPath,
@@ -6,7 +11,7 @@
   }: {
     imports = [
       (modulesPath + "/installer/scan/not-detected.nix")
-      inputs.omniflake.flakes.nixos-hardware.nixosModules.raspberry-pi-4
+      inputs.nixos-hardware.nixosModules.raspberry-pi-4
     ];
 
     fileSystems."/" = {

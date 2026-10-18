@@ -3,6 +3,15 @@
   self,
   ...
 }: {
+  flake-file.inputs.nix-index-database = {
+    url = "github:nix-community/nix-index-database";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+  flake-file.inputs.nix-vscode-extensions = {
+    url = "github:nix-community/nix-vscode-extensions";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   flake.nixosModules.nixoptions = {
     config,
     pkgs,
@@ -10,7 +19,7 @@
     ...
   }: {
     imports = [
-      inputs.omniflake.flakes.nix-index-database.nixosModules.default
+      inputs.nix-index-database.nixosModules.default
       # self.nixosModules.laminix
     ];
 
@@ -90,7 +99,7 @@
       nixpkgs = {
         overlays = [
           self.overlays.default
-          inputs.omniflake.flakes.nix-vscode-extensions.overlays.default
+          inputs.nix-vscode-extensions.overlays.default
           self.overlays.kde-plasma-workspace-xdg-fix
           inputs.grimoire.overlays.default
           (_final: prev: {

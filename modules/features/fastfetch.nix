@@ -7,7 +7,7 @@
   };
 
   perSystem = {pkgs, ...}: {
-    packages.fastfetch = inputs.omniflake.flakes."github:nix-community/nix-wrapper-modules".wrappers.fastfetch.wrap {
+    packages.fastfetch = inputs.nix-wrapper-modules.wrappers.fastfetch.wrap {
       inherit pkgs;
       package = pkgs.fastfetch;
 

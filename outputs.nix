@@ -1,15 +1,14 @@
 inputs: let
-  of = inputs.omniflake.flakes;
-  modules = of.import-tree ./modules;
+  modules = inputs.import-tree ./modules;
 in
-  of.flake-parts.lib.mkFlake {inherit inputs;} {
+  inputs.flake-parts.lib.mkFlake {inherit inputs;} {
     imports = [
       modules
-      of.home-manager.flakeModules.home-manager
-      of.git-hooks-nix.flakeModule
-      of.mkdocs-flake.flakeModule
-      of.devshell.flakeModule
-      of.nix-topology.flakeModule
-      of.pkgs-by-name-for-flake-parts.flakeModule
+      inputs.home-manager.flakeModules.home-manager
+      inputs.git-hooks-nix.flakeModule
+      inputs.mkdocs-flake.flakeModule
+      inputs.devshell.flakeModule
+      inputs.nix-topology.flakeModule
+      inputs.pkgs-by-name-for-flake-parts.flakeModule
     ];
   }

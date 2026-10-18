@@ -1,7 +1,12 @@
 {inputs, ...}: {
+  flake-file.inputs.auto-cpufreq = {
+    url = "git+https://github.com/AdnanHodzic/auto-cpufreq";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   flake.nixosModules.auto-cpu-frequency = {...}: {
     imports = [
-      inputs.omniflake.flakes.auto-cpufreq.nixosModules.default
+      inputs.auto-cpufreq.nixosModules.default
     ];
     programs.auto-cpufreq = {
       enable = false;

@@ -1,4 +1,9 @@
 {inputs, ...}: {
+  flake-file.inputs.jovian-nixos = {
+    url = "github:Jovian-Experiments/Jovian-NixOS";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   flake.nixosModules.jovian = {
     lib,
     config,
@@ -6,7 +11,7 @@
     ...
   }: {
     imports = [
-      inputs.omniflake.flakes.jovian-nixos.nixosModules.default
+      inputs.jovian-nixos.nixosModules.default
     ];
 
     environment.systemPackages = with pkgs;

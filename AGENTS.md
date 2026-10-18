@@ -164,7 +164,7 @@ may be split across other modules where it makes sense, e.g. an
 overlay module declaring the PR-specific input it consumes). After
 changing declared inputs, run `nix run .#write-flake` to regenerate
 `flake.nix`, then `nix flake lock`. `outputs.nix` (repo root, NOT under
-`modules/`) holds the hand-written `flake-parts`/`omniflake` wiring;
+`modules/`) holds the hand-written `flake-parts` wiring;
 `flake-file.outputs` is left at its default (`inputs: import ./outputs.nix
 inputs`).
 

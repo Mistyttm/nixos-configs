@@ -5,7 +5,7 @@
 }: {
   flake.nixosModules.system-essentials = {...}: {
     imports = [
-      inputs.omniflake.flakes.nix-topology.nixosModules.default
+      inputs.nix-topology.nixosModules.default
 
       self.nixosModules.bootloader
       self.nixosModules.gnupg

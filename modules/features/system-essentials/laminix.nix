@@ -1,7 +1,12 @@
 {inputs, ...}: {
+  flake-file.inputs.laminix = {
+    url = "github:jackboykin/laminix";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   flake.nixosModules.laminix = {...}: {
     imports = [
-      inputs.omniflake.flakes.laminix.nixosModules.default
+      inputs.laminix.nixosModules.default
     ];
 
     environment.laminix = {

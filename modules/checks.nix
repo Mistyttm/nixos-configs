@@ -1,4 +1,9 @@
 {...}: {
+  flake-file.inputs.git-hooks-nix = {
+    url = "github:cachix/git-hooks.nix";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   perSystem = {pkgs, ...}: {
     formatter = pkgs.nixfmt;
 

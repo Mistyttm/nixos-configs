@@ -1,7 +1,12 @@
 {inputs, ...}: {
+  flake-file.inputs.home-manager = {
+    url = "github:nix-community/home-manager";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   flake.nixosModules.homeManager = {...}: {
     imports = [
-      inputs.omniflake.flakes.home-manager.nixosModules.home-manager
+      inputs.home-manager.nixosModules.home-manager
     ];
 
     home-manager = {

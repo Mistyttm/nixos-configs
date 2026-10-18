@@ -1,9 +1,14 @@
 {inputs, ...}: {
+  flake-file.inputs.nix-minecraft = {
+    url = "github:Infinidoge/nix-minecraft";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   flake.nixosModules.minecraft = {pkgs, ...}: let
     fetchurl = pkgs.fetchurl;
   in {
     imports = [
-      inputs.omniflake.flakes.nix-minecraft.nixosModules.minecraft-servers
+      inputs.nix-minecraft.nixosModules.minecraft-servers
     ];
 
     services.minecraft-servers = {
