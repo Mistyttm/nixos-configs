@@ -31,22 +31,23 @@
                 };
                 upgrade = {
                   allowed = true;
-                  until_quality = "Bluray-1080p";
+                  until_quality = "Bluray-2160p";
                   until_score = 10000;
                 };
                 min_format_score = 0;
                 quality_sort = "top";
                 qualities = [
                   # 2160p disc sources
-                  # {name = "Bluray-2160p Remux";}
-                  # {name = "Bluray-2160p";}
-                  # {
-                  #   name = "WEB 2160p";
-                  #   qualities = [
-                  #     "WEBDL-2160p"
-                  #     "WEBRip-2160p"
-                  #   ];
-                  # }
+                  {name = "Bluray-2160p Remux";}
+                  {name = "Bluray-2160p";}
+                  # 2160p streaming
+                  {
+                    name = "WEB 2160p";
+                    qualities = [
+                      "WEBDL-2160p"
+                      "WEBRip-2160p"
+                    ];
+                  }
                   # 1080p disc sources (Sonarr calls its remux "Bluray-1080p Remux")
                   {name = "Bluray-1080p Remux";}
                   {name = "Bluray-1080p";}
@@ -111,7 +112,6 @@
                 trash_ids = [
                   "9965a052eb87b0d10313b1cea89eb451" # Remux Tier 01
                   "8a1d0c3d7497e741736761a1da866a2e" # Remux Tier 02
-                  "d01958ef0dea8f72096d88e2dff5a5d8" # Remux Tier 03
                 ];
                 assign_scores_to = [
                   {
@@ -125,11 +125,10 @@
                   "e6258996055b9fbab7e9cb2f75819294" # WEB Tier 01
                   "58790d4e2fdcd9733aa7ae68ba2bb503" # WEB Tier 02
                   "d84935abd3f8556dcd51d4f27e22d0a6" # WEB Tier 03
-                  "b3b3a6ac74ecbd56bcdbefa4799fb9df" # AMZN
-                  "170b1d363bd8516fbf3a3eb05d4faff6" # NF
-                  "84272245b2988854bfb76a16e60baea5" # DSNP
-                  "40e9380490e748672c2522eaaeb692f7" # ATVP
-                  "cc5e51a9e85a6296ceefe097a77f12f4" # BCORE
+                  "d660701077794679fd59e8bdf4ce3a29" # AMZN
+                  "d34870697c9db575f17700212167be23" # NF
+                  "89358767a60cc28783cdc3d0be9388a4" # DSNP
+                  "f67c9ca88f463a48346062e8ad07713f" # ATVP
                 ];
                 assign_scores_to = [
                   {
@@ -143,6 +142,47 @@
                   "1b3994c551cbb92a2c781af061f4ab44" # Scene
                   "d0c516558625b04b363fa6c5c2c7cfd4" # WEB Scene
                 ];
+                assign_scores_to = [
+                  {
+                    name = "WEB-1080p";
+                    score = 50;
+                  }
+                ];
+              }
+              {
+                # HDR / 4K: block releases the TV can't play correctly
+                trash_ids = [
+                  "9b27ab6498ec0f31a3353992e19434ca" # DV (w/o HDR fallback)
+                  "2016d1676f5ee13a5b7257ff86ac9a93" # SDR (only matches 2160p)
+                ];
+                assign_scores_to = [
+                  {
+                    name = "WEB-1080p";
+                    score = -10000;
+                  }
+                ];
+              }
+              {
+                trash_ids = ["505d871304820ba7106b693be6fe4a9e"]; # HDR (any HDR10/HDR10+/DV w/ fallback/HLG/PQ)
+                assign_scores_to = [
+                  {
+                    name = "WEB-1080p";
+                    score = 500;
+                  }
+                ];
+              }
+              {
+                # Tiebreakers between HDR flavours; both fall back to HDR10
+                trash_ids = ["7c3a61a9c6cb04f52f1544be6d44a026"]; # DV Boost
+                assign_scores_to = [
+                  {
+                    name = "WEB-1080p";
+                    score = 100;
+                  }
+                ];
+              }
+              {
+                trash_ids = ["0c4b99df9206d2cfac3c05ab897dd62a"]; # HDR10+ Boost
                 assign_scores_to = [
                   {
                     name = "WEB-1080p";
@@ -194,23 +234,23 @@
                 upgrade = {
                   allowed = true;
                   # Remux-2160p is the ceiling — lossless 4K disc copy
-                  until_quality = "Remux-1080p";
+                  until_quality = "Remux-2160p";
                   until_score = 10000;
                 };
                 min_format_score = 0;
                 quality_sort = "top";
                 qualities = [
                   # 4K disc sources (best possible quality)
-                  # {name = "Remux-2160p";}
-                  # {name = "Bluray-2160p";}
-                  # # 4K streaming
-                  # {
-                  #   name = "WEB 2160p";
-                  #   qualities = [
-                  #     "WEBDL-2160p"
-                  #     "WEBRip-2160p"
-                  #   ];
-                  # }
+                  {name = "Remux-2160p";}
+                  {name = "Bluray-2160p";}
+                  # 4K streaming
+                  {
+                    name = "WEB 2160p";
+                    qualities = [
+                      "WEBDL-2160p"
+                      "WEBRip-2160p"
+                    ];
+                  }
                   # 1080p disc sources
                   {name = "Remux-1080p";}
                   {name = "Bluray-1080p";}
@@ -249,7 +289,6 @@
               {
                 trash_ids = [
                   "ed38b889b31be83fda192888e2286d83" # BR-DISK
-                  "90cedc1fea7ea5d11298bebd3d1d3223" # EVO (no WEBDL)
                   "b8cd450cbfa689c0259a01d9e29ba3d6" # 3D
                   "90a6f9a284dff5103f6346090e6280c8" # LQ
                   "e204b80c87be9497a8a6eaff48f72905" # LQ (Release Title)
@@ -265,11 +304,11 @@
                 ];
               }
               {
-                # 2160p remux groups — lossless 4K disc rips, best possible
+                # Remux groups (Radarr's tiers cover both 1080p and 2160p)
                 trash_ids = [
-                  "9965a052eb87b0d10313b1cea89eb451" # Remux Tier 01
-                  "8a1d0c3d7497e741736761a1da866a2e" # Remux Tier 02
-                  "d01958ef0dea8f72096d88e2dff5a5d8" # Remux Tier 03
+                  "3a3ff47579026e76d6504ebea39390de" # Remux Tier 01
+                  "9f98181fe5a3fbeb0cc29340da2a468a" # Remux Tier 02
+                  "8baaf0b3142bf4d94c42a724f034e27a" # Remux Tier 03
                 ];
                 assign_scores_to = [
                   {
@@ -279,24 +318,13 @@
                 ];
               }
               {
-                # 1080p remux / Bluray encode groups
-                trash_ids = [
-                  "3a3ff47579026e76d6504ebea39390de" # Remux Tier 01
-                  "9f98181fe5a3fbeb0cc29340da2a468a" # Remux Tier 02
-                  "8baaf0b3142bf4d94c42a724f034e27a" # Remux Tier 03
-                ];
-                assign_scores_to = [
-                  {
-                    name = "WEB-1080p";
-                    score = 180;
-                  }
-                ];
-              }
-              {
                 trash_ids = [
                   "ed27ebfef2f323e964fb1f61391bcb35" # Bluray Tier 01
                   "c20c8647f2746a1f4c4262b0fbbeeeae" # Bluray Tier 02
                   "5608c71bcebba0a5e666223bae8c9227" # Bluray Tier 03
+                  "4d74ac4c4db0b64bff6ce0cffef99bf0" # UHD Bluray Tier 01
+                  "a58f517a70193f8e578056642178419d" # UHD Bluray Tier 02
+                  "e71939fae578037e7aed3ee219bbe7c1" # UHD Bluray Tier 03
                 ];
                 assign_scores_to = [
                   {
@@ -333,20 +361,44 @@
                 ];
               }
               {
+                # HDR / 4K: block releases the TV can't play correctly
                 trash_ids = [
-                  "e23edd2482476e595fb990b12e7c609c" # DV HDR10
-                  "58d6a88f13e2db7f5059a41047876f00" # DV
-                  "55d53828b9d81cbe20b02efd00aa0efd" # DV HLG
-                  "a3e19f8f627608af0211acd02bf89735" # DV SDR
-                  "b974a6cd08c1066250f1f177d7aa1225" # HDR10+
-                  "dfb86d5941bc9075d6af23b09c2aeecd" # HDR10
-                  "e61e28db95d22bedcadf030b8f156d96" # HDR
-                  "2a4d9069cc1fe3242ff9bdaebed239bb" # HDR (undefined)
+                  "923b6abef9b17f937fab56cfcf89e1f1" # DV (w/o HDR fallback)
+                  "9c38ebb7384dada637be8899efa68e6f" # SDR (only matches 2160p)
+                  "e6886871085226c3da1830830146846c" # Generated Dynamic HDR
                 ];
                 assign_scores_to = [
                   {
                     name = "WEB-1080p";
-                    score = -50;
+                    score = -10000;
+                  }
+                ];
+              }
+              {
+                trash_ids = ["493b6d1dbec3c3364c59d7607f7e3405"]; # HDR (any HDR10/HDR10+/DV w/ fallback/HLG/PQ)
+                assign_scores_to = [
+                  {
+                    name = "WEB-1080p";
+                    score = 500;
+                  }
+                ];
+              }
+              {
+                # Tiebreakers between HDR flavours; both fall back to HDR10
+                trash_ids = ["b337d6812e06c200ec9a2d3cfa9d20a7"]; # DV Boost
+                assign_scores_to = [
+                  {
+                    name = "WEB-1080p";
+                    score = 100;
+                  }
+                ];
+              }
+              {
+                trash_ids = ["caa37d0df9c348912df1fb1d88f9273a"]; # HDR10+ Boost
+                assign_scores_to = [
+                  {
+                    name = "WEB-1080p";
+                    score = 50;
                   }
                 ];
               }
