@@ -61,9 +61,6 @@
     ];
 
     systemd.services."tdarr-node-internal" = {
-      environment = {
-        TDARR_ENGINE = "rust";
-      };
       serviceConfig = lib.mkMerge [
         {
           ReadWritePaths = libraries;
@@ -75,9 +72,6 @@
 
     systemd.services."tdarr-server" = {
       unitConfig.RequiresMountsFor = ["/mnt/media"];
-      environment = {
-        TDARR_ENGINE = "rust";
-      };
       serviceConfig = lib.mkMerge [
         {
           ReadWritePaths = libraries;
