@@ -584,6 +584,40 @@
         "type": "github"
       }
     },
+    "nixpkgs-pr-561246": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792304659,
+        "narHash": "sha256-QstaniBnOxwc7FIeHQl3X3ntR2Omqni4ODwoihTLVaM=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "9ccac42cc7292e02756d17e5ce004ec1b0bbf080",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "pull/561246/head",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-pr-572724": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792236911,
+        "narHash": "sha256-EF0e6P/RQua8HbCPshjQzmxBEtmY3ot8hwffHQAQPbw=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "ee9bf2a75f88a6df9ceab897ad8b91fe508acd7c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "pull/572724/head",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1790769526,
@@ -757,6 +791,8 @@
         "nix-wrapper-modules": "nix-wrapper-modules",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_3",
+        "nixpkgs-pr-561246": "nixpkgs-pr-561246",
+        "nixpkgs-pr-572724": "nixpkgs-pr-572724",
         "pkgs-by-name-for-flake-parts": "pkgs-by-name-for-flake-parts",
         "skwd-wall": "skwd-wall",
         "sops-nix": "sops-nix",

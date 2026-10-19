@@ -102,6 +102,7 @@
           self.overlays.default
           inputs.nix-vscode-extensions.overlays.default
           self.overlays.kde-plasma-workspace-xdg-fix
+          self.overlays.nixpkgs-prs
           inputs.grimoire.overlays.default
           (_final: prev: {
             inherit
