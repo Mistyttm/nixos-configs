@@ -14,7 +14,7 @@
       inputs.jovian-nixos.nixosModules.default
     ];
 
-    environment.systemPackages = with pkgs;
+    environment.systemPackages = with pkgs.jovianPackages;
       lib.optionals (config.hardware.nvidia-custom.enable
         && config.services.desktopManager.plasma6.enable
         && lib.versionAtLeast (lib.getVersion config.hardware.nvidia.package) "615")

@@ -24,7 +24,7 @@
         extraEnv = {
           OBS_VKCAPTURE = true;
         };
-        platformArgs = "-pipewire";
+        extraArgs = "-pipewire";
       };
     };
 
