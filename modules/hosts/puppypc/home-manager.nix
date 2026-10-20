@@ -37,6 +37,10 @@
         1
       ];
 
+      services.easyeffects.settings = {
+        StreamInputs.inputDevice = "alsa_input.usb-Razer_Inc_Razer_Seiren_Mini_UC2222L03203690-00.pro-input-0";
+      };
+
       gpg = {
         enable = true;
         publicKeySource = ./PuppyPC.asc;
