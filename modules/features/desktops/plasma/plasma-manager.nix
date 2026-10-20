@@ -41,47 +41,50 @@
       # tray only on the primary one (Plasma 6 always numbers it 0), plus a dock
       # on each of dockScreens. One panel per screen rather than `screen = [ ... ]`,
       # since plasma-manager loops that list with JS for...in (indices, not values).
-      panels =
-        [
-          {
-            screen = "all";
-            location = "top";
-            height = 36;
-            opacity = "translucent";
-            widgets = [
-              "org.kde.plasma.kicker"
-              {
-                name = "org.kde.windowtitle";
-                config.Appearance = {
-                  txt = "%a";
-                  firstSpace = 6;
-                  lastSpace = 3;
-                  fixedLength = 155;
-                  fontSize = 14;
-                  visible = false;
-                };
-              }
-              "org.kde.plasma.appmenu"
-              "org.kde.plasma.panelspacer"
-              {digitalClock.date.position = "besideTime";}
-              "org.kde.plasma.panelspacer"
-              {
-                systemTray.items.hidden = [
-                  "org.kde.plasma.clipboard"
-                  "org.kde.plasma.devicenotifier"
-                  "org.kde.plasma.battery"
-                  "org.kde.kdeconnect"
-                ];
-              }
-            ];
-            extraSettings = ''
-              if (screenID != 0) {
-                panelWidgets["org.kde.plasma.systemtray"].remove();
-              }
-            '';
-          }
-        ]
-        ++ map (screen: {
+      #
+      # Order matters: plasma-manager creates panels in list order, and Meta opens
+      # the launcher in the lowest-numbered panel on the active screen. The primary
+      # dock goes first so Meta opens its kickoff, not the top bar's kicker.
+      panels = let
+        inherit (config.programs.puppy.plasma) dockScreens;
+        topBar = {
+          screen = "all";
+          location = "top";
+          height = 36;
+          opacity = "translucent";
+          widgets = [
+            "org.kde.plasma.kicker"
+            {
+              name = "org.kde.windowtitle";
+              config.Appearance = {
+                txt = "%a";
+                firstSpace = 6;
+                lastSpace = 3;
+                fixedLength = 155;
+                fontSize = 14;
+                visible = false;
+              };
+            }
+            "org.kde.plasma.appmenu"
+            "org.kde.plasma.panelspacer"
+            {digitalClock.date.position = "besideTime";}
+            "org.kde.plasma.panelspacer"
+            {
+              systemTray.items.hidden = [
+                "org.kde.plasma.clipboard"
+                "org.kde.plasma.devicenotifier"
+                "org.kde.plasma.battery"
+                "org.kde.kdeconnect"
+              ];
+            }
+          ];
+          extraSettings = ''
+            if (screenID != 0) {
+              panelWidgets["org.kde.plasma.systemtray"].remove();
+            }
+          '';
+        };
+        dock = screen: {
           inherit screen;
           location = "bottom";
           height = 64;
@@ -104,8 +107,11 @@
               ];
             }
           ];
-        })
-        config.programs.puppy.plasma.dockScreens;
+        };
+      in
+        lib.optional (builtins.elem 0 dockScreens) (dock 0)
+        ++ [topBar]
+        ++ map dock (builtins.filter (screen: screen != 0) dockScreens);
 
       workspace = {
         theme = "Amethyst";
