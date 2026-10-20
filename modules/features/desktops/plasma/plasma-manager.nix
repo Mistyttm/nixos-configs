@@ -101,8 +101,8 @@
                 "applications:vesktop.desktop"
                 "applications:steam.desktop"
                 "applications:kitty.desktop"
-                "applications:thunderbird.desktop"
                 "applications:code.desktop"
+                "applications:thunderbird.desktop"
                 "applications:dev.zed.Zed.desktop"
               ];
             }
