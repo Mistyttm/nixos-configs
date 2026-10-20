@@ -674,6 +674,29 @@
         "type": "github"
       }
     },
+    "plasma-manager": {
+      "inputs": {
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1785762349,
+        "narHash": "sha256-jZhZkzAwc7f3exzcTDJWP2WCAchCv0iNC3UF/QsahdQ=",
+        "owner": "nix-community",
+        "repo": "plasma-manager",
+        "rev": "a19a2a029fa180911bd89c554dca1616e10f4c1d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "plasma-manager",
+        "type": "github"
+      }
+    },
     "poetry2nix": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -793,6 +816,7 @@
         "nixpkgs-pr-561246": "nixpkgs-pr-561246",
         "nixpkgs-pr-572724": "nixpkgs-pr-572724",
         "pkgs-by-name-for-flake-parts": "pkgs-by-name-for-flake-parts",
+        "plasma-manager": "plasma-manager",
         "skwd-wall": "skwd-wall",
         "sops-nix": "sops-nix",
         "vpn-confinement": "vpn-confinement"

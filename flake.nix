@@ -105,6 +105,13 @@
       flake = false;
     };
     pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager";
+      inputs = {
+        home-manager.follows = "home-manager";
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
     skwd-wall.url = "github:liixini/skwd-wall";
     sops-nix = {
       url = "github:Mic92/sops-nix";

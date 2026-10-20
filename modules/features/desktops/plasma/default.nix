@@ -34,9 +34,7 @@
         # wallpaper-engine-plugin
       ]
       ++ (with pkgs; [
-        darkly
         plasma-panel-colorizer
-        klassy
         libaccounts-glib
         bitwarden-cli
       ]);
