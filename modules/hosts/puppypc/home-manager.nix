@@ -28,6 +28,13 @@
         protonmail
         protonDrive
         plasma
+        plasmaManager
+      ];
+
+      # Dock on the second monitor as well as the primary.
+      programs.puppy.plasma.dockScreens = [
+        0
+        1
       ];
 
       gpg = {
