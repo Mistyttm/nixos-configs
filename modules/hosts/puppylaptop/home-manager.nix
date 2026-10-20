@@ -22,6 +22,7 @@
         kitty
         direnv
         protonmail
+        plasmaManager
       ];
 
       gpg = {
