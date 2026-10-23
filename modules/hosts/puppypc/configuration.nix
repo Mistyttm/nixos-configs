@@ -31,7 +31,7 @@
       jovian
       chaotic
       protonDrive
-      # puppypc-nat
+      openconnect
       skwd
     ];
 
