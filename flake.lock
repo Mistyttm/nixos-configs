@@ -94,11 +94,11 @@
     },
     "flake-file": {
       "locked": {
-        "lastModified": 1792902536,
-        "narHash": "sha256-UTU1Z+nFXZt8ugA0edxhVkuPD5k9YbSXsmvxT7XlZeM=",
+        "lastModified": 1792905615,
+        "narHash": "sha256-KdGEzlRQPHBbNPD+AChjry8eWEx0TCrGKy1Hkacj+bA=",
         "owner": "denful",
         "repo": "flake-file",
-        "rev": "11f9c866998bc09002edc4b68f304be380fa9397",
+        "rev": "7b08dbc223bb1a758a515aad9653a6bf196bc772",
         "type": "github"
       },
       "original": {
@@ -193,11 +193,11 @@
         "vpkmerge": "vpkmerge"
       },
       "locked": {
-        "lastModified": 1792877454,
-        "narHash": "sha256-U1YpOy2mr6bEe1V90msbnhZpC7/Pa0Oen8A/10hHitk=",
+        "lastModified": 1792909518,
+        "narHash": "sha256-ypC96aRftW0eZdRdUT6HMP6JvrLb4DUUzbSvOZDJ89w=",
         "owner": "Slush97",
         "repo": "grimoire",
-        "rev": "e008b10ac868f0558d6b71cd052bfec243c89b4e",
+        "rev": "14741124b12cceaa7299fec80e84e65ae0d32e6f",
         "type": "github"
       },
       "original": {
@@ -435,11 +435,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792309949,
-        "narHash": "sha256-2DAEMk8YkV8OF6N2uw9jQ016cYoNkcgnq50AShwWxNw=",
+        "lastModified": 1792915725,
+        "narHash": "sha256-v75hPw5NJ+mRRcwUzKi2OQtVSVv1hgq6ceAlPQB2kEE=",
         "owner": "nix-community",
         "repo": "nix-index-database",
-        "rev": "1b4d1758fa6053c5d6284254a793134fa602fbff",
+        "rev": "93696586f3463024cceb089353539be95a38ae2b",
         "type": "github"
       },
       "original": {
