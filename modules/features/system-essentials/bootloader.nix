@@ -5,12 +5,6 @@
     ...
   }: {
     boot = {
-      initrd = {
-        systemd = {
-          enable = true;
-        };
-      };
-
       kernel = {
         sysctl = {
           "net.ipv4.ip_forward" = lib.mkDefault 1;
@@ -23,7 +17,6 @@
 
       # Enable "Silent Boot"
       consoleLogLevel = 0;
-      initrd.verbose = false;
       kernelParams = [
         "quiet"
         "splash"
