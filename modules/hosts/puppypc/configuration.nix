@@ -29,7 +29,7 @@
       appimage
       ollama
       jovian
-      chaotic
+      cachyosKernel
       protonDrive
       openconnect
       skwd
@@ -38,7 +38,7 @@
     networking.hostName = "puppypc";
 
     boot = {
-      kernelPackages = pkgs.linuxPackages_cachyos-lto-znver4;
+      kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto-zen4;
       supportedFilesystems = ["ntfs"];
       kernelModules = ["ntsync"];
       binfmt.emulatedSystems = ["aarch64-linux"];
