@@ -22,7 +22,7 @@
             MaxActiveTorrents = 20;
             MaxActiveUploads = 10;
             Port = 57674;
-            QueueingSystemEnabled = true;
+            QueueingSystemEnabled = false;
             SSL = {
               Port = 20173;
             };
