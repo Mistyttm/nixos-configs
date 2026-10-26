@@ -18,10 +18,12 @@
             AlternativeGlobalDLSpeedLimit = 10;
             AlternativeGlobalUPSpeedLimit = 10;
             GlobalMaxRatio = 2;
+            # Proton only forwards IPv4, so announce from IPv4 only ("All IPv4 addresses")
+            InterfaceAddress = "0.0.0.0";
             MaxActiveDownloads = 10;
             MaxActiveTorrents = 20;
             MaxActiveUploads = 10;
-            Port = 57674;
+            Port = 39065;
             QueueingSystemEnabled = false;
             SSL = {
               Port = 20173;
