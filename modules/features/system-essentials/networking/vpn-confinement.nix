@@ -47,43 +47,61 @@
       }
 
       # The namespace drops all inbound traffic on the VPN interface by default,
-      # so the Proton-assigned port has to be opened here, not via openVPNPorts.
-      opened=""
+      # so the forwarded port is opened here, in a chain this script owns.
+      # Flushing it on start clears rules left behind by a previous run.
+      IPT=${pkgs.iptables}/bin/iptables
+      CHAIN=qbt-natpmp
+      $IPT -N "$CHAIN" 2>/dev/null || $IPT -F "$CHAIN"
+      $IPT -C INPUT -i ${vpnIface} -j "$CHAIN" 2>/dev/null || $IPT -A INPUT -i ${vpnIface} -j "$CHAIN"
+
       open_port() {
-        local p
-        if [ -n "$opened" ] && [ "$opened" != "$1" ]; then
-          for p in tcp udp; do
-            ${pkgs.iptables}/bin/iptables -D INPUT -i ${vpnIface} -p "$p" --dport "$opened" -j ACCEPT 2>/dev/null || true
-          done
-        fi
+        $IPT -F "$CHAIN"
         for p in tcp udp; do
-          ${pkgs.iptables}/bin/iptables -C INPUT -i ${vpnIface} -p "$p" --dport "$1" -j ACCEPT 2>/dev/null \
-            || ${pkgs.iptables}/bin/iptables -A INPUT -i ${vpnIface} -p "$p" --dport "$1" -j ACCEPT
+          $IPT -A "$CHAIN" -p "$p" --dport "$1" -j ACCEPT
         done
-        opened="$1"
       }
 
+      # Proton assigns a random public port and forwards it to whatever local
+      # port we request. Keep requesting local == the assigned public port, so
+      # qBittorrent can listen on the same port it announces to trackers.
+      want=${toString qbtListenPort}
+      opened=""
       while true; do
         mapped=""
         for proto in tcp udp; do
           out=$(${pkgs.libnatpmp}/bin/natpmpc -g ${natPmpGateway} \
-                  -a ${toString qbtListenPort} ${toString qbtListenPort} "$proto" 60 2>&1) || true
+                  -a "$want" "$want" "$proto" 60 2>&1) || true
           port=$(echo "$out" | grep -oP 'Mapped public port \K[0-9]+' || true)
           [ -n "$port" ] && mapped="$port"
         done
 
-        if [ -n "$mapped" ]; then
-          [ "$mapped" != "$opened" ] && echo "qbt-natpmp: opening mapped port $mapped on ${vpnIface}"
-          open_port "$mapped"
-          # Check qBittorrent's actual port every loop: a qBittorrent restart
-          # rewrites its config back to the declarative Port.
-          current=$(get_port || true)
-          if [ -n "$current" ] && [ "$current" != "$mapped" ]; then
-            echo "qbt-natpmp: qBittorrent on $current, setting $mapped"
-            set_port "$mapped"
-          fi
-        else
+        if [ -z "$mapped" ]; then
           echo "qbt-natpmp: no mapping from gateway: $out"
+          sleep 45
+          continue
+        fi
+
+        if [ "$mapped" != "$want" ]; then
+          # Public port differs from the local port we asked for: re-request
+          # right away with local == public before pointing anything at it.
+          echo "qbt-natpmp: Proton assigned public port $mapped, remapping locally"
+          want="$mapped"
+          sleep 1
+          continue
+        fi
+
+        if [ "$mapped" != "$opened" ]; then
+          echo "qbt-natpmp: forwarding $mapped -> $mapped, opening on ${vpnIface}"
+          open_port "$mapped"
+          opened="$mapped"
+        fi
+
+        # Check qBittorrent's actual port every loop: a qBittorrent restart
+        # rewrites its config back to the declarative Port.
+        current=$(get_port || true)
+        if [ -n "$current" ] && [ "$current" != "$mapped" ]; then
+          echo "qbt-natpmp: qBittorrent on $current, setting $mapped"
+          set_port "$mapped"
         fi
         sleep 45
       done
