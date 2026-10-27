@@ -18,6 +18,10 @@
       url = "github:NixOS/nixpkgs/pull/576407/head";
       flake = false;
     };
+    nixpkgs-pr-538226 = {
+      url = "github:NixOS/nixpkgs/pull/538226/head";
+      flake = false;
+    };
   };
 
   flake.overlays.nixpkgs-prs = final: prev: let
@@ -60,6 +64,20 @@
       merged =
         !lib.any (p: lib.hasInfix "A15-lavc-pgssubdec" (toString p))
         prev.handbrake.passthru.ffmpeg-hb.patches;
+    };
+
+    # millennium: init at 3.6.1
+    millennium = fromPR {
+      pr = "538226";
+      attr = "millennium";
+      path = "pkgs/by-name/mi/millennium/package.nix";
+      merged = prev ? millennium;
+    };
+    steamWithMillennium = fromPR {
+      pr = "538226";
+      attr = "steamWithMillennium";
+      path = "pkgs/by-name/st/steamWithMillennium/package.nix";
+      merged = prev ? steamWithMillennium;
     };
   };
 }

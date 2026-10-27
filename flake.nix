@@ -61,7 +61,6 @@
       url = "github:jackboykin/laminix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    millennium.url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
     mkdocs-flake = {
       url = "github:applicative-systems/mkdocs-flake";
       inputs = {
@@ -98,6 +97,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
+    nixpkgs-pr-538226 = {
+      url = "github:NixOS/nixpkgs/pull/538226/head";
+      flake = false;
+    };
     nixpkgs-pr-561246 = {
       url = "github:NixOS/nixpkgs/pull/561246/head";
       flake = false;

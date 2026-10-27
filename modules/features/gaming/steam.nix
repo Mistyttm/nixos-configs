@@ -1,11 +1,5 @@
-{inputs, ...}: {
-  flake-file.inputs.millennium = {
-    url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
-  };
-
+{
   flake.nixosModules.steam = {pkgs, ...}: {
-    nixpkgs.overlays = [inputs.millennium.overlays.default];
-
     programs.steam = {
       enable = true;
       remotePlay.openFirewall = true;
@@ -20,7 +14,7 @@
         proton-cachyos
         proton-ge-rtsp
       ];
-      package = pkgs.millennium-steam.override {
+      package = pkgs.steamWithMillennium.override {
         extraEnv = {
           OBS_VKCAPTURE = true;
         };
