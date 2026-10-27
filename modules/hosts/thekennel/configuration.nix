@@ -134,6 +134,17 @@
       ];
     };
 
+    fileSystems."/mnt/homework" = {
+      device = "/dev/disk/by-label/homework";
+      fsType = "ext4";
+      options = [ "nofail" "noatime" ];
+    };
+
+      systemd.tmpfiles.rules = [
+        "d /mnt/homework 2775 misty media -"
+        "d /mnt/localExpansion 2775 misty media -"
+        ];
+
     programs.mtr.enable = true;
 
     system.stateVersion = "24.05";
