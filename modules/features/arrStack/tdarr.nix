@@ -6,13 +6,16 @@
   }: let
     localRoot = "/mnt/localExpansion";
     nasRoot = "/mnt/media";
+    portable = "/mnt/homework";
 
     libraries = [
       "${localRoot}/tdarr" # cache
       "${localRoot}/tv" # library
       "${localRoot}/movies" # library
-      "${nasRoot}/Movies" # library
-      "${nasRoot}/TV" # library
+      "${nasRoot}/movies" # library
+      "${nasRoot}/tv" # library
+      "${portable}/movies" # library
+      "${portable}/tv" # library
     ];
   in {
     services.tdarr = {
