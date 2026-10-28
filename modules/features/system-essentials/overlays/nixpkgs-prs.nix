@@ -40,12 +40,12 @@
         prev.${attr}
       else final.callPackage "${inputs."nixpkgs-pr-${pr}"}/${path}" {};
   in {
-    # tdarr: 2.87.01 -> 3.00.00
+    # tdarr: 2.87.01 -> 3.04.00
     tdarr = fromPR {
       pr = "572724";
       attr = "tdarr";
       path = "pkgs/by-name/td/tdarr/package.nix";
-      merged = lib.versionAtLeast (prev.tdarr.version or "0") "3.00.00";
+      merged = lib.versionAtLeast (prev.tdarr.version or "0") "3.04.00";
     };
 
     # cleanuparr: init
