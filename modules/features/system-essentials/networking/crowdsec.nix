@@ -9,8 +9,10 @@
     crowdsecCfg = config.services.crowdsec;
 
     # 4h on first offence, +4h per prior decision still in the database
-    # (flushed after 7 days), capped at 24h.
-    banDurationExpr = "GetDecisionsCount(Alert.GetValue()) >= 5 ? '24h' : Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)";
+    # (flushed after 7 days), capped at 24h. Must not contain `%`: the upstream
+    # module writes profiles.yaml via tmpfiles, which treats `%d` (as in
+    # Sprintf('%dh')) as a specifier and silently skips the file.
+    banDurationExpr = "GetDecisionsCount(Alert.GetValue()) >= 5 ? '24h' : string((GetDecisionsCount(Alert.GetValue()) + 1) * 4) + 'h'";
     mkBanProfile = scope: {
       name = "default_${lib.toLower scope}_remediation";
       filters = ["Alert.Remediation == true && Alert.GetScope() == '${scope}'"];
