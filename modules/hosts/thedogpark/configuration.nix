@@ -9,6 +9,7 @@
       cli-tools
       nix-ld
       fail2ban
+      crowdsec
       matrix
       motd
       prometheus-exporter
@@ -28,6 +29,11 @@
         enable = true;
       };
       ssh.hardened = true;
+      crowdsec = {
+        enable = true;
+        console.enable = true;
+        homepage.enable = true;
+      };
     };
     nixpkgs.config.cudaSupport = true;
 

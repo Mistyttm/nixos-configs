@@ -68,6 +68,10 @@
       sopsFile = self.secrets.adguard;
     };
 
+    sops.secrets."crowdsec_homepage_password" = {
+      sopsFile = self.secrets.crowdsec;
+    };
+
     sops.templates."homepage-env" = {
       owner = "root";
       group = "root";
@@ -89,6 +93,7 @@
         HOMEPAGE_VAR_QNAP_PASSWORD=${config.sops.placeholder."qnap/password"}
         HOMEPAGE_VAR_ADGUARD_USERNAME=${config.sops.placeholder."adguard_username"}
         HOMEPAGE_VAR_ADGUARD_PASSWORD=${config.sops.placeholder."adguard_password"}
+        HOMEPAGE_VAR_CROWDSEC_PASSWORD=${config.sops.placeholder."crowdsec_homepage_password"}
       '';
     };
 
@@ -521,6 +526,19 @@
                       format = {type = "bytes";};
                     }
                   ];
+                };
+              };
+            }
+            {
+              "thedogpark CrowdSec" = {
+                icon = "crowdsec";
+                href = "https://app.crowdsec.net";
+                description = "VPS intrusion prevention";
+                widget = {
+                  type = "crowdsec";
+                  url = "http://10.100.0.1:8180";
+                  username = "homepage";
+                  password = "{{HOMEPAGE_VAR_CROWDSEC_PASSWORD}}";
                 };
               };
             }
