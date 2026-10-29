@@ -33,6 +33,12 @@
         enable = true;
         console.enable = true;
         homepage.enable = true;
+        trustedHttpRoutes = {
+          "mistyttm.dev" = ["/_matrix/" "/_synapse/client/"];
+          "jellyfin.mistyttm.dev" = ["/"];
+          "seerr.mistyttm.dev" = ["/"];
+          "discord-media.mistyttm.dev" = ["/"];
+        };
       };
     };
     nixpkgs.config.cudaSupport = true;

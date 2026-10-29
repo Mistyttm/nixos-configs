@@ -25,6 +25,13 @@
       duration_expr = banDurationExpr;
       on_success = "break";
     };
+
+    trustedRoutesExpr = lib.concatStringsSep " || " (lib.mapAttrsToList (
+        host: prefixes: "(evt.Meta.target_fqdn == '${host}' && (${
+          lib.concatMapStringsSep " || " (p: "evt.Meta.http_path startsWith '${p}'") prefixes
+        }))"
+      )
+      cfg.trustedHttpRoutes);
   in {
     options.doggate.crowdsec = {
       enable = lib.mkEnableOption ''
@@ -39,6 +46,20 @@
         # Vite server on thedogpark.
         default = 8180;
         description = "Port the local CrowdSec API listens on.";
+      };
+
+      trustedHttpRoutes = lib.mkOption {
+        type = lib.types.attrsOf (lib.types.listOf lib.types.str);
+        default = {};
+        example = {
+          "jellyfin.example.com" = ["/"];
+          "example.com" = ["/_matrix/"];
+        };
+        description = ''
+          nginx vhosts mapped to the path prefixes whose successful (2xx/3xx,
+          or 429) responses CrowdSec ignores. Matched against the `$host`
+          prefix this module adds to the nginx access log.
+        '';
       };
 
       console.enable = lib.mkEnableOption ''
@@ -89,17 +110,17 @@
 
             profiles = map mkBanProfile ["Ip" "Range"];
 
-            # Matrix clients burst extensionless /_matrix/ requests (thumbnails,
-            # sync, room state) when opening a room, which http-crawl-non_statics
-            # reads as crawling. Only non-error responses are dropped, so
-            # 400/401/403/404 probing still counts.
-            parsers.s02Enrich = lib.optional nginxEnabled {
-              name = "doggate/matrix-whitelist";
-              description = "Ignore successful Matrix client/federation requests";
+            # Self-hosted apps (Matrix media, Jellyfin posters, Seerr's API)
+            # burst extensionless requests that http-crawl-non_statics reads as
+            # crawling. Only non-error responses on trusted routes are dropped,
+            # so 400/401/403/404 probing still counts.
+            parsers.s02Enrich = lib.optional (nginxEnabled && cfg.trustedHttpRoutes != {}) {
+              name = "doggate/trusted-http-routes";
+              description = "Ignore successful requests to trusted vhosts/paths";
               whitelist = {
-                reason = "Matrix client traffic";
+                reason = "Trusted self-hosted app traffic";
                 expression = [
-                  "evt.Meta.service == 'http' && (evt.Meta.http_path startsWith '/_matrix/' || evt.Meta.http_path startsWith '/_synapse/client/') && evt.Meta.http_status matches '^([23][0-9][0-9]|429)$'"
+                  "evt.Meta.service == 'http' && evt.Meta.http_status matches '^([23][0-9][0-9]|429)$' && (${trustedRoutesExpr})"
                 ];
               };
             };
@@ -119,6 +140,17 @@
               };
           };
         };
+
+        # Prefixing the access log with $host lets crowdsecurity/nginx-logs fill
+        # evt.Meta.target_fqdn, which trustedHttpRoutes matches on. $host
+        # rather than $server_name: requests with an unknown Host land on the
+        # default vhost but keep their own Host, so they never match.
+        services.nginx.commonHttpConfig = lib.mkIf nginxEnabled ''
+          log_format crowdsec '$host $remote_addr - $remote_user [$time_local] '
+                              '"$request" $status $body_bytes_sent '
+                              '"$http_referer" "$http_user_agent"';
+          access_log /var/log/nginx/access.log crowdsec;
+        '';
 
         # Mode follows networking.nftables.enable (iptables on all current hosts);
         # registers itself against the local API automatically.
