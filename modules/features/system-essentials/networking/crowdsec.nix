@@ -89,6 +89,21 @@
 
             profiles = map mkBanProfile ["Ip" "Range"];
 
+            # Matrix clients burst extensionless /_matrix/ requests (thumbnails,
+            # sync, room state) when opening a room, which http-crawl-non_statics
+            # reads as crawling. Only non-error responses are dropped, so
+            # 400/401/403/404 probing still counts.
+            parsers.s02Enrich = lib.optional nginxEnabled {
+              name = "doggate/matrix-whitelist";
+              description = "Ignore successful Matrix client/federation requests";
+              whitelist = {
+                reason = "Matrix client traffic";
+                expression = [
+                  "evt.Meta.service == 'http' && (evt.Meta.http_path startsWith '/_matrix/' || evt.Meta.http_path startsWith '/_synapse/client/') && evt.Meta.http_status matches '^([23][0-9][0-9]|429)$'"
+                ];
+              };
+            };
+
             acquisitions =
               [
                 {
