@@ -530,19 +530,6 @@
               };
             }
             {
-              "thedogpark CrowdSec" = {
-                icon = "crowdsec";
-                href = "https://app.crowdsec.net";
-                description = "VPS intrusion prevention";
-                widget = {
-                  type = "crowdsec";
-                  url = "http://10.100.0.1:8180";
-                  username = "homepage";
-                  password = "{{HOMEPAGE_VAR_CROWDSEC_PASSWORD}}";
-                };
-              };
-            }
-            {
               "thekennel" = {
                 icon = "linux";
                 href = "http://10.100.0.2";
@@ -637,6 +624,19 @@
                   url = "http://10.100.0.6:3000";
                   username = "{{HOMEPAGE_VAR_ADGUARD_USERNAME}}";
                   password = "{{HOMEPAGE_VAR_ADGUARD_PASSWORD}}";
+                };
+              };
+            }
+            {
+              "thedogpark CrowdSec" = {
+                icon = "crowdsec";
+                href = "https://app.crowdsec.net";
+                description = "VPS intrusion prevention";
+                widget = {
+                  type = "crowdsec";
+                  url = "http://10.100.0.1:8180";
+                  username = "homepage";
+                  password = "{{HOMEPAGE_VAR_CROWDSEC_PASSWORD}}";
                 };
               };
             }
