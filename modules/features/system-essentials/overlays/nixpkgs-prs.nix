@@ -14,10 +14,6 @@
       url = "github:NixOS/nixpkgs/pull/561246/head";
       flake = false;
     };
-    nixpkgs-pr-576407 = {
-      url = "github:NixOS/nixpkgs/pull/576407/head";
-      flake = false;
-    };
     nixpkgs-pr-538226 = {
       url = "github:NixOS/nixpkgs/pull/538226/head";
       flake = false;
@@ -54,16 +50,6 @@
       attr = "cleanuparr";
       path = "pkgs/by-name/cl/cleanuparr/package.nix";
       merged = prev ? cleanuparr;
-    };
-
-    # handbrake: drop ffmpeg A15 pgssubdec patch (fails to apply on ffmpeg 8.1.3)
-    handbrake = fromPR {
-      pr = "576407";
-      attr = "handbrake";
-      path = "pkgs/by-name/ha/handbrake/package.nix";
-      merged =
-        !lib.any (p: lib.hasInfix "A15-lavc-pgssubdec" (toString p))
-        prev.handbrake.passthru.ffmpeg-hb.patches;
     };
 
     # millennium: init at 3.6.1
