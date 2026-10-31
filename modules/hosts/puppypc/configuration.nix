@@ -33,6 +33,7 @@
       protonDrive
       openconnect
       skwd
+      gpu-screenrecorder
     ];
 
     networking.hostName = "puppypc";
