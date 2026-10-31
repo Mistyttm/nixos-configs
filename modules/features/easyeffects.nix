@@ -33,6 +33,15 @@
       settings.Window = {
         xdgGlobalShortcuts = true;
       };
+
+      # Don't force-move every stream. EasyEffects ignores node.dont-move and
+      # hijacks Vesktop's venmic screen-share loopbacks (mic -> headphones,
+      # silence to the stream). Apps still get the mic chain by recording from
+      # the default source (easyeffects_source).
+      settings.EffectsPipelines = {
+        processAllInputs = false;
+        processAllOutputs = false;
+      };
     };
   };
 }
