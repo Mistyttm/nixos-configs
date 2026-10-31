@@ -39,6 +39,14 @@
           "seerr.mistyttm.dev" = ["/"];
           "discord-media.mistyttm.dev" = ["/"];
         };
+        notFoundHttpRoutes = {
+          "mistyttm.dev" = [
+            "/_matrix/client/v1/media/"
+            "/_matrix/media/"
+            "/_matrix/client/unstable/org.matrix.msc2965/"
+          ];
+        };
+        trustedIps = ["10.100.0.0/24"];
       };
     };
     nixpkgs.config.cudaSupport = true;

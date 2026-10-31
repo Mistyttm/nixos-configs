@@ -32,6 +32,13 @@
         }))"
       )
       cfg.trustedHttpRoutes);
+
+    notFoundRoutesExpr = lib.concatStringsSep " || " (lib.mapAttrsToList (
+        host: prefixes: "(evt.Meta.target_fqdn == '${host}' && (${
+          lib.concatMapStringsSep " || " (p: "evt.Meta.http_path startsWith '${p}'") prefixes
+        }))"
+      )
+      cfg.notFoundHttpRoutes);
   in {
     options.doggate.crowdsec = {
       enable = lib.mkEnableOption ''
@@ -59,6 +66,32 @@
           nginx vhosts mapped to the path prefixes whose successful (2xx/3xx,
           or 429) responses CrowdSec ignores. Matched against the `$host`
           prefix this module adds to the nginx access log.
+        '';
+      };
+
+      notFoundHttpRoutes = lib.mkOption {
+        type = lib.types.attrsOf (lib.types.listOf lib.types.str);
+        default = {};
+        example = {
+          "example.com" = ["/_matrix/client/v1/media/" "/_matrix/media/"];
+        };
+        description = ''
+          nginx vhosts mapped to path prefixes whose 404 responses CrowdSec
+          ignores. For apps where a 404 is routine client behaviour (Matrix
+          remote media that can't be fetched, unstable feature probes), so a
+          single page load can't trip http-probing. Keep these narrow: probing
+          anywhere else on the vhost still counts.
+        '';
+      };
+
+      trustedIps = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [];
+        example = ["10.100.0.0/24" "203.0.113.7/32"];
+        description = ''
+          IPs/CIDRs CrowdSec never raises alerts for, so they can never be
+          banned by the firewall bouncer (which would also cut WireGuard and
+          SSH from that address).
         '';
       };
 
@@ -114,16 +147,38 @@
             # burst extensionless requests that http-crawl-non_statics reads as
             # crawling. Only non-error responses on trusted routes are dropped,
             # so 400/401/403/404 probing still counts.
-            parsers.s02Enrich = lib.optional (nginxEnabled && cfg.trustedHttpRoutes != {}) {
-              name = "doggate/trusted-http-routes";
-              description = "Ignore successful requests to trusted vhosts/paths";
-              whitelist = {
-                reason = "Trusted self-hosted app traffic";
-                expression = [
-                  "evt.Meta.service == 'http' && evt.Meta.http_status matches '^([23][0-9][0-9]|429)$' && (${trustedRoutesExpr})"
-                ];
+            parsers.s02Enrich =
+              lib.optional (nginxEnabled && cfg.trustedHttpRoutes != {}) {
+                name = "doggate/trusted-http-routes";
+                description = "Ignore successful requests to trusted vhosts/paths";
+                whitelist = {
+                  reason = "Trusted self-hosted app traffic";
+                  expression = [
+                    "evt.Meta.service == 'http' && evt.Meta.http_status matches '^([23][0-9][0-9]|429)$' && (${trustedRoutesExpr})"
+                  ];
+                };
+              }
+              # A Matrix client opening a room 404s on every avatar it can't
+              # fetch from a remote server plus the MSC2965 auth_issuer probe,
+              # which is enough on its own to trip http-probing.
+              ++ lib.optional (nginxEnabled && cfg.notFoundHttpRoutes != {}) {
+                name = "doggate/not-found-http-routes";
+                description = "Ignore routine 404s on app routes";
+                whitelist = {
+                  reason = "Expected 404s from self-hosted app clients";
+                  expression = [
+                    "evt.Meta.service == 'http' && evt.Meta.http_status == '404' && (${notFoundRoutesExpr})"
+                  ];
+                };
+              }
+              ++ lib.optional (cfg.trustedIps != []) {
+                name = "doggate/trusted-ips";
+                description = "Never alert on trusted addresses";
+                whitelist = {
+                  reason = "Trusted address";
+                  cidr = cfg.trustedIps;
+                };
               };
-            };
 
             acquisitions =
               [
