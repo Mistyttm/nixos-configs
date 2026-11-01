@@ -20,6 +20,7 @@
   }: {
     imports = [
       inputs.nix-index-database.nixosModules.default
+      self.nixosModules.nixpkgs-prs
       # self.nixosModules.laminix
     ];
 
