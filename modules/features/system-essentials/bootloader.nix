@@ -34,7 +34,10 @@
 
       loader = {
         efi = {
-          canTouchEfiVariables = true;
+          canTouchEfiVariables =
+            if config.boot.loader.grub.efiInstallAsRemovable == true
+            then false
+            else true;
         };
         grub =
           if config.networking.hostName == "thedogpark"
@@ -49,6 +52,7 @@
           else {
             enable = true;
             efiSupport = true;
+            efiInstallAsRemovable = true;
             devices = ["nodev"];
           };
         timeout = lib.mkDefault 5;
