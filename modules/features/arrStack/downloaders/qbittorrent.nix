@@ -94,5 +94,7 @@
     };
 
     systemd.services.qbittorrent.serviceConfig.UMask = "002";
+
+    users.users.qbittorrent.extraGroups = ["media"];
   };
 }
