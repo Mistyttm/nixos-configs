@@ -18,6 +18,10 @@
       url = "github:NixOS/nixpkgs/pull/538226/head";
       flake = false;
     };
+    nixpkgs-pr-580322 = {
+      url = "github:NixOS/nixpkgs/pull/580322/head";
+      flake = false;
+    };
   };
 
   flake.overlays.nixpkgs-prs = final: prev: let
@@ -35,6 +39,10 @@
         "${attr}: NixOS/nixpkgs#${pr} is already in nixpkgs, remove it and the nixpkgs-pr-${pr} input from the nixpkgs-prs overlay."
         prev.${attr}
       else final.callPackage "${inputs."nixpkgs-pr-${pr}"}/${path}" {};
+
+    # The PR adds this test. Package versions can't tell us: -gtk is already at
+    # the PR's version, and the others can be bumped without the PR landing.
+    gsrMerged = builtins.pathExists (prev.path + "/nixos/tests/gpu-screen-recorder.nix");
   in {
     # tdarr: 2.87.01 -> 3.04.00
     tdarr = fromPR {
@@ -64,6 +72,40 @@
       attr = "steamWithMillennium";
       path = "pkgs/by-name/st/steamWithMillennium/package.nix";
       merged = prev ? steamWithMillennium;
+    };
+
+    # gpu-screen-recorder{,-gtk,-notification,-ui}: bump, modernize
+    # The module side lives in modules/features/gpu-screenrecorder.nix.
+    # ffmpeg_7: newer ffmpeg requires an NVENC API that the nvidia 595 driver
+    # lacks, so gsr silently falls back to CPU encoding. Keep this pin after
+    # the PR lands, until the driver catches up.
+    gpu-screen-recorder =
+      (fromPR {
+        pr = "580322";
+        attr = "gpu-screen-recorder";
+        path = "pkgs/by-name/gp/gpu-screen-recorder/package.nix";
+        merged = gsrMerged;
+      }).override
+      {
+        ffmpeg = final.ffmpeg_7;
+      };
+    gpu-screen-recorder-gtk = fromPR {
+      pr = "580322";
+      attr = "gpu-screen-recorder-gtk";
+      path = "pkgs/by-name/gp/gpu-screen-recorder-gtk/package.nix";
+      merged = gsrMerged;
+    };
+    gpu-screen-recorder-notification = fromPR {
+      pr = "580322";
+      attr = "gpu-screen-recorder-notification";
+      path = "pkgs/by-name/gp/gpu-screen-recorder-notification/package.nix";
+      merged = gsrMerged;
+    };
+    gpu-screen-recorder-ui = fromPR {
+      pr = "580322";
+      attr = "gpu-screen-recorder-ui";
+      path = "pkgs/by-name/gp/gpu-screen-recorder-ui/package.nix";
+      merged = gsrMerged;
     };
   };
 }

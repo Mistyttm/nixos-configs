@@ -109,6 +109,10 @@
       url = "github:NixOS/nixpkgs/pull/572724/head";
       flake = false;
     };
+    nixpkgs-pr-580322 = {
+      url = "github:NixOS/nixpkgs/pull/580322/head";
+      flake = false;
+    };
     pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
     plasma-manager = {
       url = "github:nix-community/plasma-manager";
