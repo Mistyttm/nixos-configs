@@ -113,6 +113,10 @@
               group = "nginx";
               dnsProvider = "porkbun";
             };
+            "wizarr.mistyttm.dev" = {
+              group = "nginx";
+              dnsProvider = "porkbun";
+            };
           };
         };
 
@@ -246,6 +250,22 @@
                 proxy_set_header X-Forwarded-Proto $scheme;
                 proxy_set_header X-Forwarded-Host $http_host;
                 proxy_buffering off;
+              '';
+            };
+          };
+          "wizarr.mistyttm.dev" = {
+            useACMEHost = "wizarr.mistyttm.dev";
+            forceSSL = true;
+
+            locations."/" = {
+              proxyPass = "http://10.100.0.2:5690";
+              proxyWebsockets = true;
+              extraConfig = ''
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_set_header X-Forwarded-Host $http_host;
               '';
             };
           };
