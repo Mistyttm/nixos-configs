@@ -9,6 +9,7 @@
       thekennelHardware
       thekennelHomeManager
       system-essentials
+      auto-upgrade-reboot
       misty
       docker
       fonts
@@ -137,13 +138,13 @@
     fileSystems."/mnt/homework" = {
       device = "/dev/disk/by-label/homework";
       fsType = "ext4";
-      options = [ "nofail" "noatime" ];
+      options = ["nofail" "noatime"];
     };
 
-      systemd.tmpfiles.rules = [
-        "d /mnt/homework 2775 misty media -"
-        "d /mnt/localExpansion 2775 misty media -"
-        ];
+    systemd.tmpfiles.rules = [
+      "d /mnt/homework 2775 misty media -"
+      "d /mnt/localExpansion 2775 misty media -"
+    ];
 
     programs.mtr.enable = true;
 

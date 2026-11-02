@@ -5,6 +5,7 @@
       thedogparkHardware
       thedogparkHomeManager
       system-essentials
+      auto-upgrade-reboot
       misty
       cli-tools
       nix-ld
