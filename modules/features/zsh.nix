@@ -29,7 +29,6 @@
           "copybuffer"
           "copyfile"
           "copypath"
-          "direnv"
           "docker"
           "docker-compose"
           "emoji"
