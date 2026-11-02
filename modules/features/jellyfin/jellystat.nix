@@ -21,22 +21,24 @@
     services.jellystat = {
       enable = true;
       openFirewall = true;
-      port = 3005;
 
       group = "media";
 
-      # Use a local PostgreSQL instance for Jellystat.
-      database = {
-        createLocally = true;
-        host = "127.0.0.1";
-        port = 5432;
-        name = "jellystat";
-        user = "jellystat";
-        passwordFile = config.sops.secrets."jellystat/postgres_password".path;
-      };
+      settings = {
+        port = 3005;
+        timeZone = "Australia/Brisbane";
+        jwtSecretFile = config.sops.secrets."jellystat/jwt_secret".path;
 
-      jwtSecretFile = config.sops.secrets."jellystat/jwt_secret".path;
-      timeZone = "Australia/Brisbane";
+        # Use a local PostgreSQL instance for Jellystat.
+        database = {
+          enable = true;
+          host = "127.0.0.1";
+          port = 5432;
+          name = "jellystat";
+          user = "jellystat";
+          passwordFile = config.sops.secrets."jellystat/postgres_password".path;
+        };
+      };
     };
   };
 }
