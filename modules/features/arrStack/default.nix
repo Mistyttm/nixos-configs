@@ -12,6 +12,7 @@
       self.nixosModules.shelfmark
       self.nixosModules.sonarr
       self.nixosModules.tdarr
+      self.nixosModules.wizarr-service
     ];
 
     users.groups.media = {

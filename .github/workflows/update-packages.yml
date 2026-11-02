@@ -31,6 +31,7 @@ jobs:
         proton-cachyos
         proton-ge-rtsp
         obs-wayland-hotkeys-plus
+        wizarr
       # ────────────────────────────────────────────────────────────────────────
     steps:
       - name: Checkout repository
