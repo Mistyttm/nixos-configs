@@ -51,6 +51,10 @@
       sopsFile = self.secrets.media;
     };
 
+    sops.secrets."wizarr/api_key" = {
+      sopsFile = self.secrets.media;
+    };
+
     sops.secrets."qnap/username" = {
       sopsFile = self.secrets.media;
     };
@@ -89,6 +93,7 @@
         HOMEPAGE_VAR_DISPATCHARR_PASSWORD=${config.sops.placeholder."dispatcharr/password"}
         HOMEPAGE_VAR_JELLYSTAT_API_KEY=${config.sops.placeholder."jellystat/api_key"}
         HOMEPAGE_VAR_CLEANUPARR_API_KEY=${config.sops.placeholder."cleanuparr/api_key"}
+        HOMEPAGE_VAR_WIZARR_API_KEY=${config.sops.placeholder."wizarr/api_key"}
         HOMEPAGE_VAR_QNAP_USERNAME=${config.sops.placeholder."qnap/username"}
         HOMEPAGE_VAR_QNAP_PASSWORD=${config.sops.placeholder."qnap/password"}
         HOMEPAGE_VAR_ADGUARD_USERNAME=${config.sops.placeholder."adguard_username"}
@@ -240,6 +245,38 @@
                   type = "seerr";
                   url = "http://127.0.0.1:5055";
                   key = "{{HOMEPAGE_VAR_JELLYSEERR_API_KEY}}";
+                };
+              };
+            }
+            {
+              "Wizarr" = {
+                icon = "wizarr";
+                href = "https://wizarr.mistyttm.dev";
+                description = "Media server invitations";
+                widget = {
+                  type = "customapi";
+                  url = "http://127.0.0.1:5690/api/status";
+                  method = "GET";
+                  headers = {
+                    "X-API-Key" = "{{HOMEPAGE_VAR_WIZARR_API_KEY}}";
+                  };
+                  mappings = [
+                    {
+                      field = "users";
+                      label = "USERS";
+                      format = "number";
+                    }
+                    {
+                      field = "pending";
+                      label = "PENDING INVITES";
+                      format = "number";
+                    }
+                    {
+                      field = "expired";
+                      label = "EXPIRED INVITES";
+                      format = "number";
+                    }
+                  ];
                 };
               };
             }
