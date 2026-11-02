@@ -293,16 +293,22 @@
         serviceConfig = {
           Type = "oneshot";
           User = "postgres";
+          # The password file is typically readable only by cfg.user, so let
+          # systemd (as root) hand it to this unit instead of reading it as postgres.
+          LoadCredential = ["db-password:${cfg.settings.database.passwordFile}"];
         };
 
+        # psql only interpolates :variables in SQL read from stdin or a file, not
+        # in --command. The password is read by psql's own backtick \set so it
+        # never appears in argv.
         script = ''
-          export JELLYSTAT_DB_PASSWORD="$(${pkgs.coreutils}/bin/cat ${lib.escapeShellArg cfg.settings.database.passwordFile})"
-
           ${config.services.postgresql.package}/bin/psql \
             --dbname=postgres \
-            --set=dbuser="${cfg.settings.database.user}" \
-            --set=dbpassword="$JELLYSTAT_DB_PASSWORD" \
-            --command='ALTER ROLE :"dbuser" PASSWORD :"dbpassword";'
+            --set=ON_ERROR_STOP=1 \
+            --set=dbuser=${lib.escapeShellArg cfg.settings.database.user} <<'EOF'
+          \set dbpassword `cat "$CREDENTIALS_DIRECTORY/db-password"`
+          ALTER ROLE :"dbuser" PASSWORD :'dbpassword';
+          EOF
         '';
       };
 
