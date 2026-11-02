@@ -1,0 +1,34 @@
+diff --git a/app/config.py b/app/config.py
+index 45ee0f4..32bf3d8 100644
+--- a/app/config.py
++++ b/app/config.py
+@@ -31,25 +31,27 @@ def env_int(key: str, default: int) -> int:
+     except ValueError:
+         return default
+ 
+ 
+ # Initialize session cache at module level so Flask-Session can access it
+ 
+ # Ensure database directory exists
+ # Use /data/database for container deployments, fall back to local for development
+ 
+ 
+-if Path("/data").exists():
++if os.getenv("WIZARR_DATA_DIR"):
++    DATABASE_DIR = Path(os.environ["WIZARR_DATA_DIR"])
++elif Path("/data").exists():
+     DATABASE_DIR = Path("/data/database")
+ else:
+     DATABASE_DIR = BASE_DIR / "database"
+-DATABASE_DIR.mkdir(exist_ok=True)
++DATABASE_DIR.mkdir(parents=True, exist_ok=True)
+ 
+ SESSION_CACHELIB = RobustFileSystemCache(
+     str(DATABASE_DIR / "sessions"),
+     threshold=1000,  # Max files before cleanup
+     default_timeout=86400,  # 24 hours
+     mode=0o600,  # Restrict file permissions
+ )
+ 
+ # Define secrets file location next to database
+ SECRETS_FILE = DATABASE_DIR / "secrets.json"
