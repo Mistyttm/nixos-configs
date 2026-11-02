@@ -58,7 +58,7 @@
       fi
 
       SVC_ACTIVE=$(systemctl list-units --type=service --state=active --no-legend 2>/dev/null | wc -l)
-      SVC_FAILED=$(systemctl --failed --no-legend 2>/dev/null | awk '{print $1}')
+      SVC_FAILED=$(systemctl --failed --no-legend --plain 2>/dev/null | awk '{print $1}')
       SVC_FAILED_COUNT=0
       [ -n "$(echo "$SVC_FAILED" | tr -d '[:space:]')" ] && SVC_FAILED_COUNT=$(echo "$SVC_FAILED" | wc -l)
 
