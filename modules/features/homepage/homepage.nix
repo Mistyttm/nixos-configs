@@ -80,6 +80,7 @@
       owner = "root";
       group = "root";
       mode = "0400";
+      restartUnits = ["homepage-dashboard.service"];
       content = ''
         HOMEPAGE_VAR_SONARR_API_KEY=${config.sops.placeholder."sonarr_api_key"}
         HOMEPAGE_VAR_RADARR_API_KEY=${config.sops.placeholder."radarr_api_key"}
