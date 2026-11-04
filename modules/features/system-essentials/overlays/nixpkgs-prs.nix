@@ -101,19 +101,14 @@ in {
     };
 
     # gpu-screen-recorder{,-gtk,-notification,-ui}: bump, modernize
-    # ffmpeg_7: newer ffmpeg requires an NVENC API that the nvidia 595 driver
-    # lacks, so gsr silently falls back to CPU encoding. Keep this pin after
-    # the PR lands, until the driver catches up.
-    gpu-screen-recorder =
-      (fromPR {
-        pr = "580322";
-        attr = "gpu-screen-recorder";
-        path = "pkgs/by-name/gp/gpu-screen-recorder/package.nix";
-        merged = gsrMerged;
-      }).override
-      {
-        ffmpeg = final.ffmpeg_7;
-      };
+    # The PR builds a private ffmpeg with upstream's NVENC runtime-API patch,
+    # so NVENC works on the nvidia 595 driver without pinning ffmpeg here.
+    gpu-screen-recorder = fromPR {
+      pr = "580322";
+      attr = "gpu-screen-recorder";
+      path = "pkgs/by-name/gp/gpu-screen-recorder/package.nix";
+      merged = gsrMerged;
+    };
     gpu-screen-recorder-gtk = fromPR {
       pr = "580322";
       attr = "gpu-screen-recorder-gtk";
