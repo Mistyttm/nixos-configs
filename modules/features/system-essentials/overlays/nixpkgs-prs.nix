@@ -9,8 +9,7 @@
   inherit (inputs.nixpkgs) lib;
 
   warnMerged = name: pr:
-    lib.warn
-    "${name}: NixOS/nixpkgs#${pr} is already in nixpkgs, remove it and the nixpkgs-pr-${pr} input from the nixpkgs-prs overlay.";
+    lib.warn "${name}: NixOS/nixpkgs#${pr} is already in nixpkgs, remove it and the nixpkgs-pr-${pr} input from the nixpkgs-prs overlay.";
 
   # The PR adds this test. Package versions can't tell us: -gtk is already at
   # the PR's version, and the others can be bumped without the PR landing.
@@ -87,12 +86,19 @@ in {
     };
 
     # millennium: init at 3.6.1
-    millennium = fromPR {
-      pr = "538226";
-      attr = "millennium";
-      path = "pkgs/by-name/mi/millennium/package.nix";
-      merged = prev ? millennium;
-    };
+    # The PR's typescript-deps FOD hash is stale; drop the override once fixed.
+    millennium =
+      (fromPR {
+        pr = "538226";
+        attr = "millennium";
+        path = "pkgs/by-name/mi/millennium/package.nix";
+        merged = prev ? millennium;
+      }).overrideAttrs
+      (old: {
+        typescript-deps = old.typescript-deps.overrideAttrs {
+          outputHash = "sha256-gIGZ7w8i5mqiNSh/vJ7ceU9++91rb2lyyZsTqbY1Br0=";
+        };
+      });
     steamWithMillennium = fromPR {
       pr = "538226";
       attr = "steamWithMillennium";
