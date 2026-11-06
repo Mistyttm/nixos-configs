@@ -48,7 +48,7 @@
     hardware.nvidia-custom = {
       enable = true;
       modesetting = true;
-      driverChannel = "stable";
+      driverChannel = "bleeding_edge";
       blacklistNova = true;
       nvidiaContainerToolkit = true;
     };
