@@ -96,7 +96,7 @@ in {
       }).overrideAttrs
       (old: {
         typescript-deps = old.typescript-deps.overrideAttrs {
-          outputHash = "sha256-gIGZ7w8i5mqiNSh/vJ7ceU9++91rb2lyyZsTqbY1Br0=";
+          outputHash = "sha256-ompgpa7qZZ/bptjXjPienQ+vLhVl6KcZc7csgLDCoCA=";
         };
       });
     steamWithMillennium = fromPR {
