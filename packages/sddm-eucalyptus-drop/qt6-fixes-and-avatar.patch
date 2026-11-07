@@ -1,0 +1,139 @@
+diff -ru a/Components/Input.qml b/Components/Input.qml
+--- a/Components/Input.qml	2026-11-07 13:31:42.185001560 +1000
++++ b/Components/Input.qml	2026-11-07 13:36:06.270901299 +1000
+@@ -2,14 +2,16 @@
+
+ import QtQuick 2.11
+ import QtQuick.Layouts 1.11
+-import QtQuick.Controls 2.4
++import QtQuick.Controls
+ import Qt5Compat.GraphicalEffects
+
+ Column {
+     id: inputContainer
+     Layout.fillWidth: true
+
+-    property Control exposeSession: sessionSelect.exposeSession
++    property Item exposeSession: sessionSelect.exposeSession
++    // Avatar path of the selected user (SDDM userModel "icon" role)
++    readonly property string avatarSource: selectUser.currentValue || ""
+     property bool failed
+
+     Item {
+@@ -42,6 +44,7 @@
+             model: userModel
+             currentIndex: model.lastIndex
+             textRole: "name"
++            valueRole: "icon"
+             hoverEnabled: true
+             onActivated: {
+                 username.text = currentText
+diff -ru a/Components/LoginForm.qml b/Components/LoginForm.qml
+--- a/Components/LoginForm.qml	2026-11-07 13:31:42.185025390 +1000
++++ b/Components/LoginForm.qml	2026-11-07 13:40:38.332843771 +1000
+@@ -13,6 +13,8 @@
+     property alias systemButtonVisibility: systemButtons.visible
+     property alias clockVisibility: clock.visible
+     property bool virtualKeyboardActive
++    property alias clockItem: clock
++    property alias inputItem: input
+
+     Clock {
+         id: clock
+diff -ru a/Components/SessionButton.qml b/Components/SessionButton.qml
+--- a/Components/SessionButton.qml	2026-11-07 13:31:42.185044041 +1000
++++ b/Components/SessionButton.qml	2026-11-07 13:31:42.202645820 +1000
+@@ -13,7 +13,7 @@
+     property var selectedSession: selectSession.currentIndex
+     property string textConstantSession
+     property int loginButtonWidth
+-    property Control exposeSession: selectSession
++    property Item exposeSession: selectSession
+
+     ComboBox {
+         id: selectSession
+diff -ru a/Components/SystemButtons.qml b/Components/SystemButtons.qml
+--- a/Components/SystemButtons.qml	2026-11-07 13:31:42.185064611 +1000
++++ b/Components/SystemButtons.qml	2026-11-07 13:31:42.206351460 +1000
+@@ -13,7 +13,7 @@
+     readonly property var reboot: ["Reboot", config.TranslateReboot || textConstants.reboot, sddm.canReboot]
+     readonly property var shutdown: ["Shutdown", config.TranslateShutdown || textConstants.shutdown, sddm.canPowerOff]
+
+-    property Control exposedSession
++    property Item exposedSession
+
+     Repeater {
+
+@@ -45,7 +45,7 @@
+                 index == 0 ? sddm.suspend() : index == 1 ? sddm.hibernate() : index == 2 ? sddm.reboot() : sddm.powerOff()
+             }
+             KeyNavigation.up: exposedSession
+-            KeyNavigation.left: parent.children[index-1]
++            KeyNavigation.left: index > 0 ? parent.children[index-1] : null
+
+             states: [
+                 State {
+diff -ru a/Main.qml b/Main.qml
+--- a/Main.qml	2026-11-07 13:31:42.185124212 +1000
++++ b/Main.qml	2026-11-07 13:40:38.332938910 +1000
+@@ -47,10 +47,6 @@
+                                config.PartialBlur == "false" &&
+                                config.FormPosition == "right" &&
+                                config.BackgroundImageHAlignment == "center"
+-    Component.onCompleted: {
+-        Orientation.getOrientation()
+-        console.log('called orientation')
+-    }
+     Item {
+         id: sizeHelper
+
+@@ -90,6 +86,49 @@
+             z: 1
+         }
+
++        // User avatar, overlaid outside the form's layout so it doesn't
++        // change the original spacing: centred horizontally on the clock and
++        // vertically between the bottom of the date and the top of the inputs.
++        Item {
++            id: avatarContainer
++            readonly property real gapTop: form.y + form.clockItem.y + form.clockItem.implicitHeight
++            readonly property real gapBottom: form.y + form.inputItem.y
++            width: root.height / 11
++            height: width
++            x: form.x + form.clockItem.x + (form.clockItem.width - width) / 2
++            y: gapTop + (gapBottom - gapTop - height) / 2
++            visible: avatar.status == Image.Ready && !form.virtualKeyboardActive
++            z: 2
++
++            Image {
++                id: avatar
++                anchors.fill: parent
++                source: form.inputItem.avatarSource
++                sourceSize: Qt.size(width * 2, height * 2)
++                fillMode: Image.PreserveAspectCrop
++                smooth: true
++                visible: false
++            }
++            Rectangle {
++                id: avatarMask
++                anchors.fill: parent
++                radius: width / 2
++                visible: false
++            }
++            OpacityMask {
++                anchors.fill: parent
++                source: avatar
++                maskSource: avatarMask
++            }
++            Rectangle {
++                anchors.fill: parent
++                radius: width / 2
++                color: "transparent"
++                border.width: 2
++                border.color: root.palette.text
++            }
++        }
++
+         Button {
+             id: vkb
+             onClicked: virtualKeyboard.switchState()
