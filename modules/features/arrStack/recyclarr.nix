@@ -37,8 +37,12 @@
                 min_format_score = 0;
                 quality_sort = "top";
                 qualities = [
-                  # 2160p disc sources
-                  {name = "Bluray-2160p Remux";}
+                  # 2160p disc sources. Remuxes are disabled (see the Radarr
+                  # profile below); kept in place so the quality order is stable.
+                  {
+                    name = "Bluray-2160p Remux";
+                    enabled = false;
+                  }
                   {name = "Bluray-2160p";}
                   # 2160p streaming
                   {
@@ -49,7 +53,10 @@
                     ];
                   }
                   # 1080p disc sources (Sonarr calls its remux "Bluray-1080p Remux")
-                  {name = "Bluray-1080p Remux";}
+                  {
+                    name = "Bluray-1080p Remux";
+                    enabled = false;
+                  }
                   {name = "Bluray-1080p";}
                   {
                     name = "WEB 1080p";
@@ -233,15 +240,20 @@
                 };
                 upgrade = {
                   allowed = true;
-                  # Remux-2160p is the ceiling — lossless 4K disc copy
-                  until_quality = "Remux-2160p";
+                  # Bluray-2160p is the ceiling — remuxes are disabled below
+                  until_quality = "Bluray-2160p";
                   until_score = 10000;
                 };
                 min_format_score = 0;
                 quality_sort = "top";
                 qualities = [
-                  # 4K disc sources (best possible quality)
-                  {name = "Remux-2160p";}
+                  # 4K disc sources. Remuxes are disabled: at 50–80 GB each they
+                  # filled the NAS (2026-11-08). Kept in place (not removed) so
+                  # the quality order stays stable, per recyclarr's docs.
+                  {
+                    name = "Remux-2160p";
+                    enabled = false;
+                  }
                   {name = "Bluray-2160p";}
                   # 4K streaming
                   {
@@ -252,7 +264,10 @@
                     ];
                   }
                   # 1080p disc sources
-                  {name = "Remux-1080p";}
+                  {
+                    name = "Remux-1080p";
+                    enabled = false;
+                  }
                   {name = "Bluray-1080p";}
                   # 1080p streaming
                   {
