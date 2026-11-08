@@ -37,10 +37,6 @@ in {
       url = "github:NixOS/nixpkgs/pull/561246/head";
       flake = false;
     };
-    nixpkgs-pr-538226 = {
-      url = "github:NixOS/nixpkgs/pull/538226/head";
-      flake = false;
-    };
     nixpkgs-pr-580322 = {
       url = "github:NixOS/nixpkgs/pull/580322/head";
       flake = false;
@@ -83,27 +79,6 @@ in {
       attr = "cleanuparr";
       path = "pkgs/by-name/cl/cleanuparr/package.nix";
       merged = prev ? cleanuparr;
-    };
-
-    # millennium: init at 3.6.1
-    # The PR's typescript-deps FOD hash is stale; drop the override once fixed.
-    millennium =
-      (fromPR {
-        pr = "538226";
-        attr = "millennium";
-        path = "pkgs/by-name/mi/millennium/package.nix";
-        merged = prev ? millennium;
-      }).overrideAttrs
-      (old: {
-        typescript-deps = old.typescript-deps.overrideAttrs {
-          outputHash = "sha256-HrgEEmrBjirAkOv6v2qe3XWsNlNuCUOTbOkUfUuCRP4=";
-        };
-      });
-    steamWithMillennium = fromPR {
-      pr = "538226";
-      attr = "steamWithMillennium";
-      path = "pkgs/by-name/st/steamWithMillennium/package.nix";
-      merged = prev ? steamWithMillennium;
     };
 
     # gpu-screen-recorder{,-gtk,-notification,-ui}: bump, modernize
