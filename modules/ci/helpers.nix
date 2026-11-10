@@ -97,21 +97,26 @@
         with_.extra_nix_config = lib.concatStringsSep "\n" ([config.doggate.ci.nixConfig] ++ extra) + "\n";
       };
 
-      # Magic Nix Cache plus pushing to the opinionatedcache Cachix.
+      magicNixCache = {
+        name = "Enable Magic Nix Cache";
+        uses = "DeterminateSystems/magic-nix-cache-action@v14";
+        with_.use-flakehub = false;
+      };
+
+      # Pulls from and pushes everything built to the opinionatedcache Cachix.
+      cachix = {
+        name = "Setup Cachix";
+        uses = "cachix/cachix-action@v17";
+        with_ = {
+          name = "opinionatedcache";
+          authToken = "\${{ secrets.CACHIX_AUTH_TOKEN }}";
+        };
+      };
+
+      # Both caches, for jobs that build and push.
       caches = [
-        {
-          name = "Enable Magic Nix Cache";
-          uses = "DeterminateSystems/magic-nix-cache-action@v14";
-          with_.use-flakehub = false;
-        }
-        {
-          name = "Setup Cachix";
-          uses = "cachix/cachix-action@v17";
-          with_ = {
-            name = "opinionatedcache";
-            authToken = "\${{ secrets.CACHIX_AUTH_TOKEN }}";
-          };
-        }
+        config.doggate.ci.steps.magicNixCache
+        config.doggate.ci.steps.cachix
       ];
 
       diskUsage = {
