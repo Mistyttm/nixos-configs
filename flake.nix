@@ -44,6 +44,13 @@
       url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    github-actions-nix = {
+      url = "github:synapdeck/github-actions-nix";
+      inputs = {
+        flake-parts.follows = "flake-parts";
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
     grimoire = {
       url = "github:Slush97/grimoire";
       inputs.nixpkgs.follows = "nixpkgs";

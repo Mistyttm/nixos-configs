@@ -184,6 +184,29 @@
         "type": "github"
       }
     },
+    "github-actions-nix": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793058410,
+        "narHash": "sha256-bn8al0I1oK4CIsMsLS1IGf4r854NqvbLfVGSYLjWnD0=",
+        "owner": "synapdeck",
+        "repo": "github-actions-nix",
+        "rev": "30ec709c50eeb4e61b6f3c6aaf913b51510cbff0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "synapdeck",
+        "repo": "github-actions-nix",
+        "type": "github"
+      }
+    },
     "grimoire": {
       "inputs": {
         "grimoire-social": "grimoire-social",
@@ -764,6 +787,7 @@
         "flake-file": "flake-file",
         "flake-parts": "flake-parts",
         "git-hooks-nix": "git-hooks-nix",
+        "github-actions-nix": "github-actions-nix",
         "grimoire": "grimoire",
         "home-manager": "home-manager",
         "import-tree": "import-tree",
