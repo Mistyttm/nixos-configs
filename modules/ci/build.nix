@@ -21,13 +21,14 @@
   );
   hasShared = sharedGroups != [];
 in {
-  perSystem = _: {
+  perSystem = perSystem: {
     githubActions.workflows.build = {
       name = "Build and Cache NixOS Systems";
 
       on = {
         workflowRun = {
-          workflows = ["Update Flake Inputs"];
+          # Follows update-flake.nix, so renaming that workflow cannot break this.
+          workflows = [perSystem.config.githubActions.workflows.update-flake.name];
           types = ["completed"];
           branches = ["main"];
         };
