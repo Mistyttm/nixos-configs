@@ -441,11 +441,11 @@
         "systems": "systems_3"
       },
       "locked": {
-        "lastModified": 1794203480,
-        "narHash": "sha256-8bdkCTnfqSYo3AkMgqzxGvt3lW+rHMHauys0RhvmOz4=",
+        "lastModified": 1794293811,
+        "narHash": "sha256-XjOqLH+M406ZA0cS2kSNfDXpOYB/BZz+D/lESZre7Uc=",
         "owner": "Infinidoge",
         "repo": "nix-minecraft",
-        "rev": "2b3551aae69cfc43b53114d9afef3959c299325d",
+        "rev": "4a820d0fd584a048d49d8ec66545f7f4543bcf1c",
         "type": "github"
       },
       "original": {
@@ -484,11 +484,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794202607,
-        "narHash": "sha256-foUWdIx5HTEopoOHXzTy7uhbZYYl1BdjZKPQpkR+pgg=",
+        "lastModified": 1794293298,
+        "narHash": "sha256-suCfhP7yXhgzvyy/o2tLh6Xw+11e96NKxLAMpyhOKus=",
         "owner": "nix-community",
         "repo": "nix-vscode-extensions",
-        "rev": "934620178cf8eed2058484c24b5db62dbf4f08b1",
+        "rev": "3ae5de090ea5bc16fc75cd7593486c76e41d1878",
         "type": "github"
       },
       "original": {
@@ -504,11 +504,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794276898,
-        "narHash": "sha256-qZFj4NtE55eMxSu0qU8D1BDQmC7HIrb+pc/0XRgPNkM=",
+        "lastModified": 1794296829,
+        "narHash": "sha256-OPoeVIrA2iiojzD6xXi+lbH2HbicKyJKw9pyi4jimP0=",
         "owner": "nix-community",
         "repo": "nix-wrapper-modules",
-        "rev": "4b4c2a737b0717df0a9b03a83e0cde6d036c1ec9",
+        "rev": "0b6f0cfef4c09f118b476af1f091c00b31faa8f0",
         "type": "github"
       },
       "original": {
@@ -766,11 +766,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1792102656,
-        "narHash": "sha256-BVN0lva3B5nT4s+G0DpqHuKVdw9JzGBiD5hNe11BN98=",
+        "lastModified": 1792102657,
+        "narHash": "sha256-iXWuCKOidcaAEg6sbnJRGrNfEPjNkcDYmoiW+YJZ74g=",
         "owner": "liixini",
         "repo": "skwd-wall",
-        "rev": "fd3d28283e0a3e29874a00936c519bb299223cad",
+        "rev": "3f80b1922aa6674065970dc6b78fc948960e84d5",
         "type": "github"
       },
       "original": {
