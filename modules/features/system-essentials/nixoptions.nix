@@ -104,6 +104,7 @@
           inputs.nix-vscode-extensions.overlays.default
           self.overlays.kde-plasma-workspace-xdg-fix
           self.overlays.nixpkgs-prs
+          self.overlays.matrix-sdk-crypto-nodejs
           inputs.grimoire.overlays.default
           (_final: prev: {
             inherit

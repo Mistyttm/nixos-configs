@@ -19,6 +19,14 @@ permissions:
   contents: read
   id-token: write
 
+env:
+  # Mirrors nixConfig in flake.nix (flake-file.nixConfig in modules/inputs.nix). Keep this in sync with flake.nix.
+  NIX_EXTRA_CONFIG: |
+    experimental-features = nix-command flakes
+    accept-flake-config = true
+    extra-substituters = https://nix-community.cachix.org https://opinionatedcache.cachix.org https://cache.flox.dev https://cache.nixos-cuda.org https://nixos-raspberrypi.cachix.org https://cache.lantian.pub/lantian
+    extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= opinionatedcache.cachix.org-1:zDO4tZBL25vfhVFSHTT+0RNCjn5Z5nEs7sPiDZ6XhuE= flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs= cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M= cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM= nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI= lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ=
+
 jobs:
   evaluate:
     name: Evaluate Flake
@@ -42,9 +50,7 @@ jobs:
       - name: Install Lix
         uses: samueldr/lix-gha-installer-action@latest
         with:
-          extra_nix_config: |
-            experimental-features = nix-command flakes
-            accept-flake-config = true
+          extra_nix_config: ${{ env.NIX_EXTRA_CONFIG }}
 
       - name: Evaluate Hydra jobs
         id: eval
@@ -110,9 +116,7 @@ jobs:
       - name: Install Lix
         uses: samueldr/lix-gha-installer-action@latest
         with:
-          extra_nix_config: |
-            experimental-features = nix-command flakes
-            accept-flake-config = true
+          extra_nix_config: ${{ env.NIX_EXTRA_CONFIG }}
 
       - id: matrix
         name: Discover NixOS systems
@@ -212,8 +216,7 @@ jobs:
         uses: samueldr/lix-gha-installer-action@latest
         with:
           extra_nix_config: |
-            experimental-features = nix-command flakes
-            accept-flake-config = true
+            ${{ env.NIX_EXTRA_CONFIG }}
             max-jobs = 2
 
       - name: Enable Magic Nix Cache
@@ -463,8 +466,7 @@ jobs:
         uses: samueldr/lix-gha-installer-action@latest
         with:
           extra_nix_config: |
-            experimental-features = nix-command flakes
-            accept-flake-config = true
+            ${{ env.NIX_EXTRA_CONFIG }}
             max-jobs = 2
 
       - name: Enable Magic Nix Cache
