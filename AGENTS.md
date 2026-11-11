@@ -148,6 +148,8 @@ modules/
       home-manager.nix          # flake.nixosModules.<hostname>HomeManager (per-user HM config)
 packages/                       # custom package derivations, one dir per package,
                                  # each with package.nix; auto-overlayed via packages.nix
+  python-packages/              # Python libraries missing from nixpkgs, added to every
+                                 # python3Packages set via pythonPackagesExtensions
 secrets/                        # sops-nix encrypted secrets, one YAML per service/domain
 docs/, mkdocs.yml               # documentation site (mkdocs-flake)
 topology/                       # generated network diagram SVGs (nix-topology output)
@@ -206,8 +208,14 @@ module options.
   file. `modules/packages.nix` auto-discovers every directory under
   `packages/` and exposes it as `final.<name>` via `flake.overlays.default`
   — no manual registration needed beyond creating the directory.
-- `perSystem.pkgsDirectory` (via `pkgs-by-name-for-flake-parts`) also
-  exposes these as flake-level packages.
+- `modules/packages.nix` also exposes every top-level package as a flake
+  output (`packages.<system>.<name>`).
+- All packages live under `packages/`. Python libraries that nixpkgs lacks
+  go in `packages/python-packages/<name>/package.nix`, written like a
+  nixpkgs `python-modules` file (`buildPythonPackage`, `hatchling`,
+  `django`, ... as arguments). They're added via `pythonPackagesExtensions`,
+  so consumers just use `python3.pkgs.<name>`. Never package a dependency
+  inline inside another package.
 - **Every package must be written as a `finalAttrs`-style set**, i.e.
   `stdenv.mkDerivation (finalAttrs: { ... })`, referring back to
   `finalAttrs.<attr>` / `finalAttrs.finalPackage` where a derivation
