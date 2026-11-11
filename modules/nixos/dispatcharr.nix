@@ -51,6 +51,18 @@
     uwsgiAddress = "127.0.0.1:${toString cfg.internalPorts.uwsgi}";
     daphneAddress = "127.0.0.1:${toString cfg.internalPorts.daphne}";
 
+    # recommendedProxySettings sends `Host $host` and `X-Forwarded-Host $host`,
+    # which drop the port. Dispatcharr builds stream, logo and EPG URLs from
+    # these headers, so playlists would point at port 80 instead of cfg.port.
+    proxyHeaders = ''
+      proxy_set_header Host $host:$server_port;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_set_header X-Forwarded-Host $host:$server_port;
+      proxy_set_header X-Forwarded-Port $server_port;
+    '';
+
     environment =
       lib.optionalAttrs (cfg.secretFiles.POSTGRES_PASSWORD == null) {POSTGRES_PASSWORD = "";}
       // lib.mapAttrs (_: toEnvValue) cfg.settings
@@ -508,13 +520,19 @@
             # Stream endpoints share "/" (XC paths), so never buffer.
             "/" = {
               proxyPass = "http://${uwsgiAddress}";
-              recommendedProxySettings = true;
-              extraConfig = "proxy_buffering off;";
+              # Defaults to the global setting; must stay off (see proxyHeaders).
+              recommendedProxySettings = false;
+              extraConfig =
+                proxyHeaders
+                + ''
+                  proxy_buffering off;
+                '';
             };
             "/ws/" = {
               proxyPass = "http://${daphneAddress}";
               proxyWebsockets = true;
-              recommendedProxySettings = true;
+              recommendedProxySettings = false;
+              extraConfig = proxyHeaders;
             };
             "/assets/".alias = "${app}/static/assets/";
             "/static/".alias = "${app}/static/";
