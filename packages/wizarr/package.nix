@@ -1,7 +1,6 @@
 {
   lib,
   fetchFromGitHub,
-  fetchPypi,
   fetchNpmDeps,
   npmHooks,
   nodejs,
@@ -10,45 +9,15 @@
   writeShellScript,
   nix-update-script,
 }: let
-  python = python313.override {
-    self = python;
-    packageOverrides = pyFinal: _pyPrev: {
-      flask-htmx = pyFinal.buildPythonPackage (finalAttrs: {
-        pname = "flask-htmx";
-        version = "0.4.0";
-        pyproject = true;
-
-        src = fetchPypi {
-          pname = "flask_htmx";
-          inherit (finalAttrs) version;
-          hash = "sha256-LTZ/snyNqZ0DGgxWa35WJjcTlyLi1OjsZ8f5Qa3bIv0=";
-        };
-
-        # poetry-core renders `||` as a Requires-Dist that packaging >= 26 rejects.
-        postPatch = ''
-          substituteInPlace pyproject.toml \
-            --replace-fail 'Flask = "^2.0.2 || ^3.0.0"' 'Flask = ">=2.0.2,<4.0.0"'
-        '';
-
-        build-system = [pyFinal.poetry-core];
-        dependencies = [pyFinal.flask];
-
-        pythonImportsCheck = ["flask_htmx"];
-
-        meta = {
-          description = "Flask extension to work with HTMX";
-          homepage = "https://github.com/edmondchuc/flask-htmx";
-          license = lib.licenses.mit;
-        };
-      });
-    };
-  };
+  python = python313;
 in
   python.pkgs.buildPythonApplication (finalAttrs: {
     pname = "wizarr";
     version = "2026.10.1";
     # Upstream's pyproject.toml has no build backend; it's run from a source checkout (see their Dockerfile), so install the tree as-is.
     pyproject = false;
+
+    __structuredAttrs = true;
 
     src = fetchFromGitHub {
       owner = "Wizarrrr";
@@ -67,7 +36,8 @@ in
     npmDeps = fetchNpmDeps {
       inherit (finalAttrs) pname version src;
       sourceRoot = "${finalAttrs.src.name}/app/static";
-      hash = "sha256-OOjMPrlNgkAWc7oqoE5b6JPA4voIZEDf2F9kFTj8Gjk=";
+      fetcherVersion = 2;
+      hash = "sha256-ApAmLTpUmmJ8d6Fadh00MIzEQOmqeHuzQZuf8Lp1zX4=";
     };
 
     nativeBuildInputs = [
@@ -150,7 +120,7 @@ in
         FLASK_SKIP_SCHEDULER=true exec ${lib.getExe python.pkgs.flask} db upgrade
       '';
     in ''
-      buildPythonPath "$out $pythonPath"
+      buildPythonPath "$out ''${pythonPath[*]}"
 
       local _commonArgs=(
         --chdir "$out/libexec/wizarr"
