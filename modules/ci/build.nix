@@ -1,7 +1,3 @@
-# .github/workflows/build.yml: build every NixOS system and push to Cachix.
-#
-# Step scripts live in ./build/*.sh and are inlined verbatim; shared steps
-# and the host matrix come from ./helpers.nix (config.doggate.ci).
 {
   config,
   lib,
@@ -10,8 +6,7 @@
   inherit (config.doggate.ci) steps systems;
   script = config.doggate.ci.script "build";
 
-  # Shared derivations can only be shared within one architecture, so plan per
-  # architecture and skip any with a single system (nothing to share).
+  # Derivations can only be shared within one architecture.
   sharedGroups = lib.filter (group: lib.length group.systems > 1) (
     lib.mapAttrsToList (arch: members: {
       inherit arch;
@@ -27,7 +22,6 @@ in {
 
       on = {
         workflowRun = {
-          # Follows update-flake.nix, so renaming that workflow cannot break this.
           workflows = [perSystem.config.githubActions.workflows.update-flake.name];
           types = ["completed"];
           branches = ["main"];
@@ -61,8 +55,6 @@ in {
               ];
           };
 
-          # Stage 2: per-system builds, each on a native runner. Everything
-          # shared is already in Cachix. Skipped if build-shared failed
           build = {
             name = "Build \${{ matrix.system }} (\${{ matrix.arch }})";
             needs = ["evaluate"] ++ lib.optional hasShared "build-shared";
@@ -113,10 +105,7 @@ in {
           };
         }
         // lib.optionalAttrs hasShared {
-          # Stage 1: build every derivation that more than one system needs,
-          # exactly once, and push it to Cachix. Otherwise each matrix job starts
-          # with an empty store and shared derivations (custom packages, kernels,
-          # etc.) get built once per system in parallel.
+          # Builds what 2+ systems need once, instead of once per matrix job.
           build-shared = {
             name = "Build shared derivations (\${{ matrix.group.arch }})";
             needs = ["evaluate"];
@@ -143,15 +132,12 @@ in {
                   name = "Build shared derivations";
                   id = "build";
                   if_ = "steps.plan.outputs.shared != '0'";
-                  # Stay under the 360 minute job limit so the push and log
-                  # steps still run. Cachix pushes paths as they finish.
+                  # Leaves time for the push and log steps within the job limit.
                   timeoutMinutes = 320;
                   shell = "bash";
                   run = script "build-shared";
                 }
-                # The cachix daemon already pushes each path as it is built;
-                # this is an explicit second push so the cache is complete
-                # before stage 2 starts.
+                # Explicit push so the cache is complete before the per-system jobs.
                 {
                   name = "Push built shared derivations to Cachix";
                   if_ = "!cancelled() && steps.plan.outputs.shared != '0'";

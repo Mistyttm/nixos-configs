@@ -1,18 +1,3 @@
-# .github/workflows/update-packages.yml: every 3 days, run each local package's
-# update script and land the result.
-#
-# A package under packages/ is updated if it defines `passthru.updateScript`
-# (nixpkgs' convention). Whether it is free or unfree comes from its
-# meta.license. Both are worked out here when the workflow is generated, so
-# there is no list to keep in sync: add an updateScript, run
-# `nix run .#write-workflows`, and the package is picked up.
-#
-# - Free packages are built in CI
-# - Unfree packages are never built in CI; every update opens a PR for
-#   manual testing.
-#
-# Step scripts live in ./update-packages/*.sh; shared steps come from
-# ./helpers.nix (config.doggate.ci).
 {
   config,
   lib,
@@ -22,19 +7,15 @@
   inherit (config.doggate.ci) steps;
   script = config.doggate.ci.script "update-packages";
 
-  # The jobs update and build `packages.x86_64-linux.<name>`.
   packageSet = self.packages.x86_64-linux;
 
-  # Only the packages defined in packages/
+  # Excludes non-local flake packages (starship configs, write-flake, ...)
   updatable =
     lib.filter (name: packageSet ? ${name} && packageSet.${name} ? updateScript)
     (lib.attrNames (lib.filterAttrs (_: type: type == "directory") (builtins.readDir ../../packages)));
 
   isUnfree = name: lib.any (license: !(license.free or true)) (lib.toList (packageSet.${name}.meta.license or []));
 
-  # Steps shared by the free and unfree jobs: update the package and work out
-  # its commit message. Later steps read `steps.update_package.outputs.changed`
-  # and `steps.commit_message.outputs.message`.
   updateSteps = [
     (lib.recursiveUpdate steps.checkout {
       with_ = {
@@ -43,14 +24,9 @@
       };
     })
     steps.configureGit
-    (steps.installLix [
-      "max-jobs = auto"
-      "cores = 0"
-      "substitute = true"
-      "builders ="
-    ])
+    (steps.installLix config.doggate.ci.allCoresNixConfig)
     steps.magicNixCache
-    # Pull from Cachix, but only push after a successful build (see build.sh).
+    # build.sh pushes only after a successful build.
     (lib.recursiveUpdate steps.cachix {with_.skipPush = true;})
     {
       name = "Update package version";
@@ -67,7 +43,6 @@
     }
   ];
 
-  # Open (or update) the PR for a package update.
   openPullRequest = {
     name,
     if_,
@@ -100,7 +75,6 @@ in {
       name = "Update Local Packages";
 
       on = {
-        # Every 3 days at 03:00 UTC.
         schedule = [{cron = "0 3 */3 * *";}];
         workflowDispatch = {};
       };
@@ -116,7 +90,6 @@ in {
         cancelInProgress = true;
       };
 
-      # A job with no packages is left out entirely.
       jobs =
         lib.optionalAttrs (lib.any (name: !isUnfree name) updatable) {
           update-free-package = updateJob (lib.filter (name: !isUnfree name) updatable) [

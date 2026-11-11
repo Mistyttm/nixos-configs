@@ -1,9 +1,4 @@
-# Link matrix-sdk-crypto-nodejs against system sqlite.
-#
-# matrix-sdk-crypto-nodejs 0.6.6 fails to link on current nixos-unstable with
-# `ld: cannot find -lsqlite3`, which breaks draupnir (and so thedogpark).
-# Fixed upstream by https://github.com/NixOS/nixpkgs/pull/584291, which adds
-# pkg-config + sqlite; this is the same change until it reaches our channel.
+# Remove once NixOS/nixpkgs#584291 reaches nixos-unstable.
 {...}: {
   flake.overlays.matrix-sdk-crypto-nodejs = final: prev: let
     inherit (prev) lib;

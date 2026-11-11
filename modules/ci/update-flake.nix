@@ -1,9 +1,3 @@
-# .github/workflows/update-flake.yml: update flake.lock every 12 hours and push
-# it to main. A successful run triggers build.yml (see build.nix), which reads
-# this workflow's `name` from here rather than repeating it.
-#
-# Step scripts live in ./update-flake/*.sh; shared steps come from
-# ./helpers.nix (config.doggate.ci).
 {config, ...}: let
   inherit (config.doggate.ci) steps;
   script = config.doggate.ci.script "update-flake";
@@ -27,12 +21,7 @@ in {
         steps = [
           (steps.checkout // {with_.token = "\${{ secrets.GITHUB_TOKEN }}";})
           steps.configureGit
-          (steps.installLix [
-            "max-jobs = auto"
-            "cores = 0"
-            "substitute = true"
-            "builders ="
-          ])
+          (steps.installLix config.doggate.ci.allCoresNixConfig)
           steps.magicNixCache
           {
             name = "Regenerate flake.nix";

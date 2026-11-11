@@ -1,15 +1,4 @@
-# GitHub Actions workflows generated from Nix (synapdeck/github-actions-nix).
-#
-# Workflows are defined under perSystem.githubActions.workflows in the other
-# files in modules/ci/, so they can reuse values defined elsewhere in the
-# flake (substituters, host list, ...) instead of copying them into YAML.
-#
-# After changing a workflow: `nix run .#write-workflows`, then commit the
-# regenerated .github/workflows/*.yml. The `github-workflows` check and the
-# pre-commit hook below fail if the committed files are out of date.
-#
-# Only workflows defined in Nix are written; hand-written .yml files in
-# .github/workflows are left alone, so workflows can be converted one by one.
+# After editing modules/ci, run `nix run .#write-workflows` and commit the result.
 {
   inputs,
   lib,

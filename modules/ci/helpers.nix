@@ -1,7 +1,3 @@
-# Shared building blocks for the Nix-defined GitHub workflows in modules/ci/.
-#
-# Everything lives under the `doggate.ci` option so each workflow file can read
-# it from `config.doggate.ci.*`; helpers refer to each other the same way.
 {
   config,
   lib,
@@ -15,37 +11,32 @@
   };
 
   config.doggate.ci = {
-    # The flake's own caches, so every nix command on the runner uses them
+    # Plain nix-store commands ignore flake nixConfig, so set the caches system-wide.
     nixConfig = lib.concatStringsSep "\n" (
       [
         "experimental-features = nix-command flakes"
         "accept-flake-config = true"
       ]
       ++ lib.mapAttrsToList (name: value: "${name} = ${toString value}") (
-        # flake-file.nixConfig has empty defaults (e.g. `substituters = []`);
-        # writing those out as `substituters =` would drop cache.nixos.org.
+        # Empty defaults like `substituters = []` would wipe cache.nixos.org.
         lib.filterAttrs (_: value: value != null && value != [] && value != "") config.flake-file.nixConfig
       )
     );
 
-    # Read a step script for a workflow: `script "build" "evaluate"` is
-    # modules/ci/build/evaluate.sh. Each workflow's scripts live in a folder
-    # named after the workflow (its key under githubActions.workflows). They
-    # are inlined verbatim, so bash `${var}` and GitHub `${{ ... }}` need no
-    # Nix escaping.
+    allCoresNixConfig = [
+      "max-jobs = auto"
+      "cores = 0"
+      "substitute = true"
+      "builders ="
+    ];
+
     script = workflow: name: builtins.readFile ./${workflow}/${name}.sh;
 
-    # Native runner for each architecture.
     runners = {
       x86_64-linux = "ubuntu-latest";
       aarch64-linux = "ubuntu-24.04-arm";
     };
 
-    # One {system, arch, runner} per NixOS host, computed when the workflows
-    # are generated. Adding a host means re-running `nix run .#write-workflows`;
-    # the github-workflows check catches it if you forget. A host on an
-    # architecture with no runner fails evaluation instead of building on the
-    # wrong machine.
     systems = lib.mapAttrsToList (name: cfg: {
       system = name;
       arch = cfg.config.nixpkgs.hostPlatform.system;
@@ -60,7 +51,6 @@
         uses = "actions/checkout@v4";
       };
 
-      # Commit as github-actions[bot], for jobs that push to the repo.
       configureGit = {
         name = "Configure Git";
         run = ''
@@ -69,9 +59,7 @@
         '';
       };
 
-      # Free runner disk space for /nix. `arch` is a GitHub expression for
-      # the job's architecture (e.g. "matrix.arch"); null means the job only
-      # runs on x86_64.
+      # `arch` is a GitHub expression like "matrix.arch"; null for x86_64-only jobs.
       maximizeDiskSpace = arch:
         if arch == null
         then [
@@ -112,7 +100,6 @@
         with_.use-flakehub = false;
       };
 
-      # Pulls from and pushes everything built to the opinionatedcache Cachix.
       cachix = {
         name = "Setup Cachix";
         uses = "cachix/cachix-action@v17";
@@ -122,7 +109,6 @@
         };
       };
 
-      # Both caches, for jobs that build and push.
       caches = [
         config.doggate.ci.steps.magicNixCache
         config.doggate.ci.steps.cachix
