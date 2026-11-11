@@ -26,13 +26,7 @@ in {
         outputs.changed = "\${{ steps.check_changes.outputs.changed }}";
         steps = [
           (steps.checkout // {with_.token = "\${{ secrets.GITHUB_TOKEN }}";})
-          {
-            name = "Configure Git";
-            run = ''
-              git config user.name "github-actions[bot]"
-              git config user.email "github-actions[bot]@users.noreply.github.com"
-            '';
-          }
+          steps.configureGit
           (steps.installLix [
             "max-jobs = auto"
             "cores = 0"

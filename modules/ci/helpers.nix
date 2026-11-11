@@ -60,6 +60,15 @@
         uses = "actions/checkout@v4";
       };
 
+      # Commit as github-actions[bot], for jobs that push to the repo.
+      configureGit = {
+        name = "Configure Git";
+        run = ''
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+        '';
+      };
+
       # Free runner disk space for /nix. `arch` is a GitHub expression for
       # the job's architecture (e.g. "matrix.arch"); null means the job only
       # runs on x86_64.
