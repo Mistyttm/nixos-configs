@@ -3,7 +3,7 @@
     imports = [
       self.nixosModules.bazarr
       self.nixosModules.cleanuparr-service
-      self.nixosModules.dispatcharr
+      self.nixosModules.dispatcharr-service
       self.nixosModules.flaresolverr
       self.nixosModules.prowlarr
       self.nixosModules.radarr

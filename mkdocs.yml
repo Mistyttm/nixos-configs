@@ -14,3 +14,5 @@ nav:
   - WireGuard: wireguard.md
   - nginx: nginx.md
   - Jellystat: jellystat.md
+  - Dispatcharr: dispatcharr.md
+  - Wizarr: wizarr.md
