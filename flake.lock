@@ -648,21 +648,6 @@
         "type": "github"
       }
     },
-    "pkgs-by-name-for-flake-parts": {
-      "locked": {
-        "lastModified": 1789628227,
-        "narHash": "sha256-PC+g00FlwHgA/MyejBAEtQLRnrZLiA/Eo7i0rEkZ7bE=",
-        "owner": "drupol",
-        "repo": "pkgs-by-name-for-flake-parts",
-        "rev": "da796090e8b34326a4aaf0c173df514f135b3907",
-        "type": "github"
-      },
-      "original": {
-        "owner": "drupol",
-        "repo": "pkgs-by-name-for-flake-parts",
-        "type": "github"
-      }
-    },
     "plasma-manager": {
       "inputs": {
         "home-manager": [
@@ -805,7 +790,6 @@
         "nixpkgs-pr-561246": "nixpkgs-pr-561246",
         "nixpkgs-pr-572724": "nixpkgs-pr-572724",
         "nixpkgs-pr-580322": "nixpkgs-pr-580322",
-        "pkgs-by-name-for-flake-parts": "pkgs-by-name-for-flake-parts",
         "plasma-manager": "plasma-manager",
         "skwd-wall": "skwd-wall",
         "sops-nix": "sops-nix",

@@ -1,21 +1,35 @@
-{inputs, ...}: {
-  flake-file.inputs.pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
+{
+  inputs,
+  lib,
+  ...
+}: let
+  pkgsDir = ../packages;
+  pythonPkgsDir = pkgsDir + "/python-packages";
 
-  imports = [inputs.pkgs-by-name-for-flake-parts.flakeModule];
+  dirsIn = dir: builtins.attrNames (lib.filterAttrs (_: type: type == "directory") (builtins.readDir dir));
+  topLevelNames = lib.remove "python-packages" (dirsIn pkgsDir);
 
-  flake.overlays.default = _final: prev: let
-    pkgsDir = ../packages;
-  in
-    builtins.mapAttrs
-    (name: _: prev.callPackage (pkgsDir + "/${name}/package.nix") {})
-    (builtins.readDir pkgsDir);
+  callAll = callPackage: dir: names:
+    lib.genAttrs names (name: callPackage (dir + "/${name}/package.nix") {});
+in {
+  flake.overlays.default = _final: prev:
+    callAll prev.callPackage pkgsDir topLevelNames
+    // {
+      pythonPackagesExtensions =
+        prev.pythonPackagesExtensions
+        ++ [(final: _prev: callAll final.callPackage pythonPkgsDir (dirsIn pythonPkgsDir))];
+    };
 
-  perSystem = {system, ...}: {
-    pkgsDirectory = ../packages;
-
+  perSystem = {
+    system,
+    pkgs,
+    ...
+  }: {
     _module.args.pkgs = import inputs.nixpkgs {
       inherit system;
       overlays = [inputs.self.overlays.default];
     };
+
+    packages = lib.genAttrs topLevelNames (name: pkgs.${name});
   };
 }

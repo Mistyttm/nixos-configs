@@ -9,6 +9,5 @@ in
       inputs.mkdocs-flake.flakeModule
       inputs.devshell.flakeModule
       inputs.nix-topology.flakeModule
-      inputs.pkgs-by-name-for-flake-parts.flakeModule
     ];
   }
