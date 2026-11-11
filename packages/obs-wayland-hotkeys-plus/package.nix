@@ -7,6 +7,7 @@
   pkg-config,
   obs-studio,
   qt6,
+  nix-update-script,
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "obs-wayland-hotkeys-plus";
@@ -37,11 +38,13 @@ stdenv.mkDerivation (finalAttrs: {
 
   dontWrapQtApps = true;
 
+  passthru.updateScript = nix-update-script {extraArgs = ["--flake"];};
+
   meta = with lib; {
     description = "Global Wayland hotkeys and scene switching for OBS";
     homepage = "https://github.com/codycwiseman/wayland-hotkeys-plus";
     license = licenses.gpl2Plus;
     platforms = platforms.linux;
-    maintainers = [ ];
+    maintainers = [];
   };
 })
