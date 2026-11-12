@@ -58,6 +58,8 @@
               "https://dns.quad9.net/dns-query"
             ];
             bootstrap_dns = ["1.1.1.1" "9.9.9.9"];
+            # Pass RRSIGs through; without this, validating clients (resolved) see every signed answer as Bogus.
+            enable_dnssec = true;
             protection_enabled = true;
           };
 
@@ -114,7 +116,13 @@
       systemd.services.adguardhome.after = ["network-online.target"];
       systemd.services.adguardhome.wants = ["network-online.target"];
 
-      services.resolved.settings.Resolve.DNSStubListener = lib.mkForce "no";
+      # The host resolves through its own AdGuard, whose DoH upstreams already validate;
+      # validating again breaks when resolved downgrades during AdGuard restarts, and it has no DoT listener.
+      services.resolved.settings.Resolve = {
+        DNSStubListener = lib.mkForce "no";
+        DNSSEC = lib.mkForce "false";
+        DNSOverTLS = lib.mkForce "false";
+      };
 
       systemd.services.adguardhome.serviceConfig = {
         DynamicUser = lib.mkForce false;
