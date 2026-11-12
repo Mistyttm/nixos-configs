@@ -4,7 +4,28 @@
     config,
     lib,
     ...
-  }: {
+  }: let
+    # RouterOS REST API on the hAP ax3, used by the Network tab.
+    routerUrl = "http://192.168.0.1";
+    routerAuth = {
+      username = "{{HOMEPAGE_VAR_MIKROTIK_USERNAME}}";
+      password = "{{HOMEPAGE_VAR_MIKROTIK_PASSWORD}}";
+    };
+    # customapi widget for GET ${routerUrl}/rest/<path>; `extra` adds mappings etc.
+    routerApi = path: extra:
+      {
+        type = "customapi";
+        url = "${routerUrl}/rest/${path}";
+      }
+      // routerAuth
+      // extra;
+    # RouterOS returns numbers as strings; scale = 1 coerces them for formatting.
+    bits = field: label: {
+      inherit field label;
+      format = "bitrate";
+      scale = 1;
+    };
+  in {
     sops.secrets."sonarr_api_key" = {
       sopsFile = self.secrets.media;
     };
@@ -76,6 +97,16 @@
       sopsFile = self.secrets.crowdsec;
     };
 
+    # Read-only RouterOS user for the REST API (hAP ax3 at 192.168.0.1).
+    sops.secrets."mikrotik_username" = {
+      key = "username";
+      sopsFile = self.secrets.mikrotik;
+    };
+    sops.secrets."mikrotik_password" = {
+      key = "password";
+      sopsFile = self.secrets.mikrotik;
+    };
+
     sops.templates."homepage-env" = {
       owner = "root";
       group = "root";
@@ -100,6 +131,8 @@
         HOMEPAGE_VAR_ADGUARD_USERNAME=${config.sops.placeholder."adguard_username"}
         HOMEPAGE_VAR_ADGUARD_PASSWORD=${config.sops.placeholder."adguard_password"}
         HOMEPAGE_VAR_CROWDSEC_PASSWORD=${config.sops.placeholder."crowdsec_homepage_password"}
+        HOMEPAGE_VAR_MIKROTIK_USERNAME=${config.sops.placeholder."mikrotik_username"}
+        HOMEPAGE_VAR_MIKROTIK_PASSWORD=${config.sops.placeholder."mikrotik_password"}
       '';
     };
 
@@ -144,28 +177,70 @@
         };
         cardBlur = "xl";
 
-        layout = {
-          "Media" = {
-            style = "row";
-            columns = 4;
-          };
-          "Downloads" = {
-            style = "row";
-            columns = 3;
-          };
-          "Management" = {
-            style = "row";
-            columns = 3;
-          };
-          "Infrastructure" = {
-            style = "row";
-            columns = 3;
-          };
-          "Matrix" = {
-            style = "row";
-            columns = 3;
-          };
-        };
+        # A list (not an attrset) so Nix doesn't sort the groups: Homepage
+        # orders groups and tabs by their position here. The Home groups keep
+        # the alphabetical order the old attrset rendered in. Every group needs
+        # a tab, otherwise Homepage shows it on all tabs.
+        layout = [
+          {
+            "Downloads" = {
+              tab = "Home";
+              style = "row";
+              columns = 3;
+            };
+          }
+          {
+            "Infrastructure" = {
+              tab = "Home";
+              style = "row";
+              columns = 3;
+            };
+          }
+          {
+            "Management" = {
+              tab = "Home";
+              style = "row";
+              columns = 3;
+            };
+          }
+          {
+            "Matrix" = {
+              tab = "Home";
+              style = "row";
+              columns = 3;
+            };
+          }
+          {
+            "Media" = {
+              tab = "Home";
+              style = "row";
+              columns = 4;
+            };
+          }
+          {"NixOS" = {tab = "Home";};}
+          {"Arr Docs" = {tab = "Home";};}
+          {
+            "Router" = {
+              tab = "Network";
+              style = "row";
+              columns = 3;
+            };
+          }
+          {
+            "Traffic" = {
+              tab = "Network";
+              style = "row";
+              columns = 3;
+            };
+          }
+          {
+            "Clients" = {
+              tab = "Network";
+              style = "row";
+              columns = 2;
+            };
+          }
+        ];
       };
 
       widgets = [
@@ -726,6 +801,167 @@
                 icon = "coturn";
                 href = "https://mistyttm.dev";
                 description = "TURN server";
+              };
+            }
+          ];
+        }
+        {
+          "Router" = [
+            {
+              "hAP ax3" = {
+                icon = "mikrotik";
+                href = routerUrl;
+                description = "MikroTik router";
+                widget =
+                  {
+                    type = "mikrotik";
+                    url = routerUrl;
+                  }
+                  // routerAuth;
+              };
+            }
+            {
+              "WAN" = {
+                icon = "mdi-wan";
+                href = routerUrl;
+                description = "ether1 (DHCP)";
+                widget = routerApi "ip/dhcp-client" {
+                  refreshInterval = 60000;
+                  mappings = [
+                    {
+                      field = "0.address";
+                      label = "Public IP";
+                    }
+                    {
+                      field = "0.status";
+                      label = "Status";
+                    }
+                    {
+                      field = "0.expires-after";
+                      label = "Lease left";
+                    }
+                  ];
+                };
+              };
+            }
+            {
+              "Health" = {
+                icon = "mdi-thermometer";
+                href = routerUrl;
+                description = "Router sensors";
+                widget = routerApi "system/health" {
+                  refreshInterval = 30000;
+                  display = "dynamic-list";
+                  mappings = {
+                    name = "name";
+                    label = "value";
+                  };
+                };
+              };
+            }
+          ];
+        }
+        {
+          "Traffic" = [
+            {
+              "WAN throughput" = {
+                icon = "mdi-speedometer";
+                href = routerUrl;
+                description = "Live rate on ether1";
+                widget = routerApi "interface/monitor-traffic" {
+                  method = "POST";
+                  headers = {"Content-Type" = "application/json";};
+                  requestBody = {
+                    interface = "ether1";
+                    once = "";
+                  };
+                  refreshInterval = 5000;
+                  mappings = [
+                    (bits "0.rx-bits-per-second" "Download")
+                    (bits "0.tx-bits-per-second" "Upload")
+                  ];
+                };
+              };
+            }
+            {
+              "SQM (CAKE)" = {
+                icon = "mdi-tune-variant";
+                href = routerUrl;
+                description = "Queue tree: 0 = wan-up, 1 = wan-down";
+                widget = routerApi "queue/tree" {
+                  refreshInterval = 5000;
+                  mappings = [
+                    (bits "1.rate" "Down shaped")
+                    (bits "0.rate" "Up shaped")
+                    {
+                      field = "1.dropped";
+                      label = "Down drops";
+                      format = "number";
+                    }
+                    {
+                      field = "0.dropped";
+                      label = "Up drops";
+                      format = "number";
+                    }
+                  ];
+                };
+              };
+            }
+            {
+              "Connections" = {
+                icon = "mdi-lan-connect";
+                href = routerUrl;
+                description = "Connection tracking";
+                widget = routerApi "ip/firewall/connection/tracking" {
+                  refreshInterval = 10000;
+                  mappings = [
+                    {
+                      field = "total-entries";
+                      label = "Active";
+                      format = "number";
+                    }
+                    {
+                      field = "max-entries";
+                      label = "Max";
+                      format = "number";
+                    }
+                  ];
+                };
+              };
+            }
+          ];
+        }
+        {
+          "Clients" = [
+            {
+              "Wi-Fi" = {
+                icon = "mdi-wifi";
+                href = routerUrl;
+                description = "Associated clients";
+                widget = routerApi "interface/wifi/registration-table?.proplist=interface" {
+                  mappings = [
+                    {
+                      label = "Clients";
+                      format = "size";
+                    }
+                  ];
+                };
+              };
+            }
+            {
+              "DHCP leases" = {
+                icon = "mdi-devices";
+                href = routerUrl;
+                description = "Bound devices on the LAN";
+                widget = routerApi "ip/dhcp-server/lease?status=bound&.proplist=host-name,address" {
+                  refreshInterval = 30000;
+                  display = "dynamic-list";
+                  mappings = {
+                    name = "host-name";
+                    label = "address";
+                    limit = 25;
+                  };
+                };
               };
             }
           ];
