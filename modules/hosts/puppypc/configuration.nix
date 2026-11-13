@@ -37,6 +37,8 @@
     ];
 
     networking.hostName = "puppypc";
+    # Desktop on Wi-Fi: power save adds latency spikes for no benefit.
+    networking.networkmanager.wifi.powersave = false;
 
     boot = {
       kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto-zen4;
