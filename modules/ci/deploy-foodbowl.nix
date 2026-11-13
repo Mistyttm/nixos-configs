@@ -19,9 +19,9 @@ in {
 
       jobs.deploy = {
         name = "Switch foodbowl to the cached build";
-        # A failed build run can still have cached foodbowl; deploy.sh refuses to build if not.
+        # Runs even if another host failed the build; anything uncached is built on the runner.
         if_ = "github.event_name == 'workflow_dispatch' || (github.event.workflow_run.event != 'pull_request' && github.event.workflow_run.conclusion != 'cancelled')";
-        runsOn = "ubuntu-latest";
+        runsOn = config.doggate.ci.runners.aarch64-linux;
         timeoutMinutes = 60;
         concurrency = {
           group = "deploy-foodbowl";

@@ -1,8 +1,7 @@
-# --max-jobs 0 means this fails unless CI already cached foodbowl's closure.
-# --no-reexec: the target's nixos-rebuild is aarch64 and can't run here.
+# Builds on the (aarch64) runner, never on the Pi; anything CI cached is just fetched.
+# --no-reexec: skip re-running with the target's own nixos-rebuild.
 nix run --inputs-from . nixpkgs#nixos-rebuild-ng -- switch \
   --flake .#foodbowl \
   --target-host foodbowl \
   --use-substitutes \
-  --max-jobs 0 \
   --no-reexec
