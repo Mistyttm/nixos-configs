@@ -10,6 +10,7 @@
       cli-tools
       nix-ld
       log-shipper
+      deploy-target
     ];
 
     networking.hostName = "foodbowl";
@@ -37,13 +38,10 @@
       ];
     };
 
-    # SSH on boot, password login.
+    # SSH on boot, password login (root is key-only, see deploy-target).
     services.openssh = {
       enable = true;
-      settings = {
-        PasswordAuthentication = true;
-        PermitRootLogin = "no";
-      };
+      settings.PasswordAuthentication = true;
     };
 
     system.stateVersion = "26.11";

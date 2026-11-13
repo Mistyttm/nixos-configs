@@ -14,6 +14,7 @@
       matrix
       motd
       prometheus-exporter
+      deploy-jump
     ];
 
     networking.hostName = "thedogpark";

@@ -153,6 +153,7 @@ jobs:
       fail-fast: false
       matrix:
         package:
+          - dispatcharr
           - i-sponsor-block-tv
           - obs-wayland-hotkeys-plus
           - proton-cachyos
@@ -247,7 +248,6 @@ jobs:
       fail-fast: false
       matrix:
         package:
-          - dispatcharr
           - vpm
 name: Update Local Packages
 "on":
