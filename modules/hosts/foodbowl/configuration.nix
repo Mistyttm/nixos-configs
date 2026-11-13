@@ -25,6 +25,7 @@
 
     doggate = {
       adguardhome = {
+        domain = "dns.mistyttm.dev";
         adminPasswordHash = "$2y$10$gDYaIJi.m/WFFhBi6GeVh.YcpPx6QRSX3f6lAeZQOkEnZr7o9LQoC%";
       };
       wireguard.enable = true;

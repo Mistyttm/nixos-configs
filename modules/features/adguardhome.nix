@@ -1,10 +1,15 @@
-{...}: {
+{self, ...}: {
   flake.nixosModules.adguardhome = {
     config,
     lib,
+    pkgs,
     ...
   }: let
     cfg = config.doggate.adguardhome;
+    hostName = config.networking.hostName;
+    useAcme = cfg.domain != null;
+    selfSignedDir = "/var/lib/adguardhome-tls";
+    acmeDir = config.security.acme.certs.${cfg.domain}.directory;
   in {
     options.doggate.adguardhome = {
       adminUser = lib.mkOption {
@@ -35,6 +40,19 @@
           `doggate.logShipping` for long-term history.
         '';
       };
+
+      domain = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        example = "dns.example.com";
+        description = ''
+          Hostname to get a Let's Encrypt certificate for (Porkbun DNS-01).
+          Enables DNS-over-HTTPS (and the web UI) on 443 and gives DoT a
+          trusted certificate. The name must resolve to this host on the LAN
+          (e.g. an AdGuard DNS rewrite). While null, DoT uses a self-signed
+          certificate and DoH is off.
+        '';
+      };
     };
 
     config = {
@@ -62,6 +80,28 @@
             enable_dnssec = true;
             protection_enabled = true;
           };
+
+          # DoT always; DoH only with a trusted cert (nothing uses DoH with a self-signed one). DoQ/DNSCrypt off.
+          tls =
+            {
+              enabled = true;
+              port_https =
+                if useAcme
+                then 443
+                else 0;
+              port_dns_over_tls = 853;
+              port_dns_over_quic = 0;
+              port_dnscrypt = 0;
+              certificate_path =
+                if useAcme
+                then "${acmeDir}/fullchain.pem"
+                else "${selfSignedDir}/cert.pem";
+              private_key_path =
+                if useAcme
+                then "${acmeDir}/key.pem"
+                else "${selfSignedDir}/key.pem";
+            }
+            // lib.optionalAttrs useAcme {server_name = cfg.domain;};
 
           filtering = {
             filtering_enabled = true;
@@ -101,8 +141,52 @@
       };
 
       # DNS for LAN clients.
-      networking.firewall.allowedTCPPorts = [53];
+      networking.firewall.allowedTCPPorts = [53 853] ++ lib.optional useAcme 443;
       networking.firewall.allowedUDPPorts = [53];
+
+      # Generated once on the host so the private key never enters the store.
+      systemd.services.adguardhome-tls-cert = lib.mkIf (!useAcme) {
+        description = "Self-signed certificate for AdGuard Home DNS-over-TLS";
+        before = ["adguardhome.service"];
+        requiredBy = ["adguardhome.service"];
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          User = "adguardhome";
+          Group = "adguardhome";
+          StateDirectory = "adguardhome-tls";
+          StateDirectoryMode = "0750";
+          UMask = "0077";
+        };
+        script = ''
+          cd "$STATE_DIRECTORY"
+          [ -s cert.pem ] && [ -s key.pem ] && exit 0
+          ${lib.getExe pkgs.openssl} req -x509 -nodes -days 3650 \
+            -newkey ec -pkeyopt ec_paramgen_curve:prime256v1 \
+            -subj "/CN=${hostName}" \
+            -addext "subjectAltName=DNS:${hostName},DNS:${hostName}.lan" \
+            -keyout key.pem -out cert.pem
+        '';
+      };
+
+      sops.secrets = lib.mkIf useAcme {
+        "porkbun-api-key".sopsFile = self.secrets.porkbun;
+        "porkbun-secret-api-key".sopsFile = self.secrets.porkbun;
+      };
+
+      security.acme = lib.mkIf useAcme {
+        acceptTerms = true;
+        defaults.email = lib.mkDefault "contact@mistyttm.dev";
+        certs.${cfg.domain} = {
+          dnsProvider = "porkbun";
+          group = "adguardhome";
+          reloadServices = ["adguardhome.service"];
+          credentialFiles = {
+            PORKBUN_API_KEY_FILE = config.sops.secrets."porkbun-api-key".path;
+            PORKBUN_SECRET_API_KEY_FILE = config.sops.secrets."porkbun-secret-api-key".path;
+          };
+        };
+      };
 
       # Run as a static user (the nixpkgs unit uses DynamicUser) so the log
       # shipper can be granted read access to the query log via a group.
@@ -113,11 +197,12 @@
       users.groups.adguardhome = {};
 
       # The bind address comes from DHCP, so wait until the network is up.
-      systemd.services.adguardhome.after = ["network-online.target"];
-      systemd.services.adguardhome.wants = ["network-online.target"];
+      # acme-<domain> drops a placeholder cert so AdGuard can start before the real one is issued.
+      systemd.services.adguardhome.after = ["network-online.target"] ++ lib.optional useAcme "acme-${cfg.domain}.service";
+      systemd.services.adguardhome.wants = ["network-online.target"] ++ lib.optional useAcme "acme-${cfg.domain}.service";
 
       # The host resolves through its own AdGuard, whose DoH upstreams already validate;
-      # validating again breaks when resolved downgrades during AdGuard restarts, and it has no DoT listener.
+      # validating or DoT-probing itself again just breaks during AdGuard restarts.
       services.resolved.settings.Resolve = {
         DNSStubListener = lib.mkForce "no";
         DNSSEC = lib.mkForce "false";
