@@ -18,8 +18,10 @@ proton-ge-bin.overrideAttrs (
         "$steamcompattool/compatibilitytool.vdf"
     '';
 
-    passthru = (previousAttrs.passthru or { }) // {
-      updateScript = ./update.sh;
-    };
+    passthru =
+      (previousAttrs.passthru or {})
+      // {
+        updateScript = ./update.sh;
+      };
   }
 )

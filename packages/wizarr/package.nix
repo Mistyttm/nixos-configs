@@ -8,121 +8,118 @@
   makeWrapper,
   writeShellScript,
   nix-update-script,
-}:
-let
+}: let
   python = python313;
 in
-python.pkgs.buildPythonApplication (finalAttrs: {
-  pname = "wizarr";
-  version = "2026.10.1";
-  # Upstream's pyproject.toml has no build backend; it's run from a source checkout (see their Dockerfile), so install the tree as-is.
-  pyproject = false;
+  python.pkgs.buildPythonApplication (finalAttrs: {
+    pname = "wizarr";
+    version = "2026.10.1";
+    # Upstream's pyproject.toml has no build backend; it's run from a source checkout (see their Dockerfile), so install the tree as-is.
+    pyproject = false;
 
-  __structuredAttrs = true;
+    __structuredAttrs = true;
 
-  src = fetchFromGitHub {
-    owner = "Wizarrrr";
-    repo = "wizarr";
-    tag = "v${finalAttrs.version}";
-    hash = "sha256-VZpPqF6XJjWMGKTrLiiSQCB4Dlj+Ca0GAXboy6P7dT0=";
-  };
+    src = fetchFromGitHub {
+      owner = "Wizarrrr";
+      repo = "wizarr";
+      tag = "v${finalAttrs.version}";
+      hash = "sha256-VZpPqF6XJjWMGKTrLiiSQCB4Dlj+Ca0GAXboy6P7dT0=";
+    };
 
-  patches = [
-    # Upstream hardcodes its state dir to /data/database (if /data exists) or a directory inside the source tree, which is read-only in the store.
-    # Let WIZARR_DATA_DIR override both.
-    ./data-dir-env.patch
-  ];
+    patches = [
+      # Upstream hardcodes its state dir to /data/database (if /data exists) or a directory inside the source tree, which is read-only in the store.
+      # Let WIZARR_DATA_DIR override both.
+      ./data-dir-env.patch
+    ];
 
-  npmRoot = "app/static";
-  npmDeps = fetchNpmDeps {
-    inherit (finalAttrs) pname version src;
-    sourceRoot = "${finalAttrs.src.name}/app/static";
-    fetcherVersion = 2;
-    hash = "sha256-ApAmLTpUmmJ8d6Fadh00MIzEQOmqeHuzQZuf8Lp1zX4=";
-  };
+    npmRoot = "app/static";
+    npmDeps = fetchNpmDeps {
+      inherit (finalAttrs) pname version src;
+      sourceRoot = "${finalAttrs.src.name}/app/static";
+      fetcherVersion = 2;
+      hash = "sha256-ApAmLTpUmmJ8d6Fadh00MIzEQOmqeHuzQZuf8Lp1zX4=";
+    };
 
-  nativeBuildInputs = [
-    makeWrapper
-    nodejs
-    npmHooks.npmConfigHook
-    python.pkgs.babel
-    python.pkgs.wrapPython
-  ];
+    nativeBuildInputs = [
+      makeWrapper
+      nodejs
+      npmHooks.npmConfigHook
+      python.pkgs.babel
+      python.pkgs.wrapPython
+    ];
 
-  # Mirrors [project].dependencies in upstream's pyproject.toml.
-  dependencies = with python.pkgs; [
-    apprise
-    cachetools
-    cryptography
-    email-validator
-    flask
-    flask-apscheduler
-    flask-babel
-    flask-compress
-    flask-htmx
-    flask-limiter
-    flask-login
-    flask-migrate
-    flask-restx
-    flask-session
-    flask-sqlalchemy
-    flask-wtf
-    gunicorn
-    jinja2
-    ldap3
-    markdown
-    packaging
-    plexapi
-    pyjwt
-    python-dotenv
-    python-frontmatter
-    pyyaml
-    requests
-    setuptools
-    sqlalchemy
-    structlog
-    webauthn
-    websocket-client
-    wtforms
-  ];
+    # Mirrors [project].dependencies in upstream's pyproject.toml.
+    dependencies = with python.pkgs; [
+      apprise
+      cachetools
+      cryptography
+      email-validator
+      flask
+      flask-apscheduler
+      flask-babel
+      flask-compress
+      flask-htmx
+      flask-limiter
+      flask-login
+      flask-migrate
+      flask-restx
+      flask-session
+      flask-sqlalchemy
+      flask-wtf
+      gunicorn
+      jinja2
+      ldap3
+      markdown
+      packaging
+      plexapi
+      pyjwt
+      python-dotenv
+      python-frontmatter
+      pyyaml
+      requests
+      setuptools
+      sqlalchemy
+      structlog
+      webauthn
+      websocket-client
+      wtforms
+    ];
 
-  buildPhase = ''
-    runHook preBuild
+    buildPhase = ''
+      runHook preBuild
 
-    # Include fuzzy entries, matching upstream's Dockerfile.
-    pybabel compile --use-fuzzy -d app/translations
+      # Include fuzzy entries, matching upstream's Dockerfile.
+      pybabel compile --use-fuzzy -d app/translations
 
-    pushd app/static
-    DOCKER_BUILD=true npm run build
-    rm -rf node_modules
-    popd
+      pushd app/static
+      DOCKER_BUILD=true npm run build
+      rm -rf node_modules
+      popd
 
-    runHook postBuild
-  '';
+      runHook postBuild
+    '';
 
-  installPhase = ''
-    runHook preInstall
+    installPhase = ''
+      runHook preInstall
 
-    mkdir -p $out/libexec/wizarr
-    cp -r app migrations wizard_steps run.py gunicorn.conf.py $out/libexec/wizarr/
+      mkdir -p $out/libexec/wizarr
+      cp -r app migrations wizard_steps run.py gunicorn.conf.py $out/libexec/wizarr/
 
-    runHook postInstall
-  '';
+      runHook postInstall
+    '';
 
-  dontWrapPythonPrograms = true;
+    dontWrapPythonPrograms = true;
 
-  # Wrappers are made here rather than in installPhase so buildPythonPath can
-  # read $out's propagated dependencies, which fixupPhase has written by now.
-  postFixup =
-    let
+    # Wrappers are made here rather than in installPhase so buildPythonPath can
+    # read $out's propagated dependencies, which fixupPhase has written by now.
+    postFixup = let
       start_script = writeShellScript "start-wizarr" ''
         exec ${lib.getExe python.pkgs.gunicorn} --config gunicorn.conf.py --umask 007 "$@" run:app
       '';
       init_db = writeShellScript "init-wizarr-db" ''
         FLASK_SKIP_SCHEDULER=true exec ${lib.getExe python.pkgs.flask} db upgrade
       '';
-    in
-    ''
+    in ''
       buildPythonPath "$out ''${pythonPath[*]}"
 
       local _commonArgs=(
@@ -137,18 +134,18 @@ python.pkgs.buildPythonApplication (finalAttrs: {
       makeWrapper ${init_db} $out/libexec/init-db "''${_commonArgs[@]}"
     '';
 
-  passthru = {
-    inherit python;
-    updateScript = nix-update-script { extraArgs = [ "--flake" ]; };
-  };
+    passthru = {
+      inherit python;
+      updateScript = nix-update-script {extraArgs = ["--flake"];};
+    };
 
-  meta = {
-    description = "Multi-server invitation manager for Plex, Jellyfin, Emby and Audiobookshelf";
-    homepage = "https://github.com/Wizarrrr/wizarr";
-    changelog = "https://github.com/Wizarrrr/wizarr/releases/tag/v${finalAttrs.version}";
-    license = lib.licenses.mit;
-    maintainers = with lib.maintainers; [ mistyttm ];
-    platforms = lib.platforms.linux;
-    mainProgram = "wizarr";
-  };
-})
+    meta = {
+      description = "Multi-server invitation manager for Plex, Jellyfin, Emby and Audiobookshelf";
+      homepage = "https://github.com/Wizarrrr/wizarr";
+      changelog = "https://github.com/Wizarrrr/wizarr/releases/tag/v${finalAttrs.version}";
+      license = lib.licenses.mit;
+      maintainers = with lib.maintainers; [mistyttm];
+      platforms = lib.platforms.linux;
+      mainProgram = "wizarr";
+    };
+  })

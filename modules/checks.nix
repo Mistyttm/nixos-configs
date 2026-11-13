@@ -5,7 +5,7 @@
   };
 
   perSystem = {pkgs, ...}: {
-    formatter = pkgs.nixfmt;
+    formatter = pkgs.alejandra;
 
     pre-commit = {
       settings.hooks = {
