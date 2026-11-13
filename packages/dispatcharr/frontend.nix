@@ -30,7 +30,7 @@ buildNpmPackage (finalAttrs: {
     description = "Web frontend for Dispatcharr";
     homepage = "https://github.com/Dispatcharr/Dispatcharr";
     license = lib.licenses.agpl3Only;
-    maintainers = with lib.maintainers; [mistyttm];
+    maintainers = with lib.maintainers; [ mistyttm ];
     platforms = lib.platforms.all;
   };
 })

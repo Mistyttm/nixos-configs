@@ -11,21 +11,21 @@
   # sentence-transformers pulls in torch (~1 GiB); without it EPG auto-matching
   # falls back to fuzzy matching only.
   withMachineLearning ? false,
-}: let
+}:
+let
   python = python3;
 
   # Upstream serves WSGI from uWSGI with gevent; nixpkgs doesn't build that plugin.
   uwsgi' =
     (uwsgi.override {
-      plugins = ["python3"];
+      plugins = [ "python3" ];
       python3 = python;
-    }).overrideAttrs (old: {
-      postBuild =
-        (old.postBuild or "")
-        + ''
+    }).overrideAttrs
+      (old: {
+        postBuild = (old.postBuild or "") + ''
           python3 uwsgiconfig.py --plugin plugins/gevent nixos gevent
         '';
-    });
+      });
 
   # Only `cvlc` is used; skip the Qt GUI.
   vlc' = vlc.override {
@@ -33,117 +33,122 @@
     skins2Support = false;
   };
 in
-  python.pkgs.buildPythonApplication (finalAttrs: {
-    pname = "dispatcharr";
-    version = "0.33.0";
-    pyproject = false;
+python.pkgs.buildPythonApplication (finalAttrs: {
+  pname = "dispatcharr";
+  version = "0.33.0";
+  pyproject = false;
 
-    __structuredAttrs = true;
+  __structuredAttrs = true;
 
-    src = fetchFromGitHub {
-      owner = "Dispatcharr";
-      repo = "Dispatcharr";
-      tag = "v${finalAttrs.version}";
-      hash = "sha256-4tixInQULynDaRYJrAqBrOJJTjGHTOTSo1KnXj5uW2w=";
-    };
+  src = fetchFromGitHub {
+    owner = "Dispatcharr";
+    repo = "Dispatcharr";
+    tag = "v${finalAttrs.version}";
+    hash = "sha256-4tixInQULynDaRYJrAqBrOJJTjGHTOTSo1KnXj5uW2w=";
+  };
 
-    postPatch = ''
-      substituteInPlace dispatcharr/settings.py \
-        --replace-fail 'MEDIA_ROOT = BASE_DIR / "media"' \
-                       'MEDIA_ROOT = Path(os.environ.get("DISPATCHARR_MEDIA_ROOT", "/data/media"))'
-      substituteInPlace apps/channels/tasks.py \
-        --replace-fail '"/app/docker/comskip.ini"' "\"$out/share/dispatcharr/docker/comskip.ini\""
-    '';
+  postPatch = ''
+    substituteInPlace dispatcharr/settings.py \
+      --replace-fail 'MEDIA_ROOT = BASE_DIR / "media"' \
+                     'MEDIA_ROOT = Path(os.environ.get("DISPATCHARR_MEDIA_ROOT", "/data/media"))'
+    substituteInPlace apps/channels/tasks.py \
+      --replace-fail '"/app/docker/comskip.ini"' "\"$out/share/dispatcharr/docker/comskip.ini\""
+  '';
 
-    dependencies = with python.pkgs;
-      [
-        celery
-        channels
-        channels-redis
-        daphne
-        django
-        django-celery-beat
-        django-cors-headers
-        django-db-geventpool
-        django-filter
-        django-redis
-        djangorestframework
-        djangorestframework-simplejwt
-        drf-spectacular
-        gevent
-        lxml
-        m3u8
-        packaging
-        pillow
-        psutil
-        psycopg
-        pytz
-        rapidfuzz
-        redis
-        regex
-        requests
-        tzlocal
-        yt-dlp
-      ]
-      ++ celery.optional-dependencies.redis
-      ++ psycopg.optional-dependencies.c
-      ++ lib.optional withMachineLearning sentence-transformers;
+  dependencies =
+    with python.pkgs;
+    [
+      celery
+      channels
+      channels-redis
+      daphne
+      django
+      django-celery-beat
+      django-cors-headers
+      django-db-geventpool
+      django-filter
+      django-redis
+      djangorestframework
+      djangorestframework-simplejwt
+      drf-spectacular
+      gevent
+      lxml
+      m3u8
+      packaging
+      pillow
+      psutil
+      psycopg
+      pytz
+      rapidfuzz
+      redis
+      regex
+      requests
+      tzlocal
+      yt-dlp
+    ]
+    ++ celery.optional-dependencies.redis
+    ++ psycopg.optional-dependencies.c
+    ++ lib.optional withMachineLearning sentence-transformers;
 
-    env.DJANGO_SECRET_KEY = "build-only";
+  env.DJANGO_SECRET_KEY = "build-only";
 
-    buildPhase = ''
-      runHook preBuild
-      cp -r ${finalAttrs.passthru.frontend} frontend/dist
-      python manage.py collectstatic --noinput
-      runHook postBuild
-    '';
+  buildPhase = ''
+    runHook preBuild
+    cp -r ${finalAttrs.passthru.frontend} frontend/dist
+    python manage.py collectstatic --noinput
+    runHook postBuild
+  '';
 
-    installPhase = ''
-      runHook preInstall
+  installPhase = ''
+    runHook preInstall
 
-      app=$out/share/dispatcharr
-      mkdir -p $app/docker $app/frontend
-      cp -r apps core dispatcharr scripts static fixtures.json manage.py version.py $app/
-      cp -r frontend/dist $app/frontend/
-      cp docker/comskip.ini $app/docker/
-      install -Dm755 manage.py $out/bin/dispatcharr-manage
+    app=$out/share/dispatcharr
+    mkdir -p $app/docker $app/frontend
+    cp -r apps core dispatcharr scripts static fixtures.json manage.py version.py $app/
+    cp -r frontend/dist $app/frontend/
+    cp docker/comskip.ini $app/docker/
+    install -Dm755 manage.py $out/bin/dispatcharr-manage
 
-      runHook postInstall
-    '';
+    runHook postInstall
+  '';
 
-    makeWrapperArgs = [
-      "--prefix"
-      "PYTHONPATH"
-      ":"
-      "${placeholder "out"}/share/dispatcharr"
-      "--prefix"
-      "PATH"
-      ":"
-      (lib.makeBinPath finalAttrs.passthru.runtimeDeps)
+  makeWrapperArgs = [
+    "--prefix"
+    "PYTHONPATH"
+    ":"
+    "${placeholder "out"}/share/dispatcharr"
+    "--prefix"
+    "PATH"
+    ":"
+    (lib.makeBinPath finalAttrs.passthru.runtimeDeps)
+  ];
+
+  passthru = {
+    inherit python;
+    uwsgi = uwsgi';
+    runtimeDeps = [
+      ffmpeg
+      streamlink
+      vlc'
     ];
-
-    passthru = {
-      inherit python;
-      uwsgi = uwsgi';
-      runtimeDeps = [
-        ffmpeg
-        streamlink
-        vlc'
+    pythonPath = "${python.pkgs.makePythonPath finalAttrs.propagatedBuildInputs}:${finalAttrs.finalPackage}/share/dispatcharr";
+    frontend = callPackage ./frontend.nix { inherit (finalAttrs) src version; };
+    updateScript = nix-update-script {
+      extraArgs = [
+        "--flake"
+        "--subpackage"
+        "frontend"
       ];
-      pythonPath = "${python.pkgs.makePythonPath finalAttrs.propagatedBuildInputs}:${finalAttrs.finalPackage}/share/dispatcharr";
-      frontend = callPackage ./frontend.nix {inherit (finalAttrs) src version;};
-      updateScript = nix-update-script {
-        extraArgs = ["--flake" "--subpackage" "frontend"];
-      };
     };
+  };
 
-    meta = {
-      description = "IPTV stream and EPG management service";
-      homepage = "https://github.com/Dispatcharr/Dispatcharr";
-      changelog = "https://github.com/Dispatcharr/Dispatcharr/releases/tag/v${finalAttrs.version}";
-      license = lib.licenses.agpl3Only;
-      maintainers = with lib.maintainers; [mistyttm];
-      platforms = lib.platforms.linux;
-      mainProgram = "dispatcharr-manage";
-    };
-  })
+  meta = {
+    description = "IPTV stream and EPG management service";
+    homepage = "https://github.com/Dispatcharr/Dispatcharr";
+    changelog = "https://github.com/Dispatcharr/Dispatcharr/releases/tag/v${finalAttrs.version}";
+    license = lib.licenses.agpl3Only;
+    maintainers = with lib.maintainers; [ mistyttm ];
+    platforms = lib.platforms.linux;
+    mainProgram = "dispatcharr-manage";
+  };
+})
