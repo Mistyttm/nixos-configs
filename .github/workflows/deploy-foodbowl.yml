@@ -21,7 +21,6 @@ jobs:
             accept-flake-config = true
             extra-substituters = https://nix-community.cachix.org https://opinionatedcache.cachix.org https://cache.flox.dev https://cache.nixos-cuda.org https://nixos-raspberrypi.cachix.org https://cache.lantian.pub/lantian
             extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= opinionatedcache.cachix.org-1:zDO4tZBL25vfhVFSHTT+0RNCjn5Z5nEs7sPiDZ6XhuE= flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs= cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M= cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM= nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI= lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ=
-            max-jobs = 0
       - env:
           DEPLOY_KEY: ${{ secrets.FOODBOWL_DEPLOY_KEY }}
           KNOWN_HOSTS: ${{ secrets.FOODBOWL_KNOWN_HOSTS }}
@@ -50,12 +49,13 @@ jobs:
         shell: bash
       - name: Switch foodbowl
         run: |
-          # max-jobs = 0 means this fails unless CI already cached foodbowl's closure.
+          # --max-jobs 0 means this fails unless CI already cached foodbowl's closure.
           # --no-reexec: the target's nixos-rebuild is aarch64 and can't run here.
           nix run --inputs-from . nixpkgs#nixos-rebuild-ng -- switch \
             --flake .#foodbowl \
             --target-host foodbowl \
             --use-substitutes \
+            --max-jobs 0 \
             --no-reexec
         shell: bash
       - name: Clean old generations

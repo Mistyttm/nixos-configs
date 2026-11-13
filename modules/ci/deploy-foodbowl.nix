@@ -29,7 +29,7 @@ in {
         };
         steps = [
           (steps.checkout // {with_.ref = "\${{ github.event.workflow_run.head_sha || github.sha }}";})
-          (steps.installLix ["max-jobs = 0"])
+          (steps.installLix [])
           {
             name = "Configure SSH";
             shell = "bash";
