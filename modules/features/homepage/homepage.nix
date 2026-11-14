@@ -887,21 +887,22 @@
               "SQM (CAKE)" = {
                 icon = "mdi-tune-variant";
                 href = routerUrl;
-                description = "Queue tree: 0 = wan-up, 1 = wan-down";
-                widget = routerApi "queue/tree" {
+                description = "Simple queue wan-cake (down/up)";
+                # Simple-queue stats are "down/up" strings that customapi can't split, so show them raw.
+                widget = routerApi "queue/simple?name=wan-cake" {
                   refreshInterval = 5000;
                   mappings = [
-                    (bits "1.rate" "Down shaped")
-                    (bits "0.rate" "Up shaped")
                     {
-                      field = "1.dropped";
-                      label = "Down drops";
-                      format = "number";
+                      field = "0.max-limit";
+                      label = "Limit";
                     }
                     {
                       field = "0.dropped";
-                      label = "Up drops";
-                      format = "number";
+                      label = "Drops";
+                    }
+                    {
+                      field = "0.queued-packets";
+                      label = "Queued pkts";
                     }
                   ];
                 };
