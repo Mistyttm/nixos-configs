@@ -46,6 +46,12 @@
             "/_matrix/client/v1/media/"
             "/_matrix/media/"
             "/_matrix/client/unstable/org.matrix.msc2965/"
+            # Routine capability probes/lookups that 404 on a normal Synapse
+            "/_matrix/client/v3/room_keys/"
+            "/_matrix/client/v3/user/"
+            "/_matrix/client/unstable/org.matrix.msc3575/"
+            "/_matrix/client/unstable/org.matrix.simplified_msc3575/"
+            "/_matrix/client/unstable/org.matrix.msc3814.v1/"
           ];
         };
         trustedIps = ["10.100.0.0/24"];
