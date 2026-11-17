@@ -32,7 +32,7 @@
       };
       ssh.hardened = true;
       crowdsec = {
-        enable = true;
+        enable = false;
         console.enable = true;
         homepage.enable = true;
         trustedHttpRoutes = {
