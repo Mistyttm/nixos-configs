@@ -11,8 +11,8 @@
       ];
       extraCompatPackages = with pkgs; [
         proton-ge-bin
-        proton-cachyos
-        proton-ge-rtsp
+        proton-cachyos-bin
+        proton-rtsp-bin
       ];
       package = pkgs.steamWithMillennium.override {
         extraEnv = {

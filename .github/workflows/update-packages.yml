@@ -160,8 +160,6 @@ jobs:
           - dispatcharr
           - i-sponsor-block-tv
           - obs-wayland-hotkeys-plus
-          - proton-cachyos
-          - proton-ge-rtsp
           - wizarr
   update-unfree-package:
     runs-on: ubuntu-latest
