@@ -2,9 +2,7 @@
   flake.homeModules.vscode = {pkgs, ...}: {
     programs.vscode = {
       enable = true;
-      package = pkgs.vscode.fhsWithPackages (_ps: [
-        pkgs.dotnet-sdk
-      ]);
+      #       package = pkgs.vscode;
       profiles.default = {
         enableUpdateCheck = false;
         enableExtensionUpdateCheck = true;
@@ -18,7 +16,6 @@
           dracula-theme.theme-dracula
           editorconfig.editorconfig
           dbaeumer.vscode-eslint
-          toba.vsfire
           waderyan.gitblame
           donjayamanne.githistory
           github.vscode-github-actions
@@ -26,7 +23,6 @@
           george-alisson.html-preview-vscode
           ecmel.vscode-html-css
           hwencc.html-tag-wrapper
-          orta.vscode-jest
           james-yu.latex-workshop
           yzhang.markdown-all-in-one
           yzane.markdown-pdf
@@ -37,36 +33,13 @@
           jnoortheen.nix-ide
           christian-kohler.npm-intellisense
           christian-kohler.path-intellisense
-          esbenp.prettier-vscode
-          yoavbls.pretty-ts-errors
-          # ms-python.vscode-pylance
-          # ms-python.python
-          # ms-python.debugpy
           ms-vscode-remote.remote-ssh
           ms-vscode-remote.remote-ssh-edit
           ms-vscode.remote-explorer
-          bradlc.vscode-tailwindcss
-          vitest.explorer
           redhat.vscode-yaml
-          nhedger.git-reminder
-          ritwickdey.liveserver
-          kreativ-software.csharpextensions
-          ms-dotnettools.csharp
-          sonarsource.sonarlint-vscode
-          #         ms-dotnettools.csdevkit
-          #         rust-lang.rust-analyzer
-          dustypomerleau.rust-syntax
-          fill-labs.dependi
-          swellaby.vscode-rust-test-adapter
           hbenl.vscode-test-explorer
-          ms-vscode.test-adapter-converter
           tamasfe.even-better-toml
-          jinxdash.prettier-rust
-          ms-vscode.cpptools
           github.copilot-chat
-          # oxc.oxc-vscode
-          skellock.just
-          # atomicspirit.nix-embedded-highlighter
         ];
         userSettings = {
           # REMOVE AI FEATURES
@@ -266,7 +239,6 @@
             };
           };
 
-          dotnetAcquisitionExtension.sharedExistingDotnetPath = "${pkgs.dotnet-sdk}/bin/dotnet";
           workbench.experimental.modernUI = false;
         };
         keybindings = [
