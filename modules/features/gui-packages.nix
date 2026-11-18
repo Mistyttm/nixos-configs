@@ -6,7 +6,12 @@
       obsidian
       vlc
       thunderbird-bin
-      libreoffice-qt
+      (pkgs.libreoffice-qt.override {
+        unwrapped = pkgs.libreoffice-qt-unwrapped.override {
+          langs = ["en-US"];
+          kdeIntegration = true;
+        };
+      })
       zenity
       libnotify
       teams-for-linux
