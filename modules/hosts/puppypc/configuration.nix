@@ -107,8 +107,8 @@
       hostName = "puppypc";
       openFirewall = true;
       autoStart = true;
-      # Stream all displays (0). Individual monitors can be selected in Moonlight client.
-      outputName = 2;
+      # Stream the center monitor where Steam Big Picture launches.
+      outputName = "DP-2";
       # Add extra apps here if needed:
       # extraApps = [
       #   {
