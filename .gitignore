@@ -9,3 +9,5 @@
 tmp/
 
 plasma-vm.qcow2
+
+*.rsc
