@@ -21,7 +21,7 @@
         zsh
         kitty
         direnv
-        protonmail
+        # protonmail
         plasmaManager
       ];
 

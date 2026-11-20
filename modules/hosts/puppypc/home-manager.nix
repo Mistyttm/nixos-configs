@@ -25,7 +25,7 @@
         gameModding
         mangohud
         # linux-wallpaperengine
-        protonmail
+        # protonmail
         protonDrive
         plasma
         plasmaManager

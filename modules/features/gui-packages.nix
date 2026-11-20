@@ -5,7 +5,8 @@
       slack
       obsidian
       vlc
-      thunderbird-bin
+      # thunderbird-bin
+      protonmail-desktop
       (pkgs.libreoffice-qt.override {
         unwrapped = pkgs.libreoffice-qt-unwrapped.override {
           langs = ["en-US"];
