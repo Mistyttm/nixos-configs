@@ -102,6 +102,7 @@
                 "applications:steam.desktop"
                 "applications:kitty.desktop"
                 "applications:code.desktop"
+                "applications:proton-mail.desktop"
                 # "applications:thunderbird.desktop"
                 # "applications:dev.zed.Zed.desktop"
               ];
