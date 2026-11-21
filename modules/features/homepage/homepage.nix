@@ -282,107 +282,120 @@
 
       services = [
         {
-          "Media" = [
-            {
-              "Jellyfin" = {
-                icon = "jellyfin";
-                href = "http://10.100.0.2:8096";
-                description = "Media server";
-                widget = {
-                  type = "jellyfin";
-                  url = "http://127.0.0.1:8096";
-                  key = "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}";
-                  enableBlocks = true;
-                  version = 2;
-                  showEpisodeNumber = true;
-                  enableUser = true;
-                };
-              };
-            }
-            {
-              "Jellystat" = {
-                icon = "jellystat";
-                href = "http://10.100.0.2:3005";
-                description = "Jellyfin statistics";
-                widget = {
-                  type = "jellystat";
-                  url = "http://10.100.0.2:3005";
-                  key = "{{HOMEPAGE_VAR_JELLYSTAT_API_KEY}}";
-                  days = 30;
-                };
-              };
-            }
-            {
-              "Seerr" = {
-                icon = "seerr";
-                href = "http://10.100.0.2:5055";
-                description = "Media requests";
-                widget = {
-                  type = "seerr";
-                  url = "http://127.0.0.1:5055";
-                  key = "{{HOMEPAGE_VAR_JELLYSEERR_API_KEY}}";
-                };
-              };
-            }
-            {
-              "Wizarr" = {
-                icon = "wizarr";
-                href = "https://wizarr.mistyttm.dev";
-                description = "Media server invitations";
-                widget = {
-                  type = "customapi";
-                  url = "http://127.0.0.1:5690/api/status";
-                  method = "GET";
-                  headers = {
-                    "X-API-Key" = "{{HOMEPAGE_VAR_WIZARR_API_KEY}}";
+          "Media" =
+            []
+            ++ lib.optionals config.services.jellyfin.enable [
+              {
+                "Jellyfin" = {
+                  icon = "jellyfin";
+                  href = "http://10.100.0.2:8096";
+                  description = "Media server";
+                  widget = {
+                    type = "jellyfin";
+                    url = "http://127.0.0.1:8096";
+                    key = "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}";
+                    enableBlocks = true;
+                    version = 2;
+                    showEpisodeNumber = true;
+                    enableUser = true;
                   };
-                  mappings = [
-                    {
-                      field = "users";
-                      label = "USERS";
-                      format = "number";
-                    }
-                    {
-                      field = "pending";
-                      label = "PENDING INVITES";
-                      format = "number";
-                    }
-                    {
-                      field = "expired";
-                      label = "EXPIRED INVITES";
-                      format = "number";
-                    }
-                  ];
                 };
-              };
-            }
-            {
-              "Tdarr" = {
-                icon = "tdarr";
-                href = "http://10.100.0.2:8265";
-                description = "Media transcoding";
-                widget = {
-                  type = "tdarr";
-                  url = "http://127.0.0.1:8265";
+              }
+            ]
+            ++ lib.optionals config.services.jellystat.enable [
+              {
+                "Jellystat" = {
+                  icon = "jellystat";
+                  href = "http://10.100.0.2:3005";
+                  description = "Jellyfin statistics";
+                  widget = {
+                    type = "jellystat";
+                    url = "http://10.100.0.2:3005";
+                    key = "{{HOMEPAGE_VAR_JELLYSTAT_API_KEY}}";
+                    days = 30;
+                  };
                 };
-              };
-            }
-          ];
+              }
+            ]
+            ++ lib.optionals config.services.seerr.enable [
+              {
+                "Seerr" = {
+                  icon = "seerr";
+                  href = "http://10.100.0.2:5055";
+                  description = "Media requests";
+                  widget = {
+                    type = "seerr";
+                    url = "http://127.0.0.1:5055";
+                    key = "{{HOMEPAGE_VAR_JELLYSEERR_API_KEY}}";
+                  };
+                };
+              }
+            ]
+            ++ lib.optionals config.services.wizarr.enable [
+              {
+                "Wizarr" = {
+                  icon = "wizarr";
+                  href = "https://wizarr.mistyttm.dev";
+                  description = "Media server invitations";
+                  widget = {
+                    type = "customapi";
+                    url = "http://127.0.0.1:5690/api/status";
+                    method = "GET";
+                    headers = {
+                      "X-API-Key" = "{{HOMEPAGE_VAR_WIZARR_API_KEY}}";
+                    };
+                    mappings = [
+                      {
+                        field = "users";
+                        label = "USERS";
+                        format = "number";
+                      }
+                      {
+                        field = "pending";
+                        label = "PENDING INVITES";
+                        format = "number";
+                      }
+                      {
+                        field = "expired";
+                        label = "EXPIRED INVITES";
+                        format = "number";
+                      }
+                    ];
+                  };
+                };
+              }
+            ]
+            ++ lib.optionals config.services.tdarr.enable [
+              {
+                "Tdarr" = {
+                  icon = "tdarr";
+                  href = "http://10.100.0.2:8265";
+                  description = "Media transcoding";
+                  widget = {
+                    type = "tdarr";
+                    url = "http://127.0.0.1:8265";
+                  };
+                };
+              }
+            ];
         }
         {
-          "Downloads" = [
-            {
-              "SABnzbd" = {
-                icon = "sabnzbd";
-                href = "http://10.100.0.2:8085";
-                description = "Usenet downloader";
-                widget = {
-                  type = "sabnzbd";
-                  url = "http://127.0.0.1:8085";
-                  key = "{{HOMEPAGE_VAR_SABNZBD_API_KEY}}";
+          "Downloads" =
+            []
+            ++ lib.optionals config.services.sabnzbd.enable [
+              {
+                "SABnzbd" = {
+                  icon = "sabnzbd";
+                  href = "http://10.100.0.2:8085";
+                  description = "Usenet downloader";
+                  widget = {
+                    type = "sabnzbd";
+                    url = "http://127.0.0.1:8085";
+                    key = "{{HOMEPAGE_VAR_SABNZBD_API_KEY}}";
+                  };
                 };
-              };
-            }
+              }
+            ]
             # {
             #   "qBittorrent" = {
             #     icon = "qbittorrent";
@@ -397,163 +410,178 @@
             #     };
             #   };
             # }
-            {
-              "QUI" = {
-                icon = "qbittorrent";
-                href = "http://10.100.0.2:7476";
-                description = "qBittorrent web UI";
-                widget = {
-                  type = "prometheusmetric";
-                  url = "http://localhost:9090";
-                  metrics = [
-                    {
-                      label = "Seeding";
-                      query = "sum(qbittorrent_torrents_seeding{job=\"thekennel\"})";
-                      format = {type = "number";};
-                    }
-                    {
-                      label = "Downloading";
-                      query = "sum(qbittorrent_torrents_downloading{job=\"thekennel\"})";
-                      format = {type = "number";};
-                    }
-                    {
-                      label = "DL Speed";
-                      query = "sum(rate(qbittorrent_session_download_bytes{job=\"thekennel\"}[5m]))";
-                      format = {
-                        type = "bytes";
-                        suffix = "/s";
-                      };
-                    }
-                    {
-                      label = "UL Speed";
-                      query = "sum(rate(qbittorrent_session_upload_bytes{job=\"thekennel\"}[5m]))";
-                      format = {
-                        type = "bytes";
-                        suffix = "/s";
-                      };
-                    }
-                  ];
+            ++ lib.optionals config.services.qbittorrent.enable [
+              {
+                "QUI" = {
+                  icon = "qbittorrent";
+                  href = "http://10.100.0.2:7476";
+                  description = "qBittorrent web UI";
+                  widget = {
+                    type = "prometheusmetric";
+                    url = "http://localhost:9090";
+                    metrics = [
+                      {
+                        label = "Seeding";
+                        query = "sum(qbittorrent_torrents_seeding{job=\"thekennel\"})";
+                        format = {type = "number";};
+                      }
+                      {
+                        label = "Downloading";
+                        query = "sum(qbittorrent_torrents_downloading{job=\"thekennel\"})";
+                        format = {type = "number";};
+                      }
+                      {
+                        label = "DL Speed";
+                        query = "sum(rate(qbittorrent_session_download_bytes{job=\"thekennel\"}[5m]))";
+                        format = {
+                          type = "bytes";
+                          suffix = "/s";
+                        };
+                      }
+                      {
+                        label = "UL Speed";
+                        query = "sum(rate(qbittorrent_session_upload_bytes{job=\"thekennel\"}[5m]))";
+                        format = {
+                          type = "bytes";
+                          suffix = "/s";
+                        };
+                      }
+                    ];
+                  };
                 };
-              };
-            }
-            {
-              "Bazarr" = {
-                icon = "bazarr";
-                href = "http://10.100.0.2:6767";
-                description = "Subtitle management";
-                widget = {
-                  type = "bazarr";
-                  url = "http://127.0.0.1:6767";
-                  key = "{{HOMEPAGE_VAR_BAZARR_API_KEY}}";
+              }
+            ]
+            ++ lib.optionals config.services.bazarr.enable [
+              {
+                "Bazarr" = {
+                  icon = "bazarr";
+                  href = "http://10.100.0.2:6767";
+                  description = "Subtitle management";
+                  widget = {
+                    type = "bazarr";
+                    url = "http://127.0.0.1:6767";
+                    key = "{{HOMEPAGE_VAR_BAZARR_API_KEY}}";
+                  };
                 };
-              };
-            }
-          ];
+              }
+            ];
         }
         {
-          "Management" = [
-            {
-              "Sonarr" = {
-                icon = "sonarr";
-                href = "http://10.100.0.2:8989";
-                description = "TV series management";
-                widget = {
-                  type = "sonarr";
-                  url = "http://127.0.0.1:8989";
-                  key = "{{HOMEPAGE_VAR_SONARR_API_KEY}}";
-                };
-              };
-            }
-            {
-              "Radarr" = {
-                icon = "radarr";
-                href = "http://10.100.0.2:7878";
-                description = "Movie management";
-                widget = {
-                  type = "radarr";
-                  url = "http://127.0.0.1:7878";
-                  key = "{{HOMEPAGE_VAR_RADARR_API_KEY}}";
-                };
-              };
-            }
-            {
-              "Prowlarr" = {
-                icon = "prowlarr";
-                href = "http://10.100.0.2:9696";
-                description = "Indexer management";
-                widget = {
-                  type = "prowlarr";
-                  url = "http://127.0.0.1:9696";
-                  key = "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}";
-                };
-              };
-            }
-            {
-              "Dispatcharr" = {
-                icon = "dispatcharr";
-                href = "http://10.100.0.2:9191";
-                description = "IPTV stream management";
-                widget = {
-                  type = "dispatcharr";
-                  url = "http://127.0.0.1:9191";
-                  username = "{{HOMEPAGE_VAR_DISPATCHARR_USERNAME}}";
-                  password = "{{HOMEPAGE_VAR_DISPATCHARR_PASSWORD}}";
-                  enableActiveStreams = true;
-                };
-              };
-            }
-            {
-              "Cleanuparr" = {
-                icon = "cleanuparr.png";
-                href = "http://10.100.0.2:11011";
-                description = "Media cleanup automation";
-                widget = {
-                  type = "customapi";
-                  url = "http://127.0.0.1:11011/api/v2/stats";
-                  refreshInterval = 10000;
-                  method = "GET";
-                  headers = {
-                    "X-Api-Key" = "{{HOMEPAGE_VAR_CLEANUPARR_API_KEY}}";
+          "Management" =
+            []
+            ++ lib.optionals config.services.sonarr.enable [
+              {
+                "Sonarr" = {
+                  icon = "sonarr";
+                  href = "http://10.100.0.2:8989";
+                  description = "TV series management";
+                  widget = {
+                    type = "sonarr";
+                    url = "http://127.0.0.1:8989";
+                    key = "{{HOMEPAGE_VAR_SONARR_API_KEY}}";
                   };
-                  mappings = [
-                    {
-                      field = "events.total";
-                      label = "EVENTS (7D)";
-                      format = "number";
-                    }
-                    {
-                      field = "strikes.total";
-                      label = "STRIKES";
-                      format = "number";
-                    }
-                    {
-                      field = "removals.total";
-                      label = "REMOVED";
-                      format = "number";
-                    }
-                    {
-                      field = "cleaned.total";
-                      label = "CLEANED";
-                      format = "number";
-                    }
-                  ];
                 };
-              };
-            }
-            {
-              "QNAP" = {
-                icon = "qnap";
-                href = "http://192.168.0.170:8080";
-                description = "NAS storage";
-                widget = {
-                  type = "qnap";
-                  url = "http://192.168.0.170:8080";
-                  username = "{{HOMEPAGE_VAR_QNAP_USERNAME}}";
-                  password = "{{HOMEPAGE_VAR_QNAP_PASSWORD}}";
+              }
+            ]
+            ++ lib.optionals config.services.radarr.enable [
+              {
+                "Radarr" = {
+                  icon = "radarr";
+                  href = "http://10.100.0.2:7878";
+                  description = "Movie management";
+                  widget = {
+                    type = "radarr";
+                    url = "http://127.0.0.1:7878";
+                    key = "{{HOMEPAGE_VAR_RADARR_API_KEY}}";
+                  };
                 };
-              };
-            }
-          ];
+              }
+            ]
+            ++ lib.optionals config.services.prowlarr.enable [
+              {
+                "Prowlarr" = {
+                  icon = "prowlarr";
+                  href = "http://10.100.0.2:9696";
+                  description = "Indexer management";
+                  widget = {
+                    type = "prowlarr";
+                    url = "http://127.0.0.1:9696";
+                    key = "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}";
+                  };
+                };
+              }
+            ]
+            ++ lib.optionals config.services.dispatcharr.enable [
+              {
+                "Dispatcharr" = {
+                  icon = "dispatcharr";
+                  href = "http://10.100.0.2:9191";
+                  description = "IPTV stream management";
+                  widget = {
+                    type = "dispatcharr";
+                    url = "http://127.0.0.1:9191";
+                    username = "{{HOMEPAGE_VAR_DISPATCHARR_USERNAME}}";
+                    password = "{{HOMEPAGE_VAR_DISPATCHARR_PASSWORD}}";
+                    enableActiveStreams = true;
+                  };
+                };
+              }
+            ]
+            ++ lib.optionals config.services.cleanuparr.enable [
+              {
+                "Cleanuparr" = {
+                  icon = "cleanuparr.png";
+                  href = "http://10.100.0.2:11011";
+                  description = "Media cleanup automation";
+                  widget = {
+                    type = "customapi";
+                    url = "http://127.0.0.1:11011/api/v2/stats";
+                    refreshInterval = 10000;
+                    method = "GET";
+                    headers = {
+                      "X-Api-Key" = "{{HOMEPAGE_VAR_CLEANUPARR_API_KEY}}";
+                    };
+                    mappings = [
+                      {
+                        field = "events.total";
+                        label = "EVENTS (7D)";
+                        format = "number";
+                      }
+                      {
+                        field = "strikes.total";
+                        label = "STRIKES";
+                        format = "number";
+                      }
+                      {
+                        field = "removals.total";
+                        label = "REMOVED";
+                        format = "number";
+                      }
+                      {
+                        field = "cleaned.total";
+                        label = "CLEANED";
+                        format = "number";
+                      }
+                    ];
+                  };
+                };
+              }
+            ]
+            ++ [
+              {
+                "QNAP" = {
+                  icon = "qnap";
+                  href = "http://192.168.0.170:8080";
+                  description = "NAS storage";
+                  widget = {
+                    type = "qnap";
+                    url = "http://192.168.0.170:8080";
+                    username = "{{HOMEPAGE_VAR_QNAP_USERNAME}}";
+                    password = "{{HOMEPAGE_VAR_QNAP_PASSWORD}}";
+                  };
+                };
+              }
+            ];
         }
         {
           "Infrastructure" = [
