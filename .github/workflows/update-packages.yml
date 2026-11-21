@@ -159,6 +159,7 @@ jobs:
         package:
           - dispatcharr
           - i-sponsor-block-tv
+          - jackify
           - obs-wayland-hotkeys-plus
           - wizarr
   update-unfree-package:
