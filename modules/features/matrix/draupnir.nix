@@ -4,6 +4,10 @@
     pkgs,
     ...
   }: {
+    lantian.harden.draupnir = {
+      enable = true;
+      bindPaths = ["/var/lib/draupnir"];
+    };
     sops.secrets."mjolnir_access_token" = {
       sopsFile = self.secrets.synapse;
     };

@@ -1,5 +1,9 @@
 {self, ...}: {
   flake.nixosModules.coturn = {config, ...}: {
+    lantian.harden.coturn = {
+      enable = "network";
+      enableConfinement = false;
+    };
     sops.secrets."turn_secret" = {
       sopsFile = self.secrets.coturn;
       owner = "turnserver";

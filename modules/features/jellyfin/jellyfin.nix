@@ -1,5 +1,16 @@
 {...}: {
   flake.nixosModules.jellyfin-service = {pkgs, ...}: {
+    lantian.harden.jellyfin = {
+      enable = true;
+      enableConfinement = false;
+      cuda = true;
+      bindPaths = [
+        "/mnt/media"
+        "/mnt/homework"
+        "/mnt/localExpansion"
+      ];
+    };
+    systemd.services.jellyfin.serviceConfig.PrivateDevices = false;
     environment.systemPackages = with pkgs; [
       jellyfin
       jellyfin-web

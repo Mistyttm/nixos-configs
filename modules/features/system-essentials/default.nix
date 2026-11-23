@@ -17,6 +17,7 @@
       self.nixosModules.systemd
       self.nixosModules.xdg
       self.nixosModules.fwupd
+      self.nixosModules.service-hardening
 
       self.nixosModules.networkmanager
       self.nixosModules.resolvd

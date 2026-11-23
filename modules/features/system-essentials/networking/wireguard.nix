@@ -142,6 +142,10 @@
     };
 
     config = lib.mkIf (cfg.enable && profile != null) {
+      lantian.harden."wireguard-wg0" = {
+        enable = "network";
+        enableConfinement = false;
+      };
       sops.secrets."laptop_key" = {
         sopsFile = self.secrets.wireguard;
         owner = "root";

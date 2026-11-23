@@ -1,5 +1,9 @@
 {...}: {
   flake.nixosModules.prowlarr = {pkgs, ...}: {
+    lantian.harden.prowlarr = {
+      enable = true;
+      bindPaths = ["/mnt/localExpansion"];
+    };
     services.prowlarr = {
       enable = true;
       package = pkgs.prowlarr;

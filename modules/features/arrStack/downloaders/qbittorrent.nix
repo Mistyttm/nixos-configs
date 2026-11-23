@@ -4,6 +4,14 @@
     tempPath = "/mnt/localExpansion/qbittorrent/incomplete";
     torrentExportDir = "/mnt/localExpansion/qbittorrent/torrents";
   in {
+    lantian.harden.qbittorrent = {
+      enable = "network";
+      enableConfinement = false;
+      bindPaths = [
+        "/mnt/homework"
+        "/mnt/localExpansion"
+      ];
+    };
     services.qbittorrent = {
       enable = true;
       openFirewall = true;

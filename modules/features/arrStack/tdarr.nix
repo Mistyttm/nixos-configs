@@ -18,6 +18,26 @@
       "${portable}/tv" # library
     ];
   in {
+    lantian.harden."tdarr-server" = {
+      enable = true;
+      enableConfinement = false;
+      cuda = true;
+      bindPaths = [
+        "/mnt/media"
+        "/mnt/homework"
+        "/mnt/localExpansion"
+      ];
+    };
+    lantian.harden."tdarr-node-internal" = {
+      enable = true;
+      enableConfinement = false;
+      cuda = true;
+      bindPaths = [
+        "/mnt/media"
+        "/mnt/homework"
+        "/mnt/localExpansion"
+      ];
+    };
     services.tdarr = {
       enable = true;
 

@@ -1,5 +1,9 @@
 {self, ...}: {
   flake.nixosModules.sabnzbd = {config, ...}: {
+    lantian.harden.sabnzbd = {
+      enable = true;
+      bindPaths = ["/mnt/localExpansion"];
+    };
     services.sabnzbd = {
       enable = true;
       group = "media";

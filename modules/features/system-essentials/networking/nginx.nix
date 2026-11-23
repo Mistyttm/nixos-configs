@@ -280,6 +280,10 @@
     options.doggate.nginx.enable = lib.mkEnableOption "Unified, host-profile-driven nginx configuration";
 
     config = lib.mkIf (cfg.enable && profile != null) {
+      lantian.harden.nginx = {
+        enable = "network";
+        enableConfinement = false;
+      };
       systemd.services.nginx.after = ["wireguard-wg0.service" "network-online.target"];
       systemd.services.nginx.wants = ["wireguard-wg0.service" "network-online.target"];
 

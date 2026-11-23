@@ -4,6 +4,12 @@
       self.nixosModules.cleanuparr
     ];
 
+    lantian.harden.cleanuparr = {
+      enable = true;
+      postgresql = true;
+      bindPaths = ["/mnt/media"];
+    };
+
     services.cleanuparr = {
       enable = true;
       openFirewall = true;

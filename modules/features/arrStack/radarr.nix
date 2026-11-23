@@ -1,5 +1,13 @@
 {...}: {
   flake.nixosModules.radarr = {pkgs, ...}: {
+    lantian.harden.radarr = {
+      enable = true;
+      bindPaths = [
+        "/mnt/media"
+        "/mnt/homework"
+        "/mnt/localExpansion"
+      ];
+    };
     services.radarr = {
       enable = true;
       package = pkgs.radarr;

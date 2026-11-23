@@ -4,6 +4,10 @@
     lib,
     ...
   }: {
+    lantian.harden.shelfmark = {
+      enable = true;
+      bindPaths = ["/mnt/media"];
+    };
     services.shelfmark = {
       enable = true;
       package = pkgs.shelfmark;

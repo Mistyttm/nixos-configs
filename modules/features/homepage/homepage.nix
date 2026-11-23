@@ -148,6 +148,8 @@
       '';
     };
 
+    lantian.harden.homepage-dashboard.enable = true;
+
     systemd.services.homepage-dashboard = {
       path = [pkgs.speedtest-cli];
       serviceConfig = {

@@ -15,7 +15,6 @@
       motd
       prometheus-exporter
       deploy-jump
-      service-hardening
     ];
 
     networking.hostName = "thedogpark";

@@ -4,6 +4,11 @@
     pkgs,
     ...
   }: {
+    lantian.harden."matrix-synapse" = {
+      enable = true;
+      postgresql = true;
+      bindPaths = ["/var/lib/matrix-synapse"];
+    };
     sops.secrets."registration_shared_secret" = {
       sopsFile = self.secrets.synapse;
       owner = "matrix-synapse";

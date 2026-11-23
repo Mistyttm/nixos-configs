@@ -25,7 +25,6 @@
       loki-server
       matrix-alertmanager-bot
       vpn-confinement
-      service-hardening
     ];
 
     networking.hostName = "thekennel";

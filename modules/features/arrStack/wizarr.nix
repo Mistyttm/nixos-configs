@@ -4,6 +4,8 @@
       self.nixosModules.wizarr
     ];
 
+    lantian.harden.wizarr.enable = true;
+
     services.wizarr = {
       enable = true;
       openFirewall = true;

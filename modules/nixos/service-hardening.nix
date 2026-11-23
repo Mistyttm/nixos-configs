@@ -45,6 +45,14 @@
       CPUSchedulingPriority = 99;
       IOSchedulingClass = "realtime";
     };
+    driversEnv = pkgs.buildEnv {
+      name = "graphics-drivers";
+      paths = [config.hardware.graphics.package] ++ config.hardware.graphics.extraPackages;
+    };
+    driversEnv32 = pkgs.buildEnv {
+      name = "graphics-drivers-32bit";
+      paths = [config.hardware.graphics.package32] ++ config.hardware.graphics.extraPackages32;
+    };
     escapeMountPath = path: let
       s = toString path;
     in
@@ -84,6 +92,16 @@
               cuda = lib.mkEnableOption "read-only graphics driver environment binds for CUDA";
               mysql = lib.mkEnableOption "a read-only /run/mysqld bind and ordering after mysql.service";
               postgresql = lib.mkEnableOption "a read-only /run/postgresql bind and ordering after postgresql.service";
+              bindPaths = lib.mkOption {
+                type = lib.types.listOf lib.types.str;
+                default = [];
+                description = "Additional writable paths bound into the service confinement.";
+              };
+              bindReadOnlyPaths = lib.mkOption {
+                type = lib.types.listOf lib.types.str;
+                default = [];
+                description = "Additional read-only paths bound into the service confinement.";
+              };
 
               redis = lib.mkOption {
                 type = lib.types.nullOr lib.types.str;
@@ -173,25 +191,27 @@
                   )
                 ))
                 {
+                  BindPaths = map escapeMountPath cfg.bindPaths;
                   BindReadOnlyPaths = map escapeMountPath (
                     lib.optionals cfg.passwd [
                       "${config.services.userborn.passwordFilesLocation}/passwd:/etc/passwd"
                       "${config.services.userborn.passwordFilesLocation}/group:/etc/group"
                     ]
                     ++ lib.optional cfg.secret "/run"
-                    ++ lib.optional cfg.cuda "${config.hardware.graphics.driversEnv}:/run/opengl-driver"
+                    ++ lib.optional cfg.cuda "${driversEnv}:/run/opengl-driver"
                     ++ lib.optionals
                     (cfg.cuda && (config.hardware.graphics.enable32Bit || pkgs.stdenv.hostPlatform.isi686))
                     [
                       "${
                         if pkgs.stdenv.hostPlatform.isi686
-                        then config.hardware.graphics.driversEnv
-                        else config.hardware.graphics.driversEnv32
+                        then driversEnv
+                        else driversEnv32
                       }:/run/opengl-driver-32"
                     ]
                     ++ lib.optional cfg.mysql "/run/mysqld"
                     ++ lib.optional cfg.postgresql "/run/postgresql"
                     ++ lib.optional (cfg.redis != null) "/run/${redisName}"
+                    ++ cfg.bindReadOnlyPaths
                     ++ lib.mapAttrsToList (
                       name: source:
                         if source == true

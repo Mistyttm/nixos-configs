@@ -1,5 +1,13 @@
 {...}: {
   flake.nixosModules.sonarr = {pkgs, ...}: {
+    lantian.harden.sonarr = {
+      enable = true;
+      bindPaths = [
+        "/mnt/media"
+        "/mnt/homework"
+        "/mnt/localExpansion"
+      ];
+    };
     services.sonarr = {
       enable = true;
       package = pkgs.sonarr;
