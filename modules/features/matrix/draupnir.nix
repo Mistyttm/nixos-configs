@@ -1,6 +1,7 @@
 {self, ...}: {
   flake.nixosModules.draupnir = {
     config,
+    lib,
     pkgs,
     ...
   }: {
@@ -9,6 +10,7 @@
       enableConfinement = false;
       bindPaths = ["/var/lib/draupnir"];
     };
+    systemd.services.draupnir.serviceConfig.WorkingDirectory = lib.mkForce "/";
     sops.secrets."mjolnir_access_token" = {
       sopsFile = self.secrets.synapse;
     };
