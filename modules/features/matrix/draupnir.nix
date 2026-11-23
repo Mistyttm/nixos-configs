@@ -6,7 +6,7 @@
     ...
   }: {
     lantian.harden.draupnir = {
-      enable = true;
+      enable = false;
       enableConfinement = false;
       bindPaths = ["/var/lib/draupnir"];
     };

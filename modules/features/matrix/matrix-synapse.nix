@@ -5,7 +5,7 @@
     ...
   }: {
     lantian.harden."matrix-synapse" = {
-      enable = true;
+      enable = false;
       enableConfinement = false;
       postgresql = true;
       bindPaths = ["/var/lib/matrix-synapse"];
