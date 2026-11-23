@@ -149,8 +149,7 @@
     };
 
     lantian.harden.homepage-dashboard = {
-      enable = "jit";
-      enableConfinement = false;
+      enable = false;
     };
 
     systemd.services.homepage-dashboard = {

@@ -1,8 +1,7 @@
 {...}: {
   flake.nixosModules.sonarr = {pkgs, ...}: {
     lantian.harden.sonarr = {
-      enable = "jit";
-      enableConfinement = false;
+      enable = false;
       bindPaths = [
         "/mnt/media"
         "/mnt/homework"

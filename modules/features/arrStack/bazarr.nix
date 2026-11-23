@@ -1,8 +1,7 @@
 {...}: {
   flake.nixosModules.bazarr = {...}: {
     lantian.harden.bazarr = {
-      enable = "jit";
-      enableConfinement = false;
+      enable = false;
       bindPaths = ["/mnt/media"];
     };
     services.bazarr = {

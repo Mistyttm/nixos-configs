@@ -1,8 +1,7 @@
 {...}: {
   flake.nixosModules.radarr = {pkgs, ...}: {
     lantian.harden.radarr = {
-      enable = "jit";
-      enableConfinement = false;
+      enable = false;
       bindPaths = [
         "/mnt/media"
         "/mnt/homework"

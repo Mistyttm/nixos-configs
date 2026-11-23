@@ -1,8 +1,7 @@
 {...}: {
   flake.nixosModules.prowlarr = {pkgs, ...}: {
     lantian.harden.prowlarr = {
-      enable = "jit";
-      enableConfinement = false;
+      enable = false;
       bindPaths = ["/mnt/localExpansion"];
     };
     services.prowlarr = {
