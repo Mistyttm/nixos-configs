@@ -68,12 +68,14 @@
                   true
                   false
                   "network"
+                  "jit"
                 ];
                 default = false;
                 description = ''
                   Whether to apply service hardening. Confinement is controlled
                   separately by enableConfinement. The value "network" selects
-                  the preset for services managing host networking.
+                  the preset for services managing host networking, while "jit"
+                  disables MemoryDenyWriteExecute for JIT runtimes.
                 '';
               };
 
@@ -186,6 +188,12 @@
                           "AF_NETLINK"
                         ];
                         SystemCallFilter = [];
+                      }
+                    else if cfg.enable == "jit"
+                    then
+                      serviceHardenArgs
+                      // {
+                        MemoryDenyWriteExecute = false;
                       }
                     else serviceHardenArgs
                   )

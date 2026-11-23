@@ -148,7 +148,10 @@
       '';
     };
 
-    lantian.harden.homepage-dashboard.enable = true;
+    lantian.harden.homepage-dashboard = {
+      enable = "jit";
+      enableConfinement = false;
+    };
 
     systemd.services.homepage-dashboard = {
       path = [pkgs.speedtest-cli];

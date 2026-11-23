@@ -1,7 +1,8 @@
 {...}: {
   flake.nixosModules.seerr = {...}: {
     lantian.harden.seerr = {
-      enable = true;
+      enable = "jit";
+      enableConfinement = false;
       bindPaths = ["/mnt/media"];
     };
     services.seerr = {

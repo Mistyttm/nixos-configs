@@ -1,7 +1,7 @@
 {...}: {
   flake.nixosModules.jellyfin-service = {pkgs, ...}: {
     lantian.harden.jellyfin = {
-      enable = true;
+      enable = "jit";
       enableConfinement = false;
       cuda = true;
       bindPaths = [

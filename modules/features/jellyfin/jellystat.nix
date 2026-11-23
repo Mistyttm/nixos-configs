@@ -1,6 +1,9 @@
 {self, ...}: {
   flake.nixosModules.jellystat-service = {config, ...}: {
-    lantian.harden.jellystat.enable = true;
+    lantian.harden.jellystat = {
+      enable = "jit";
+      enableConfinement = false;
+    };
     sops.secrets."jellystat/jwt_secret".sopsFile = self.secrets.media;
 
     services.jellystat = {

@@ -5,7 +5,8 @@
     ];
 
     lantian.harden.cleanuparr = {
-      enable = true;
+      enable = "jit";
+      enableConfinement = false;
       postgresql = true;
       bindPaths = ["/mnt/media"];
     };
