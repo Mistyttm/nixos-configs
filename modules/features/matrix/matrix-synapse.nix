@@ -1,6 +1,7 @@
 {self, ...}: {
   flake.nixosModules.matrix-synapse = {
     config,
+    lib,
     pkgs,
     ...
   }: {
@@ -9,6 +10,7 @@
       postgresql = true;
       bindPaths = ["/var/lib/matrix-synapse"];
     };
+    systemd.services.matrix-synapse.serviceConfig.WorkingDirectory = lib.mkForce "/";
     sops.secrets."registration_shared_secret" = {
       sopsFile = self.secrets.synapse;
       owner = "matrix-synapse";
