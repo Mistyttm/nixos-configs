@@ -163,9 +163,9 @@
                 ++ lib.optional (cfg.redis != null) "${redisName}.service";
               serviceConfig = lib.mkMerge [
                 (lib.mkIf (cfg.enable != false) (
-                  lib.mapAttrs (_: lib.mkOptionDefault) (
-                    if cfg.enable == "network"
-                    then
+                  if cfg.enable == "network"
+                  then
+                    lib.mapAttrs (_: lib.mkOptionDefault) (
                       serviceHardenArgs
                       // {
                         PrivateDevices = false;
@@ -189,8 +189,10 @@
                         ];
                         SystemCallFilter = [];
                       }
-                    else if cfg.enable == "jit"
-                    then
+                    )
+                  else if cfg.enable == "jit"
+                  then
+                    lib.mapAttrs (_: lib.mkForce) (
                       serviceHardenArgs
                       // {
                         MemoryDenyWriteExecute = false;
@@ -201,8 +203,8 @@
                           "AF_NETLINK"
                         ];
                       }
-                    else serviceHardenArgs
-                  )
+                    )
+                  else lib.mapAttrs (_: lib.mkOptionDefault) serviceHardenArgs
                 ))
                 {
                   BindPaths = map escapeMountPath cfg.bindPaths;
