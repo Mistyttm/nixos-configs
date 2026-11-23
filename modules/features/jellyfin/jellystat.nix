@@ -3,6 +3,7 @@
     lantian.harden.jellystat = {
       enable = "jit";
       enableConfinement = false;
+      postgresql = true;
     };
     sops.secrets."jellystat/jwt_secret".sopsFile = self.secrets.media;
 
