@@ -158,6 +158,7 @@ jobs:
       matrix:
         package:
           - dispatcharr
+          - encore
           - i-sponsor-block-tv
           - jackify
           - obs-wayland-hotkeys-plus
