@@ -3,6 +3,7 @@
   # the kernels hit lantian's binary cache.
   flake-file.inputs.nix-cachyos-kernel = {
     url = "github:xddxdd/nix-cachyos-kernel/release";
+    group = "desktop";
     excludeFollow = ["nixpkgs"];
   };
 

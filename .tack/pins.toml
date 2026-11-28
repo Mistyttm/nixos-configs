@@ -12,76 +12,101 @@ nixpkgs-lib = "nixpkgs"
 
 [inputs.devshell]
 url = "github:numtide/devshell"
+group = "tooling"
 
 [inputs.direnv-instant]
 url = "github:Mic92/direnv-instant"
+group = "tooling"
 
 [inputs.flake-file]
 url = "github:Mistyttm/flake-file/tack-additions"
+group = "core"
 
 [inputs.flake-parts]
 url = "github:hercules-ci/flake-parts"
+group = "core"
 
 [inputs.git-hooks-nix]
 url = "github:cachix/git-hooks.nix"
+group = "tooling"
 
 [inputs.github-actions-nix]
 url = "github:synapdeck/github-actions-nix"
+group = "tooling"
 
 [inputs.grimoire]
 url = "github:Slush97/grimoire"
+group = "desktop"
 
 [inputs.home-manager]
 url = "github:nix-community/home-manager"
+group = "core"
 
 [inputs.import-tree]
 url = "github:denful/import-tree"
+group = "core"
 
 [inputs.jovian-nixos]
 url = "github:Jovian-Experiments/Jovian-NixOS"
+group = "desktop"
 
 [inputs.laminix]
 url = "github:jackboykin/laminix"
+group = "system"
 
 [inputs.mkdocs-flake]
 url = "github:applicative-systems/mkdocs-flake"
+group = "tooling"
 
 [inputs.nix-cachyos-kernel]
 url = "github:xddxdd/nix-cachyos-kernel/release"
 exclude_follow = ["nixpkgs"]
+group = "desktop"
 
 [inputs.nix-index-database]
 url = "github:nix-community/nix-index-database"
+group = "system"
 
 [inputs.nix-minecraft]
 url = "github:Infinidoge/nix-minecraft"
+group = "server"
 
 [inputs.nix-topology]
 url = "github:oddlama/nix-topology"
+group = "tooling"
 
 [inputs.nix-vscode-extensions]
 url = "github:nix-community/nix-vscode-extensions"
+group = "desktop"
 
 [inputs.nix-wrapper-modules]
 url = "github:nix-community/nix-wrapper-modules"
+group = "core"
 
 [inputs.nixos-hardware]
 url = "github:NixOS/nixos-hardware"
+group = "system"
 
 [inputs.nixpkgs]
 url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst"
+group = "core"
 
 [inputs.plasma-manager]
 url = "github:nix-community/plasma-manager"
+group = "desktop"
 
 [inputs.skwd-wall]
 url = "github:liixini/skwd-wall/nix"
+group = "desktop"
 
 [inputs.sops-nix]
 url = "github:Mic92/sops-nix"
+group = "system"
 
 [inputs.tack]
 url = "github:manic-systems/tack"
+group = "core"
 
 [inputs.vpn-confinement]
 url = "github:Maroka-chan/VPN-Confinement"
+group = "server"

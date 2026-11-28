@@ -1,6 +1,7 @@
 {inputs, ...}: {
   flake-file.inputs.direnv-instant = {
     url = "github:Mic92/direnv-instant";
+    group = "tooling";
   };
 
   flake.homeModules.direnv = {...}: {

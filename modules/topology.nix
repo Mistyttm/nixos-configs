@@ -1,6 +1,7 @@
 {inputs, ...}: {
   flake-file.inputs.nix-topology = {
     url = "github:oddlama/nix-topology";
+    group = "tooling";
   };
 
   perSystem = {system, ...}: {

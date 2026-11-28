@@ -1,6 +1,7 @@
 {inputs, ...}: {
   flake-file.inputs.plasma-manager = {
     url = "github:nix-community/plasma-manager";
+    group = "desktop";
   };
 
   # Host-agnostic Plasma rice. Hosts with extra monitors can add docks via

@@ -1,6 +1,7 @@
 {inputs, ...}: {
   flake-file.inputs.nix-minecraft = {
     url = "github:Infinidoge/nix-minecraft";
+    group = "server";
   };
 
   flake.nixosModules.minecraft = {pkgs, ...}: let

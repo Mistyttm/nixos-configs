@@ -1,6 +1,7 @@
 {...}: {
   flake-file.inputs.git-hooks-nix = {
     url = "github:cachix/git-hooks.nix";
+    group = "tooling";
   };
 
   perSystem = {pkgs, ...}: {

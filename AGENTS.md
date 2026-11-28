@@ -174,6 +174,12 @@ forwards `tackOverrides`/`self` into `outputs.nix`, which holds the
 Patched trees (tack `patches`) only exist in the store that built them; run
 `tack materialize` before evaluating on a fresh machine if any are added.
 
+Every input must set `group` (`core`, `system`, `desktop`, `server` or
+`tooling`). The update workflow (`modules/ci/update-flake.nix`) updates each
+group on its own schedule with one commit per group, and evaluation fails if
+an input has no scheduled group. Group names work anywhere a pin name does:
+`nix run .#write-lock -- desktop`, or `-- --exclude tooling`.
+
 ## Module conventions
 
 ### Registering a module

@@ -5,9 +5,11 @@
 }: {
   flake-file.inputs.nix-index-database = {
     url = "github:nix-community/nix-index-database";
+    group = "system";
   };
   flake-file.inputs.nix-vscode-extensions = {
     url = "github:nix-community/nix-vscode-extensions";
+    group = "desktop";
   };
 
   flake.nixosModules.nixoptions = {

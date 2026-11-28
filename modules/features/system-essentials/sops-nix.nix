@@ -1,6 +1,7 @@
 {inputs, ...}: {
   flake-file.inputs.sops-nix = {
     url = "github:Mic92/sops-nix";
+    group = "system";
   };
 
   flake.nixosModules.sops = {pkgs, ...}: {

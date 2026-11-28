@@ -3,7 +3,10 @@
   self,
   ...
 }: {
-  flake-file.inputs.vpn-confinement.url = "github:Maroka-chan/VPN-Confinement";
+  flake-file.inputs.vpn-confinement = {
+    url = "github:Maroka-chan/VPN-Confinement";
+    group = "server";
+  };
 
   flake.nixosModules.vpn-confinement = {
     config,
