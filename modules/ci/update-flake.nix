@@ -24,12 +24,10 @@ in {
           (steps.installLix config.doggate.ci.allCoresNixConfig)
           steps.magicNixCache
           {
-            name = "Regenerate flake.nix";
-            run = "nix run .#write-flake";
-          }
-          {
-            name = "Update flake inputs";
-            run = "nix flake update 2>&1 | tee /tmp/flake-update.log";
+            # Renders .tack/pins.toml from flake-file.inputs, then runs `tack update`.
+            name = "Update tack pins";
+            env.GITHUB_TOKEN = "\${{ secrets.GITHUB_TOKEN }}";
+            run = "nix run .#write-lock 2>&1 | tee /tmp/flake-update.log";
           }
           {
             name = "Commit changes";

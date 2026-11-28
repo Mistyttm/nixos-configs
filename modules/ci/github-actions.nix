@@ -7,8 +7,6 @@
 }: {
   flake-file.inputs.github-actions-nix = {
     url = "github:synapdeck/github-actions-nix";
-    inputs.nixpkgs.follows = "nixpkgs";
-    inputs.flake-parts.follows = "flake-parts";
   };
 
   imports = [inputs.github-actions-nix.flakeModule];

@@ -1,6 +1,6 @@
-nix run .#write-flake
-if ! git diff --quiet -- flake.nix; then
-  echo "::error::flake.nix is out of sync with modules/inputs.nix (or outputs.nix). Run 'nix run .#write-flake' locally and commit the result."
-  git diff -- flake.nix
+nix run .#write-tack
+if ! git diff --quiet -- .tack/pins.toml; then
+  echo "::error::.tack/pins.toml is out of sync with flake-file.inputs. Run 'nix run .#write-lock' locally and commit the result."
+  git diff -- .tack/pins.toml
   exit 1
 fi

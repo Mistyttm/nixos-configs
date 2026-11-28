@@ -1,7 +1,6 @@
 {inputs, ...}: {
   flake-file.inputs.nix-minecraft = {
     url = "github:Infinidoge/nix-minecraft";
-    inputs.nixpkgs.follows = "nixpkgs";
   };
 
   flake.nixosModules.minecraft = {pkgs, ...}: let
