@@ -1,7 +1,9 @@
 {inputs, ...}: {
   flake-file.inputs.jovian-nixos = {
     url = "github:Jovian-Experiments/Jovian-NixOS";
-    inputs.nixpkgs.follows = "nixpkgs";
+    group = "desktop";
+    # only feeds its githubActions output
+    omitInputs = ["nix-github-actions"];
   };
 
   flake.nixosModules.jovian = {

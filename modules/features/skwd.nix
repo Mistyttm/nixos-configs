@@ -1,5 +1,10 @@
 {inputs, ...}: {
-  flake-file.inputs.skwd-wall.url = "github:liixini/skwd-wall";
+  # The repo's root flake only forwards an unlocked `release` input (its `nix`
+  # branch), which tack can't resolve without a flake.lock, so pin that branch directly.
+  flake-file.inputs.skwd-wall = {
+    url = "github:liixini/skwd-wall/nix";
+    group = "desktop";
+  };
 
   flake.nixosModules.skwd = {
     config,

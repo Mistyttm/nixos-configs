@@ -4,13 +4,14 @@
 in {
   perSystem = _: {
     githubActions.workflows.check-flake = {
-      name = "Check flake.nix Sync";
+      name = "Check Tack Pins Sync";
 
       on = {
         pullRequest.paths = [
           "modules/**.nix"
           "outputs.nix"
           "flake.nix"
+          ".tack/pins.toml"
           "modules/ci/**"
           ".github/workflows/**"
         ];
@@ -24,7 +25,8 @@ in {
             steps.checkout
             (steps.installLix [])
             {
-              name = "Regenerate flake.nix and diff";
+              name = "Regenerate pins.toml and diff";
+              env.GITHUB_TOKEN = "\${{ secrets.GITHUB_TOKEN }}";
               run = script "flake-sync";
             }
           ];

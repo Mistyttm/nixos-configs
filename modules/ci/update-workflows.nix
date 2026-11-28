@@ -13,7 +13,7 @@ in {
             "packages/**"
             "outputs.nix"
             "flake.nix"
-            "flake.lock"
+            ".tack/pins.lock.json"
             ".github/workflows/**"
           ];
         };

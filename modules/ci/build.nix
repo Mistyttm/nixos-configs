@@ -26,7 +26,7 @@ in {
           types = ["completed"];
           branches = ["main"];
         };
-        pullRequest.paths = ["flake.lock"];
+        pullRequest.paths = [".tack/pins.lock.json"];
         workflowDispatch = {};
       };
 

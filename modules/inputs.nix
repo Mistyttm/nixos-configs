@@ -1,42 +1,56 @@
 {
   inputs,
   lib,
+  config,
   ...
 }: {
+  # Inputs are declared next to the modules that use them (`flake-file.inputs.*`)
+  # and rendered to .tack/pins.toml by `nix run .#write-lock`, which also runs
+  # `tack update`. There is no flake.lock.
   flake-file.inputs = {
-    nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
+    nixpkgs = {
+      url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
+      group = "core";
+    };
 
-    flake-file.url = lib.mkDefault "github:denful/flake-file";
+    flake-file = {
+      url = lib.mkDefault "github:Mistyttm/flake-file/tack-additions";
+      group = "core";
+    };
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
-      inputs.nixpkgs-lib.follows = "nixpkgs";
+      group = "core";
     };
-    import-tree.url = "github:denful/import-tree";
+    import-tree = {
+      url = "github:denful/import-tree";
+      group = "core";
+    };
     nix-wrapper-modules = {
       url = "github:nix-community/nix-wrapper-modules";
-      inputs.nixpkgs.follows = "nixpkgs";
+      group = "core";
+    };
+    tack = {
+      url = "github:manic-systems/tack";
+      group = "core";
     };
   };
 
-  flake-file.nixConfig = {
-    extra-substituters = [
-      "https://nix-community.cachix.org"
-      "https://opinionatedcache.cachix.org"
-      "https://cache.flox.dev"
-      "https://cache.nixos-cuda.org"
-      "https://nixos-raspberrypi.cachix.org"
-      "https://cache.lantian.pub/lantian"
-    ];
-    extra-trusted-public-keys = [
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "opinionatedcache.cachix.org-1:zDO4tZBL25vfhVFSHTT+0RNCjn5Z5nEs7sPiDZ6XhuE="
-      "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
-      "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
-      "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
-      "nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI="
-      "lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ="
-    ];
+  flake-file.tack.package = pkgs: inputs.tack.packages.${pkgs.stdenv.hostPlatform.system}.default;
+
+  flake-file.tack.allFollow = {
+    nixpkgs = "nixpkgs";
+    flake-parts = "flake-parts";
+    home-manager = "home-manager";
+    nixpkgs-lib = "nixpkgs";
   };
 
-  imports = [inputs.flake-file.flakeModules.default];
+  # only used by upstream default.nix/shell.nix, never by flake outputs
+  flake-file.tack.omitInputs = ["flake-compat"];
+
+  imports = [inputs.flake-file.flakeModules.tack];
+
+  perSystem = {pkgs, ...}: {
+    packages.write-tack = config.flake-file.apps.write-tack pkgs;
+    packages.write-lock = config.flake-file.apps.write-lock pkgs;
+  };
 }

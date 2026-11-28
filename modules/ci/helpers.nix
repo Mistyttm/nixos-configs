@@ -18,8 +18,9 @@
         "accept-flake-config = true"
       ]
       ++ lib.mapAttrsToList (name: value: "${name} = ${toString value}") (
-        # Empty defaults like `substituters = []` would wipe cache.nixos.org.
-        lib.filterAttrs (_: value: value != null && value != [] && value != "") config.flake-file.nixConfig
+        # flake.nix is the single source for nixConfig. Empty defaults like
+        # `substituters = []` would wipe cache.nixos.org.
+        lib.filterAttrs (_: value: value != null && value != [] && value != "") (import ../../flake.nix).nixConfig
       )
     );
 

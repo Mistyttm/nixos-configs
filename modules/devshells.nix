@@ -1,7 +1,7 @@
 {...}: {
   flake-file.inputs.devshell = {
     url = "github:numtide/devshell";
-    inputs.nixpkgs.follows = "nixpkgs";
+    group = "tooling";
   };
 
   perSystem = {
@@ -17,6 +17,13 @@
           pkgs.deadnix
         ]
         ++ config.pre-commit.settings.enabledPackages;
+
+      env = [
+        {
+          name = "TACK_NIX_CONF_TOKENS";
+          value = "1";
+        }
+      ];
 
       devshell.startup.pre-commit = {
         text = config.pre-commit.shellHook;

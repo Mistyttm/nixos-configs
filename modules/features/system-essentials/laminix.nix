@@ -1,7 +1,7 @@
 {inputs, ...}: {
   flake-file.inputs.laminix = {
     url = "github:jackboykin/laminix";
-    inputs.nixpkgs.follows = "nixpkgs";
+    group = "system";
   };
 
   flake.nixosModules.laminix = {...}: {
