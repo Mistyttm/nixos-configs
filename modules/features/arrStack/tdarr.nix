@@ -19,7 +19,9 @@
     ];
   in {
     lantian.harden."tdarr-server" = {
-      enable = true;
+      # "jit": Tdarr's bundled V8 runtime needs to flip page permissions
+      # (W^X), which MemoryDenyWriteExecute blocks.
+      enable = "jit";
       enableConfinement = false;
       cuda = true;
       bindPaths = [
@@ -29,7 +31,9 @@
       ];
     };
     lantian.harden."tdarr-node-internal" = {
-      enable = true;
+      # "jit": Tdarr's bundled V8 runtime needs to flip page permissions
+      # (W^X), which MemoryDenyWriteExecute blocks.
+      enable = "jit";
       enableConfinement = false;
       cuda = true;
       bindPaths = [
@@ -86,6 +90,9 @@
     systemd.services."tdarr-node-internal" = {
       serviceConfig = lib.mkMerge [
         {
+          # The "jit" preset force-sets PrivateDevices = true, which hides
+          # /dev/nvidia* and breaks NVENC; beat mkForce (priority 50).
+          PrivateDevices = lib.mkOverride 40 false;
           ReadWritePaths = libraries;
           MemoryAccounting = true;
           MemoryMax = "4G";
