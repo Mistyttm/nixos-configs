@@ -44,6 +44,9 @@
     nixpkgs-lib = "nixpkgs";
   };
 
+  # only used by upstream default.nix/shell.nix, never by flake outputs
+  flake-file.tack.omitInputs = ["flake-compat"];
+
   imports = [inputs.flake-file.flakeModules.tack];
 
   perSystem = {pkgs, ...}: {

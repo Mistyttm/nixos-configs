@@ -48,9 +48,9 @@
     "type": "github",
     "owner": "Mistyttm",
     "repo": "flake-file",
-    "rev": "1735e29edcfe4409edaba4254b37c2d8d9471de8",
-    "narHash": "sha256-XEsoBGHKhB4mkuUuLElru94H/AowfjMONiT7VTgiuPg=",
-    "lastModified": 1795851636,
+    "rev": "726aeb383a26109f95f86893c1132aa540934623",
+    "narHash": "sha256-4CAAS5NIy8F72SMGsYn7njNR0NdgIM2Fqn3f8LiTBVU=",
+    "lastModified": 1795853323,
     "public": true
   },
   "flake-parts": {

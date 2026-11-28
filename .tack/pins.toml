@@ -10,6 +10,9 @@ home-manager = "home-manager"
 nixpkgs = "nixpkgs"
 nixpkgs-lib = "nixpkgs"
 
+[omit_inputs]
+names = ["flake-compat"]
+
 [inputs.devshell]
 url = "github:numtide/devshell"
 group = "tooling"
@@ -49,6 +52,7 @@ group = "core"
 [inputs.jovian-nixos]
 url = "github:Jovian-Experiments/Jovian-NixOS"
 group = "desktop"
+omit_inputs = ["nix-github-actions"]
 
 [inputs.laminix]
 url = "github:jackboykin/laminix"
