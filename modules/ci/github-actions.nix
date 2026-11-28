@@ -7,6 +7,7 @@
 }: {
   flake-file.inputs.github-actions-nix = {
     url = "github:synapdeck/github-actions-nix";
+    group = "tooling";
   };
 
   imports = [inputs.github-actions-nix.flakeModule];
