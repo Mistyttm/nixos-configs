@@ -199,10 +199,10 @@
   },
   "nixpkgs": {
     "type": "tarball",
-    "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1129576.58d0d3e9d527/nixexprs.tar.zst?lastModified=1795546490&rev=58d0d3e9d527ca7263be6a45d1f86eacdc700dab",
-    "rev": "58d0d3e9d527ca7263be6a45d1f86eacdc700dab",
-    "narHash": "sha256-35vVm59QE15oPhDJ2y2J03w+h/4XTMJvvDMP3zRSrY0=",
-    "lastModified": 1795546490
+    "url": "https://releases.nixos.org/nixos/unstable/nixos-27.05pre1131287.78cc855faf43/nixexprs.tar.zst?lastModified=1795761588&rev=78cc855faf4382e44b781c23bf9f456b924ef0e2",
+    "rev": "78cc855faf4382e44b781c23bf9f456b924ef0e2",
+    "narHash": "sha256-ezVcMHqgm9JpcUJTp2LqhdBJ52vlvU2Xkl9SobPzJFk=",
+    "lastModified": 1795761588
   },
   "plasma-manager": {
     "type": "github",
