@@ -119,7 +119,8 @@ Consequences for agents:
 ## Directory map
 
 ```
-flake.nix                      # inputs, nixConfig (binary caches), import-tree wiring
+flake.nix                      # nixConfig (binary caches); forwards into outputs.nix
+.tack/                         # tack pins.toml (generated), pins.lock.json, default.nix (resolver)
 modules/
   parts.nix                    # flake-parts `systems` list
   packages.nix                 # overlay wiring packages/*/package.nix, perSystem pkgs
@@ -159,16 +160,19 @@ Hosts currently defined: `puppypc` (main desktop), `puppylaptop` /
 `mistylappytappy` (gaming laptop), `thedogpark` (Sydney VPS), `thekennel`
 (home server/media stack), `thepetshop`.
 
-Note: this repo uses `vic/flake-file` to generate `flake.nix` from module
-options. `flake.nix` is a **generated file** — don't hand-edit it. Flake
-inputs are declared via `flake-file.inputs.*` in `modules/inputs.nix` (and
-may be split across other modules where it makes sense, e.g. an
-overlay module declaring the PR-specific input it consumes). After
-changing declared inputs, run `nix run .#write-flake` to regenerate
-`flake.nix`, then `nix flake lock`. `outputs.nix` (repo root, NOT under
-`modules/`) holds the hand-written `flake-parts` wiring;
-`flake-file.outputs` is left at its default (`inputs: import ./outputs.nix
-inputs`).
+Note: inputs are locked with [tack](https://github.com/manic-systems/tack),
+not `flake.lock`. Inputs are still declared via `flake-file.inputs.*` in
+`modules/inputs.nix` (and in the feature module that consumes them, e.g.
+an overlay module declaring the input it needs), using the `tack` flake-file
+backend. `nix run .#write-lock` renders them into `.tack/pins.toml` and runs
+`tack update` to rewrite `.tack/pins.lock.json`; pass pin names to update only
+those (`nix run .#write-tack -- nixpkgs`). **Never hand-edit
+`.tack/pins.toml`** (generated) or `.tack/default.nix` (tack-managed resolver;
+`tack init --resolver` refreshes it). `flake.nix` is now hand-written: it only
+forwards `tackOverrides`/`self` into `outputs.nix`, which holds the
+`flake-parts` wiring. tack has no `self` input, so `outputs.nix` injects one.
+Patched trees (tack `patches`) only exist in the store that built them; run
+`tack materialize` before evaluating on a fresh machine if any are added.
 
 ## Module conventions
 
